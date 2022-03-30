@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import DividedCard from "./components/dividedCard";
 
 import { ChakraProvider } from "@chakra-ui/react";
 
@@ -22,6 +23,7 @@ function App() {
           </a>
         </header>
       </div>
+      <DividedCard></DividedCard>
     </ChakraProvider>
   );
 }
