@@ -1,11 +1,12 @@
 import logo from "./logo.svg";
 import "./App.css";
+import theme from "./theme";
 
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
