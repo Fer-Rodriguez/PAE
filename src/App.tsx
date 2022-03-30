@@ -1,14 +1,18 @@
 import logo from "./logo.svg";
-import LayoutDashboard from "./layouts/dashboard";
+//Libraries
+import { ChakraProvider } from "@chakra-ui/react";
 
+//CSS
 import "./App.css";
 
-import { ChakraProvider } from "@chakra-ui/react";
+//Components
+import LayoutDashboard from "./layouts/dashboard";
+import { Title } from "./pages/Dashboard";
 
 function App() {
   return (
     <ChakraProvider>
-      <LayoutDashboard />
+      <LayoutDashboard Title={Title} />
     </ChakraProvider>
   );
 }
