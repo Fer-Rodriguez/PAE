@@ -1,20 +1,16 @@
-import logo from "./logo.svg";
 //Libraries
 import { ChakraProvider } from "@chakra-ui/react";
 
 //CSS
 import "./App.css";
 
-//Components
-import LayoutDashboard from "./layouts/dashboard";
-import { Title } from "./pages/Dashboard";
+//Pages
+import Dashboard from "./pages/Dashboard";
 
-function App() {
+export function App() {
   return (
     <ChakraProvider>
-      <LayoutDashboard Title={Title} />
+      <Dashboard />
     </ChakraProvider>
   );
 }
-
-export default App;

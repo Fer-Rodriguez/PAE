@@ -1,7 +1,11 @@
-import React from "react";
+import { useEffect } from "react";
 
-function title() {
-  return <div>title.component</div>;
+function DashboardTitle() {
+  useEffect(() => {
+    console.log("Que onda ");
+  }, []);
+
+  return <div>Hola</div>;
 }
 
-export default title;
+export default DashboardTitle;
