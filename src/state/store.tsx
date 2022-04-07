@@ -12,7 +12,7 @@ export type StoreSlice<T> = (
   get: GetState<StoreState>
 ) => T;
 
-const useStore = create<StoreState>((set, get) => ({
+export const useStore = create<StoreState>((set, get) => ({
   ...userSlice(set, get),
   ...appointmentSlice(set, get),
 }));

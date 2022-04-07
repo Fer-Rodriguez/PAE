@@ -1,29 +1,13 @@
 import { StoreSlice } from "./store";
-
-enum EStatus {
-  pending,
-  accepted,
-  completed,
-  canceled,
-}
-
-type TAppointment = {
-  [key: string]: string | EStatus;
-  id_admin: string;
-  id_advisor: string;
-  id_advised: string;
-  id_subject: string;
-  date: string;
-  status: EStatus;
-  location: string;
-};
+import { EStatus_Appointement } from "../interfaces/enums";
+import { TAppointment } from "../interfaces/types";
 
 export type TAppointmentSlice = {
   appointments: Array<TAppointment>;
   modifyAppointment: (
     index: number,
     property: string,
-    value: string | EStatus
+    value: string | EStatus_Appointement
   ) => void;
 };
 
