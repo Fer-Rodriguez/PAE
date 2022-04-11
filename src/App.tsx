@@ -1,8 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
 import theme from "./theme";
-
 import { ChakraProvider } from "@chakra-ui/react";
+import DividedCard from "./components/dividedCard";
 
 function App() {
   return (
@@ -23,6 +23,11 @@ function App() {
           </a>
         </header>
       </div>
+      <br></br>
+      <br></br>
+      <DividedCard></DividedCard>
+      <br></br>
+      <br></br>
     </ChakraProvider>
   );
 }
