@@ -1,22 +1,23 @@
 import { Box } from "@chakra-ui/react";
+import theme from "../../theme/index";
 import { Center } from "@chakra-ui/react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { ReactElement } from "react";
-import ButtonType from "../Button";
+import ButtonGeneric from "../Button";
 
 /* La carta tiene como posibles propiedades título, subtítulo, botón de cerra y
 el contenido, el cual puede ser otro componente :O */
 
-function Card({
+function BaseCard({
   title,
   subtitle,
   closeButton,
-  Content,
+  content,
 }: {
   title?: string;
   subtitle?: string;
   closeButton?: boolean;
-  Content?: ReactElement;
+  content?: ReactElement;
 }) {
   return (
     <Center>
@@ -36,6 +37,8 @@ function Card({
         rounded={30}
         bg="white"
       >
+        {/* Grid para mantener el botón, título y subtítulos en sus respectivas posiciones de manera más sencilla
+        y colocar el contenido en la parte específica. */}
         <Grid
           h="200px"
           templateRows="repeat(20, 1fr)"
@@ -70,12 +73,14 @@ function Card({
             justifyContent="flex-end"
           >
             {/* Botón ヽ(o＾▽＾o)ノ */}
-            {closeButton ? <ButtonType text="X" /> : null}
+            {closeButton ? (
+              <ButtonGeneric text="X" color={theme.colors.pink} />
+            ) : null}
           </GridItem>
           <GridItem p="6" rowSpan={38} colSpan={3} bg="white">
             {/* Contenido */}
             (◕︵◕)
-            {Content}
+            {content}
           </GridItem>
         </Grid>
       </Box>
@@ -83,4 +88,4 @@ function Card({
   );
 }
 
-export default Card;
+export default BaseCard;

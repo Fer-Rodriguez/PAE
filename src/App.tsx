@@ -2,14 +2,14 @@ import "./App.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 
-import Card from "./components/Card";
+import BaseCard from "./components/BaseCard";
 import Bell from "./components/Bell";
 
 function App() {
   return (
     <ChakraProvider>
       <Bell />
-      <Card title="Hola" subtitle="Adios" closeButton={true} />
+      <BaseCard title="Hola" subtitle="Adios" closeButton={true} />
     </ChakraProvider>
   );
 }
