@@ -1,14 +1,31 @@
 import { Box } from "@chakra-ui/react";
-import { Center, Square, Circle } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 import { Grid, GridItem } from "@chakra-ui/react";
+import { ReactElement } from "react";
 import ButtonType from "../Button";
 
-function Card({ title, subtitle }: { title?: string; subtitle?: string }) {
+/* La carta tiene como posibles propiedades título, subtítulo, botón de cerra y
+el contenido, el cual puede ser otro componente :O */
+
+function Card({
+  title,
+  subtitle,
+  closeButton,
+  Content,
+}: {
+  title?: string;
+  subtitle?: string;
+  closeButton?: boolean;
+  Content?: ReactElement;
+}) {
   return (
     <Center>
       <Box
+        /* Supongo que sería buena idea poner breakpoints para los margenes :c y
+        con los demás valores (Borde, Shadow, etc.) pero pues aún no hay unu */
         mt="125px"
-        ml="100px"
+        ml="150px"
+        mr="50px"
         width="850px"
         height="475px"
         borderWidth="1px"
@@ -26,13 +43,13 @@ function Card({ title, subtitle }: { title?: string; subtitle?: string }) {
           gap={2}
         >
           <Box p="6">
-            {/* Título */}
+            {/* Título ٩(◕‿◕｡)۶ */}
             <GridItem rowSpan={1} colSpan={1} bg="white">
               <Box fontWeight="bold" as="h1" fontSize={25} isTruncated>
                 {title}
               </Box>
             </GridItem>
-            {/* Subtítulo */}
+            {/* Subtítulo ヽ(*・ω・)ﾉ */}
             <GridItem mt="10px" rowSpan={1} colSpan={1} bg="white">
               <Box
                 fontWeight="semibold"
@@ -45,13 +62,20 @@ function Card({ title, subtitle }: { title?: string; subtitle?: string }) {
               </Box>
             </GridItem>
           </Box>
-          <GridItem rowSpan={1} colSpan={1} bg="white">
-            {/* Botón */}
-            <ButtonType text="X" />
+          <GridItem
+            rowSpan={1}
+            colSpan={1}
+            bg="white"
+            display="flex"
+            justifyContent="flex-end"
+          >
+            {/* Botón ヽ(o＾▽＾o)ノ */}
+            {closeButton ? <ButtonType text="X" /> : null}
           </GridItem>
           <GridItem p="6" rowSpan={38} colSpan={3} bg="white">
             {/* Contenido */}
             (◕︵◕)
+            {Content}
           </GridItem>
         </Grid>
       </Box>
