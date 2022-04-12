@@ -38,7 +38,7 @@ export const DividedCard = (props: IDividedCard) => {
         borderRadius={(props.overlap)? "general":"dividedCardTop"}
         bg={props.colorFirst}
       >
-        {props.content}
+        {props.contentTop}
       </Center>
 
       <Center
@@ -49,7 +49,7 @@ export const DividedCard = (props: IDividedCard) => {
         borderRadius={(props.overlap)? "general":"dividedCardBottom"}
         bg={props.colorSecond}
       >
-        {props.content}
+        {props.contentBottom}
       </Center>
     </Flex>
   );

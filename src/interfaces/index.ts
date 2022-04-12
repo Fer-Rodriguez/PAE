@@ -5,7 +5,8 @@ export interface IPrueba {
 }
 
 export interface IDividedCard {
-  content: JSX.Element,
+  contentTop: JSX.Element,
+  contentBottom: JSX.Element,
   vertical: boolean,
   colorFirst: string,
   colorSecond: string, 
