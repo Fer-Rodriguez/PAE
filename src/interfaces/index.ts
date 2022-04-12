@@ -1,16 +1,14 @@
-import { Colors } from "@chakra-ui/react";
-
 export interface IPrueba {
   pruebita: string;
 }
 
 export interface IDividedCard {
-  contentTop: JSX.Element,
-  contentBottom: JSX.Element,
-  vertical: boolean,
+  contentFirst: JSX.Element,
+  contentSecond: JSX.Element,
   colorFirst: string,
   colorSecond: string, 
   percentageFirst: string,
   percentageSecond: string,
+  vertical: boolean,
   overlap: boolean;
 }

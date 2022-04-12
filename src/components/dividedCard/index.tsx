@@ -1,20 +1,22 @@
-import React from "react";
+//Chakra Components
 import {
   Flex,
-  Box,
   Center,
 } from "@chakra-ui/react";
+// Local Interfaces
 import { IDividedCard } from "../../interfaces";
 
 /*
-Qué estaría bien mandar como props para customizar esta cosa:
-
-
-overlap? => implica sombra y que no termine en linea recta
-direction => horizontal o vertical
-colorFirst => color de la de arriba o la de la izquierda (dependiendo de direction)
-colorSecond => color de la de abajo o la de la derecha (dependiendo de direction)
-
+DividedCard: Componente que representa una tarjeta dividida en dos secciones distintas
+  Props:
+  @contentFirst : Contenido a ser mostrado en la tarjeta de arriba/izquierda, dependiendo de la orientación
+  @contentSecond : Contenido a ser mostrado en la tarjeta de abajo/derecha, dependiendo de la orientación
+  @colorFirst : Color de la tarjeta de arriba/izquierda, dependiendo de la orientación
+  @colorSecond : Color de la tarjeta de abajo/derecha, dependiendo de la orientación
+  @percentageFirst : Porcentaje del total de la altura/anchura (dependiendo de la orientación) que abarcará la primera tarjeta
+  @percentageFirst : Porcentaje del total de la altura/anchura (dependiendo de la orientación) que abarcará la segunda tarjeta
+  @vertical : Booleano que indica la orientación del componente. Si es true, la orientación es vertical. Si es false, es horizontal
+  @overlap : Booleano que indica si la tarjeta de arriba/izquierda debería sobreponerse a la otra
 */
 
 export const DividedCard = (props: IDividedCard) => {
@@ -38,18 +40,18 @@ export const DividedCard = (props: IDividedCard) => {
         borderRadius={(props.overlap)? "general":"dividedCardTop"}
         bg={props.colorFirst}
       >
-        {props.contentTop}
+        {props.contentFirst}
       </Center>
 
       <Center
         position="relative"
-        zIndex="1"
+        zIndex="1" //TODO: Quizás soportar que la segunda tarjeta pueda ser la que está por encima?
         h={(props.vertical)? props.percentageSecond : "auto"}
         w={(props.vertical)? "auto" : props.percentageSecond}
         borderRadius={(props.overlap)? "general":"dividedCardBottom"}
         bg={props.colorSecond}
       >
-        {props.contentBottom}
+        {props.contentSecond}
       </Center>
     </Flex>
   );
