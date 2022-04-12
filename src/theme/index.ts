@@ -10,7 +10,8 @@ const theme = extendTheme({
     purpleLight: "#9B6CFF",
     purpleDark: "#880CD9",
 
-    black: "#FFFFFF",
+    white: "#FFFFFF",
+    black: "#000000",
   },
   //Border radii for components
   radii: {

@@ -1,54 +1,57 @@
 import React from "react";
 import {
   Flex,
-  Text,
-  Square,
   Box,
   Center,
-  Spacer,
-  Grid,
-  SimpleGrid,
-  Container,
 } from "@chakra-ui/react";
 import { IDividedCard } from "../../interfaces";
 
 /*
 Qué estaría bien mandar como props para customizar esta cosa:
 
-overlap? 
+
+overlap? => implica sombra y que no termine en linea recta
+direction => horizontal o vertical
+colorFirst => color de la de arriba o la de la izquierda (dependiendo de direction)
+colorSecond => color de la de abajo o la de la derecha (dependiendo de direction)
 
 */
 
-export const DividedCard = (/*props: IDividedCard*/) => {
+export const DividedCard = (props: IDividedCard) => {
   return (
-    //busca una manera programática de ajustar el tamaño de esta box
-    <Box
-      //boxShadow="0px 5px 5px 0px rgba(0,0,0,0.30)"
-      width="165px"
-      height="110px"
+
+    <Flex
+      boxShadow="0px 5px 5px 0px rgba(0,0,0,0.30)"
+      borderRadius="general"
+      direction="column"
+      w="100%"
+      h="auto"
+      bg={(props.overlap)? props.colorSecond:""}
+      
     >
       <Center
-        zIndex="2"
+        zIndex={(props.overlap)? 2:1}
         position="relative"
-        //boxShadow="0px 5px 5px 0px rgba(255,0,0,1)"
-        h="50%"
-        borderRadius="dividedCardTop"
-        bg="pink"
+        boxShadow={(props.overlap)? "0px 5px 5px 0px rgba(0,0,0,0.40)" : ""} //if overlap is true
+        h={props.percentageFirst}
+        borderRadius={(props.overlap)? "general":"dividedCardTop"}
+        bg={props.colorFirst}
       >
-        <Text>Box 1</Text>
+        <Box>Box 1</Box>
       </Center>
 
       <Center
         //hidden
         position="relative"
+        //top={(props.overlap)? "-30px" : 0}// para ocultar tantito la tarjeta cuando están overlapped
         zIndex="1"
-        h="50%"
-        borderRadius="dividedCardBottom"
-        bg="blue"
+        h={props.percentageSecond}
+        borderRadius={(props.overlap)? "general":"dividedCardBottom"}
+        bg={props.colorSecond}
       >
-        <Text>Box 2</Text>
+        <Box>Box 2</Box>
       </Center>
-    </Box>
+    </Flex>
   );
 };
 
