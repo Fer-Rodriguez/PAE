@@ -1,4 +1,4 @@
-import { ChangeEvent, SyntheticEvent } from "react";
+import { ChangeEvent, ComponentType } from "react";
 import { ETypeDropdown } from "./enums";
 
 export interface IPrueba {
@@ -15,4 +15,16 @@ export interface IConfigurationsDropdown {
   defaultValue?: any;
   placeholder: string;
   type: ETypeDropdown;
+}
+
+export interface IStep {
+  label: string;
+  icon?: ComponentType<any>;
+  content: JSX.Element;
+  description?: string;
+}
+
+export interface IFinalProgressContent {
+  onFinished: () => void;
+  finishedContent: JSX.Element;
 }

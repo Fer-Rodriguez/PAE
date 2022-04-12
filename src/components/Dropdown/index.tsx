@@ -13,11 +13,11 @@ interface IDropDown {
 }
 
 /**
- *  custonOptionStyle: Función que regresa un objeto con propiedades de estilo, de acuardo al dropdown seleccionado.
- * @index : Índice del tag <option> en cuestión.
- * @type : Tipo de dropdown seleccionado
+ *  custonOptionStyle: Function that returns an object with all the propertioes based on the type of dropdown selected.
+ * @index : Index of the tag <option> in cuestion.
+ * @type : Type of dropdown selected.
  *
- * @return: Regresa un objeto con llaves que aluden al estilo del componente.
+ * @return: Returns an object whose keys represents the CSS properties that are going to be applied.
  */
 
 const customOptionStyle = (index: number, type: ETypeDropdown) => {
@@ -31,11 +31,11 @@ const customOptionStyle = (index: number, type: ETypeDropdown) => {
 };
 
 /**
- * Dropdown: Componente que permite la presentación de un dropdwown versatil y customizable.
- * @options : Conjunto de objetos que representarán cada una de las opciones del dropdown.
- * @configutation : Párámetro que permite configurar al dropdown a través de su valor default, el método para "OnChange", el tipo de dropdown, etc...
- * @baseProps : Elementos base que permiten establecer propiedades DIRECTAS al componente de Select. Estas propiedades son de Chakra UI, y se describen en la siguiente liga:
- * https://chakra-ui.com/docs/components/form/select
+ * Dropdown: Component that represents a dynamic dropdown.
+ * @options : Objects that allows to customize the whole dropdown.
+ * @configutation : Allow us to modify default value, onChange function, type of dropdwon, etc...
+ * @baseProps : Basr props for the Select component itself; more info here: https://chakra-ui.com/docs/components/form/select
+ *
  */
 
 export const DropDown = ({ options, configuration, baseProps }: IDropDown) => {
