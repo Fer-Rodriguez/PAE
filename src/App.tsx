@@ -10,6 +10,7 @@ function App() {
         closeButton={true}
         title={{
           text: "Encuestas",
+          titleColor: "#9B6CFF",
           subtitle: "Selecciona una encuesta para editar sus preguntas",
           alignment: "left",
         }}

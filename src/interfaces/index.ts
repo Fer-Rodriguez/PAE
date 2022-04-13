@@ -6,6 +6,11 @@ export interface IPrueba {
 
 export interface IPopOver {
   size: string; //"s" => small, "m" => medium, "l" => large
-  title?: { text: string; subtitle?: string; alignment: ResponsiveValue<any> };
+  title?: {
+    text: string;
+    titleColor?: string;
+    subtitle?: string;
+    alignment: ResponsiveValue<any>;
+  };
   closeButton: boolean;
 }

@@ -15,7 +15,7 @@ import {
 /**
  * PopOver: component that return a modal
  * @size : size of the modal ("s" => small, "m" => medium, "l" => large) | string
- * @title : object of the modal's header text (text => title's modal, subtitle => subtitle's modal, alignment => alignment modal's title) | {string, string, string} *
+ * @title : object of the modal's header text (text => title's modal, titleColor =>modal's title color, subtitle => subtitle's modal, alignment => alignment modal's title) | {string, string, string} *
  * @closeButton : defines whether the modal has a close button | boolean
  * @children : component used for the modal's body
  */
@@ -55,7 +55,11 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
         <AlertDialogContent maxW={calculateWidth(size) + "px"}>
           <AlertDialogHeader>
             {title ? (
-              <Text fontWeight={"semibold"} align={title.alignment}>
+              <Text
+                {...(title.titleColor ? { color: title.titleColor } : {})}
+                fontWeight={"semibold"}
+                align={title.alignment}
+              >
                 {title.text}
               </Text>
             ) : null}
