@@ -14,3 +14,7 @@ export interface IPopOver {
   };
   closeButton: boolean;
 }
+
+export interface IRadioArray {
+  radioButtonArray: { value: any; text?: string }[];
+}
