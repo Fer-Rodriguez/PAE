@@ -1,5 +1,5 @@
 import { ChangeEvent, ComponentType } from "react";
-import { ETypeDropdown } from "./enums";
+import { ETypeDropdown, ETypeProfileCard } from "./enums";
 
 export interface IPrueba {
   pruebita: string;
@@ -27,4 +27,29 @@ export interface IStep {
 export interface IFinalProgressContent {
   onFinished: () => void;
   finishedContent: JSX.Element;
+}
+
+export interface IDailySchedule {
+  hours: Array<[string, string]>;
+}
+
+export interface IWeeklySchedule {
+  days: Array<IDailySchedule>;
+}
+
+export interface ISchedule {
+  firstPeriod: Array<IWeeklySchedule>;
+  secondPeriod: Array<IWeeklySchedule>;
+  thirdPeriod: Array<IWeeklySchedule>;
+}
+
+export interface IDataProfileCard {
+  [key: string]: any;
+  name: string;
+  type: ETypeProfileCard;
+  email: string;
+  career: string;
+  semester: string;
+  profilePic: string;
+  schedule?: ISchedule;
 }
