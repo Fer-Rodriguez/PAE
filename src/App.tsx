@@ -4,6 +4,7 @@ import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
 //CSS
 import "./App.css";
+import theme from "./theme";
 
 //Pages
 import Dashboard from "./pages/Dashboard";
