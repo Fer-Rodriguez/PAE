@@ -15,13 +15,19 @@ const theme = extendTheme({
   },
   //Border radii for components
   radii: {
-    dividedCardTop: "25px 25px 0px 0px",
-    dividedCardBottom: "0px 0px 25px 25px", //combinar estos dos en un solo radius
+    verticalDividedCardTop: "25px 25px 0px 0px",
+    verticalDividedCardBottom: "0px 0px 25px 25px",
+    horizontalDividedCardLeft: "25px 0px 0px 25px",
+    horizontalDividedCardRight: "0px 25px 25px 0px",
     general: "25px",
     appointment: "10px",
     button: "40px",
     menu: "30px",
   },
+
+  shadows:{
+    general: "0px 5px 5px 0px rgba(0,0,0,0.30)"
+  }
 });
 
 export default theme;
