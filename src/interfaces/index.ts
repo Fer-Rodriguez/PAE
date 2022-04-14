@@ -26,6 +26,7 @@ export interface IManagingTable{
     Cell?: (cell: Cell<any, any>) => any
   }[],
 
-  data: Array<any>;
+  data: Array<any>,
+  headColor: string
 
 }

@@ -18,8 +18,9 @@ import { IManagingTable } from '../../interfaces'
 *   IManagingTable:
 *       @columns : Arreglo que contiene los headers para las columnas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
 *       @data : Arreglo "memoized" que contiene los datos a insertar las celdas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
+*       @headColor: color para la cabeza de la tabla
 */
-export const ManagingTable = ({columns, data}: IManagingTable) => {
+export const ManagingTable = ({columns, data, headColor}: IManagingTable) => {
 
     // Properties needed to form the table's data model
     // Further reading: https://react-table.tanstack.com/docs/api/useTable#instance-properties
@@ -35,7 +36,7 @@ export const ManagingTable = ({columns, data}: IManagingTable) => {
 
         <TableContainer boxShadow="general" borderRadius="general">
             <Table variant='simple' {...getTableProps()}>
-                <Thead background="pink">
+                <Thead background={headColor}>
                     
                     <Tr>
                         {flatHeaders.map(header => (

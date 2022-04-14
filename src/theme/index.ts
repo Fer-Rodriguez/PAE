@@ -15,10 +15,10 @@ const theme = extendTheme({
   },
   //Border radii for components
   radii: {
-    verticalDividedCardTop: "25px 25px 0px 0px",
-    verticalDividedCardBottom: "0px 0px 25px 25px",
-    horizontalDividedCardLeft: "25px 0px 0px 25px",
-    horizontalDividedCardRight: "0px 25px 25px 0px",
+    verticalDividedCardFirst: "25px 25px 0px 0px",
+    verticalDividedCardSecond: "0px 0px 25px 25px",
+    horizontalDividedCardFirst: "25px 0px 0px 25px",
+    horizontalDividedCardSecond: "0px 25px 25px 0px",
     general: "25px",
     appointment: "10px",
     button: "40px",
