@@ -1,21 +1,27 @@
-import { IconButton } from "@chakra-ui/react";
+//Chakra Components
+import {
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
+
+//Assets
 import notifications from "../../assets/Bell.png";
+import theme from "../../theme/index";
 
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-
-function Bell() {
+export const Bell = () => {
   return (
     <Menu>
       <MenuButton
-        /* Propiedades fijas porque siempre va a estar en la misma posición la campanita owo
-        verdad? D: */
         as={IconButton}
-        bg="white"
-        mt="25px"
+        bg={theme.colors.white}
+        mt="2em"
         position="absolute"
         right={30}
-        rounded={50}
-        icon={<img src={notifications} height="40" width="40" />}
+        rounded={theme.radii.menu}
+        icon={<img src={notifications} height="40em" width="40em" />}
       ></MenuButton>
       <MenuList>
         {/* Parte donde se muestra las notificaciones? innecesario por la parte del DropDown? O.o */}
@@ -23,6 +29,4 @@ function Bell() {
       </MenuList>
     </Menu>
   );
-}
-
-export default Bell;
+};
