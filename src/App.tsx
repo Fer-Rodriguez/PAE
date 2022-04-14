@@ -6,9 +6,6 @@ import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 import "./App.css";
 import theme from "./theme";
 
-//Pages
-import Dashboard from "./pages/Dashboard";
-
 //Adding a custom component (Chakra UI Steps) into the main library of chakra, in order to use all the theme properties.
 const theme = extendTheme({
   components: {
