@@ -29,8 +29,6 @@ const customOptionStyle = (index: number, type: ETypeDropdown) => {
       };
 };
 
-import React from "react";
-
 /**
  * Dropdown: Component that represents a dynamic dropdown.
  * @options : Objects that allows to customize the whole dropdown.
