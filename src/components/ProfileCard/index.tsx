@@ -16,12 +16,21 @@ import {
 import { ETypeProfileCard } from "../../interfaces/enums";
 import { IDataProfileCard } from "../../interfaces/index";
 
+//Local Interface
 interface IProfileCard {
   type: ETypeProfileCard;
   data: IDataProfileCard;
   baseProps?: { [key: string]: any };
 }
 
+/**
+ *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
+ * @data : User Data that wull be presented in the profile card.
+ * @type : Type of profileCard selected.
+ */
+
+//TODO: Add layout for profile cards regarding advisors and admins.
+//TODO: Add funcionality for "change Password" button.
 export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
   const titlesInformation = ["Email", "Career", "Semester"];
 
@@ -43,7 +52,7 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
           <Image
             maxW={"120px"}
             minW={"80px"}
-            src=" https://www.learningcontainer.com/wp-content/uploads/2020/08/Sample-PNG-File-for-Testing.png"
+            src={data.profilePic}
             alt="Dan Abramov"
           />
         </Circle>
@@ -51,7 +60,13 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
 
         <Flex flexDirection={"column"}>
           <Heading>{data.name}</Heading>
-          <Text fontSize="2xl">Asesor</Text>
+          <Text fontSize="2xl">
+            {data.type === ETypeProfileCard.advisor
+              ? "Asesor"
+              : data.type === ETypeProfileCard.student
+              ? "Asesorado"
+              : "Admin"}{" "}
+          </Text>
 
           <Divider size={"md"} borderColor="#8963D9" />
           <Grid templateColumns="repeat(2, 1fr)" gap={2} w="100%">

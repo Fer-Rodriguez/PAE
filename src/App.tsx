@@ -24,9 +24,5 @@ const theme = extendTheme({
 });
 
 export function App() {
-  return (
-    <ChakraProvider theme={theme}>
-      <Dashboard />
-    </ChakraProvider>
-  );
+  return <ChakraProvider theme={theme}></ChakraProvider>;
 }

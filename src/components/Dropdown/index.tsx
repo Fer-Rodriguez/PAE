@@ -16,8 +16,7 @@ interface IDropDown {
  *  custonOptionStyle: Function that returns an object with all the propertioes based on the type of dropdown selected.
  * @index : Index of the tag <option> in cuestion.
  * @type : Type of dropdown selected.
- *
- * @return: Returns an object whose keys represents the CSS properties that are going to be applied.
+ * @baseProps : Props that are part of the base component "Steps"; more info here: https://github.com/jeanverster/chakra-ui-steps
  */
 
 const customOptionStyle = (index: number, type: ETypeDropdown) => {
@@ -29,6 +28,8 @@ const customOptionStyle = (index: number, type: ETypeDropdown) => {
           index === 0 ? "#4CC9F0" : index === 1 ? "#F72585" : "#8963D9",
       };
 };
+
+import React from "react";
 
 /**
  * Dropdown: Component that represents a dynamic dropdown.
