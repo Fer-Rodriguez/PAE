@@ -6,8 +6,9 @@ export interface IPrueba {
 
 export interface IBaseCard {
   title?: string;
-  subtitle?: string;
-  closeButton?: boolean;
+  margin?: string;
+  padding?: string;
+  boxshadow?: string;
   content?: ReactElement;
 }
 

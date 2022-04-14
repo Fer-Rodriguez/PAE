@@ -1,11 +1,5 @@
 //Chakra Components
-import {
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react";
+import { IconButton, Menu, MenuButton } from "@chakra-ui/react";
 
 //Assets
 import notifications from "../../assets/Bell.png";
@@ -23,10 +17,6 @@ export const Bell = () => {
         rounded={theme.radii.menu}
         icon={<img src={notifications} height="40em" width="40em" />}
       ></MenuButton>
-      <MenuList>
-        {/* Parte donde se muestra las notificaciones? innecesario por la parte del DropDown? O.o */}
-        <MenuItem>:3</MenuItem>
-      </MenuList>
     </Menu>
   );
 };
