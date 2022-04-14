@@ -1,12 +1,13 @@
 import React from "react";
-import { IRadioArray } from "../../interfaces";
 import { Radio, RadioGroup, Stack } from "@chakra-ui/react";
 
 /**
  * radioArray: component that returns a  RadioGroup of RadioButtons
  * @radioButtonArray : array of RadioButtons ([value => value of the RadioButton that will be returned on form submission; text? => string of the RadioButton])
  */
-
+interface IRadioArray {
+  radioButtonArray: { value: any; text?: string }[];
+}
 //TODO: Change color with theme's value
 const RadioArray: React.FunctionComponent<IRadioArray> = ({
   radioButtonArray,

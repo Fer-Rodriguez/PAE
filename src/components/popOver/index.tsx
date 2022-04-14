@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { IPopOver } from "../../interfaces";
 import {
+  ResponsiveValue,
   AlertDialog,
   AlertDialogBody,
   AlertDialogHeader,
@@ -19,6 +19,17 @@ import {
  * @closeButton : defines whether the modal has a close button | boolean
  * @children : component used for the modal's body
  */
+
+export interface IPopOver {
+  size: string; //"s" => small, "m" => medium, "l" => large
+  title?: {
+    text: string;
+    titleColor?: string;
+    subtitle?: string;
+    alignment: ResponsiveValue<any>;
+  };
+  closeButton: boolean;
+}
 
 const PopOver: React.FunctionComponent<IPopOver> = ({
   size,
