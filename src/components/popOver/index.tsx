@@ -20,8 +20,13 @@ import {
  * @children : component used for the modal's body
  */
 
+export enum ETypeSize {
+  s,
+  m,
+  l,
+}
 export interface IPopOver {
-  size: string; //"s" => small, "m" => medium, "l" => large
+  size: ETypeSize; //"s" => small, "m" => medium, "l" => large
   title?: {
     text: string;
     titleColor?: string;
@@ -41,11 +46,11 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
   useEffect(() => onOpen(), [onOpen]);
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  const calculateWidth = (size: string) => {
+  const calculateWidth: (size: ETypeSize) => number = (size: ETypeSize) => {
     let sizeInt = 1500;
-    if (size == "s") {
+    if (size === ETypeSize.s) {
       sizeInt = 500;
-    } else if (size == "m") {
+    } else if (size === ETypeSize.m) {
       sizeInt = 1000;
     }
     return sizeInt;
