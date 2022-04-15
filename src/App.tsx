@@ -8,4 +8,4 @@ import theme from "./theme";
 
 export function App() {
   return <ChakraProvider theme={theme}></ChakraProvider>;
-}
+
