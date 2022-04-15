@@ -11,21 +11,18 @@ import theme from "../../theme/index";
   BaseCard: Component that represents the base card to be used in different sections.
 *    IBaseCard:
 *     @title : Content that modifies the title of the card, if it has one, since there are cards that do not have it.
-*     @margin: Property to define the margins of the card.
-*     @padding: Property to define the padding of the card.
-*     @boxshadow: Property to define the boxshadow of the card.
 *     @content : Content that allows entering the content of the letter, in case you want to add a component to it.
 */
 
 export const BaseCard = (props: IBaseCard) => (
   <Center>
     <Box
-      margin={props.margin}
-      width="60em"
+      margin="7em 1em 1em 10em"
+      width="65em"
       height="35em"
       overflow="hidden"
-      boxShadow={props.boxshadow}
-      p={props.padding}
+      boxShadow="dark-lg"
+      p="5"
       rounded={theme.radii.menu}
     >
       <Grid

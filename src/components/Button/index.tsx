@@ -12,14 +12,24 @@ import theme from "../../theme/index";
 *    IButtonGeneric:
 *     @text : Property that modifies the content that the button will have.
 *     @color : Property that modifies the color that the button will have.
+*     @margin : Property that modifies the margin that the button will have.
+*     @padding : Property that modifies the padding that the button will have.
+*     @hover : Property that modifies the hover that the button will have.
+*     @boxshadow : Property that modifies the shadow that the button will have.
+*     @fontColor : Property that modifies the font color that the text in the button will have.
 */
 
 export const ButtonGeneric = (props: IButtonGeneric) => (
   <Button
     backgroundColor={props.color}
     rounded={theme.radii.button}
+    boxShadow={props.boxShadow}
+    p={props.padding}
+    margin={props.margin}
+    textColor={props.fontColor}
+    _hover={props.hover}
     textAlign="center"
-    /* parte responsiva */
+    /* breakpoints */
     fontSize={{ base: "1em", md: "1em", lg: "1em" }}
   >
     {props.text}
