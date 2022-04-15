@@ -1,7 +1,5 @@
-import React from "react";
-
-function index() {
-  return <div>index</div>;
+function Dashboard() {
+  return <div className="m-12"></div>;
 }
 
-export default index;
+export default Dashboard;

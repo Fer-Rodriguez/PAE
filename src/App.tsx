@@ -1,8 +1,11 @@
-import "./App.css";
+//Libraries
 import { ChakraProvider } from "@chakra-ui/react";
 
-function App() {
-  return <ChakraProvider></ChakraProvider>;
-}
+//CSS
+import "./App.css";
 
-export default App;
+import theme from "./theme";
+
+export function App() {
+  return <ChakraProvider theme={theme}></ChakraProvider>;
+}
