@@ -13,9 +13,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 //  Hook to create the table data model
-import { useTable } from "react-table";
+import { Cell, useTable } from "react-table";
 // Component interface
-import { IBell } from "../../interfaces";
 
 //Assets
 import notifications from "../../assets/Bell.png";
@@ -28,6 +27,18 @@ import theme from "../../theme/index";
  *       @data : "memoized" array that contains the data to insert the cells of the table. More information: https://react-table.tanstack.com/docs/api/useTable#table-options
  *       @headColor: Color for table head.
  */
+
+interface IBell {
+  columns: {
+    Header: string;
+    accessor: string;
+    Cell?: (cell: Cell<any, any>) => any;
+  }[];
+
+  data: Array<any>;
+  headColor: string;
+}
+
 export const Bell = ({ columns, data, headColor }: IBell) => {
   // Properties needed to form the table's data model
   // Further reading: https://react-table.tanstack.com/docs/api/useTable#instance-properties

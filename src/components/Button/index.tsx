@@ -1,9 +1,6 @@
 //Chakra Components
 import { Button } from "@chakra-ui/react";
 
-//Interfaces, types & enyms.
-import { IButtonGeneric } from "../../interfaces";
-
 //Assets
 import theme from "../../theme/index";
 
@@ -18,6 +15,16 @@ import theme from "../../theme/index";
 *     @boxshadow : Property that modifies the shadow that the button will have.
 *     @fontColor : Property that modifies the font color that the text in the button will have.
 */
+
+interface IButtonGeneric {
+  text: string;
+  color: string;
+  margin?: string;
+  padding?: string;
+  boxShadow?: string;
+  fontColor?: string;
+  hover?: { backgroud: string; color: string; fontWeight?: string };
+}
 
 export const ButtonGeneric = (props: IButtonGeneric) => (
   <Button
