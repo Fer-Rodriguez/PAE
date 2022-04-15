@@ -33,7 +33,7 @@ interface IProfileCard {
 //TODO: Add funcionality for "change Password" button.
 export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
   const titlesInformation = ["Email", "Career", "Semester"];
-
+  6;
   return (
     <Box
       {...baseProps}
@@ -41,35 +41,36 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
       className="drop-shadow-xl"
       height={
         type === ETypeProfileCard.student || type === ETypeProfileCard.admin
-          ? "25rem"
-          : "30rem"
+          ? "65vh" //Here we use VH insted of % because the latter requieres a fixed height from the parent (Which could not be the case for all the applications of this component)
+          : "80vh"
       }
-      width={"50rem"}
+      minW={"55%"}
+      maxW={"100%"}
     >
       <Flex justifyContent={"center"} my={"5rem"}>
         <Spacer />
         <Circle backgroundColor={"#8963D9"} size="10rem" mx={15}>
           <Image
-            maxW={"120px"}
-            minW={"80px"}
+            maxW={"80%"}
+            minW={"50%"}
             src={data.profilePic}
             alt="Dan Abramov"
           />
         </Circle>
         <Spacer />
 
-        <Flex flexDirection={"column"}>
+        <Flex flexDirection={"column"} w={"50%"}>
           <Heading>{data.name}</Heading>
-          <Text fontSize="2xl">
+          <Text fontSize="2xl" mb={"2.5"}>
             {data.type === ETypeProfileCard.advisor
               ? "Asesor"
               : data.type === ETypeProfileCard.student
               ? "Asesorado"
-              : "Admin"}{" "}
+              : "Admin"}
           </Text>
 
           <Divider size={"md"} borderColor="#8963D9" />
-          <Grid templateColumns="repeat(2, 1fr)" gap={2} w="100%">
+          <Grid templateColumns="repeat(2, 1fr)" w="100%">
             <GridItem w="100%" h="10">
               {titlesInformation.map((title) => (
                 <Text size="sm" my={4} color="#8963D9">
@@ -89,7 +90,7 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
         <Spacer />
       </Flex>
       <Center>
-        <Button backgroundColor={"#8963D9"} color="white">
+        <Button backgroundColor={"#8963D9"} color="white" m={"7"}>
           Cambiar contraseña
         </Button>
       </Center>

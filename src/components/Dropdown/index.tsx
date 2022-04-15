@@ -19,7 +19,10 @@ interface IDropDown {
  * @baseProps : Props that are part of the base component "Steps"; more info here: https://github.com/jeanverster/chakra-ui-steps
  */
 
-const customOptionStyle = (index: number, type: ETypeDropdown) => {
+const customOptionStyle = (
+  index: number,
+  type: ETypeDropdown
+): { [background: string]: string } => {
   return type === ETypeDropdown.normal
     ? //TODO: Change color with theme value.
       { background: index % 2 == 0 ? "#4CC9F0" : "white" }

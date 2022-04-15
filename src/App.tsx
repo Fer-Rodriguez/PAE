@@ -1,8 +1,9 @@
 //Libraries
-import { ChakraProvider, Divider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 //CSS
 import "./App.css";
+
 import theme from "./theme";
 
 export function App() {
