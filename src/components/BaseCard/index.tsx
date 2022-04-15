@@ -1,9 +1,6 @@
 //Chakra Components
 import { Box, Grid, GridItem, Center } from "@chakra-ui/react";
 
-//Interfaces, types & enyms.
-import { IBaseCard } from "../../interfaces";
-
 //Assets
 import theme from "../../theme/index";
 
@@ -17,33 +14,43 @@ import theme from "../../theme/index";
 *     @content : Content that allows entering the content of the letter, in case you want to add a component to it.
 */
 
-export const BaseCard = (props: IBaseCard) => (
-  <Center>
-    <Box
-      margin={props.margin}
-      width="60em"
-      height="35em"
-      overflow="hidden"
-      boxShadow={props.boxshadow}
-      p={props.padding}
-      rounded={theme.radii.menu}
-    >
-      <Grid
-        templateRows="repeat(20, 1fr)"
-        templateColumns="repeat(2, 1fr)"
-        gap={2}
+interface IBaseCard {
+  title?: string;
+  margin?: string;
+  padding?: string;
+  boxshadow?: string;
+  content?: JSX.Element;
+}
+
+export const BaseCard = (props: IBaseCard) => {
+  return (
+    <Center>
+      <Box
+        margin={props.margin}
+        width="60em"
+        height="35em"
+        overflow="hidden"
+        boxShadow={props.boxshadow}
+        p={props.padding}
+        rounded={theme.radii.menu}
       >
-        <Box p="6">
-          {/* Título ٩(◕‿◕｡)۶ */}
-          <GridItem rowSpan={1} colSpan={1}>
-            <Box>{props.title}</Box>
+        <Grid
+          templateRows="repeat(20, 1fr)"
+          templateColumns="repeat(2, 1fr)"
+          gap={2}
+        >
+          <Box p="6">
+            {/* Título ٩(◕‿◕｡)۶ */}
+            <GridItem rowSpan={1} colSpan={1}>
+              <Box>{props.title}</Box>
+            </GridItem>
+          </Box>
+          <GridItem p="6" rowSpan={38} colSpan={3}>
+            {/* Contenido (◕︵◕)*/}
+            {props.content}
           </GridItem>
-        </Box>
-        <GridItem p="6" rowSpan={38} colSpan={3}>
-          {/* Contenido (◕︵◕)*/}
-          {props.content}
-        </GridItem>
-      </Grid>
-    </Box>
-  </Center>
-);
+        </Grid>
+      </Box>
+    </Center>
+  );
+};

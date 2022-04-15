@@ -1,9 +1,6 @@
 //Chakra Components
 import { Button } from "@chakra-ui/react";
 
-//Interfaces, types & enyms.
-import { IButtonGeneric } from "../../interfaces";
-
 //Assets
 import theme from "../../theme/index";
 
@@ -13,6 +10,11 @@ import theme from "../../theme/index";
 *     @text : Property that modifies the content that the button will have.
 *     @color : Property that modifies the color that the button will have.
 */
+
+interface IButtonGeneric {
+  text: string;
+  color: string;
+}
 
 export const ButtonGeneric = (props: IButtonGeneric) => (
   <Button
