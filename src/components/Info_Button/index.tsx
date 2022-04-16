@@ -8,14 +8,12 @@ TODO: 13/01/2022
 interface IInfoButton {
   popUp: string;
 }
-function Info_Button() {
+export const Info_Button = () => {
   return (
-    // Button from facebook.com
     <IconButton
       backgroundColor="#4CC9F0"
       aria-label="Search database"
       isRound={true}
     />
   );
-}
-export default Info_Button;
+};

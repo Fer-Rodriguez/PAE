@@ -1,12 +1,12 @@
 import React from "react";
-import { Center, Image, Stack, HStack, VStack } from "@chakra-ui/react";
+import { isPropertyAccessChain } from "typescript";
+import { motion } from "framer-motion";
+import { Center, Image, VStack } from "@chakra-ui/react";
 import menuImg1 from "../../assets/House.png";
 import menuImg2 from "../../assets/Calendar.png";
 import menuImg3 from "../../assets/menu_user.png";
-import { isPropertyAccessChain } from "typescript";
-import { motion } from "framer-motion";
 
-function Menu() {
+export const Menu = () => {
   return (
     <div>
       <VStack
@@ -44,6 +44,4 @@ function Menu() {
       </VStack>
     </div>
   );
-}
-
-export default Menu;
+};

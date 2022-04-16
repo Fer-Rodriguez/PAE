@@ -4,7 +4,7 @@ interface ITextInput {
   placeholderText: string;
   width: string;
 }
-function Text_Input({ placeholderText, width }: ITextInput) {
+export const Text_Input = ({ placeholderText, width }: ITextInput) => {
   return (
     <div>
       <Input
@@ -17,5 +17,4 @@ function Text_Input({ placeholderText, width }: ITextInput) {
       />
     </div>
   );
-}
-export default Text_Input;
+};
