@@ -8,7 +8,6 @@ import {
   GridItem,
   Center,
 } from "@chakra-ui/react";
-import { BellIcon, CloseIcon } from "@chakra-ui/icons";
 import { useMemo } from "react";
 import makeData from "../../components/Bell/makeData";
 
@@ -20,6 +19,9 @@ import { Bell } from "../../components/Bell";
 import { IUserComponents } from "../../interfaces";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
+
+//Assets
+import cross from "../../assets/Cross.png";
 
 function GetData() {
   const columns = useMemo(
@@ -68,7 +70,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => (
         alignItems="center"
         justifyContent={"space-around"}
       >
-        <CloseIcon boxSize={4} />
+        <Image src={cross} boxSize={8} />
         {GetData()}
       </Flex>
     </GridItem>
