@@ -50,10 +50,6 @@ export const Bell = ({ columns, data, headColor }: IBell) => {
       <MenuButton
         as={IconButton}
         bg={theme.colors.white}
-        mt="2em"
-        position="absolute"
-        right={30}
-        top={3}
         rounded={theme.radii.menu}
         icon={<img src={notifications} height="40em" width="40em" />}
       ></MenuButton>

@@ -9,12 +9,38 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { BellIcon, CloseIcon } from "@chakra-ui/icons";
+import { useMemo } from "react";
+import makeData from "../../components/Bell/makeData";
 
 //Components
 import { Menu } from "../../components/Menu";
+import { Bell } from "../../components/Bell";
 
 //Interfaces
 import { IUserComponents } from "../../interfaces";
+import { Cell } from "react-table";
+import { ButtonGeneric } from "../../components/Button";
+
+function GetData() {
+  const columns = useMemo(
+    () => [
+      { Header: "Notificacion", accessor: "notification" },
+      { Header: "Descripcion", accessor: "dataNotification" },
+      {
+        Header: "",
+        accessor: "button",
+        Cell: (cell: Cell<any, any>) => (
+          <ButtonGeneric text="Detalles" color="red" />
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = useMemo(() => makeData(5), []);
+
+  return <Bell columns={columns} data={data} headColor="black" />;
+}
 
 export const DesktopComponents = ({ userComponent }: IUserComponents) => (
   <Grid
@@ -43,7 +69,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => (
         justifyContent={"space-around"}
       >
         <CloseIcon boxSize={4} />
-        <BellIcon boxSize={6} />
+        {GetData()}
       </Flex>
     </GridItem>
     <GridItem rowStart={5} colSpan={2} colStart={1}>

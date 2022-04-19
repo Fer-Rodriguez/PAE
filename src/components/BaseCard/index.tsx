@@ -20,10 +20,8 @@ export const BaseCard = (props: IBaseCard) => {
   return (
     <Center>
       <Box
-        margin="7em 1em 1em 10em"
         width="65em"
         height="35em"
-        overflow="hidden"
         boxShadow="dark-lg"
         p="5"
         rounded={theme.radii.menu}
