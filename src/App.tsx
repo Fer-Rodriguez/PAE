@@ -1,26 +1,18 @@
+//Libraries
 import { ChakraProvider } from "@chakra-ui/react";
 
-import logo from "./logo.svg";
+//Components
+import { MainLayout } from "./layouts/Main";
+
+//CSS
 import "./App.css";
 
-function App() {
+import theme from "./theme";
+
+export function App() {
   return (
-    <ChakraProvider>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+    <ChakraProvider theme={theme}>
+      <MainLayout />
     </ChakraProvider>
   );
 }
-
-export default App;

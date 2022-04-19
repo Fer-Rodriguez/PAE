@@ -27,4 +27,23 @@ enum EStatus_Appointement {
   canceled,
 }
 
-export { EStatus, EUserType, ELanguage, ETheme, EStatus_Appointement };
+enum ETypeDropdown {
+  normal,
+  three,
+}
+
+enum ETypeProfileCard {
+  advisor,
+  student,
+  admin,
+}
+
+export {
+  EStatus,
+  EUserType,
+  ELanguage,
+  ETheme,
+  EStatus_Appointement,
+  ETypeDropdown,
+  ETypeProfileCard,
+};
