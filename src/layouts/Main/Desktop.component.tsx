@@ -53,7 +53,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => (
     </GridItem>
 
     <GridItem rowStart={3} rowSpan={6} colStart={3} colSpan={12}>
-      <Box bg={"red"} w="100%" h={"100%"}>
+      <Box w="100%" h={"100%"}>
         {/** Here is going to be render the corresponding child component */}
         {userComponent}
       </Box>

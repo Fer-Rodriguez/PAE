@@ -6,13 +6,15 @@ import { Desktop, Mobile, Tablet } from "../../services/Breakpoints";
 import { Box } from "@chakra-ui/react";
 
 interface IMainLayout {
-  children?: Element;
+  children?: React.ReactNode;
 }
 
 export const MainLayout = (props: IMainLayout) => {
   return (
     <Box h={"100vh"}>
-      <Desktop children={<DesktopComponents />} />
+      <Desktop
+        children={<DesktopComponents userComponent={props.children} />}
+      />
       {/*<Tablet children={<DesktopComponents />} />
       <Mobile children={<MobileComponents />} />*/}
     </Box>
