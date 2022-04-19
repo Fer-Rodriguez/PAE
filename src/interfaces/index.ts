@@ -78,3 +78,7 @@ export interface IDataProfileCard {
   profilePic: string;
   schedule?: ISchedule;
 }
+
+export interface IUserComponents {
+  userComponent?: React.ReactNode;
+}

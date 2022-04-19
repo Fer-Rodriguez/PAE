@@ -1,3 +1,4 @@
+//libraries
 import { extendTheme } from "@chakra-ui/react";
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
@@ -38,9 +39,9 @@ const theme = extendTheme({
     menu: "30px",
   },
 
-  shadows:{
-    general: "0px 5px 5px 0px rgba(0,0,0,0.30)"
-  }
+  shadows: {
+    general: "0px 5px 5px 0px rgba(0,0,0,0.30)",
+  },
 });
 
 export default theme;
