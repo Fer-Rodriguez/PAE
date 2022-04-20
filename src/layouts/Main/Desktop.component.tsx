@@ -46,11 +46,11 @@ function GetData() {
 
 export const DesktopComponents = ({ userComponent }: IUserComponents) => (
   <Grid
-    templateRows="repeat(9, 1fr)"
+    templateRows="repeat(12, 1fr)"
     templateColumns="repeat(16, 1fr)"
     h={"100vh"}
     mx={4}
-    gap={4}
+    gap={6}
   >
     <GridItem rowStart={1} rowSpan={2} colSpan={2}>
       <Flex justifyContent={"center"} alignContent={"flex-end "}>
@@ -63,7 +63,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => (
       </Flex>
     </GridItem>
 
-    <GridItem rowStart={2} rowSpan={1} colStart={14}>
+    <GridItem rowStart={1} rowSpan={4} colStart={14}>
       <Flex
         w={"100%"}
         h={"100%"}
@@ -80,8 +80,8 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => (
       </Center>
     </GridItem>
 
-    <GridItem rowStart={3} rowSpan={6} colStart={3} colSpan={12}>
-      <Box w="100%" h={"100%"}>
+    <GridItem rowStart={4} rowSpan={6} colStart={3} colSpan={12}>
+      <Box>
         {/** Here is going to be render the corresponding child component */}
         {userComponent}
       </Box>

@@ -7,3 +7,11 @@
   padding: 0;
   margin: 0;
 }
+
+.box-body {
+  min-height: 0; /* new */
+}
+
+.content-body {
+  min-height: 0; /* new */
+}

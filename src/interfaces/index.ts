@@ -1,6 +1,6 @@
 import { Cell } from "react-table";
 import { ChangeEvent, ComponentType } from "react";
-import { ETypeDropdown, ETypeProfileCard } from "./enums";
+import { ETypeDropdown, EUserType } from "./enums";
 
 export interface IPrueba {
   pruebita: string;
@@ -71,14 +71,20 @@ export interface ISchedule {
 export interface IDataProfileCard {
   [key: string]: any;
   name: string;
-  type: ETypeProfileCard;
+  type: EUserType;
   email: string;
   career: string;
-  semester: string;
+  semester: number;
   profilePic: string;
-  schedule?: ISchedule;
+  schedule?: ISchedule | null;
 }
 
 export interface IUserComponents {
   userComponent?: React.ReactNode;
+}
+
+//Local Interface
+export interface IProfileCard {
+  data: IDataProfileCard;
+  baseProps?: { [key: string]: any };
 }
