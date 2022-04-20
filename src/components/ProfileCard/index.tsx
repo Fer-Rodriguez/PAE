@@ -13,12 +13,13 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import { ETypeProfileCard } from "../../interfaces/enums";
+import { EUserType } from "../../interfaces/enums";
+
 import { IDataProfileCard } from "../../interfaces/index";
 
 //Local Interface
 interface IProfileCard {
-  type: ETypeProfileCard;
+  type: EUserType;
   data: IDataProfileCard;
   baseProps?: { [key: string]: any };
 }
@@ -40,7 +41,7 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
       backgroundColor="#F3F5FF"
       className="drop-shadow-xl"
       height={
-        type === ETypeProfileCard.student || type === ETypeProfileCard.admin
+        type === EUserType.student || type === EUserType.admin
           ? "65vh" //Here we use VH insted of % because the latter requieres a fixed height from the parent (Which could not be the case for all the applications of this component)
           : "80vh"
       }
@@ -54,7 +55,7 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
             maxW={"80%"}
             minW={"50%"}
             src={data.profilePic}
-            alt="Dan Abramov"
+            alt="Imagen de perfil del usuario en cuestión."
           />
         </Circle>
         <Spacer />
@@ -62,9 +63,9 @@ export const ProfileCard = ({ type, data, baseProps }: IProfileCard) => {
         <Flex flexDirection={"column"} w={"50%"}>
           <Heading>{data.name}</Heading>
           <Text fontSize="2xl" mb={"2.5"}>
-            {data.type === ETypeProfileCard.advisor
+            {data.type === EUserType.advisor
               ? "Asesor"
-              : data.type === ETypeProfileCard.student
+              : data.type === EUserType.student
               ? "Asesorado"
               : "Admin"}
           </Text>

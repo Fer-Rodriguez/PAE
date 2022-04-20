@@ -1,5 +1,6 @@
 import { StoreSlice } from "./store";
 import { ELanguage, ETheme, EUserType, EStatus } from "../interfaces/enums";
+import { ISchedule } from "../interfaces";
 
 export type TConfigObject = {
   language: ELanguage;
@@ -7,22 +8,28 @@ export type TConfigObject = {
 };
 
 export type TUserSlice = {
-  status: EStatus | "";
+  status: EStatus;
   name: string;
   email: string;
-  type: EUserType | "";
+  type: EUserType;
   semester: number;
+  career: string;
   config: TConfigObject;
+  profilePic: string;
+  schedule: ISchedule | null;
   setLanguage: (newLanguage: ELanguage) => void;
   setTheme: (newTheme: ETheme) => void;
 };
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
-  status: "",
+  status: EStatus.active,
   name: "Default",
-  email: "",
-  type: "",
-  semester: 0,
+  email: "shalomPineda@gmail.com",
+  type: EUserType.student,
+  career: "Economía",
+  semester: 6,
+  profilePic: "",
+  schedule: null,
   config: {
     language: ELanguage.spanish,
     theme: ETheme.white,

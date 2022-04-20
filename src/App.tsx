@@ -1,8 +1,11 @@
 //Libraries
 import { ChakraProvider } from "@chakra-ui/react";
 
-//Components
+//Layout
 import { MainLayout } from "./layouts/Main";
+
+//Pages
+import { ProfilePage } from "./pages/Profile";
 
 //CSS
 import "./App.css";
@@ -12,7 +15,7 @@ import theme from "./theme";
 export function App() {
   return (
     <ChakraProvider theme={theme}>
-      <MainLayout />
+      <MainLayout children={<ProfilePage />} />
     </ChakraProvider>
   );
 }

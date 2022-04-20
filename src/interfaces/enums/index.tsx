@@ -32,12 +32,6 @@ enum ETypeDropdown {
   three,
 }
 
-enum ETypeProfileCard {
-  advisor,
-  student,
-  admin,
-}
-
 export {
   EStatus,
   EUserType,
@@ -45,5 +39,4 @@ export {
   ETheme,
   EStatus_Appointement,
   ETypeDropdown,
-  ETypeProfileCard,
 };
