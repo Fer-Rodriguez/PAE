@@ -23,7 +23,7 @@ export type TUserSlice = {
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
   status: EStatus.active,
-  name: "Default",
+  name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
   type: EUserType.student,
   career: "Economía",

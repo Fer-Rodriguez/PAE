@@ -15,7 +15,10 @@ import theme from "./theme";
 export function App() {
   return (
     <ChakraProvider theme={theme}>
-      <MainLayout children={<ProfilePage />} />
+      <MainLayout
+        desktop={<ProfilePage />}
+        mobile={<ProfilePage mobile={true} />}
+      />
     </ChakraProvider>
   );
 }

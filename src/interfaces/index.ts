@@ -82,3 +82,9 @@ export interface IDataProfileCard {
 export interface IUserComponents {
   userComponent?: React.ReactNode;
 }
+
+//Local Interface
+export interface IProfileCard {
+  data: IDataProfileCard;
+  baseProps?: { [key: string]: any };
+}
