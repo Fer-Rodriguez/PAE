@@ -5,7 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { MainLayout } from "./layouts/Main";
 
 //Pages
-import { ProfilePage } from "./pages/Profile";
+import { Managment } from "./pages/Managment";
 
 //CSS
 import "./App.css";
@@ -15,10 +15,7 @@ import theme from "./theme";
 export function App() {
   return (
     <ChakraProvider theme={theme}>
-      <MainLayout
-        desktop={<ProfilePage />}
-        mobile={<ProfilePage mobile={true} />}
-      />
+      <MainLayout desktop={<Managment />} mobile={<Managment />} />
     </ChakraProvider>
   );
 }
