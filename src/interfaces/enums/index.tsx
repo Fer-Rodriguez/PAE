@@ -32,6 +32,13 @@ enum ETypeDropdown {
   three,
 }
 
+enum EStatusAlert {
+  error = "error",
+  success = "success",
+  warning = "warning",
+  info = "info",
+}
+
 export {
   EStatus,
   EUserType,
@@ -39,4 +46,5 @@ export {
   ETheme,
   EStatus_Appointement,
   ETypeDropdown,
+  EStatusAlert,
 };

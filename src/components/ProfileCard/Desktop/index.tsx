@@ -17,6 +17,7 @@ import {
 
 //Components
 import { ButtonGeneric } from "../../Button";
+import { MyCalendar } from "../../Calendar";
 
 //Interfaces
 import { EUserType } from "../../../interfaces/enums";
@@ -27,6 +28,17 @@ import { titleProfileCard } from "../../../data";
 
 //Assets
 import theme from "../../../theme";
+
+const ButtonChangePassword = () => (
+  <Center>
+    <ButtonGeneric
+      color={theme.colors.purple}
+      text="Cambiar contraseña"
+      fontColor="white"
+      margin="10"
+    />
+  </Center>
+);
 
 /**
  *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
@@ -70,15 +82,7 @@ export const ProfileCard = ({ data, baseProps }: IProfileCard) => {
                   : "Admin"}
               </Text>
             </Flex>
-            {data.type === EUserType.advisor && (
-              <Center>
-                <ButtonGeneric
-                  color={theme.colors.purple}
-                  text="Cambiar contraseña"
-                  fontColor="white"
-                />
-              </Center>
-            )}
+            {data.type === EUserType.advisor && <ButtonChangePassword />}
           </Flex>
 
           <Divider size={"md"} borderColor="#8963D9" />
@@ -89,6 +93,13 @@ export const ProfileCard = ({ data, baseProps }: IProfileCard) => {
                   {title}
                 </Text>
               ))}
+              <Text
+                fontSize={"xl"}
+                fontWeight={"bold"}
+                color={theme.colors.purple}
+              >
+                Mis Horarios
+              </Text>
             </GridItem>
             <GridItem w="100%" h="10">
               {titleProfileCard.map((title) => (
@@ -96,19 +107,18 @@ export const ProfileCard = ({ data, baseProps }: IProfileCard) => {
                   {data[title.toLowerCase()]}
                 </Text>
               ))}
+              <ButtonGeneric
+                color={theme.colors.purple}
+                text="Modificar"
+                fontColor="white"
+              />
             </GridItem>
           </Grid>
         </Flex>
         <Spacer />
       </Flex>
-      <Center>
-        <ButtonGeneric
-          color={theme.colors.purple}
-          text="Cambiar contraseña"
-          fontColor="white"
-          margin="10"
-        />
-      </Center>
+      {<ButtonChangePassword />}
+      {<MyCalendar />}
     </Flex>
   );
 };
