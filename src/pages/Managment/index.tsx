@@ -38,6 +38,60 @@ columns : columnas del
 */
 
 export const Managment = () => {
+  const students = [
+    {
+      date: "16/01/2022 12:00",
+      assessor: "Julian Martinez",
+      student: "Daniela Ordan",
+      class: "Electromagnetismo",
+      status: "Pendiente",
+    },
+
+    {
+      date: "15/01/2022 13:00",
+      assessor: "Alejandro Castro",
+      student: "Daniela Ordan",
+      class: "Electromagnetismo",
+      status: "Pendiente",
+    },
+
+    {
+      date: "01/02/2022 15:00",
+      assessor: "Fernando Jimenez",
+      student: "Bryan Gonzlez",
+      class: "Linux",
+      status: "Terminada",
+    },
+
+    {
+      date: "16/01/2022 12:30",
+      assessor: "Guillermo Gutierrez",
+      student: "Julian Álvarez",
+      class: "Español",
+      status: "Abierta",
+    },
+
+    {
+      date: "22/03/2022 09:00",
+      assessor: "Benjamín Parques",
+      student: "Pedro Parques",
+      class: "Ética",
+      status: "Abierta",
+    },
+
+    {
+      date: "20/04/2022 16:00",
+      assessor: "Kanye West",
+      student: "Rosalía",
+      class: "Música",
+      status: "Terminada",
+    },
+  ];
+
+  interface IColumnDetails {
+    [key: string]: string;
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -76,33 +130,7 @@ export const Managment = () => {
     []
   );
 
-  const range = (len: number) => {
-    const arr = [];
-    for (let i = 0; i < len; i++) {
-      arr.push(i);
-    }
-
-    return arr;
-  };
-
-  const mockData = () => {
-    return {
-      date: "16/01/2022 12:30",
-      assessor: "Julian Martinez",
-      student: "Daniela Ordan",
-      class: "Electromagnetismo",
-      status: "Completada",
-    };
-  };
-
-  function makeData(howMany: number) {
-    return range(howMany).map(() => {
-      return {
-        ...mockData,
-      };
-    });
-  }
-  const data = useMemo(() => makeData(10), []);
+  const data = useMemo<IColumnDetails[]>(() => students, []);
 
   // Vamos a separar esto del componente de la tabla. Pasar solo lo que necesitas a la ManagingTable
   const {
@@ -137,13 +165,18 @@ export const Managment = () => {
               children={<SearchIcon color="gray.300" />}
             />
             <Input
+              onChange={handleFilterInputChange}
               borderRadius="general"
               boxShadow="general"
               type="search"
               placeholder="Buscar asesorado..."
             />
           </InputGroup>
-          <IconButton icon={<Icon as={Filter}></Icon>} aria-label="Filtros" />
+          <IconButton
+            variant="ghost"
+            icon={<Icon as={Filter}></Icon>}
+            aria-label="Filtros"
+          />
         </Flex>
         <Heading>Asesorías</Heading>
       </Flex>
