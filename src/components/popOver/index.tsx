@@ -68,7 +68,15 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent maxW={calculateWidth(size) + "px"}>
+        <AlertDialogContent
+          maxW={calculateWidth(size) + "px"}
+          w={"90%"}
+          maxH={"95%"}
+          overflow={"auto"}
+          marginTop={"0px"}
+          marginBottom={"0px"}
+          bg={"white"}
+        >
           <AlertDialogHeader>
             {title ? (
               <Text
