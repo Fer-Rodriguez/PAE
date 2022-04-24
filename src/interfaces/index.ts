@@ -88,3 +88,9 @@ export interface IProfileCard {
   data: IDataProfileCard;
   baseProps?: { [key: string]: any };
 }
+
+export interface IModalCalendarOperations {
+  accept: () => void;
+  applyUpdate: () => void;
+  eliminateSchedule: () => void;
+}

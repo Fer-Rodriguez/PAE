@@ -39,6 +39,17 @@ enum EStatusAlert {
   info = "info",
 }
 
+enum EModalCalendarType {
+  update,
+  create,
+  delete,
+}
+
+enum EMyCalendarView {
+  week = "week",
+  month = "month",
+}
+
 export {
   EStatus,
   EUserType,
@@ -47,4 +58,6 @@ export {
   EStatus_Appointement,
   ETypeDropdown,
   EStatusAlert,
+  EModalCalendarType,
+  EMyCalendarView,
 };

@@ -1,27 +1,35 @@
 //Interfaces, Types & Enums
 import {
-  Box,
   Center,
   Circle,
   Image,
   Flex,
   Heading,
   Divider,
-  Button,
   Text,
   Spacer,
   Grid,
   GridItem,
-  VStack,
 } from "@chakra-ui/react";
+
+import { ChangeEvent } from "react";
 
 //Components
 import { ButtonGeneric } from "../../Button";
 import { MyCalendar } from "../../Calendar";
+import { DropDown } from "../../Dropdown";
 
 //Interfaces
-import { EUserType } from "../../../interfaces/enums";
-import { IProfileCard } from "../../../interfaces/index";
+import {
+  EMyCalendarView,
+  ETypeDropdown,
+  EUserType,
+} from "../../../interfaces/enums";
+import {
+  IConfigurationsDropdown,
+  IObjectData,
+  IProfileCard,
+} from "../../../interfaces/index";
 
 //Data
 import { titleProfileCard } from "../../../data";
@@ -48,7 +56,6 @@ const ButtonChangePassword = () => (
 
 //TODO: Add funcionality for "change Password" button.
 export const ProfileCard = ({ data, baseProps }: IProfileCard) => {
-  6;
   return (
     <Flex
       {...baseProps}
@@ -118,7 +125,7 @@ export const ProfileCard = ({ data, baseProps }: IProfileCard) => {
         <Spacer />
       </Flex>
       {<ButtonChangePassword />}
-      {<MyCalendar />}
+      {<MyCalendar view={EMyCalendarView.month} />}
     </Flex>
   );
 };
