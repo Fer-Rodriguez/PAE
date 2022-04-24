@@ -1,6 +1,6 @@
 //tmp
 import { useMemo } from "react";
-import { Cell, useTable } from "react-table";
+import { Cell, useFilters, useGlobalFilter, useTable } from "react-table";
 
 import {
   Flex,
@@ -19,10 +19,15 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { ManagingTable } from "../../components/ManagingTable";
 import { ButtonGeneric } from "../../components/Button";
 import { Filter } from "../../assets/Filter";
+import { IManagingTableInternal } from "../../interfaces";
 
 /*
 
 Props que se necesitarán:
+
+@columns : Arreglo que contiene los headers para las columnas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
+ *       @data : Arreglo "memoized" que contiene los datos a insertar las celdas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
+ *       @headColor: color para la cabeza de la tabla
 
 header : indica el título de la página de administración
 mobile : es vista movil?
@@ -76,6 +81,7 @@ export const Managment = () => {
     for (let i = 0; i < len; i++) {
       arr.push(i);
     }
+
     return arr;
   };
 
@@ -99,8 +105,27 @@ export const Managment = () => {
   const data = useMemo(() => makeData(10), []);
 
   // Vamos a separar esto del componente de la tabla. Pasar solo lo que necesitas a la ManagingTable
-  const { getTableProps, getTableBodyProps, flatHeaders, rows, prepareRow } =
-    useTable({ columns, data });
+  const {
+    getTableProps,
+    getTableBodyProps,
+    flatHeaders,
+    rows,
+    prepareRow,
+    setGlobalFilter,
+  } = useTable({ columns, data }, useGlobalFilter);
+
+  const handleFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    setGlobalFilter(value);
+  };
+
+  const internalProps: IManagingTableInternal = {
+    getTableProps: getTableProps,
+    getTableBodyProps: getTableBodyProps,
+    flatHeaders: flatHeaders,
+    rows: rows,
+    prepareRow: prepareRow,
+  };
 
   return (
     <>
@@ -124,9 +149,8 @@ export const Managment = () => {
       </Flex>
       <Flex>
         <ManagingTable
-          columns={columns}
-          data={data}
           headColor="pink"
+          internalProps={internalProps}
         ></ManagingTable>
       </Flex>
     </>

@@ -13,6 +13,14 @@ import { useTable } from "react-table";
 // Component interface
 import { IManagingTable } from "../../interfaces";
 
+// Local interface
+
+/*
+interface I{
+
+}
+*/
+
 /*
  * ManagingTable: Tabla utilizada en múltiples pantallas de administración de datos del sistema.
  *   IManagingTable:
@@ -20,27 +28,29 @@ import { IManagingTable } from "../../interfaces";
  *       @data : Arreglo "memoized" que contiene los datos a insertar las celdas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
  *       @headColor: color para la cabeza de la tabla
  */
-export const ManagingTable = ({ columns, data, headColor }: IManagingTable) => {
+export const ManagingTable = ({ headColor, internalProps }: IManagingTable) => {
   // Properties needed to form the table's data model
   // Further reading: https://react-table.tanstack.com/docs/api/useTable#instance-properties
+
+  /*
   const { getTableProps, getTableBodyProps, flatHeaders, rows, prepareRow } =
     useTable({ columns, data });
-
+*/
   return (
     <TableContainer w="100%" boxShadow="general" borderRadius="general">
-      <Table variant="simple" {...getTableProps()}>
+      <Table variant="simple" {...internalProps.getTableProps()}>
         <Thead background={headColor}>
           <Tr>
-            {flatHeaders.map((header) => (
+            {internalProps.flatHeaders.map((header) => (
               <Th textAlign="center" color="white" {...header.getHeaderProps()}>
                 {header.render("Header")}
               </Th>
             ))}
           </Tr>
         </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
+        <Tbody {...internalProps.getTableBodyProps()}>
+          {internalProps.rows.map((row) => {
+            internalProps.prepareRow(row);
             return (
               <Tr
                 borderBottom="2px solid #8963DA"
