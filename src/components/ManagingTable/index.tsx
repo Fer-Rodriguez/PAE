@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 //Chakra Components
 import {
   Table,
@@ -8,38 +9,37 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-//  Hook to create the table data model
-import { useTable } from "react-table";
-// Component interface
-import { IManagingTable } from "../../interfaces";
+
+import {
+  ColumnInstance,
+  Row,
+  TableBodyPropGetter,
+  TableBodyProps,
+  TablePropGetter,
+  TableProps,
+} from "react-table";
 
 // Local interface
-
-/*
-interface I{
-
+interface IManagingTableInternal {
+  headColor: string;
+  // All this properties are obtained from the useTableHook. See https://react-table.tanstack.com/docs/api/useTable for more info.
+  getTableProps: (propGetter?: TablePropGetter<{}> | undefined) => TableProps;
+  getTableBodyProps: (
+    propGetter?: TableBodyPropGetter<{}> | undefined
+  ) => TableBodyProps;
+  flatHeaders: ColumnInstance<any>[];
+  rows: Row<any>[];
+  prepareRow: (row: Row<any>) => void;
 }
-*/
 
-/*
+/**
  * ManagingTable: Tabla utilizada en múltiples pantallas de administración de datos del sistema.
- *   IManagingTable:
- *       @columns : Arreglo que contiene los headers para las columnas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
- *       @data : Arreglo "memoized" que contiene los datos a insertar las celdas de la tabla. Más información: https://react-table.tanstack.com/docs/api/useTable#table-options
- *       @headColor: color para la cabeza de la tabla
  */
-export const ManagingTable = ({ headColor, internalProps }: IManagingTable) => {
-  // Properties needed to form the table's data model
-  // Further reading: https://react-table.tanstack.com/docs/api/useTable#instance-properties
-
-  /*
-  const { getTableProps, getTableBodyProps, flatHeaders, rows, prepareRow } =
-    useTable({ columns, data });
-*/
+export const ManagingTable = (internalProps: IManagingTableInternal) => {
   return (
     <TableContainer w="100%" boxShadow="general" borderRadius="general">
       <Table variant="simple" {...internalProps.getTableProps()}>
-        <Thead background={headColor}>
+        <Thead background={internalProps.headColor}>
           <Tr>
             {internalProps.flatHeaders.map((header) => (
               <Th textAlign="center" color="white" {...header.getHeaderProps()}>

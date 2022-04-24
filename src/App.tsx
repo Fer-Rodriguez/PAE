@@ -15,7 +15,20 @@ import theme from "./theme";
 export function App() {
   return (
     <ChakraProvider theme={theme}>
-      <MainLayout desktop={<Managment />} mobile={<Managment />} />
+      <MainLayout
+        desktop={
+          <Managment columns={[]} data={[]} header="Asesorías" headColor={""} />
+        }
+        mobile={
+          <Managment
+            mobile={true}
+            columns={[]}
+            data={[]}
+            header="Asesorías"
+            headColor={""}
+          />
+        }
+      />
     </ChakraProvider>
   );
 }

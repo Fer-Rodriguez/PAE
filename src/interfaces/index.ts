@@ -1,13 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {
-  Cell,
-  ColumnInstance,
-  Row,
-  TableBodyPropGetter,
-  TableBodyProps,
-  TablePropGetter,
-  TableProps,
-} from "react-table";
+import { Cell } from "react-table";
 import { ChangeEvent, ComponentType } from "react";
 import { ETypeDropdown, EUserType } from "./enums";
 
@@ -29,29 +21,18 @@ export interface IDividedCard {
   containerProps?: { [key: string]: any };
 }
 
-export interface IManagingTableInternal {
-  getTableProps: (propGetter?: TablePropGetter<{}> | undefined) => TableProps;
-  getTableBodyProps: (
-    propGetter?: TableBodyPropGetter<{}> | undefined
-  ) => TableBodyProps;
-  flatHeaders: ColumnInstance<any>[];
-  rows: Row<any>[];
-  prepareRow: (row: Row<any>) => void;
-}
-
-export interface IManagingTable {
-  /*
+export interface IManagmentPage {
   columns: {
     Header: string;
     accessor: string;
     Cell?: (cell: Cell<any, any>) => any;
   }[];
-
-  data: Array<any>;*/
+  data: Array<any>;
+  header: string;
   headColor: string;
-
-  internalProps: IManagingTableInternal;
+  mobile?: boolean;
 }
+
 export interface IObjectData {
   title: string;
   value?: any;
