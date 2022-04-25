@@ -10,6 +10,7 @@ import "tui-time-picker/dist/tui-time-picker.css";
 //Components
 import { MyAlert } from "../MyAlert";
 import { MyModal } from "./Modal.component";
+import { ButtonGeneric } from "../Button";
 
 //Interfaces, types & enums
 import {
@@ -42,7 +43,6 @@ import {
 
 //Assets
 import theme from "../../theme";
-import { ButtonGeneric } from "../Button";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
@@ -199,7 +199,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
   //TODO: On creation, fill calendar with schedules from advisors.
 
   return (
-    <Box m={12}>
+    <Box>
       {view === EMyCalendarView.week && (
         <>
           <MyAlert
@@ -223,6 +223,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
       {view === EMyCalendarView.week ? (
         <Calendar
           ref={cal}
+          className="calendar"
           height="600px"
           view={view}
           disableDblClick
@@ -290,7 +291,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
               text="Siguiente"
               color={theme.colors.blue}
               fontColor="white"
-              onClick={(e) =>
+              onClick={() =>
                 nextMonth({
                   currentMonth,
                   setMonth,

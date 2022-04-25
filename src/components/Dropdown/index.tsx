@@ -54,7 +54,7 @@ export const DropDown = ({ options, configuration, baseProps }: IDropDown) => {
       {options.map((myOption, index) => (
         <option
           style={customOptionStyle(index, configuration.type)}
-          value={myOption.value && myOption.title}
+          value={myOption.value ? myOption.value : myOption.title}
           className=""
         >
           {myOption.title}
