@@ -31,8 +31,15 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
         <Thead background={internalProps.headColor}>
           <Tr>
             {internalProps.flatHeaders.map((header) => (
-              <Th textAlign="center" color="white" {...header.getHeaderProps()}>
+              <Th
+                textAlign="center"
+                color="white"
+                {...header.getHeaderProps(header.getSortByToggleProps())}
+              >
                 {header.render("Header")}
+                <span>
+                  {header.isSorted ? (header.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                </span>
               </Th>
             ))}
           </Tr>

@@ -1,4 +1,4 @@
-import { useGlobalFilter, useTable } from "react-table";
+import { useGlobalFilter, useSortBy, useTable } from "react-table";
 
 import { Heading } from "@chakra-ui/react";
 
@@ -31,7 +31,7 @@ export const Managment = ({
     rows,
     prepareRow,
     setGlobalFilter,
-  } = useTable({ columns, data }, useGlobalFilter);
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
   // Function to handle changes in the input representing the fobal filter. May be changed or modified to add more logic.
   const handleFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
