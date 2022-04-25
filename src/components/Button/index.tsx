@@ -19,6 +19,7 @@ import theme from "../../theme/index";
 interface IButtonGeneric {
   text: string;
   color: string;
+  width?: string;
   margin?: string;
   padding?: string;
   boxShadow?: string;
@@ -31,6 +32,7 @@ export const ButtonGeneric = (props: IButtonGeneric) => (
     backgroundColor={props.color}
     rounded={theme.radii.button}
     boxShadow={props.boxShadow}
+    w={props.width}
     p={props.padding}
     margin={props.margin}
     textColor={props.fontColor}
