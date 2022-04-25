@@ -19,18 +19,7 @@ import {
   TableProps,
 } from "react-table";
 
-// Local interface
-interface IManagingTableInternal {
-  headColor: string;
-  // All this properties are obtained from the useTableHook. See https://react-table.tanstack.com/docs/api/useTable for more info.
-  getTableProps: (propGetter?: TablePropGetter<{}> | undefined) => TableProps;
-  getTableBodyProps: (
-    propGetter?: TableBodyPropGetter<{}> | undefined
-  ) => TableBodyProps;
-  flatHeaders: ColumnInstance<any>[];
-  rows: Row<any>[];
-  prepareRow: (row: Row<any>) => void;
-}
+import { IManagingTableInternal } from "../../interfaces";
 
 /**
  * ManagingTable: Tabla utilizada en múltiples pantallas de administración de datos del sistema.

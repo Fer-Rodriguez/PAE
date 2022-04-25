@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Cell } from "react-table";
+import {
+  Cell,
+  ColumnInstance,
+  Row,
+  TableBodyPropGetter,
+  TableBodyProps,
+  TablePropGetter,
+  TableProps,
+} from "react-table";
 import { ChangeEvent, ComponentType } from "react";
 import { ETypeDropdown, EUserType } from "./enums";
 
@@ -31,6 +39,18 @@ export interface IManagmentPage {
   header: string;
   headColor: string;
   mobile?: boolean;
+}
+
+export interface IManagingTableInternal {
+  headColor: string;
+  // All this properties are obtained from the useTableHook. See https://react-table.tanstack.com/docs/api/useTable for more info.
+  getTableProps: (propGetter?: TablePropGetter<{}> | undefined) => TableProps;
+  getTableBodyProps: (
+    propGetter?: TableBodyPropGetter<{}> | undefined
+  ) => TableBodyProps;
+  flatHeaders: ColumnInstance<any>[];
+  rows: Row<any>[];
+  prepareRow: (row: Row<any>) => void;
 }
 
 export interface IObjectData {
