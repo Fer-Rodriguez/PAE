@@ -8,6 +8,7 @@ import {
   InputGroup,
   InputLeftElement,
   Icon,
+  Box,
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
@@ -16,6 +17,7 @@ import { ManagingTable } from "../../components/ManagingTable";
 import { Filter } from "../../assets/Filter";
 
 import { IManagmentPage } from "../../interfaces";
+import { useState } from "react";
 
 /**
  *  Managment: Template page used to display a table and to filter its information through instance-specific filters
@@ -58,11 +60,15 @@ export const Managment = ({
     </>
   );
 
+  const [showFilters, setShowFilters] = useState(false);
+  const onFilterClick = () => setShowFilters(!showFilters);
+
   const mobileLayout = (
     <>
       <Flex
         gap="2vh"
         margin="0 auto"
+        w="70vw"
         marginBottom="4vh"
         flexDirection="column"
         justifyContent="center"
@@ -83,10 +89,14 @@ export const Managment = ({
             />
           </InputGroup>
           <IconButton
+            onClick={onFilterClick}
             variant="ghost"
             icon={<Icon as={Filter}></Icon>}
             aria-label="Filtros"
           />
+        </Flex>
+        <Flex hidden={showFilters} justifyContent="space-between">
+          Filtros
         </Flex>
       </Flex>
       <Flex>
@@ -119,12 +129,20 @@ export const Managment = ({
             />
           </InputGroup>
           <IconButton
+            onClick={onFilterClick}
             variant="ghost"
             icon={<Icon as={Filter}></Icon>}
             aria-label="Filtros"
           />
         </Flex>
         <Heading>{header}</Heading>
+      </Flex>
+      <Flex
+        hidden={showFilters}
+        marginBottom="5vh"
+        justifyContent="space-between"
+      >
+        Filtros
       </Flex>
       <Flex>
         <ManagingTable
