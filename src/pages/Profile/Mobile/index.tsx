@@ -110,22 +110,26 @@ export const ProfileCardMobile = ({
                 </>
               ))}
             </Center>
-            <Flex flexDirection={"column"} gap={6}>
-              {type != EUserType.student && (
-                <ButtonChangeSchedules setModeSchedules={setModSchedules} />
-              )}
-              {type}
-              <ButtonChangePassword onOpen={onOpen} />
-              {type === EUserType.admin && (
-                <>
-                  <ButtonSaveChanges
-                    setMyData={() => console.log("saving data")}
-                    mobile
-                  />
-                  <ButtonEraseAdmin mobile />
-                </>
-              )}
-            </Flex>
+            {
+              <Flex flexDirection={"column"} gap={6}>
+                {type != EUserType.student && (
+                  <>
+                    <ButtonChangeSchedules setModeSchedules={setModSchedules} />
+                  </>
+                )}
+
+                <ButtonChangePassword onOpen={onOpen} />
+                {type === EUserType.admin && (
+                  <Center flexDirection={"column"} gap={6}>
+                    <ButtonSaveChanges
+                      setMyData={() => console.log("saving data")}
+                      mobile
+                    />
+                    <ButtonEraseAdmin mobile />
+                  </Center>
+                )}
+              </Flex>
+            }
           </Box>
         </Center>
       )}

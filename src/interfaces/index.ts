@@ -87,8 +87,8 @@ export interface IUserComponents {
 export interface IProfileCard {
   data: IDataProfileCard;
   type: EUserType;
-  period?: number;
-  setPeriod?: React.Dispatch<number>;
+  period: number;
+  setPeriod: React.Dispatch<number>;
   baseProps?: { [key: string]: any };
 }
 

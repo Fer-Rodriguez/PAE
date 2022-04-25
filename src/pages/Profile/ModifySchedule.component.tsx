@@ -17,7 +17,7 @@ import theme from "../../theme";
 
 interface IModifySchedulesContent {
   setPeriod: React.Dispatch<number>;
-  setModeSchedules: React.Dispatch<boolean>;
+  setModeSchedules?: React.Dispatch<boolean>;
   period: number;
   mobile?: boolean;
 }
@@ -53,15 +53,18 @@ export const ModifySchedulesContent = ({
     type: ETypeDropdown.three,
   };
   return (
-    <Box p={6}>
+    <Box p={mobile ? 0 : 6}>
       <Center>
-        <Button
-          variant="ghost"
-          size={"sm"}
-          onClick={() => setModeSchedules(false)}
-        >
-          <ChevronLeftIcon w={8} h={8} />
-        </Button>
+        {setModeSchedules !== undefined && (
+          <Button
+            variant="ghost"
+            size={"sm"}
+            onClick={() => setModeSchedules(false)}
+          >
+            <ChevronLeftIcon w={8} h={8} />
+          </Button>
+        )}
+
         <Heading color={theme.colors.purple}>Modificar Horarios</Heading>
       </Center>
       <Center>
