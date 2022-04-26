@@ -35,7 +35,6 @@ import theme from "../../../theme/index";
 
 export const ProfileCardMobile = ({
   data,
-  baseProps,
   type,
   setPeriod,
   period,
