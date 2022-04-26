@@ -18,7 +18,7 @@ export function App() {
     <ChakraProvider theme={theme}>
       <MainLayout
         desktop={<Dashboard />}
-        mobile={<ProfilePage mobile={true} />}
+        mobile={<Dashboard mobile={true} />}
       />
     </ChakraProvider>
   );

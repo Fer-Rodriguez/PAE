@@ -9,7 +9,7 @@ import hand from "../Icons/hand.png";
 
 import "../style.css";
 
-export const SwitchesCards = () => {
+export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
   const TextContent = ({ language = false }: { language?: boolean }) => (
     <Center flexDirection={"column"}>
       <Text fontSize={"sm"} fontWeight="bold">
@@ -32,7 +32,7 @@ export const SwitchesCards = () => {
         overlap={true}
         vertical={false}
         contentSecond={<TextContent language />}
-        contentFirst={<Image src={world} boxSize="6vw" />}
+        contentFirst={<Image src={world} boxSize={mobile ? "20vw" : "6vw"} />}
       />
       <DividedCard
         colorFirst={theme.colors.purple}
@@ -42,7 +42,7 @@ export const SwitchesCards = () => {
         overlap={true}
         vertical={false}
         contentSecond={<TextContent />}
-        contentFirst={<Image src={hand} boxSize="5vw" />}
+        contentFirst={<Image src={hand} boxSize={mobile ? "20vw" : "5vw"} />}
       />
     </Flex>
   );

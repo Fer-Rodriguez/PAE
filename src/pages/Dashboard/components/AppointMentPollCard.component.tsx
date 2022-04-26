@@ -11,7 +11,13 @@ import notebook from "../Icons/notebook.png";
 import hamds from "../Icons/hands.png";
 import "../style.css";
 
-export const AppointmentsPollCard = ({ type }: { type: EUserType }) => {
+export const AppointmentsPollCard = ({
+  type,
+  mobile = false,
+}: {
+  type: EUserType;
+  mobile?: boolean;
+}) => {
   const BottomContent = () => (
     <Flex flexDirection={"column"} m={"2"} gap={3}>
       <Heading as="h4" size="md">
@@ -30,7 +36,9 @@ export const AppointmentsPollCard = ({ type }: { type: EUserType }) => {
 
   return (
     <DividedCard
-      colorFirst={theme.colors.blue}
+      colorFirst={
+        type === EUserType.admin ? theme.colors.pink : theme.colors.blue
+      }
       percentageFirst="60%"
       percentageSecond="40%"
       colorSecond="white"
@@ -38,10 +46,17 @@ export const AppointmentsPollCard = ({ type }: { type: EUserType }) => {
       vertical
       contentSecond={<BottomContent />}
       contentFirst={
-        <Image
-          src={type === EUserType.admin ? hamds : notebook}
-          boxSize={type === EUserType.admin ? "15vw" : "8vw"}
-        />
+        mobile ? (
+          <Image
+            src={type === EUserType.admin ? hamds : notebook}
+            boxSize={"30vw"}
+          />
+        ) : (
+          <Image
+            src={type === EUserType.admin ? hamds : notebook}
+            boxSize={type === EUserType.admin ? "15vw" : "8vw"}
+          />
+        )
       }
     />
   );

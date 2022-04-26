@@ -14,13 +14,21 @@ import rocket from "../Icons/cohete.png";
 
 import "../style.css";
 
-export const MainCard = ({ type }: { type: EUserType }) => {
+export const MainCard = ({
+  type,
+  mobile = false,
+}: {
+  type: EUserType;
+  mobile?: boolean;
+}) => {
   return (
     <Flex
       className="MainCard"
       p={6}
       flexDirection="row"
       rounded={theme.radii.general}
+      alignContent="center"
+      justifyContent={mobile ? "center" : "flex-start"}
     >
       <Flex flexDirection={"column"}>
         <Text color={"white"}>
@@ -38,15 +46,16 @@ export const MainCard = ({ type }: { type: EUserType }) => {
           />
         </HStack>
       </Flex>
-      {type === EUserType.student ? (
-        <Box position={"absolute"} top="7%" left={"46%"}>
-          <FlagMan />
-        </Box>
-      ) : (
-        <Box position={"absolute"} top="15%" left={"40%"}>
-          <Image boxSize={"20vw"} src={rocket} />
-        </Box>
-      )}
+      {!mobile &&
+        (type === EUserType.student ? (
+          <Box position={"absolute"} top="7%" left={"46%"}>
+            <FlagMan />
+          </Box>
+        ) : (
+          <Box position={"absolute"} top="15%" left={"40%"}>
+            <Image boxSize={"20vw"} src={rocket} />
+          </Box>
+        ))}
     </Flex>
   );
 };
