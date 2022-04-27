@@ -1,12 +1,12 @@
 import { IUserComponents } from "../../interfaces";
 import { Img1, Img2, Img3, Img4, ImgMan } from "../../assets/login/LoginMobile";
 
-import { Center, position } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 
 export const MobileComponents = ({ userComponent }: IUserComponents) => {
   return (
     <>
-      <div>
+      <div style={{ height: "30vh", minHeight: "190px" }}>
         {/* Background */}
         <div
           style={{
@@ -15,6 +15,7 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             width: "100vw",
             height: "22vh",
             maxHeight: "160px",
+            minHeight: "120px",
           }}
         ></div>
         <Center>
@@ -25,29 +26,32 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
                 position: "absolute",
                 top: "0px",
                 right: "0px",
+                width: "8%",
               }}
             >
-              <Img1 maxWidth="8vw"></Img1>
+              <Img1 maxWidth="100%"></Img1>
             </div>
             {/* Img2 */}
             <div
               style={{
+                width: "8%",
                 position: "absolute",
                 top: "25px",
-                right: "10vw",
+                right: "15vw",
               }}
             >
-              <Img2 maxWidth="8vw"></Img2>
+              <Img2 maxWidth="100%"></Img2>
             </div>
             {/* Img3 */}
             <div
               style={{
                 position: "absolute",
                 top: "0px",
-                left: "10vw",
+                left: "15vw",
+                width: "8%",
               }}
             >
-              <Img3 maxWidth="8vw"></Img3>
+              <Img3 maxWidth="100%"></Img3>
             </div>
             {/* Img4 */}
             <div
@@ -55,9 +59,10 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
                 position: "absolute",
                 top: "25px",
                 left: "0px",
+                width: "8%",
               }}
             >
-              <Img4 maxWidth="8vw"></Img4>
+              <Img4 maxWidth="100%"></Img4>
             </div>
             {/* Man */}
             <div
@@ -73,6 +78,7 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
           </div>
         </Center>
       </div>
+      {userComponent}
     </>
   );
 };

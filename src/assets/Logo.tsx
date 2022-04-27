@@ -6,12 +6,10 @@ interface ILogo {
 
 export const Logo = ({ maxWidth }: ILogo) => {
   return (
-    <Box maxW={maxWidth} minW={"70px"}>
+    <Box maxW={maxWidth} minW={"120px"}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="297"
-        height="100"
         fill="none"
         viewBox="0 0 297 100"
       >
