@@ -24,6 +24,7 @@ interface IButtonGeneric {
   boxShadow?: string;
   fontColor?: string;
   hover?: { backgroud: string; color: string; fontWeight?: string };
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ButtonGeneric = (props: IButtonGeneric) => (
@@ -36,6 +37,7 @@ export const ButtonGeneric = (props: IButtonGeneric) => (
     textColor={props.fontColor}
     _hover={props.hover}
     textAlign="center"
+    onClick={props.onClick}
     /* breakpoints */
     fontSize={{ base: "1em", md: "1em", lg: "1em" }}
   >
