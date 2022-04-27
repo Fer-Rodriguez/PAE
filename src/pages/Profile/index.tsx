@@ -1,12 +1,13 @@
 //Libraries
+import { useState } from "react";
 import shallow from "zustand/shallow";
 
 //Store
 import { useStore } from "../../state/store";
 
 //Components
-import { ProfileCard } from "../../components/ProfileCard/Desktop";
-import { ProfileCardMobile } from "../../components/ProfileCard/Mobile";
+import { ProfileDesktop } from "./Desktop";
+import { ProfileCardMobile } from "./Mobile";
 
 //Interfaces & enums & types.
 import { IDataProfileCard } from "../../interfaces";
@@ -25,12 +26,24 @@ export const ProfilePage = ({ mobile }: { mobile?: boolean }) => {
     shallow
   );
 
+  const [periodSelected, setPeriod] = useState(0);
+
   return (
     <>
       {mobile ? (
-        <ProfileCardMobile data={userData} />
+        <ProfileCardMobile
+          data={userData}
+          type={userData.type}
+          setPeriod={setPeriod}
+          period={periodSelected}
+        />
       ) : (
-        <ProfileCard data={userData} />
+        <ProfileDesktop
+          data={userData}
+          setPeriod={setPeriod}
+          period={periodSelected}
+          type={userData.type}
+        />
       )}
     </>
   );

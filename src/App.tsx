@@ -6,6 +6,7 @@ import { MainLayout } from "./layouts/Main";
 
 //Pages
 import { ProfilePage } from "./pages/Profile";
+import { Dashboard } from "./pages/Dashboard";
 
 //CSS
 import "./App.css";
@@ -16,8 +17,8 @@ export function App() {
   return (
     <ChakraProvider theme={theme}>
       <MainLayout
-        desktop={<ProfilePage />}
-        mobile={<ProfilePage mobile={true} />}
+        desktop={<Dashboard />}
+        mobile={<Dashboard mobile={true} />}
       />
     </ChakraProvider>
   );
