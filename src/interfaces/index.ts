@@ -41,7 +41,6 @@ export interface IConfigurationsDropdown {
   placeholder: string;
   type: ETypeDropdown;
 }
-
 export interface IStep {
   label: string;
   icon?: ComponentType<any>;
@@ -83,8 +82,22 @@ export interface IUserComponents {
   userComponent?: React.ReactNode;
 }
 
+export interface ICitasDaySchedules {
+  dia?: string;
+  asesor?: string;
+  horario: string;
+}
 //Local Interface
 export interface IProfileCard {
   data: IDataProfileCard;
+  type: EUserType;
+  period: number;
+  setPeriod: React.Dispatch<number>;
   baseProps?: { [key: string]: any };
+}
+
+export interface IModalCalendarOperations {
+  accept: () => void;
+  applyUpdate: () => void;
+  eliminateSchedule: () => void;
 }

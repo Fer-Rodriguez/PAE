@@ -1,7 +1,8 @@
 //Chakra
 import { Box, Flex, Image, Spacer } from "@chakra-ui/react";
 import { BellIcon, CloseIcon } from "@chakra-ui/icons";
-
+//Components
+import { Menu } from "../../components/Menu";
 //Interfaces
 import { IUserComponents } from "../../interfaces";
 
@@ -25,6 +26,6 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => (
     {userComponent}
     {/* TODO: Add responsive menu instead of Spacer**/}
     <Spacer />
-    <Spacer />
+    <Menu mobile={true} />
   </Flex>
 );

@@ -5,11 +5,16 @@ import { Select } from "@chakra-ui/react";
 import { IObjectData, IConfigurationsDropdown } from "../../interfaces";
 import { ETypeDropdown } from "../../interfaces/enums";
 
+import theme from "../../theme/index";
+
 // Local Interfaces
 interface IDropDown {
   options: Array<IObjectData>;
   configuration: IConfigurationsDropdown;
   baseProps?: { [key: string]: any };
+  color?: string;
+  fontColor?: string;
+  borderRadius?: string;
 }
 
 /**
@@ -25,7 +30,10 @@ const customOptionStyle = (
 ): { [background: string]: string } => {
   return type === ETypeDropdown.normal
     ? //TODO: Change color with theme value.
-      { background: index % 2 == 0 ? "#4CC9F0" : "white" }
+      {
+        background: index % 2 == 0 ? "#4CC9F0" : "white",
+        color: index % 2 == 0 ? "#white" : "black",
+      }
     : {
         background:
           index === 0 ? "#4CC9F0" : index === 1 ? "#F72585" : "#8963D9",
@@ -34,27 +42,36 @@ const customOptionStyle = (
 
 /**
  * Dropdown: Component that represents a dynamic dropdown.
- * @options : Objects that allows to customize the whole dropdown.
+ * @options : Objects that contains the options that the user has at the corresponding dropdown.
  * @configutation : Allow us to modify default value, onChange function, type of dropdwon, etc...
  * @baseProps : Basr props for the Select component itself; more info here: https://chakra-ui.com/docs/components/form/select
  *
  */
 
-export const DropDown = ({ options, configuration, baseProps }: IDropDown) => {
+export const DropDown = ({
+  options,
+  configuration,
+  baseProps,
+  color,
+  fontColor,
+  borderRadius,
+}: IDropDown) => {
   //TODO: Change color with theme value.
   return (
     <Select
+      backgroundColor={color}
+      textColor={fontColor}
+      borderRadius={borderRadius}
       variant="filled"
       placeholder={configuration.placeholder}
       onChange={(e) => configuration.onChange(e)}
-      backgroundColor="#EFEFEF"
-      focusBorderColor="#4CC9F0"
+      focusBorderColor={color}
       {...baseProps}
     >
       {options.map((myOption, index) => (
         <option
           style={customOptionStyle(index, configuration.type)}
-          value={myOption.value && myOption.title}
+          value={myOption.value ? myOption.value : myOption.title}
           className=""
         >
           {myOption.title}
