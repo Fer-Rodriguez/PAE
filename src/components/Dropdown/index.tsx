@@ -42,7 +42,7 @@ const customOptionStyle = (
 
 /**
  * Dropdown: Component that represents a dynamic dropdown.
- * @options : Objects that allows to customize the whole dropdown.
+ * @options : Objects that contains the options that the user has at the corresponding dropdown.
  * @configutation : Allow us to modify default value, onChange function, type of dropdwon, etc...
  * @baseProps : Basr props for the Select component itself; more info here: https://chakra-ui.com/docs/components/form/select
  *
@@ -71,7 +71,7 @@ export const DropDown = ({
       {options.map((myOption, index) => (
         <option
           style={customOptionStyle(index, configuration.type)}
-          value={myOption.value && myOption.title}
+          value={myOption.value ? myOption.value : myOption.title}
           className=""
         >
           {myOption.title}
