@@ -42,7 +42,6 @@ export const ButtonGeneric = (props: IButtonGeneric) => (
     onClick={props.onClick}
     /* breakpoints */
     fontSize={{ base: "1em", md: "1em", lg: "1em" }}
-    onClick={props.onClick}
   >
     {props.text}
   </Button>

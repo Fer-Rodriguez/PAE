@@ -2,6 +2,7 @@ import React from "react";
 import { isPropertyAccessChain } from "typescript";
 import { motion } from "framer-motion";
 import { Center, Image, VStack, HStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import menuImg1 from "../../assets/House.png";
 import menuImg2 from "../../assets/Calendar.png";
 import menuImg3 from "../../assets/menu_user.png";
@@ -19,32 +20,36 @@ export const Menu = ({ mobile }: IMenu) => {
           marginTop="auto"
           bgGradient="linear(to-r, #8482FF , #A462FF)"
         >
-          <motion.div
-            initial={{ width: "91%" }}
-            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-          >
-            <Center className="container" h="80px">
-              <Image boxSize="80%" objectFit="contain" src={menuImg1} />
-            </Center>
-          </motion.div>
+          <Link to={"dashboard"}>
+            <motion.div
+              initial={{ width: "91%" }}
+              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+            >
+              <Center className="container" h="80px">
+                <Image boxSize="80%" objectFit="contain" src={menuImg1} />
+              </Center>
+            </motion.div>
+          </Link>
 
-          <motion.div
-            initial={{ width: "91%" }}
-            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-          >
-            <Center className="container" h="80px">
-              <Image boxSize="80%" objectFit="contain" src={menuImg2} />
-            </Center>
-          </motion.div>
+          <Link to="asesorias">
+            <motion.div
+              initial={{ width: "91%" }}
+              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+            >
+              <Center className="container" h="80px">
+                <Image boxSize="80%" objectFit="contain" src={menuImg2} />
+              </Center>
+            </motion.div>
 
-          <motion.div
-            initial={{ width: "91%" }}
-            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-          >
-            <Center className="container" h="80px">
-              <Image boxSize="80%" objectFit="contain" src={menuImg3} />
-            </Center>
-          </motion.div>
+            <motion.div
+              initial={{ width: "91%" }}
+              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+            >
+              <Center className="container" h="80px">
+                <Image boxSize="80%" objectFit="contain" src={menuImg3} />
+              </Center>
+            </motion.div>
+          </Link>
         </HStack>
       </div>
     );

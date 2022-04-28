@@ -1,6 +1,6 @@
 //Libraries
 import { ChakraProvider } from "@chakra-ui/react";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 //Layout
 import { MainLayout } from "./layouts/Main";
 
@@ -106,12 +106,18 @@ export function App() {
   const data = useMemo<IColumnDetails[]>(() => students, []);
 
   return (
-    <ChakraProvider theme={theme}>      
-      <MainLayout
-
-        desktop={<Dashboard />}
-        mobile={<Dashboard mobile={true} />}
-      />
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" />
+          <Route path="dashboard">
+            <MainLayout
+              desktop={<Dashboard />}
+              mobile={<Dashboard mobile={true} />}
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ChakraProvider>
   );
 }

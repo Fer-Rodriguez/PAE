@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Grid, GridItem, Text, Flex, Box, Center } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -13,6 +14,7 @@ import { EUserType } from "../../interfaces/enums";
 //Assets
 import "./style.css";
 import "swiper/css";
+import { useEffect } from "react";
 
 const Desktop = () => (
   <Grid
@@ -83,5 +85,36 @@ const Mobile = () => {
 };
 
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
+  const apiCall = () => {
+    const data = JSON.stringify({
+      id: "1076e70c-099e-4914-aea5-21d37f409ef7",
+      newValues: {
+        status: "DELETED",
+        location: "caramba",
+      },
+    });
+
+    const config = {
+      method: "patch",
+      url: "http://localhost:6060/appointment",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    apiCall();
+  }, []);
+
   return mobile ? <Mobile /> : <Desktop />;
 };
