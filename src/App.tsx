@@ -2,7 +2,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 //Layout
-import { MainLayout } from "./layouts/Main";
+import { Login } from "./layouts/Login";
 
 //Pages
 import { Managment } from "./pages/Managment";
@@ -19,6 +19,7 @@ import theme from "./theme";
 import { useMemo } from "react";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "./components/Button";
+import { MainLayout } from "./layouts/Main";
 
 export function App() {
   return (
