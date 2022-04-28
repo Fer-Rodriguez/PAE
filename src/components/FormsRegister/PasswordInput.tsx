@@ -17,6 +17,7 @@ interface IPasswordInput {
   defaultValue?: string;
   setPassword?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
+  register?: boolean;
 }
 
 export const PasswordInput = ({
@@ -42,9 +43,13 @@ export const PasswordInput = ({
       control={control || null}
       rules={{
         required: `Por favor ingresa tu contraseña`,
+        minLength: {
+          value: 8,
+          message: `Tu contraseña debe de tener por lo menos 8 caracteres.`,
+        },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <div>
+        <FormControl isRequired isInvalid={Boolean(error)}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
           <InputGroup size={"md"}>
             <Input
@@ -53,6 +58,7 @@ export const PasswordInput = ({
               placeholder="••••••••"
               onChange={(e) => {
                 onChange(e);
+                console.log(error);
                 if (secondValidation) {
                   handleChange(e);
                 }
@@ -60,11 +66,6 @@ export const PasswordInput = ({
               value={value}
               isInvalid={Boolean(error)}
             ></Input>
-            <InputRightElement width="4.5rem" height={"var(--chakra-sizes-8)"}>
-              <Button h="1.50rem" size="sm" onClick={handleClick}>
-                {show ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
           </InputGroup>
 
           {!error ? (
@@ -72,7 +73,7 @@ export const PasswordInput = ({
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}
-        </div>
+        </FormControl>
       )}
       defaultValue={defaultValue}
     ></Controller>

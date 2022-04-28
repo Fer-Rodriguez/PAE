@@ -2,25 +2,26 @@ import React, { ChangeEvent } from "react";
 import { Controller, Control } from "react-hook-form";
 
 import {
+  FormControl,
   FormLabel,
   FormErrorMessage,
   FormHelperText,
   Input,
 } from "@chakra-ui/react";
 
-interface IMailInput {
+interface INameIput {
   control: Control<any>;
   defaultValue?: string;
   setMail?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
 }
 
-export const MailInput = ({
+export const NameInput = ({
   control,
   defaultValue = "",
   setMail,
   secondValidation = false,
-}: IMailInput) => {
+}: INameIput) => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -31,23 +32,24 @@ export const MailInput = ({
 
   return (
     <Controller
-      name="mail"
+      name="name"
       control={control || null}
       rules={{
-        required: `Por favor ingresa tu correo institucional`,
-        pattern: {
-          value: /^[A||a][0-9]{8}@tec.mx$/,
-          message: `Ese no es un correo institucional válido. Por favor inténtalo de nuevo`,
+        required: `Por favor ingresa tu nombre completo`,
+        maxLength: {
+          value: 255,
+          message: `La entrada no puede ser mayor a 255 caracteres.`,
         },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <div>
-          <FormLabel htmlFor="mail">Correo eléctrónico</FormLabel>
+        <FormControl isRequired isInvalid={Boolean(error)}>
+          <FormLabel htmlFor="name">Nombre completo</FormLabel>
           <Input
             size={"sm"}
-            placeholder="A********@tec.mx"
+            placeholder="Daniel Pérez Rojas"
             onChange={(e) => {
               onChange(e);
+              console.log(error);
               if (secondValidation) {
                 handleChange(e);
               }
@@ -55,13 +57,12 @@ export const MailInput = ({
             value={value}
             isInvalid={Boolean(error)}
           ></Input>
-
           {!error ? (
-            <FormHelperText>Ingresa tu correo institucional</FormHelperText>
+            <FormHelperText>Ingresa tu nombre completo</FormHelperText>
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}
-        </div>
+        </FormControl>
       )}
       defaultValue={defaultValue}
     ></Controller>

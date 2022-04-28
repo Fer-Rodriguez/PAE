@@ -2,6 +2,7 @@ import React, { ChangeEvent } from "react";
 import { Controller, Control } from "react-hook-form";
 
 import {
+  FormControl,
   FormLabel,
   FormErrorMessage,
   FormHelperText,
@@ -41,13 +42,14 @@ export const MailInput = ({
         },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <div>
+        <FormControl isRequired isInvalid={Boolean(error)}>
           <FormLabel htmlFor="mail">Correo eléctrónico</FormLabel>
           <Input
             size={"sm"}
             placeholder="A********@tec.mx"
             onChange={(e) => {
               onChange(e);
+              console.log(error);
               if (secondValidation) {
                 handleChange(e);
               }
@@ -55,13 +57,12 @@ export const MailInput = ({
             value={value}
             isInvalid={Boolean(error)}
           ></Input>
-
           {!error ? (
             <FormHelperText>Ingresa tu correo institucional</FormHelperText>
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}
-        </div>
+        </FormControl>
       )}
       defaultValue={defaultValue}
     ></Controller>

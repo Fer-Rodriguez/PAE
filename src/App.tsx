@@ -5,6 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Login } from "./layouts/Login";
 
 //Pages
+import { FormsRegister } from "./pages/Register";
 import { FormsLogin } from "./pages/Login";
 
 //CSS
