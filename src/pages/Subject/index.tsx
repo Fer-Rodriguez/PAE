@@ -21,7 +21,7 @@ import {
 
 //React imports
 import React from "react";
-import { Cell } from "react-table";
+import { Cell, useTable } from "react-table";
 import { useMemo, useState } from "react";
 
 //Components
@@ -39,7 +39,11 @@ export const SubjectPage = ({ mobile }: { mobile?: boolean }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function GetData() {
-    const [valor, setValor] = useState(React.useMemo(() => makeData(5), []));
+    interface IColumnDetails {
+      [key: string]: string;
+    }
+    const data = React.useMemo<IColumnDetails[]>(() => makeData(5), []);
+    const [valor, setValor] = useState(data);
     const columns = useMemo(
       () => [
         { Header: "Codigo", accessor: "code" },
@@ -87,8 +91,18 @@ export const SubjectPage = ({ mobile }: { mobile?: boolean }) => {
       [valor]
     );
 
+    const { getTableProps, getTableBodyProps, flatHeaders, rows, prepareRow } =
+      useTable({ columns, data });
+
     return (
-      <ManagingTable columns={columns} data={valor} headColor="DarkBlue" />
+      <ManagingTable
+        headColor="blue"
+        getTableProps={getTableProps}
+        getTableBodyProps={getTableBodyProps}
+        flatHeaders={flatHeaders}
+        rows={rows}
+        prepareRow={prepareRow}
+      />
     );
   }
 

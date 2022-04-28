@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Grid, GridItem, Text, Flex, Box, Center } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import shallow from "zustand/shallow";
 
 //Components
 import { AppointmentListCard } from "./components/AppointmentListCard.component";
@@ -10,6 +11,10 @@ import { MainCard } from "./components/MainCard.component";
 
 //Interfaces
 import { EUserType } from "../../interfaces/enums";
+import { IDataProfileCard } from "../../interfaces";
+
+//Store
+import { useStore } from "../../state/store";
 
 //Assets
 import "./style.css";
@@ -85,6 +90,19 @@ const Mobile = () => {
 };
 
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
+  const userData: IDataProfileCard = useStore(
+    (state) => ({
+      name: state.name,
+      email: state.email,
+      type: state.type,
+      semester: state.semester,
+      career: state.career,
+      schedule: state.schedule,
+      profilePic: state.profilePic,
+    }),
+    shallow
+  );
+
   const apiCall = () => {
     const data = JSON.stringify({
       id: "1076e70c-099e-4914-aea5-21d37f409ef7",

@@ -32,24 +32,24 @@ export const Menu = ({ mobile }: IMenu) => {
           </Link>
 
           <Link to="asesorias">
-            <motion.div
+            <motion.button
               initial={{ width: "91%" }}
               whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
             >
               <Center className="container" h="80px">
                 <Image boxSize="80%" objectFit="contain" src={menuImg2} />
               </Center>
-            </motion.div>
-
-            <motion.div
-              initial={{ width: "91%" }}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-            >
-              <Center className="container" h="80px">
-                <Image boxSize="80%" objectFit="contain" src={menuImg3} />
-              </Center>
-            </motion.div>
+            </motion.button>
           </Link>
+
+          <motion.div
+            initial={{ width: "91%" }}
+            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+          >
+            <Center className="container" h="80px">
+              <Image boxSize="80%" objectFit="contain" src={menuImg3} />
+            </Center>
+          </motion.div>
         </HStack>
       </div>
     );
