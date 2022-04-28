@@ -12,14 +12,13 @@ import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
 import { CitasPage3 } from "./pages/Agenda_Citas/citas_3";
 import { Dashboard } from "./pages/Dashboard";
 
+import { MainLayout } from "./layouts/Main";
+
 //CSS
 import "./App.css";
 
 import theme from "./theme";
-import { useMemo } from "react";
-import { Cell } from "react-table";
-import { ButtonGeneric } from "./components/Button";
-import { MainLayout } from "./layouts/Main";
+import { ProfilePage } from "./pages/Profile";
 import { FormsLogin } from "./pages/Login";
 
 export function App() {
@@ -27,16 +26,43 @@ export function App() {
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" />
           <Route
-            path="/dashboard"
+            path="/"
             element={
-              <MainLayout
-                desktop={<Dashboard />}
-                mobile={<Dashboard mobile={true} />}
+              <Login
+                desktop={<FormsLogin />}
+                mobile={<FormsLogin mobile={true} />}
               />
             }
           />
+          <Route path="/dashboard">
+            <Route
+              index
+              element={
+                <MainLayout
+                  desktop={<Dashboard />}
+                  mobile={<Dashboard mobile={true} />}
+                />
+              }
+            />
+            <Route
+              path="asesorias"
+              element={
+                <>
+                  <h1>Hola</h1>
+                </>
+              }
+            />
+            <Route
+              path="perfil"
+              element={
+                <MainLayout
+                  desktop={<ProfilePage />}
+                  mobile={<ProfilePage />}
+                />
+              }
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

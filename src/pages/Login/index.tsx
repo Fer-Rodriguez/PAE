@@ -15,12 +15,14 @@ import { MailInput } from "../../components/FormsLogin/MailInput";
 import { PasswordInput } from "../../components/FormsLogin/PasswordInput";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IFormsLogin {
   mobile?: boolean;
 }
 
 export const FormsLogin = (props: IFormsLogin) => {
+  const navigate = useNavigate();
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,6 +32,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   } = useForm({ mode: "onChange" });
 
   const tryLogin = () => {
+    navigate("/dashboard");
     //llamar back y a la siguiente pantalla
   };
 
