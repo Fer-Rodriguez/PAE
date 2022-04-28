@@ -1,5 +1,7 @@
 //Chakra Components
-import { Box, Grid, GridItem, Center } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Center, Text, Button } from "@chakra-ui/react";
+
+import { ChangeEvent, useState } from "react";
 
 //Assets
 import theme from "../../theme/index";
@@ -13,31 +15,55 @@ import theme from "../../theme/index";
 
 interface IBaseCard {
   title?: string;
+  subtitle?: string;
   content?: JSX.Element;
+  closeButton?: boolean;
+  returnButton?: JSX.Element;
 }
 
 export const BaseCard = (props: IBaseCard) => {
+  const [state, setRuta] = useState(1);
   return (
     <Center>
       <Box
-        width="65em"
+        margin={2}
+        width="100%"
         height="35em"
         boxShadow="dark-lg"
+        overflow="hidden"
         p="5"
         rounded={theme.radii.menu}
       >
         <Grid
           templateRows="repeat(20, 1fr)"
-          templateColumns="repeat(2, 1fr)"
+          templateColumns="repeat(8, 1fr)"
           gap={2}
         >
-          <Box p="6">
-            {/* Título ٩(◕‿◕｡)۶ */}
-            <GridItem rowSpan={1} colSpan={1}>
-              <Box>{props.title}</Box>
-            </GridItem>
-          </Box>
-          <GridItem p="6" rowSpan={38} colSpan={3}>
+          {/* Título ٩(◕‿◕｡)۶ */}
+          <GridItem rowStart={1} rowEnd={1} colStart={1} colEnd={1}>
+            {props.returnButton}
+          </GridItem>
+          <GridItem rowStart={1} rowEnd={1} colStart={2} colEnd={7}>
+            <Text fontSize="1xl">{props.title}</Text>
+          </GridItem>
+          <GridItem rowStart={2} rowEnd={2} colStart={2} colEnd={7}>
+            <Text fontSize="1xl">{props.subtitle}</Text>
+          </GridItem>
+
+          <GridItem rowStart={1} rowEnd={1} colStart={8} colEnd={8}>
+            {props.closeButton ? (
+              <Button
+                float="right"
+                backgroundColor="red.500"
+                textColor="white"
+                rounded={30}
+              >
+                X
+              </Button>
+            ) : null}
+          </GridItem>
+
+          <GridItem rowSpan={20} colSpan={8}>
             {/* Contenido (◕︵◕)*/}
             {props.content}
           </GridItem>

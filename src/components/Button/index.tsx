@@ -19,11 +19,13 @@ import theme from "../../theme/index";
 interface IButtonGeneric {
   text: string;
   color: string;
+  width?: string;
   margin?: string;
   padding?: string;
   boxShadow?: string;
   fontColor?: string;
   hover?: { backgroud: string; color: string; fontWeight?: string };
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ButtonGeneric = (props: IButtonGeneric) => (
@@ -31,13 +33,16 @@ export const ButtonGeneric = (props: IButtonGeneric) => (
     backgroundColor={props.color}
     rounded={theme.radii.button}
     boxShadow={props.boxShadow}
+    w={props.width}
     p={props.padding}
     margin={props.margin}
     textColor={props.fontColor}
     _hover={props.hover}
     textAlign="center"
+    onClick={props.onClick}
     /* breakpoints */
     fontSize={{ base: "1em", md: "1em", lg: "1em" }}
+    onClick={props.onClick}
   >
     {props.text}
   </Button>

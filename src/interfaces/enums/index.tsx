@@ -32,6 +32,24 @@ enum ETypeDropdown {
   three,
 }
 
+enum EStatusAlert {
+  error = "error",
+  success = "success",
+  warning = "warning",
+  info = "info",
+}
+
+enum EModalCalendarType {
+  update,
+  create,
+  delete,
+}
+
+enum EMyCalendarView {
+  week = "week",
+  month = "month",
+}
+
 export {
   EStatus,
   EUserType,
@@ -39,4 +57,7 @@ export {
   ETheme,
   EStatus_Appointement,
   ETypeDropdown,
+  EStatusAlert,
+  EModalCalendarType,
+  EMyCalendarView,
 };

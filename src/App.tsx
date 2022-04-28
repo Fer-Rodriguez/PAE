@@ -7,6 +7,11 @@ import { MainLayout } from "./layouts/Main";
 //Pages
 import { Managment } from "./pages/Managment";
 
+import { CitasPage } from "./pages/Agenda_Citas";
+import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
+import { CitasPage3 } from "./pages/Agenda_Citas/citas_3";
+import { Dashboard } from "./pages/Dashboard";
+
 //CSS
 import "./App.css";
 
@@ -101,25 +106,11 @@ export function App() {
   const data = useMemo<IColumnDetails[]>(() => students, []);
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>      
       <MainLayout
-        desktop={
-          <Managment
-            columns={columns}
-            data={data}
-            header="Asesorías"
-            headColor={"pink"}
-          />
-        }
-        mobile={
-          <Managment
-            mobile={true}
-            columns={columns}
-            data={data}
-            header="Asesorías"
-            headColor={"pink"}
-          />
-        }
+
+        desktop={<Dashboard />}
+        mobile={<Dashboard mobile={true} />}
       />
     </ChakraProvider>
   );
