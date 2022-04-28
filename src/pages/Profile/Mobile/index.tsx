@@ -32,6 +32,7 @@ import { titleProfileCard } from "../../../data";
 
 //Assets
 import theme from "../../../theme/index";
+import profile_image from "../Assets/profile_image.png";
 
 export const ProfileCardMobile = ({
   data,
@@ -75,7 +76,7 @@ export const ProfileCardMobile = ({
                 <Image
                   maxW={"80%"}
                   minW={"50%"}
-                  src=""
+                  src={profile_image}
                   alt="Imagen de perfil del usuario en cuestión."
                 />
               </Circle>
