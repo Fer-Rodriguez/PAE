@@ -20,6 +20,7 @@ import { useMemo } from "react";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "./components/Button";
 import { MainLayout } from "./layouts/Main";
+import { FormsLogin } from "./pages/Login";
 
 export function App() {
   return (
