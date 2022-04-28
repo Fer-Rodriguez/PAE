@@ -19,7 +19,7 @@ import theme from "./theme";
 
 export function App() {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>      
       <MainLayout
         desktop={<Dashboard />}
         mobile={<Dashboard mobile={true} />}
