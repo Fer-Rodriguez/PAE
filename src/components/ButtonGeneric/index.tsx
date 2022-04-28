@@ -8,6 +8,7 @@ interface IButtonGeneric {
   text: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isDisabled?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 export const ButtonGeneric = ({
@@ -17,9 +18,11 @@ export const ButtonGeneric = ({
   text,
   onClick,
   isDisabled,
+  type,
 }: IButtonGeneric) => {
   return (
     <Button
+      type={type}
       bg={bgColor}
       opacity={"0.75"}
       rounded={theme.radii.button}

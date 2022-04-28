@@ -37,11 +37,9 @@ export function App() {
               }
             />
             <Route
-              path="asesorias"
+              path="/asesorias"
               element={
-                <>
-                  <h1>Hola</h1>
-                </>
+                <MainLayout desktop={<CitasPage />} mobile={<CitasPage />} />
               }
             />
             <Route

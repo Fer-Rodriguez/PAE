@@ -20,6 +20,7 @@ export type TAppointmentSlice = {
     photo_url,
     id_subject,
     id_petitioner,
+    phase,
   }: TCreateAppointment) => void;
 };
 
