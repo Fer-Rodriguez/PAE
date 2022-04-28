@@ -16,9 +16,6 @@ import { Dashboard } from "./pages/Dashboard";
 import "./App.css";
 
 import theme from "./theme";
-import { useMemo } from "react";
-import { Cell } from "react-table";
-import { ButtonGeneric } from "./components/Button";
 
 export function App() {
   return (
@@ -33,6 +30,14 @@ export function App() {
                 desktop={<Dashboard />}
                 mobile={<Dashboard mobile={true} />}
               />
+            }
+          />
+          <Route
+            path="/asesorías"
+            element={
+              <>
+                <h1>Hola</h1>
+              </>
             }
           />
         </Routes>
