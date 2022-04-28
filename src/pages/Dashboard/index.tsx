@@ -21,7 +21,7 @@ import "./style.css";
 import "swiper/css";
 import { useEffect } from "react";
 
-const Desktop = () => (
+const Desktop = ({ type }: { type: EUserType }) => (
   <Grid
     templateColumns="repeat(14, 1fr)"
     templateRows="repeat(8, 1fr)"
@@ -34,7 +34,7 @@ const Desktop = () => (
         <Text> Shalom Pineda</Text>
       </Flex>
 
-      <MainCard type={EUserType.admin} />
+      <MainCard type={type} />
     </GridItem>
     <GridItem
       w="100%"
@@ -44,29 +44,29 @@ const Desktop = () => (
       colSpan={4}
       rowSpan={3}
     >
-      <AppointmentsPollCard type={EUserType.admin} />
+      <AppointmentsPollCard type={type} />
     </GridItem>
     <GridItem w="100%" rowStart={2} colSpan={4} rowSpan={3}>
       <SwitchesCards />
     </GridItem>
     <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
-      <AppointmentListCard type={EUserType.admin} />
+      <AppointmentListCard type={type} />
     </GridItem>
   </Grid>
 );
 
-const Mobile = () => {
+const Mobile = ({ type }: { type: EUserType }) => {
   const FirstPage = () => (
     <Flex direction={"column"} gap={6}>
-      <MainCard type={EUserType.admin} mobile />
-      <AppointmentListCard type={EUserType.admin} mobile />
+      <MainCard type={type} mobile />
+      <AppointmentListCard type={type} mobile />
     </Flex>
   );
 
-  const SecondPage = () => (
+  const SecondPage = ({ type }: { type: EUserType }) => (
     <Flex flexDirection={"column"} gap={6}>
       <Box w={"60%"} mx={"25%"}>
-        <AppointmentsPollCard type={EUserType.admin} mobile />
+        <AppointmentsPollCard type={type} mobile />
       </Box>
       <Box width={"80%"} h="35vh" mx={"15%"}>
         <SwitchesCards mobile />
@@ -134,5 +134,9 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     apiCall();
   }, []);
 
-  return mobile ? <Mobile /> : <Desktop />;
+  return mobile ? (
+    <Mobile type={userData.type} />
+  ) : (
+    <Desktop type={userData.type} />
+  );
 };

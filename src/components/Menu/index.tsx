@@ -62,7 +62,7 @@ export const Menu = ({ mobile }: IMenu) => {
           bgGradient="linear(to-r, #8482FF , #A462FF)"
           borderRadius="25px"
         >
-          <Link to="dashboard">
+          <Link to="../../dashboard">
             <motion.div
               initial={{ width: "91%" }}
               whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
@@ -73,18 +73,18 @@ export const Menu = ({ mobile }: IMenu) => {
             </motion.div>
           </Link>
 
-          <Link to={}>
-            <motion.div
-              initial={{ width: "91%" }}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-            >
+          <motion.div
+            initial={{ width: "91%" }}
+            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+          >
+            <Link to="../asesorias">
               <Center className="container" h="80px">
                 <Image boxSize="80%" objectFit="contain" src={menuImg2} />
               </Center>
-            </motion.div>
-          </Link>
+            </Link>
+          </motion.div>
 
-          <Link to="perfil">
+          <Link to="../perfil">
             <motion.div
               initial={{ width: "91%" }}
               whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}

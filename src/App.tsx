@@ -2,7 +2,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 //Layout
-import { MainLayout } from "./layouts/Main";
+import { Login } from "./layouts/Login";
 
 //Pages
 import { Managment } from "./pages/Managment";
@@ -12,10 +12,13 @@ import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
 import { CitasPage3 } from "./pages/Agenda_Citas/citas_3";
 import { Dashboard } from "./pages/Dashboard";
 
+import { MainLayout } from "./layouts/Main";
+
 //CSS
 import "./App.css";
 
 import theme from "./theme";
+import { ProfilePage } from "./pages/Profile";
 
 export function App() {
   return (
@@ -23,23 +26,34 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" />
-          <Route
-            path="/dashboard"
-            element={
-              <MainLayout
-                desktop={<Dashboard />}
-                mobile={<Dashboard mobile={true} />}
-              />
-            }
-          />
-          <Route
-            path="/asesorías"
-            element={
-              <>
-                <h1>Hola</h1>
-              </>
-            }
-          />
+          <Route path="/dashboard">
+            <Route
+              index
+              element={
+                <MainLayout
+                  desktop={<Dashboard />}
+                  mobile={<Dashboard mobile={true} />}
+                />
+              }
+            />
+            <Route
+              path="asesorias"
+              element={
+                <>
+                  <h1>Hola</h1>
+                </>
+              }
+            />
+            <Route
+              path="perfil"
+              element={
+                <MainLayout
+                  desktop={<ProfilePage />}
+                  mobile={<ProfilePage />}
+                />
+              }
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
