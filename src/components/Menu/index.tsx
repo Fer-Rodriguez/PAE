@@ -84,16 +84,16 @@ export const Menu = ({ mobile }: IMenu) => {
             </Link>
           </motion.div>
 
-          <Link to="../perfil">
-            <motion.div
-              initial={{ width: "91%" }}
-              whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
-            >
+          <motion.div
+            initial={{ width: "91%" }}
+            whileHover={{ scale: 1.1, backgroundColor: "#FFFFFF" }}
+          >
+            <Link to="../perfil">
               <Center className="container" h="80px">
                 <Image boxSize="80%" objectFit="contain" src={menuImg3} />
               </Center>
-            </motion.div>
-          </Link>
+            </Link>
+          </motion.div>
         </VStack>
       </div>
     );
