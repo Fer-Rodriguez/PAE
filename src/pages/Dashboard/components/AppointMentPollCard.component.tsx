@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Heading, Flex, Image, Button } from "@chakra-ui/react";
 
 import { DividedCard } from "../../../components/DividedCard";
@@ -18,19 +19,30 @@ export const AppointmentsPollCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  const navigate = useNavigate();
+
   const BottomContent = () => (
     <Flex flexDirection={"column"} m={"2"} gap={3}>
       <Heading as="h4" size="md">
-        {type === EUserType.admin ? "¡Encuestas!" : "Agendar Asesoría"}
+        {type === EUserType.admin
+          ? "¡Encuestas!"
+          : type === EUserType.advisor
+          ? "¡3 asesorías completadas!"
+          : "Agendar Asesoría"}
       </Heading>
-      <Button
-        borderRadius={theme.radii.general}
-        backgroundColor={theme.colors.purple}
-        color="white"
-        size="sm"
-      >
-        {type === EUserType.admin ? "Editar" : "Agendar"}
-      </Button>
+      {type !== EUserType.advisor && (
+        <Button
+          borderRadius={theme.radii.general}
+          backgroundColor={theme.colors.purple}
+          color="white"
+          size="sm"
+          onClick={() => {
+            navigate(type === EUserType.admin ? "encuestas" : "crear_asesoria");
+          }}
+        >
+          {type === EUserType.admin ? "Editar" : "Agendar"}
+        </Button>
+      )}
     </Flex>
   );
 

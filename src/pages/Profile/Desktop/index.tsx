@@ -86,7 +86,7 @@ export const ProfileDesktop = ({
         >
           <Flex my={"5rem"}>
             <Spacer />
-            <Circle backgroundColor={"#8963D9"} size="10rem">
+            <Circle backgroundColor={"blue"} size="10rem">
               <Center>
                 <Image
                   maxW={"70%"}

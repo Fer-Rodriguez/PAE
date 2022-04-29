@@ -1,5 +1,13 @@
-import { Heading, Text, Flex, Button, Divider, Center } from "@chakra-ui/react";
-
+import {
+  Heading,
+  Text,
+  Flex,
+  Button,
+  Divider,
+  Center,
+  Box,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { DividedCard } from "../../../components/DividedCard";
 
 //Interfaces
@@ -16,6 +24,7 @@ export const AppointmentListCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  const navigate = useNavigate();
   const appointments = [
     { subject: "Matemáticas", date: "25 de Feb" },
     { subject: "Derecho Inter...", date: "10 de Ene" },
@@ -101,26 +110,31 @@ export const AppointmentListCard = ({
     );
 
   return (
-    <DividedCard
-      colorFirst={
-        type === EUserType.admin ? theme.colors.blue : theme.colors.purple
-      }
-      colorSecond="white"
-      percentageFirst="80%"
-      percentageSecond="20%"
-      overlap
-      vertical
-      contentFirst={<List />}
-      contentSecond={
-        <Button
-          borderRadius={theme.radii.general}
-          backgroundColor={theme.colors.purple}
-          color="white"
-          size="sm"
-        >
-          Ver más...
-        </Button>
-      }
-    />
+    <Box my={mobile ? 6 : 0}>
+      <DividedCard
+        colorFirst={
+          type === EUserType.admin ? theme.colors.blue : theme.colors.pink
+        }
+        colorSecond="white"
+        percentageFirst="80%"
+        percentageSecond="20%"
+        overlap
+        vertical
+        contentFirst={<List />}
+        contentSecond={
+          <Button
+            borderRadius={theme.radii.general}
+            backgroundColor={theme.colors.purple}
+            color="white"
+            size="sm"
+            onClick={() => {
+              navigate("asesorias");
+            }}
+          >
+            Ver más...
+          </Button>
+        }
+      />
+    </Box>
   );
 };
