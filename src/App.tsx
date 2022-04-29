@@ -20,21 +20,33 @@ import { CitasPage } from "./pages/Agenda_Citas";
 
 import { ButtonGeneric } from "./components/Button";
 
+import { AppointmentsPage } from "./pages/Appointments";
+import { AdvisorsPage } from "./pages/Advisors";
+
+import { FormsLogin } from "./pages/Login";
+
 //CSS
 import "./App.css";
 
 import theme from "./theme";
-import { AppointmentsPage } from "./pages/Appointments";
-import { AdvisorsPage } from "./pages/Advisors";
 
-//Data
+
+
 
 export function App() {
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" />
+          <Route
+            path="/"
+            element={
+              <Login
+                desktop={<FormsLogin />}
+                mobile={<FormsLogin mobile={true} />}
+              />
+            }
+          />
           <Route path="/dashboard">
             <Route
               index
