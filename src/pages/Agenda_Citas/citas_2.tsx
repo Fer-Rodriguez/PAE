@@ -1,9 +1,10 @@
-import { ETypeDropdown } from "../../interfaces/enums";
+import { EMyCalendarView, ETypeDropdown } from "../../interfaces/enums";
 import { Box, Center, Spacer, VStack, HStack } from "@chakra-ui/react";
 
 import { ButtonGeneric } from "../../components/Button";
 import { Info_Button } from "../../components/Info_Button";
 import { ScheduleList } from "../../components/ScheduleList";
+import { MyCalendar } from "../../components/Calendar";
 
 //Assets
 import theme from "../../theme/index";
@@ -49,9 +50,7 @@ export const CitasPage2 = ({ mobile }: { mobile?: boolean }) => {
   if (mobile) {
     return (
       <VStack w="100%" spacing="25px" alignItems="center">
-        <Box w="80%" bg={theme.colors.purpleLight}>
-          Espacio reservado para el calendario
-        </Box>
+        <MyCalendar view={EMyCalendarView.month} />
         <ScheduleList schedules={myOptions} width="80%"></ScheduleList>
 
         <ButtonGeneric
