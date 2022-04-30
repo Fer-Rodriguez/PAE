@@ -7,9 +7,7 @@ import { Login } from "./layouts/Login";
 //Pages
 import { Managment } from "./pages/Managment";
 
-import { CitasPage } from "./pages/Agenda_Citas";
-import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
-import { CitasPage3 } from "./pages/Agenda_Citas/citas_3";
+import { ScheduleAppointment } from "./pages/ScheduleAppointment";
 import { Dashboard } from "./pages/Dashboard";
 
 import { MainLayout } from "./layouts/Main";
@@ -19,13 +17,17 @@ import "./App.css";
 
 import theme from "./theme";
 import { ProfilePage } from "./pages/Profile";
+import { FormsLogin } from "./pages/Login";
 
 export function App() {
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" />
+          <Route
+            path="/"
+            element={<Login desktop={<FormsLogin></FormsLogin>}></Login>}
+          />
           <Route path="/dashboard">
             <Route
               index
@@ -36,18 +38,22 @@ export function App() {
                 />
               }
             />
-            <Route
-              path="/asesorias"
-              element={
-                <MainLayout desktop={<CitasPage />} mobile={<CitasPage />} />
-              }
-            />
+            <Route path="asesorias" element={<></>} />
             <Route
               path="perfil"
               element={
                 <MainLayout
                   desktop={<ProfilePage />}
-                  mobile={<ProfilePage />}
+                  mobile={<ProfilePage mobile />}
+                />
+              }
+            />
+            <Route
+              path="crear_asesoria"
+              element={
+                <MainLayout
+                  desktop={<ScheduleAppointment />}
+                  mobile={<ScheduleAppointment mobile />}
                 />
               }
             />

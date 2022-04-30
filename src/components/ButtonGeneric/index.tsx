@@ -18,7 +18,7 @@ export const ButtonGeneric = ({
   text,
   onClick,
   isDisabled,
-  type,
+  type = "button",
 }: IButtonGeneric) => {
   return (
     <Button
