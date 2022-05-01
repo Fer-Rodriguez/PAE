@@ -1,9 +1,19 @@
+//Libraries
 import React, { useMemo } from "react";
 import { Cell } from "react-table";
-import { ButtonGeneric } from "../../components/Button";
-import { IDataProfileCard } from "../../interfaces";
-import { EUserType } from "../../interfaces/enums";
+
+//Zustand
 import { useStore } from "../../state/store";
+
+//Components
+import { ButtonGeneric } from "../../components/Button";
+
+//Functions
+import { updateAppointment } from "../../api/appointments/update";
+
+//Interfaces
+import { IDataProfileCard } from "../../interfaces";
+import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 interface IColumnDetails {
   [key: string]: string;
@@ -13,6 +23,12 @@ import { Managment } from "../Managment";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const userType = useStore((state) => state.type);
+
+  const apiAcceptAppointment = async () => {
+    await updateAppointment("4901dfc1-42c0-46bf-82f6-93e3609ae2b3", {
+      status: EStatusAppointment.ACCEPTED,
+    });
+  };
 
   const columnsAdmin = useMemo(
     () => [
@@ -40,12 +56,16 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
         Header: "",
         accessor: "accept",
         Cell: (cell: Cell<any, any>) => (
-          <ButtonGeneric text={"Aceptar"} color={"purple"} />
+          <ButtonGeneric
+            text={"Aceptar"}
+            color={"purple"}
+            onClick={apiAcceptAppointment}
+          />
         ),
       },
       {
         Header: "",
-        accessor: "button",
+        accessor: "details",
         Cell: (cell: Cell<any, any>) => (
           <ButtonGeneric text={"Detalles"} color={"blue"} />
         ),
@@ -78,7 +98,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       },
       {
         Header: "",
-        accessor: "accept",
+        accessor: "details",
         Cell: (cell: Cell<any, any>) => (
           <ButtonGeneric text={"Detalles"} color={"blue"} />
         ),

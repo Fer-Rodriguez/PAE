@@ -1,13 +1,13 @@
-import { EStatus_Appointement } from "../enums";
+import { EStatusAppointment } from "../enums";
 
 export type TAppointment = {
-  [key: string]: string | EStatus_Appointement;
+  [key: string]: string | EStatusAppointment;
   id_admin: string;
   id_advisor: string;
   id_advised: string;
   id_subject: string;
   date: string;
-  status: EStatus_Appointement;
+  status: EStatusAppointment;
   location: string;
 };
 
