@@ -7,7 +7,8 @@ export type TConfigObject = {
   theme: ETheme;
 };
 
-export type TUserSlice = {
+export interface IUserData {
+  id: string;
   status: EStatus;
   name: string;
   email: string;
@@ -17,15 +18,20 @@ export type TUserSlice = {
   config: TConfigObject;
   profilePic: string;
   schedule: ISchedule | null;
+}
+
+export interface TUserSlice extends IUserData {
   setLanguage: (newLanguage: ELanguage) => void;
   setTheme: (newTheme: ETheme) => void;
-};
+  setUser: (newUserData: IUserData) => void;
+}
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
+  id: "",
   status: EStatus.active,
   name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
-  type: EUserType.admin,
+  type: EUserType.student,
   career: "Economía",
   semester: 6,
   profilePic: "",
@@ -43,5 +49,19 @@ export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
     const newConfig: TConfigObject = { ...get().config };
     newConfig.theme = newTheme;
     set({ config: newConfig });
+  },
+  setUser: (newUserData) => {
+    set({
+      id: newUserData.id,
+      status: newUserData.status,
+      name: newUserData.name,
+      email: newUserData.email,
+      type: newUserData.type,
+      career: newUserData.career,
+      semester: newUserData.semester,
+      profilePic: newUserData.profilePic,
+      schedule: newUserData.schedule,
+      config: newUserData.config,
+    });
   },
 });
