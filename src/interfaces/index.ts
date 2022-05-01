@@ -9,7 +9,7 @@ import {
   TableProps,
 } from "react-table";
 import { ChangeEvent, ComponentType } from "react";
-import { ETypeDropdown, EUserType } from "./enums";
+import { EStatusAppointment, ETypeDropdown, EUserType } from "./enums";
 
 export interface IPrueba {
   pruebita: string;
@@ -123,4 +123,13 @@ export interface IModalCalendarOperations {
   accept: () => void;
   applyUpdate: () => void;
   eliminateSchedule: () => void;
+}
+
+interface IAppointmentDataMod {
+  date?: string | Date;
+  id_subject?: string;
+  status?: EStatusAppointment;
+  location?: string;
+  problem_description?: string;
+  photo_url?: string;
 }
