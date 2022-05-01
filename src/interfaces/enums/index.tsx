@@ -20,13 +20,6 @@ const enum ETheme {
   dark,
 }
 
-enum EStatus_Appointement {
-  pending,
-  accepted,
-  completed,
-  canceled,
-}
-
 enum ETypeDropdown {
   normal,
   three,
@@ -50,14 +43,21 @@ enum EMyCalendarView {
   month = "month",
 }
 
+enum EStatusAppointment {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  COMPLETED = "COMPLETED",
+  CANCELED = "CANCELED",
+}
+
 export {
   EStatus,
   EUserType,
   ELanguage,
   ETheme,
-  EStatus_Appointement,
   ETypeDropdown,
   EStatusAlert,
   EModalCalendarType,
   EMyCalendarView,
+  EStatusAppointment,
 };

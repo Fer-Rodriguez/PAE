@@ -1,5 +1,5 @@
 import { StoreSlice } from "./store";
-import { EStatus_Appointement } from "../interfaces/enums";
+import { EStatusAppointment } from "../interfaces/enums";
 import {
   INewAppointment,
   TAppointment,
@@ -12,7 +12,7 @@ export type TAppointmentSlice = {
   modifyAppointment: (
     index: number,
     property: string,
-    value: string | EStatus_Appointement
+    value: string | EStatusAppointment
   ) => void;
   addNewAppointment: ({
     date,
