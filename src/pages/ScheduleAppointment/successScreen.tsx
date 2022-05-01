@@ -5,7 +5,7 @@ import { ButtonGeneric } from "../../components/Button";
 import imgAgendaCitaConf from "../../assets/agenda_cita_ok.png";
 import theme from "../../theme/index";
 
-export const CitasPage3 = ({ mobile }: { mobile?: boolean }) => {
+export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
   if (mobile) {
     return (
       <VStack w="100%" spacing="50px" alignItems="center">

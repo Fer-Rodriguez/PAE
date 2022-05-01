@@ -9,6 +9,7 @@ import { MyCalendar } from "../../components/Calendar";
 
 //Assets
 import theme from "../../theme/index";
+import { INewAppointment } from "../../interfaces/types";
 
 const myOptions = [
   {
@@ -48,7 +49,14 @@ const myOptions = [
     horario: "15:15",
   },
 ];
-export const CitasPage2 = ({ mobile }: { mobile?: boolean }) => {
+
+export const ScheduleScreen = ({
+  mobile,
+  onClick,
+}: {
+  mobile?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}) => {
   const [daySelected, setDaySelected] = useState(new Date());
 
   useEffect(() => {
@@ -93,6 +101,7 @@ export const CitasPage2 = ({ mobile }: { mobile?: boolean }) => {
             text="Siguiente"
             color={theme.colors.pink}
             fontColor="white"
+            onClick={onClick}
           />
         </Center>
       </VStack>

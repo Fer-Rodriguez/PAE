@@ -10,15 +10,12 @@ import { Login } from "./layouts/Login";
 //Pages
 import { Managment } from "./pages/Managment";
 
+import { ScheduleAppointment } from "./pages/ScheduleAppointment";
 import { Dashboard } from "./pages/Dashboard";
 
 import { MainLayout } from "./layouts/Main";
 
 import { ProfilePage } from "./pages/Profile";
-
-import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
-
-import { ButtonGeneric } from "./components/Button";
 
 import { AppointmentsPage } from "./pages/Appointments";
 import { AdvisorsPage } from "./pages/Advisors";
@@ -82,8 +79,8 @@ export function App() {
               path="crear_asesoria"
               element={
                 <MainLayout
-                  desktop={<CitasPage2 />}
-                  mobile={<CitasPage2 mobile />}
+                  desktop={<ScheduleAppointment />}
+                  mobile={<ScheduleAppointment mobile />}
                 />
               }
             />
