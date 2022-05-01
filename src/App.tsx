@@ -16,7 +16,7 @@ import { MainLayout } from "./layouts/Main";
 
 import { ProfilePage } from "./pages/Profile";
 
-import { CitasPage } from "./pages/Agenda_Citas";
+import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
 
 import { ButtonGeneric } from "./components/Button";
 
@@ -29,9 +29,6 @@ import { FormsLogin } from "./pages/Login";
 import "./App.css";
 
 import theme from "./theme";
-
-
-
 
 export function App() {
   return (
@@ -85,8 +82,8 @@ export function App() {
               path="crear_asesoria"
               element={
                 <MainLayout
-                  desktop={<CitasPage />}
-                  mobile={<CitasPage mobile />}
+                  desktop={<CitasPage2 />}
+                  mobile={<CitasPage2 mobile />}
                 />
               }
             />

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { EMyCalendarView, ETypeDropdown } from "../../interfaces/enums";
 import { Box, Center, Spacer, VStack, HStack } from "@chakra-ui/react";
 
@@ -8,6 +9,7 @@ import { MyCalendar } from "../../components/Calendar";
 
 //Assets
 import theme from "../../theme/index";
+
 const myOptions = [
   {
     horario: "10:15",
@@ -47,10 +49,20 @@ const myOptions = [
   },
 ];
 export const CitasPage2 = ({ mobile }: { mobile?: boolean }) => {
+  const [daySelected, setDaySelected] = useState(new Date());
+
+  useEffect(() => {
+    console.log(daySelected);
+  }, [daySelected]);
+
   if (mobile) {
     return (
       <VStack w="100%" spacing="25px" alignItems="center">
-        <MyCalendar view={EMyCalendarView.month} />
+        <MyCalendar
+          view={EMyCalendarView.month}
+          setSelectedDay={setDaySelected}
+          daySelected={daySelected}
+        />
         <ScheduleList schedules={myOptions} width="80%"></ScheduleList>
 
         <ButtonGeneric
@@ -65,9 +77,13 @@ export const CitasPage2 = ({ mobile }: { mobile?: boolean }) => {
     return (
       <VStack alignItems="start">
         <Info_Button />
-        <HStack w="100%" spacing="50px">
-          <Box w="55%" bg={theme.colors.purpleLight}>
-            Espacio reservado para el calendario
+        <HStack w={"100%"} spacing={"120"}>
+          <Box w={"40vw"}>
+            <MyCalendar
+              view={EMyCalendarView.month}
+              setSelectedDay={setDaySelected}
+              daySelected={daySelected}
+            />
           </Box>
           <ScheduleList schedules={myOptions} width="30%"></ScheduleList>
         </HStack>
