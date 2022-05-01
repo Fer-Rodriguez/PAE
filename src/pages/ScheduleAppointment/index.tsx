@@ -55,6 +55,8 @@ export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
           }}
           onDropDownChange={setIdSubject}
           onTextFieldChange={setProblemDescription}
+          globalValue={idSubject}
+          globalValue2={problemDescription}
         ></BasicInfoScreen>
       );
     } else if (step == 1) {
@@ -62,8 +64,8 @@ export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
         <ScheduleScreen
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             //Llamada a API aquí xd
-            createAppointment();
-            setFormStep(2);
+            // createAppointment();
+            setFormStep(0);
           }}
         ></ScheduleScreen>
       );

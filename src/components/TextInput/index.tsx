@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import { Input, Textarea } from "@chakra-ui/react";
 interface ITextInput {
   multiLine: boolean;
@@ -19,13 +19,7 @@ export const TextInput = ({
   if (multiLine)
     return (
       <Input
-        /*
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          //TODO: Darle focus al text in
-          //setDescription(e.currentTarget.value);
-          console.log("aaaa");
-        }}
-        */
+        // TODO: On change para multiline. NO funciona ahorita la forma en multiline
         borderRadius="25px"
         backgroundColor="#F8F8F8"
         color="black"
@@ -34,12 +28,12 @@ export const TextInput = ({
         width={width}
         value={value}
         isInvalid={isInvalid}
+        onChange={(e) => e}
       />
     );
   else
     return (
       <Textarea
-        // TODO: On change para mobiles. NO funciona ahorita la forma en teléfono
         onChange={onChange}
         rows={7}
         resize="none"

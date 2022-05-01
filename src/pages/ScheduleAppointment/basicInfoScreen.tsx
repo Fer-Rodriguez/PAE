@@ -1,17 +1,13 @@
-import { ChangeEvent, ComponentType, MouseEventHandler } from "react";
+import { ChangeEvent } from "react";
 
 import { ETypeDropdown } from "../../interfaces/enums";
 import {
   Box,
-  Spacer,
   Center,
   VStack,
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/react";
-
-//Zustand
-import { useStore } from "../../state/store";
 
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { DropDown } from "../../components/Dropdown";
@@ -25,11 +21,15 @@ export const BasicInfoScreen = ({
   onNextScreenButtonClick,
   onDropDownChange,
   onTextFieldChange,
+  globalValue,
+  globalValue2,
 }: {
   mobile?: boolean;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onDropDownChange?: (newValue: string) => void;
   onTextFieldChange?: (newValue: string) => void;
+  globalValue?: string;
+  globalValue2?: string;
 }) => {
   //TODO: Remplazar esto con una llamada GET a la base de datos
   const myOptions = [
@@ -66,10 +66,6 @@ export const BasicInfoScreen = ({
             control={control}
             rules={{
               required: "No puedes dejar la materia vacía",
-              pattern: {
-                value: /^(?!\s*$).+/,
-                message: `esto que`,
-              },
             }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <>
@@ -81,7 +77,6 @@ export const BasicInfoScreen = ({
                       //TODO: Darle focus al text in
                       onChange(e);
                       onDropDownChange?.(e.target.value);
-                      console.log("Value DropDown: ", e.target.value);
                     },
                     placeholder: "Seleccionar materia",
                     type: ETypeDropdown.normal,
@@ -98,6 +93,7 @@ export const BasicInfoScreen = ({
                 )}
               </>
             )}
+            defaultValue={globalValue}
           ></Controller>
         </Box>
         <Controller
@@ -108,9 +104,10 @@ export const BasicInfoScreen = ({
               "Por favor proporciona una descripción al problema que quieres tratar en la asesoría",
             pattern: {
               value: /^(?!\s*$).+/,
-              message: `esto que`,
+              message: `La descripción no puede estar vacía`,
             },
           }}
+          defaultValue={globalValue2}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <>
               <TextInput
@@ -121,7 +118,6 @@ export const BasicInfoScreen = ({
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
                   onChange(e);
                   onTextFieldChange?.(e.target.value);
-                  console.log("Value TextInput: ", e.target.value);
                 }}
                 value={value}
               />
