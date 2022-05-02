@@ -23,7 +23,6 @@ import { ButtonGeneric } from "../../components/Button";
 //Assets
 import cross from "../../assets/Cross.png";
 import { useNavigate } from "react-router-dom";
-import { cursorTo } from "readline";
 
 function GetData() {
   const columns = useMemo(

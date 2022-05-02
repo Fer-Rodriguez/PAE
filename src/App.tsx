@@ -20,6 +20,7 @@ import "./App.css";
 import theme from "./theme";
 import { ProfilePage } from "./pages/Profile";
 import { FormsLogin } from "./pages/Login";
+import { FormsRegister } from "./pages/Register";
 
 export function App() {
   return (
@@ -32,6 +33,15 @@ export function App() {
               <Login
                 desktop={<FormsLogin />}
                 mobile={<FormsLogin mobile={true} />}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Login
+                desktop={<FormsRegister />}
+                mobile={<FormsRegister mobile={true} />}
               />
             }
           />

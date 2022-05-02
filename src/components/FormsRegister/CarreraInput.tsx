@@ -1,41 +1,72 @@
-import { ChangeEvent, ComponentType } from "react";
-import { DropDown } from "../Dropdown";
-import React from "react";
-import { IConfigurationsDropdown } from "../../interfaces";
-import { ETypeDropdown } from "../../interfaces/enums";
+import React, { ChangeEvent } from "react";
+import { Controller, Control } from "react-hook-form";
+
+import {
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Select,
+  FormControl,
+} from "@chakra-ui/react";
 
 interface ICarreraInput {
+  control: Control<any>;
+  defaultValue?: string;
   setCarrera?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
 }
 
 export const CarreraInput = ({
+  control,
+  defaultValue = "",
   setCarrera,
   secondValidation = false,
 }: ICarreraInput) => {
-  const myOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    if (secondValidation) {
-      if (setCarrera) {
-        setCarrera(e.target.value);
-      }
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    if (setCarrera) {
+      setCarrera(e.target.value);
     }
   };
 
-  const config: IConfigurationsDropdown = {
-    onChange: myOnChange,
-    type: ETypeDropdown.normal,
-    placeholder: "Selecciona tu carrera",
-  };
-
   return (
-    <DropDown
-      options={[
-        { title: "ITC", value: "ITC" },
-        { title: "IRS", value: "IRS" },
-        { title: "LAD", value: "LAD" },
-      ]}
-      configuration={config}
-    ></DropDown>
+    <Controller
+      name="carrera"
+      control={control || null}
+      rules={{
+        required: `Por favor selecciona tu carrera`,
+      }}
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
+        <div>
+          <FormLabel htmlFor="carrera">Carrera</FormLabel>
+          <Select
+            id="carrera"
+            placeholder="Selecciona tu carrera"
+            onChange={(e) => {
+              onChange(e);
+              console.log(error);
+              if (secondValidation) {
+                handleChange(e);
+              }
+            }}
+            value={value}
+            isInvalid={Boolean(error)}
+          >
+            <option>ITC</option>
+            <option>IRS</option>
+            <option>IBT</option>
+            <option>IMT</option>
+          </Select>
+
+          {!error ? (
+            <FormHelperText>Ingresa tu carrera</FormHelperText>
+          ) : (
+            <FormErrorMessage>{error?.message}</FormErrorMessage>
+          )}
+        </div>
+      )}
+      defaultValue={defaultValue}
+    ></Controller>
   );
 };

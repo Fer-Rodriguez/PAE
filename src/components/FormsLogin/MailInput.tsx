@@ -44,6 +44,7 @@ export const MailInput = ({
         <div>
           <FormLabel htmlFor="mail">Correo eléctrónico</FormLabel>
           <Input
+            type={"email"}
             size={"sm"}
             placeholder="A********@tec.mx"
             onChange={(e) => {

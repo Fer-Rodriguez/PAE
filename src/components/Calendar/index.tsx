@@ -46,9 +46,10 @@ import theme from "../../theme";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
+  h?: string;
 }
 
-export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
+export const MyCalendar = ({ view = EMyCalendarView.week, h }: IMyCalendar) => {
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
   const [totalHours, setTotalHours] = useState<number>(0);
@@ -199,7 +200,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
   //TODO: On creation, fill calendar with schedules from advisors.
 
   return (
-    <Box>
+    <Box overflowY={"scroll"}>
       {view === EMyCalendarView.week && (
         <>
           <MyAlert
@@ -224,7 +225,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week }: IMyCalendar) => {
         <Calendar
           ref={cal}
           className="calendar"
-          height="600px"
+          {...(h ? { height: h } : { height: "65vh" })}
           view={view}
           disableDblClick
           scheduleView={["time"]}
