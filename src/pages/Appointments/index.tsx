@@ -33,6 +33,10 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const columnsAdmin = useMemo(
     () => [
       {
+        Header: "Id",
+        accessor: "id",
+      },
+      {
         Header: "Fecha",
         accessor: "date",
       },
@@ -59,7 +63,11 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
           <ButtonGeneric
             text={"Aceptar"}
             color={"purple"}
-            onClick={apiAcceptAppointment}
+            onClick={() =>
+              updateAppointment(cell.row.values.id, {
+                status: EStatusAppointment.ACCEPTED,
+              })
+            }
           />
         ),
       },
@@ -109,6 +117,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   const tuArregloDeObjetos = [
     {
+      id: "aasdas12321",
       date: "16/01/2022 12:00",
       assessor: "Julián Martinez",
       student: "Daniela Ordan",
@@ -116,6 +125,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       status: "Pendiente",
     },
     {
+      id: "aasdas12321",
       date: "15/01/2022 13:00",
       assessor: "Alejandro Castro",
       student: "Daniela Ordan",
@@ -123,6 +133,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       status: "Pendiente",
     },
     {
+      id: "aasdas12321",
       date: "01/02/22 15:00",
       assessor: "Fernando Jimenez",
       student: "Daniel Maldonado",
@@ -130,6 +141,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       status: "Terminada",
     },
     {
+      id: "aasdas12321",
       date: "16/01/2022 10:00",
       assessor: "Guillermo Gutierrez",
       student: "Julián Martinez",
@@ -137,6 +149,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       status: "Abierta",
     },
     {
+      id: "aasdas12321",
       date: "22/03/22 09:00",
       assessor: "Benjamín Parques",
       student: "Pedro Parques",
@@ -144,6 +157,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       status: "Abierta",
     },
     {
+      id: "aasdas12321",
       date: "20/04/2022 16:00",
       assessor: "Kanye West",
       student: "Rosalía",
