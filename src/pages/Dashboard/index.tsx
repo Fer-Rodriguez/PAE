@@ -10,7 +10,7 @@ import { MainCard } from "./components/MainCard.component";
 
 //Interfaces
 import { EUserType } from "../../interfaces/enums";
-import { IDataProfileCard } from "../../interfaces";
+import { IAppointmentDataMod, IDataProfileCard } from "../../interfaces";
 
 //Store
 import { useStore } from "../../state/store";
@@ -18,8 +18,9 @@ import { useStore } from "../../state/store";
 //Assets
 import "./style.css";
 import "swiper/css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
+import axios from "axios";
 
 const Desktop = ({ type }: { type: EUserType }) => (
   <Grid
@@ -92,6 +93,7 @@ const Mobile = ({ type }: { type: EUserType }) => {
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const userData: IDataProfileCard = useStore(
     (state) => ({
+      id: state.id,
       name: state.name,
       email: state.email,
       type: state.type,
@@ -103,8 +105,10 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     shallow
   );
 
+  const setRecentAppointment = useStore((state) => state.setRecentAppointment);
+
   useEffect(() => {
-    getRecentAppointment("d6cf55f4-72ff-4295-a4a1-d96e39ad6cf8");
+    getRecentAppointment(userData.id, userData.type, setRecentAppointment);
   }, []);
 
   return mobile ? (

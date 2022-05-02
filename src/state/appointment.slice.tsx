@@ -5,9 +5,11 @@ import {
   TAppointment,
   TCreateAppointment,
 } from "../interfaces/types";
+import { IAppointmentDataMod } from "../interfaces";
 
 export type TAppointmentSlice = {
   appointments: Array<TAppointment>;
+  recentAppointment: IAppointmentDataMod;
   newAppointment: INewAppointment;
   modifyAppointment: (
     index: number,
@@ -21,10 +23,22 @@ export type TAppointmentSlice = {
     id_subject,
     id_petitioner,
   }: TCreateAppointment) => void;
+
+  setRecentAppointment: (newRecentAppointment: IAppointmentDataMod) => void;
 };
 
 export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
   appointments: [],
+  recentAppointment: {
+    date: "",
+    id_subject: "",
+    status: EStatusAppointment.ACCEPTED,
+    location: "",
+    problem_description: "",
+    photo_url: "",
+    created_at: "",
+    updated_at: "",
+  },
   newAppointment: {
     date: "",
     description: "",
@@ -57,5 +71,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     const newAppointments = get().appointments;
     newAppointments[index] = { ...newAppointments[index], [property]: value };
     set({ appointments: newAppointments });
+  },
+
+  setRecentAppointment: (newRecentAppointment) => {
+    set({ recentAppointment: newRecentAppointment });
   },
 });

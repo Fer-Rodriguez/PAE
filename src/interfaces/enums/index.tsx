@@ -1,13 +1,14 @@
 const enum EStatus {
-  active,
-  inactive,
+  active = "ACTIVE",
+  inactive = "INACTIVE",
+  deleted = "DELETED",
 }
 
 const enum EUserType {
-  advisor,
-  student,
-  admin,
-  root,
+  advisor = "advisor",
+  student = "student",
+  admin = "admin",
+  root = "root",
 }
 
 const enum ELanguage {

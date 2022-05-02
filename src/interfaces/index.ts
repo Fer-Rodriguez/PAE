@@ -9,7 +9,14 @@ import {
   TableProps,
 } from "react-table";
 import { ChangeEvent, ComponentType } from "react";
-import { EStatusAppointment, ETypeDropdown, EUserType } from "./enums";
+import {
+  ELanguage,
+  EStatus,
+  EStatusAppointment,
+  ETheme,
+  ETypeDropdown,
+  EUserType,
+} from "./enums";
 
 export interface IPrueba {
   pruebita: string;
@@ -92,6 +99,7 @@ export interface ISchedule {
 
 export interface IDataProfileCard {
   [key: string]: any;
+  id: string;
   name: string;
   type: EUserType;
   email: string;
@@ -125,11 +133,31 @@ export interface IModalCalendarOperations {
   eliminateSchedule: () => void;
 }
 
-interface IAppointmentDataMod {
+export interface IAppointmentDataMod {
   date?: string | Date;
   id_subject?: string;
   status?: EStatusAppointment;
   location?: string;
   problem_description?: string;
   photo_url?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export type TConfigObject = {
+  language: ELanguage;
+  theme: ETheme;
+};
+
+export interface IUserData {
+  id: string;
+  status: EStatus;
+  name: string;
+  email: string;
+  type: EUserType;
+  semester: number;
+  career: string;
+  config: TConfigObject;
+  profilePic: string;
+  schedule: ISchedule | null;
 }
