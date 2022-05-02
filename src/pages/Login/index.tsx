@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useStore } from "../../state/store";
 import {
   Center,
   Container,
@@ -14,8 +15,10 @@ import { Logo } from "../../assets/Logo";
 import { MailInput } from "../../components/FormsLogin/MailInput";
 import { PasswordInput } from "../../components/FormsLogin/PasswordInput";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GetUser, GetUserInfo } from "../../api/users/get";
+import { IUserData } from "../../interfaces";
+import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 
 interface IFormsLogin {
   mobile?: boolean;
@@ -23,17 +26,51 @@ interface IFormsLogin {
 
 export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
-  const [mail, setMail] = useState("");
-  const [password, setPassword] = useState("");
+  const setUser = useStore((state) => state.setUser);
 
   const {
     control,
     formState: { isValid },
+    handleSubmit,
   } = useForm({ mode: "onChange" });
 
-  const tryLogin = () => {
-    navigate("/dashboard");
-    //llamar back y a la siguiente pantalla
+  const tryLogin = async (data: any) => {
+    const idUserData = await GetUser(data.mail, data.password);
+    console.log(idUserData);
+    const userData = await GetUserInfo(idUserData.userId);
+    console.log(userData);
+
+    if (idUserData.status == "OK") {
+      const correctUser: IUserData = {
+        id: userData.id,
+        status:
+          userData.status === EStatus.active
+            ? EStatus.active
+            : userData.status === EStatus.deleted
+            ? EStatus.deleted
+            : EStatus.inactive,
+        name: userData.name,
+        email: userData.email,
+        type:
+          userData.type === EUserType.advisor
+            ? EUserType.advisor
+            : userData.type === EUserType.student
+            ? EUserType.student
+            : userData.type === EUserType.admin
+            ? EUserType.admin
+            : EUserType.root,
+        semester: 5,
+        career: "ITC",
+        config: { language: ELanguage.spanish, theme: ETheme.white },
+        profilePic: "No tengo",
+        schedule: null,
+      };
+      setUser(correctUser);
+      navigate("/dashboard");
+    }
+
+    //Ya obtuve el ID y la info, entonces, seteamos
+    //setUser()
   };
 
   return (
@@ -52,18 +89,14 @@ export const FormsLogin = (props: IFormsLogin) => {
           >
             Inicia sesión
           </Text>
-          <FormControl isRequired isInvalid={!isValid}>
+          <FormControl
+            isRequired
+            isInvalid={!isValid}
+            onSubmit={(info) => console.log(info)}
+          >
             <Stack spacing={7} w={"100%"}>
-              <MailInput
-                control={control}
-                setMail={setMail}
-                secondValidation={true}
-              />
-              <PasswordInput
-                control={control}
-                setPassword={setPassword}
-                secondValidation={true}
-              />
+              <MailInput control={control} secondValidation={true} />
+              <PasswordInput control={control} secondValidation={true} />
 
               <Flex>
                 <Checkbox size="sm" defaultChecked colorScheme={"cyan"}>
@@ -85,7 +118,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                   sizePX="40%"
                   text="Ingresar"
                   isDisabled={!isValid}
-                  onClick={tryLogin}
+                  onClick={handleSubmit(tryLogin)}
                 ></ButtonGeneric>
               </Center>
               <Center>
