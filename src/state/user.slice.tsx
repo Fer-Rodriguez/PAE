@@ -1,24 +1,6 @@
 import { StoreSlice } from "./store";
 import { ELanguage, ETheme, EUserType, EStatus } from "../interfaces/enums";
-import { ISchedule } from "../interfaces";
-
-export type TConfigObject = {
-  language: ELanguage;
-  theme: ETheme;
-};
-
-export interface IUserData {
-  id: string;
-  status: EStatus;
-  name: string;
-  email: string;
-  type: EUserType;
-  semester: number;
-  career: string;
-  config: TConfigObject;
-  profilePic: string;
-  schedule: ISchedule | null;
-}
+import { ISchedule, IUserData, TConfigObject } from "../interfaces";
 
 export interface TUserSlice extends IUserData {
   setLanguage: (newLanguage: ELanguage) => void;

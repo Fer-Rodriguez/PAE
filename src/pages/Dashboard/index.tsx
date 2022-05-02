@@ -102,6 +102,10 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     shallow
   );
 
+  useEffect(() => {
+    console.log(userData);
+  }, []);
+
   return mobile ? (
     <Mobile type={userData.type} />
   ) : (
