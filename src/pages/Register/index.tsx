@@ -33,11 +33,11 @@ export const FormsRegister = (props: IRegister) => {
             Regístrate
           </Text>
 
-          <VisuallyHidden>
-            <Forms1 />
-          </VisuallyHidden>
+          {/* <VisuallyHidden> */}
+          <Forms1 />
+          {/* </VisuallyHidden> */}
 
-          <Forms2 />
+          {/* <Forms2 /> */}
           {/* <Forms3/> */}
         </Flex>
       </Center>

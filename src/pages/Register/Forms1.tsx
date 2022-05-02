@@ -9,9 +9,13 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { ConfirmPasswordInput } from "../../components/FormsRegister/ConfirmPasswordInput";
 import { useNavigate } from "react-router-dom";
 
+interface IForms1 {
+  onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
 export const Forms1 = () => {
   const navigate = useNavigate();
-  const [fullname, setFullname] = useState("");
+  const [fullname, setFullname] = useState("popo");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,7 +34,7 @@ export const Forms1 = () => {
       <Stack spacing={4} w={"100%"}>
         <NameInput
           control={control}
-          setName={setMail}
+          setName={setFullname}
           secondValidation={true}
         />
         <MailInput
@@ -50,7 +54,6 @@ export const Forms1 = () => {
           setConfirmPassword={setPassword}
           secondValidation={true}
         />
-
         <Center>
           <ButtonGeneric
             bgColor="purpleLight"

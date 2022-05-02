@@ -37,6 +37,8 @@ export const FormsLogin = (props: IFormsLogin) => {
   };
 
   const register = () => {
+    console.log("mail", mail);
+    console.log("password", password);
     navigate("/register");
   };
 
