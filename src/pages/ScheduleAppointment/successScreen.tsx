@@ -1,11 +1,16 @@
 import { Box, Heading, Image, Spacer, VStack, HStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-import { ButtonGeneric } from "../../components/Button";
+import { ButtonGeneric } from "../../components/ButtonGeneric";
 
 import imgAgendaCitaConf from "../../assets/agenda_cita_ok.png";
-import theme from "../../theme/index";
 
 export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
+  const navigate = useNavigate();
+  const goBackToDashboard = () => {
+    navigate("/dashboard");
+  };
+
   if (mobile) {
     return (
       <VStack w="100%" spacing="50px" alignItems="center">
@@ -19,10 +24,11 @@ export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
           </Heading>
         </Box>
         <ButtonGeneric
-          text="Regresar"
-          color={theme.colors.pink}
-          fontColor="white"
-        />
+          bgColor="pink"
+          text={"Regresar"}
+          sizePX={"50%"}
+          onClick={goBackToDashboard}
+        ></ButtonGeneric>
         <Spacer />
       </VStack>
     );
@@ -40,10 +46,11 @@ export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
             </Heading>
           </Box>
           <ButtonGeneric
-            text="Regresar"
-            color={theme.colors.pink}
-            fontColor="white"
-          />
+            bgColor="pink"
+            text={"Regresar"}
+            sizePX={"25%"}
+            onClick={goBackToDashboard}
+          ></ButtonGeneric>
         </VStack>
       </HStack>
     );

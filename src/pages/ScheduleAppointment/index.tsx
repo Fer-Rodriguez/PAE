@@ -1,4 +1,5 @@
 import { useState } from "react";
+import qs from "qs";
 
 import { Box } from "@chakra-ui/react";
 
@@ -13,37 +14,41 @@ import { SuccessScreen } from "./successScreen";
 
 export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
   const [formStep, setFormStep] = useState(0);
-  const [idPetitioner, setIdPetitioner] = useState("");
   const [date, setDate] = useState("");
   const [idSubject, setIdSubject] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(""); //TODO: implementar la subida de archivos
 
-  const createAppointment = () => {
-    const data = JSON.stringify({
+  const idPetitioner = useStore((state) => state.id);
+  const createAppointment = async () => {
+    const data = qs.stringify({
       idPetitioner: idPetitioner,
       date: date,
       idSubject: idSubject,
       problemDescription: problemDescription,
-      image: image,
+      image: "https://aunnotenemosestaparte.com/imagen.jpg",
     });
 
     const config = {
       method: "post",
-      url: "localhost:6060/appointment",
+      url: "http://localhost:6060/appointment",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       data: data,
     };
 
-    axios(config)
+    let successfulRequest = false;
+    await axios(config)
       .then(function (response) {
+        successfulRequest = true;
         console.log(response);
       })
       .catch(function (error) {
         console.log(error);
       });
+
+    return successfulRequest;
   };
 
   const getScreenFromStep = (step: number) => {
@@ -55,18 +60,26 @@ export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
           }}
           onDropDownChange={setIdSubject}
           onTextFieldChange={setProblemDescription}
-          globalValue={idSubject}
-          globalValue2={problemDescription}
+          valueForDropDown={idSubject}
+          valueForTextField={problemDescription}
         ></BasicInfoScreen>
       );
     } else if (step == 1) {
       return (
         <ScheduleScreen
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             //Llamada a API aquí xd
-            // createAppointment();
-            setFormStep(0);
+            createAppointment().then((sucess) => {
+              if (sucess) {
+                setFormStep(2);
+              } else {
+                alert(
+                  "No podemos completar tu solicitud en este momento. Intenta de nuevo más tarde."
+                );
+              }
+            });
           }}
+          onFullDateSelected={setDate}
         ></ScheduleScreen>
       );
     } else if (step == 2) {

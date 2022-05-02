@@ -9,6 +9,7 @@ interface IButtonGeneric {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isDisabled?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
+  baseProps?: { [key: string]: any };
 }
 
 export const ButtonGeneric = ({
@@ -19,6 +20,7 @@ export const ButtonGeneric = ({
   onClick,
   isDisabled,
   type = "button",
+  baseProps,
 }: IButtonGeneric) => {
   return (
     <Button
@@ -40,6 +42,7 @@ export const ButtonGeneric = ({
       }}
       onClick={onClick}
       isDisabled={isDisabled}
+      {...baseProps}
     >
       {text}
     </Button>

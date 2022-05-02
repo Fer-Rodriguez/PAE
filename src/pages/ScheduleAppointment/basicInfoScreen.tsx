@@ -21,15 +21,15 @@ export const BasicInfoScreen = ({
   onNextScreenButtonClick,
   onDropDownChange,
   onTextFieldChange,
-  globalValue,
-  globalValue2,
+  valueForDropDown,
+  valueForTextField,
 }: {
   mobile?: boolean;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onDropDownChange?: (newValue: string) => void;
   onTextFieldChange?: (newValue: string) => void;
-  globalValue?: string;
-  globalValue2?: string;
+  valueForDropDown?: string;
+  valueForTextField?: string;
 }) => {
   //TODO: Remplazar esto con una llamada GET a la base de datos
   const myOptions = [
@@ -42,15 +42,6 @@ export const BasicInfoScreen = ({
       value: "352c0bf1-2782-4bf8-9fbf-6b75d852ee7e",
     },
   ];
-
-  const configurations = {
-    onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-      //TODO: Darle focus al text in
-      console.log("Value: ", e.target.value);
-    },
-    placeholder: "Seleccionar materia",
-    type: ETypeDropdown.normal,
-  };
 
   const {
     control,
@@ -93,7 +84,7 @@ export const BasicInfoScreen = ({
                 )}
               </>
             )}
-            defaultValue={globalValue}
+            defaultValue={valueForDropDown}
           ></Controller>
         </Box>
         <Controller
@@ -107,7 +98,7 @@ export const BasicInfoScreen = ({
               message: `La descripción no puede estar vacía`,
             },
           }}
-          defaultValue={globalValue2}
+          defaultValue={valueForTextField}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <>
               <TextInput

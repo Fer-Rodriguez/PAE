@@ -1,16 +1,23 @@
 import { Center, VStack } from "@chakra-ui/react";
 
 import { ICitasDaySchedules } from "../../interfaces";
-import { ButtonGeneric } from "../../components/Button";
+import { ButtonGeneric } from "../../components/ButtonGeneric";
 
 import theme from "../../theme/index";
 import "./estilo.css";
 
 interface IScheduleList {
   schedules: Array<ICitasDaySchedules>;
+  onScheduleButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+  scheduleSelected?: string;
   width: string;
 }
-export const ScheduleList = ({ schedules, width }: IScheduleList) => {
+export const ScheduleList = ({
+  schedules,
+  width,
+  onScheduleButtonClick,
+  scheduleSelected,
+}: IScheduleList) => {
   return (
     <Center
       w={width}
@@ -29,10 +36,13 @@ export const ScheduleList = ({ schedules, width }: IScheduleList) => {
       >
         {schedules.map((schedules) => (
           <ButtonGeneric
+            bgColor="purpleLight"
+            sizePX="80%"
             text={schedules.horario}
-            color={theme.colors.purpleLight}
-            fontColor="white"
-            width="80%"
+            onClick={onScheduleButtonClick}
+            baseProps={{
+              opacity: schedules.horario === scheduleSelected ? "100%" : "40%",
+            }}
           ></ButtonGeneric>
         ))}
       </VStack>

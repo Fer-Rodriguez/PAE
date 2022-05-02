@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { EMyCalendarView, ETypeDropdown } from "../../interfaces/enums";
+import { EMyCalendarView } from "../../interfaces/enums";
 import { Box, Center, Spacer, VStack, HStack } from "@chakra-ui/react";
 
 import { ButtonGeneric } from "../../components/Button";
@@ -9,7 +9,6 @@ import { MyCalendar } from "../../components/Calendar";
 
 //Assets
 import theme from "../../theme/index";
-import { INewAppointment } from "../../interfaces/types";
 
 const myOptions = [
   {
@@ -21,55 +20,45 @@ const myOptions = [
   {
     horario: "15:15",
   },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
-  {
-    horario: "15:15",
-  },
 ];
 
 export const ScheduleScreen = ({
   mobile,
-  onClick,
+  onNextScreenButtonClick,
+  onFullDateSelected,
 }: {
   mobile?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onFullDateSelected?: (newValue: string) => void;
 }) => {
-  const [daySelected, setDaySelected] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
+  const [selectedHour, setSelectedHour] = useState("");
 
   useEffect(() => {
-    console.log(daySelected);
-  }, [daySelected]);
+    //console.log(selectedDay);
+  }, [selectedDay]);
+  useEffect(() => {
+    //console.log(selectedHour);
+    // Le damos formato al espacio seleccionado por el usuario como lo necesitamos para hacer la requesta
+    const constructedString = `${selectedDay.getFullYear()}-${
+      selectedDay.getMonth() < 10
+        ? "0" + selectedDay.getMonth()
+        : selectedDay.getMonth()
+    }-${
+      selectedDay.getDate() < 10
+        ? "0" + selectedDay.getDate()
+        : selectedDay.getDate()
+    }T${selectedHour}:00.000`;
+    onFullDateSelected?.(constructedString);
+  }, [selectedHour]);
 
   if (mobile) {
     return (
       <VStack w="100%" spacing="25px" alignItems="center">
         <MyCalendar
           view={EMyCalendarView.month}
-          setSelectedDay={setDaySelected}
-          daySelected={daySelected}
+          setSelectedDay={setSelectedDay}
+          daySelected={selectedDay}
         />
         <ScheduleList schedules={myOptions} width="80%"></ScheduleList>
 
@@ -89,11 +78,18 @@ export const ScheduleScreen = ({
           <Box w={"40vw"}>
             <MyCalendar
               view={EMyCalendarView.month}
-              setSelectedDay={setDaySelected}
-              daySelected={daySelected}
+              setSelectedDay={setSelectedDay}
+              daySelected={selectedDay}
             />
           </Box>
-          <ScheduleList schedules={myOptions} width="30%"></ScheduleList>
+          <ScheduleList
+            onScheduleButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              setSelectedHour(e.currentTarget.innerText);
+            }}
+            scheduleSelected={selectedHour}
+            schedules={myOptions}
+            width="30%"
+          ></ScheduleList>
         </HStack>
         <Spacer />
         <Center w="100%">
@@ -101,7 +97,7 @@ export const ScheduleScreen = ({
             text="Siguiente"
             color={theme.colors.pink}
             fontColor="white"
-            onClick={onClick}
+            onClick={onNextScreenButtonClick}
           />
         </Center>
       </VStack>
