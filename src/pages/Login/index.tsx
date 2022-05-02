@@ -36,27 +36,25 @@ export const FormsLogin = (props: IFormsLogin) => {
 
   const tryLogin = async (data: any) => {
     const idUserData = await GetUser(data.mail, data.password);
-    console.log(idUserData);
     const userData = await GetUserInfo(idUserData.userId);
-    console.log(userData);
 
     if (idUserData.status == "OK") {
       const correctUser: IUserData = {
-        id: userData.id,
+        id: userData.user.id,
         status:
-          userData.status === EStatus.active
+          userData.user.status === EStatus.active
             ? EStatus.active
-            : userData.status === EStatus.deleted
+            : userData.user.status === EStatus.deleted
             ? EStatus.deleted
             : EStatus.inactive,
-        name: userData.name,
-        email: userData.email,
+        name: userData.user.name,
+        email: userData.user.email,
         type:
-          userData.type === EUserType.advisor
+          userData.user.type === EUserType.advisor
             ? EUserType.advisor
-            : userData.type === EUserType.student
+            : userData.user.type === EUserType.student
             ? EUserType.student
-            : userData.type === EUserType.admin
+            : userData.user.type === EUserType.admin
             ? EUserType.admin
             : EUserType.root,
         semester: 5,
@@ -68,9 +66,6 @@ export const FormsLogin = (props: IFormsLogin) => {
       setUser(correctUser);
       navigate("/dashboard");
     }
-
-    //Ya obtuve el ID y la info, entonces, seteamos
-    //setUser()
   };
 
   return (
@@ -89,11 +84,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           >
             Inicia sesión
           </Text>
-          <FormControl
-            isRequired
-            isInvalid={!isValid}
-            onSubmit={(info) => console.log(info)}
-          >
+          <FormControl isRequired isInvalid={!isValid}>
             <Stack spacing={7} w={"100%"}>
               <MailInput control={control} secondValidation={true} />
               <PasswordInput control={control} secondValidation={true} />
