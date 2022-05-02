@@ -8,6 +8,8 @@ interface IButtonGeneric {
   text: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isDisabled?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
+  baseProps?: { [key: string]: any };
 }
 
 export const ButtonGeneric = ({
@@ -17,9 +19,12 @@ export const ButtonGeneric = ({
   text,
   onClick,
   isDisabled,
+  type = "button",
+  baseProps,
 }: IButtonGeneric) => {
   return (
     <Button
+      type={type}
       bg={bgColor}
       opacity={"0.75"}
       rounded={theme.radii.button}
@@ -37,6 +42,7 @@ export const ButtonGeneric = ({
       }}
       onClick={onClick}
       isDisabled={isDisabled}
+      {...baseProps}
     >
       {text}
     </Button>
