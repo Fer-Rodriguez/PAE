@@ -19,6 +19,7 @@ import { useStore } from "../../state/store";
 import "./style.css";
 import "swiper/css";
 import { useEffect } from "react";
+import { getRecentAppointment } from "../../api/appointments/get";
 
 const Desktop = ({ type }: { type: EUserType }) => (
   <Grid
@@ -101,6 +102,10 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     }),
     shallow
   );
+
+  useEffect(() => {
+    getRecentAppointment("d6cf55f4-72ff-4295-a4a1-d96e39ad6cf8");
+  }, []);
 
   return mobile ? (
     <Mobile type={userData.type} />
