@@ -34,10 +34,10 @@ export const FormsRegister = (props: IRegister) => {
           </Text>
 
           {/* <VisuallyHidden> */}
-          <Forms1 />
+          {/* <Forms1 /> */}
           {/* </VisuallyHidden> */}
 
-          {/* <Forms2 /> */}
+          <Forms2 />
           {/* <Forms3/> */}
         </Flex>
       </Center>
