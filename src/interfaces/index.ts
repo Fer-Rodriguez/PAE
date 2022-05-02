@@ -110,6 +110,11 @@ export interface ICitasDaySchedules {
   asesor?: string;
   horario: string;
 }
+
+export interface IMenuOptions {
+  linkTo: string;
+  imgSrc: string;
+}
 //Local Interface
 export interface IProfileCard {
   data: IDataProfileCard;
