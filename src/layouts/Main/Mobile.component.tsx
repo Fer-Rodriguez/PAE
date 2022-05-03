@@ -24,6 +24,6 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => (
     {userComponent}
     {/* TODO: Add responsive menu instead of Spacer**/}
     <Spacer />
-    <Menu mobile={true} />
+    <Menu userType="user" mobile={true} />
   </Flex>
 );

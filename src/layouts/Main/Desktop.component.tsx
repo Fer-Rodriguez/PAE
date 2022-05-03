@@ -85,7 +85,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
       </GridItem>
       <GridItem rowStart={5} colSpan={2} colStart={1}>
         <Center>
-          <Menu mobile={false} />
+          <Menu userType="user" mobile={false} />
         </Center>
       </GridItem>
 
