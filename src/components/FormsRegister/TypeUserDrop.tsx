@@ -28,11 +28,15 @@ export const TypeUserDrop = ({
     <Controller
       name="typeUserDrop"
       control={control || null}
+      rules={{
+        required: `Por favor selecciona una opción`,
+      }}
       render={({ field: { onChange, value } }) => (
         <div>
           <FormLabel htmlFor="typeUserDrop">Eres...</FormLabel>
           <Select
             isInvalid={false}
+            placeholder={"Selecciona una opción"}
             id="typeUserDrop"
             onChange={(e) => {
               onChange(e);
@@ -45,7 +49,7 @@ export const TypeUserDrop = ({
             <option value={"asesorado"}>Asesorado</option>
             <option value={"asesor"}>Asesor</option>
           </Select>
-          <FormHelperText>Selecciona tu el tipo de usuario</FormHelperText>
+          <FormHelperText>Selecciona el tipo de usuario</FormHelperText>
         </div>
       )}
       defaultValue={defaultValue}

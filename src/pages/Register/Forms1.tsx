@@ -10,12 +10,14 @@ import { ConfirmPasswordInput } from "../../components/FormsRegister/ConfirmPass
 import { useNavigate } from "react-router-dom";
 
 interface IForms1 {
-  onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+  setInfo: React.Dispatch<any>;
+  info: any;
+  setFormStep: React.Dispatch<number>;
 }
 
-export const Forms1 = () => {
+export const Forms1 = ({ info, setInfo, setFormStep }: IForms1) => {
   const navigate = useNavigate();
-  const [fullname, setFullname] = useState("popo");
+  const [fullname, setFullname] = useState("");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,10 +25,16 @@ export const Forms1 = () => {
     navigate("/");
   };
 
+  const saveData = async (data: any) => {
+    setInfo(data);
+    setFormStep(1);
+  };
+
   const {
     control,
     watch,
     formState: { isValid },
+    handleSubmit,
   } = useForm({ mode: "onChange" });
 
   return (
@@ -36,11 +44,13 @@ export const Forms1 = () => {
           control={control}
           setName={setFullname}
           secondValidation={true}
+          defaultValue={info.name}
         />
         <MailInput
           control={control}
           setMail={setMail}
           secondValidation={true}
+          defaultValue={info.mail}
         />
         <PasswordInput
           control={control}
@@ -60,7 +70,7 @@ export const Forms1 = () => {
             sizePX="40%"
             text="Siguiente"
             isDisabled={!isValid}
-            // onClick={tryLogin}
+            onClick={handleSubmit(saveData)}
           ></ButtonGeneric>
         </Center>
         <Center>

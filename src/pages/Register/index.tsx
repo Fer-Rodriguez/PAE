@@ -1,11 +1,5 @@
-import {
-  Center,
-  Container,
-  Flex,
-  Text,
-  VisuallyHidden,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Center, Container, Flex, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { Logo } from "../../assets/Logo";
 import { Forms1 } from "./Forms1";
 import { Forms2 } from "./Forms2";
@@ -16,6 +10,18 @@ interface IRegister {
 }
 
 export const FormsRegister = (props: IRegister) => {
+  const [formStep, setFormStep] = useState(0);
+  const [info, setInfo] = useState<any>({});
+
+  const getScreenFromStep = (step: number) => {
+    if (step == 0) {
+      return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+    } else if (step == 1) {
+      return <Forms2 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+    } else if (step == 2) {
+      return <>HOLA POPO</>;
+    }
+  };
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
       <Center h={"100%"}>
@@ -33,11 +39,8 @@ export const FormsRegister = (props: IRegister) => {
             Regístrate
           </Text>
 
-          {/* <VisuallyHidden> */}
-          {/* <Forms1 /> */}
-          {/* </VisuallyHidden> */}
+          {getScreenFromStep(formStep)}
 
-          <Forms2 />
           {/* <Forms3/> */}
         </Flex>
       </Center>
