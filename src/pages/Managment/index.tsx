@@ -31,7 +31,11 @@ export const Managment = ({
     rows,
     prepareRow,
     setGlobalFilter,
-  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+  } = useTable(
+    { columns, data, hiddenColumns: ["id", "id_advisor"] },
+    useGlobalFilter,
+    useSortBy
+  );
 
   // Function to handle changes in the input representing the fobal filter. May be changed or modified to add more logic.
   const handleFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

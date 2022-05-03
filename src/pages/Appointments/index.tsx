@@ -1,5 +1,5 @@
 //Libraries
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
 
 //Zustand
@@ -12,7 +12,6 @@ import { ButtonGeneric } from "../../components/Button";
 import { updateAppointment } from "../../api/appointments/update";
 
 //Interfaces
-import { IDataProfileCard } from "../../interfaces";
 import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 interface IColumnDetails {
@@ -20,159 +19,89 @@ interface IColumnDetails {
 }
 
 import { Managment } from "../Managment";
+import { getAllAppointments } from "../../api/appointments/get";
+import { updateAppointmentDetails } from "../../api/appointments-user/update";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
+  const [myData, setMyData] = useState([]);
   const userType = useStore((state) => state.type);
+  const userId = useStore((state) => state.id);
 
-  const apiAcceptAppointment = async () => {
-    await updateAppointment("4901dfc1-42c0-46bf-82f6-93e3609ae2b3", {
-      status: EStatusAppointment.ACCEPTED,
-    });
+  const obtainData = async () => {
+    const response = await getAllAppointments(userId, userType);
+    setMyData(response);
   };
 
-  const columnsAdmin = useMemo(
-    () => [
-      {
-        Header: "Id",
-        accessor: "id",
-      },
-      {
-        Header: "Fecha",
-        accessor: "date",
-      },
-      {
-        Header: "Asesor",
-        accessor: "assessor",
-      },
-      {
-        Header: "Asesorado",
-        accessor: "student",
-      },
-      {
-        Header: "Class",
-        accessor: "class",
-      },
-      {
-        Header: "Estatus",
-        accessor: "status",
-      },
-      {
-        Header: "",
-        accessor: "accept",
-        Cell: (cell: Cell<any, any>) => (
-          <ButtonGeneric
-            text={"Aceptar"}
-            color={"purple"}
-            onClick={() =>
-              updateAppointment(cell.row.values.id, {
-                status: EStatusAppointment.ACCEPTED,
-              })
-            }
-          />
-        ),
-      },
-      {
-        Header: "",
-        accessor: "details",
-        Cell: (cell: Cell<any, any>) => (
-          <ButtonGeneric text={"Detalles"} color={"blue"} />
-        ),
-      },
-    ],
-    []
+  useEffect(() => {
+    obtainData();
+  }, []);
+
+  const columns: {
+    Header: string;
+    accessor: string;
+    Cell?: (cell: Cell<any, any>) => any;
+  }[] = useMemo(
+    () =>
+      myData[0]
+        ? Object.keys(myData[0]).map((key, _value) => {
+            return {
+              Header: key,
+              accessor: key,
+            };
+          })
+        : [],
+    [myData]
   );
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Fecha",
-        accessor: "date",
-      },
-      {
-        Header: "Asesor",
-        accessor: "assessor",
-      },
-      {
-        Header: "Asesorado",
-        accessor: "student",
-      },
-      {
-        Header: "Class",
-        accessor: "class",
-      },
-      {
-        Header: "Estatus",
-        accessor: "status",
-      },
-      {
-        Header: "",
-        accessor: "details",
-        Cell: (cell: Cell<any, any>) => (
-          <ButtonGeneric text={"Detalles"} color={"blue"} />
-        ),
-      },
-    ],
-    []
-  );
+  //Las siguientes operaciones variarán según el tipo de tabla que se quiera construir
+  //TODO: meter estas operaciones en una función? hacer algo más limpio, pues
+  //columns.shift();
+  if (userType == EUserType.admin) {
+    columns.push({
+      Header: "",
+      accessor: "accept",
+      Cell: (cell: Cell<any, any>) => (
+        <ButtonGeneric
+          text={"Aceptar"}
+          color={"purple"}
+          onClick={() => {
+            console.log(cell.row.values.id);
+            console.log(cell.row.values.id_advisor);
+            updateAppointment(cell.row.values.id, {
+              status: EStatusAppointment.ACCEPTED,
+            });
+            updateAppointmentDetails(
+              cell.row.values.id,
+              "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
+              "id_advisor"
+            );
+          }}
+        />
+      ),
+    });
+  }
+  columns.push({
+    Header: "",
+    accessor: "details",
+    Cell: (cell: Cell<any, any>) => (
+      <ButtonGeneric text={"Detalles"} color={"blue"} />
+    ),
+  });
+  const data = useMemo<IColumnDetails[]>(() => [...myData], [myData]);
 
-  const tuArregloDeObjetos = [
-    {
-      id: "aasdas12321",
-      date: "16/01/2022 12:00",
-      assessor: "Julián Martinez",
-      student: "Daniela Ordan",
-      class: "Electromagnetismo",
-      status: "Pendiente",
-    },
-    {
-      id: "aasdas12321",
-      date: "15/01/2022 13:00",
-      assessor: "Alejandro Castro",
-      student: "Daniela Ordan",
-      class: "Electromagnetismo",
-      status: "Pendiente",
-    },
-    {
-      id: "aasdas12321",
-      date: "01/02/22 15:00",
-      assessor: "Fernando Jimenez",
-      student: "Daniel Maldonado",
-      class: "Linux",
-      status: "Terminada",
-    },
-    {
-      id: "aasdas12321",
-      date: "16/01/2022 10:00",
-      assessor: "Guillermo Gutierrez",
-      student: "Julián Martinez",
-      class: "Español",
-      status: "Abierta",
-    },
-    {
-      id: "aasdas12321",
-      date: "22/03/22 09:00",
-      assessor: "Benjamín Parques",
-      student: "Pedro Parques",
-      class: "Ética",
-      status: "Abierta",
-    },
-    {
-      id: "aasdas12321",
-      date: "20/04/2022 16:00",
-      assessor: "Kanye West",
-      student: "Rosalía",
-      class: "Música",
-      status: "Terminada",
-    },
-  ];
-  const data = useMemo<IColumnDetails[]>(() => tuArregloDeObjetos, []);
-  return (
-    <Managment
-      columns={userType === EUserType.admin ? columnsAdmin : columns}
-      data={data}
-      headColor={"pink"}
-      mobile={mobile}
-      header={"Asesorías"}
-    />
-  );
+  //TODO: mejorar esta condicional para que se tome en cuenta que myData puede quedar vacío si
+  //no hay datos en la db
+  if (myData.length === 0) {
+    return <>Cargando...</>;
+  } else {
+    return (
+      <Managment
+        columns={columns}
+        data={data}
+        headColor={"pink"}
+        mobile={mobile}
+        header={"Asesorías"}
+      />
+    );
+  }
 };
