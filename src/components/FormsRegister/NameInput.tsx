@@ -2,7 +2,6 @@ import React, { ChangeEvent } from "react";
 import { Controller, Control } from "react-hook-form";
 
 import {
-  FormControl,
   FormLabel,
   FormErrorMessage,
   FormHelperText,
@@ -12,21 +11,21 @@ import {
 interface INameIput {
   control: Control<any>;
   defaultValue?: string;
-  setMail?: React.Dispatch<React.SetStateAction<string>>;
+  setName?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
 }
 
 export const NameInput = ({
   control,
   defaultValue = "",
-  setMail,
+  setName,
   secondValidation = false,
 }: INameIput) => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (setMail) {
-      setMail(e.target.value);
+    if (setName) {
+      setName(e.target.value);
     }
   };
 
@@ -42,14 +41,14 @@ export const NameInput = ({
         },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <FormControl isRequired isInvalid={Boolean(error)}>
+        <div>
           <FormLabel htmlFor="name">Nombre completo</FormLabel>
           <Input
+            autoComplete="name"
             size={"sm"}
             placeholder="Daniel Pérez Rojas"
             onChange={(e) => {
               onChange(e);
-              console.log(error);
               if (secondValidation) {
                 handleChange(e);
               }
@@ -62,7 +61,7 @@ export const NameInput = ({
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}
-        </FormControl>
+        </div>
       )}
       defaultValue={defaultValue}
     ></Controller>

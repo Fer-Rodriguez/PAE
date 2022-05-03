@@ -68,18 +68,22 @@ export const FormsLogin = (props: IFormsLogin) => {
     }
   };
 
+  const register = () => {
+    navigate("/register");
+  };
+
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
       <Center h={"100%"}>
         <Flex direction={"column"} align={"center"}>
           <Logo
-            {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "35%" })}
+            {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
           ></Logo>
           <Text
             color={"purpleLight"}
             fontWeight={"semibold"}
-            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "4xl" })}
-            paddingTop={"30px"}
+            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "3xl" })}
+            paddingTop={"20px"}
             paddingBottom={"20px"}
           >
             Inicia sesión
@@ -113,14 +117,17 @@ export const FormsLogin = (props: IFormsLogin) => {
                 ></ButtonGeneric>
               </Center>
               <Center>
-                <Link
-                  fontSize="sm"
-                  color="cyan.400"
-                  href="#"
-                  textAlign={"right"}
-                >
-                  Regístrate
-                </Link>
+                <Text fontSize={"sm"}>
+                  ¿No tienes una cuenta?{" "}
+                  <Link
+                    fontSize="sm"
+                    color="cyan.400"
+                    onClick={() => register()}
+                    textAlign={"right"}
+                  >
+                    Regístrate
+                  </Link>
+                </Text>
               </Center>
             </Stack>
           </FormControl>

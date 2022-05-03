@@ -21,6 +21,7 @@ import { AppointmentsPage } from "./pages/Appointments";
 import { AdvisorsPage } from "./pages/Advisors";
 
 import { FormsLogin } from "./pages/Login";
+import { FormsRegister } from "./pages/Register";
 
 //CSS
 import "./App.css";
@@ -39,6 +40,15 @@ export function App() {
               <Login
                 desktop={<FormsLogin />}
                 mobile={<FormsLogin mobile={true} />}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Login
+                desktop={<FormsRegister />}
+                mobile={<FormsRegister mobile={true} />}
               />
             }
           />

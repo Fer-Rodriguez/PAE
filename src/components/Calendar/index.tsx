@@ -49,12 +49,14 @@ interface IMyCalendar {
   view?: EMyCalendarView;
   setSelectedDay?: React.Dispatch<Date>;
   daySelected?: Date;
+  h?: string;
 }
 
 export const MyCalendar = ({
   view = EMyCalendarView.week,
   setSelectedDay,
   daySelected,
+  h,
 }: IMyCalendar) => {
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
@@ -207,7 +209,7 @@ export const MyCalendar = ({
   //TODO: On creation, fill calendar with schedules from advisors.
 
   return (
-    <Box>
+    <Box overflowY={"scroll"}>
       {view === EMyCalendarView.week && (
         <>
           <MyAlert
@@ -232,7 +234,7 @@ export const MyCalendar = ({
         <Calendar
           ref={cal}
           className="calendar"
-          height="600px"
+          {...(h ? { height: h } : { height: "65vh" })}
           view={view}
           disableDblClick
           scheduleView={["time"]}

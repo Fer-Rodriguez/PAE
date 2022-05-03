@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { Controller, Control } from "react-hook-form";
+import { Controller, Control, WatchInternal } from "react-hook-form";
 
 import {
   FormLabel,
@@ -8,41 +8,44 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-interface IPasswordInput {
+interface IConfirmPasswordInput {
   control: Control<any>;
   defaultValue?: string;
-  setPassword?: React.Dispatch<React.SetStateAction<string>>;
+  setConfirmPassword?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
+  watch: WatchInternal<any>;
 }
 
-export const PasswordInput = ({
+export const ConfirmPasswordInput = ({
   control,
   defaultValue = "",
-  setPassword,
+  setConfirmPassword,
   secondValidation = false,
-}: IPasswordInput) => {
+  watch,
+}: IConfirmPasswordInput) => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (setPassword) {
-      setPassword(e.target.value);
+    if (setConfirmPassword) {
+      setConfirmPassword(e.target.value);
     }
   };
 
   return (
     <Controller
-      name="password"
+      name="confirmPassword"
       control={control || null}
       rules={{
         required: `Por favor ingresa tu contraseña`,
-        minLength: {
-          value: 8,
-          message: `Tu contraseña debe contener por lo menos 8 caracteres`,
+        validate: (val: string) => {
+          if (watch("password") != val) {
+            return "Las contraseñas no coinciden";
+          }
         },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <div>
-          <FormLabel htmlFor="password">Contraseña</FormLabel>
+          <FormLabel htmlFor="confirmPassword">Contraseña</FormLabel>
           <Input
             type={"password"}
             size={"sm"}
@@ -58,7 +61,7 @@ export const PasswordInput = ({
           ></Input>
 
           {!error ? (
-            <FormHelperText>Ingresa tu contraseña</FormHelperText>
+            <FormHelperText>Confirma tu contraseña</FormHelperText>
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}

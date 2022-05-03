@@ -1,18 +1,27 @@
-import { useForm } from "react-hook-form";
-import { Center, Container, Flex, Text, Stack } from "@chakra-ui/react";
+import { Center, Container, Flex, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { Logo } from "../../assets/Logo";
-import { NameInput } from "../../components/FormsRegister/NameInput";
-import { ButtonGeneric } from "../../components/ButtonGeneric";
-import { MailInput } from "../../components/FormsLogin/MailInput";
-import { PasswordInput } from "../../components/FormsRegister/PasswordInput";
-import { CarreraInput } from "../../components/FormsRegister/CarreraInput";
+import { Forms1 } from "./Forms1";
+import { Forms2 } from "./Forms2";
+import { Forms3 } from "./Forms3";
 
 interface IRegister {
   mobile?: boolean;
 }
 
 export const FormsRegister = (props: IRegister) => {
-  const { control } = useForm({ mode: "onChange" });
+  const [formStep, setFormStep] = useState(0);
+  const [info, setInfo] = useState<any>({});
+
+  const getScreenFromStep = (step: number) => {
+    if (step == 0) {
+      return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+    } else if (step == 1) {
+      return <Forms2 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+    } else if (step == 2) {
+      return <>HOLA POPO</>;
+    }
+  };
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
       <Center h={"100%"}>
@@ -23,28 +32,16 @@ export const FormsRegister = (props: IRegister) => {
           <Text
             color={"purpleLight"}
             fontWeight={"semibold"}
-            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "4xl" })}
-            paddingTop={"30px"}
+            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "3xl" })}
+            paddingTop={"20px"}
             paddingBottom={"20px"}
           >
-            Inicia sesión
+            Regístrate
           </Text>
-          <Stack spacing={7} w={"100%"}>
-            <Stack spacing={2} w={"100%"}>
-              <NameInput control={control}></NameInput>
-              <MailInput control={control}></MailInput>
-              <PasswordInput control={control}></PasswordInput>
-              <PasswordInput control={control}></PasswordInput>
-            </Stack>
 
-            <Center>
-              <ButtonGeneric
-                bgColor="purpleLight"
-                sizePX="40%"
-                text="Ingresar"
-              ></ButtonGeneric>
-            </Center>
-          </Stack>
+          {getScreenFromStep(formStep)}
+
+          {/* <Forms3/> */}
         </Flex>
       </Center>
     </Container>
