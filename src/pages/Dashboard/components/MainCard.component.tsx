@@ -14,6 +14,7 @@ import { useStore } from "../../../state/store";
 import FlagMan from "../Icons/FlagMan";
 import theme from "../../../theme";
 import rocket from "../Icons/cohete.png";
+import bandera from "../Icons/bandera.png";
 
 import "../style.css";
 import { IAppointmentDataMod } from "../../../interfaces";
@@ -81,7 +82,9 @@ export const MainCard = ({
             : "Tu próxima asesoria"}
         </Text>
         <Heading color={"white"}>
-          {dates.day}, {dates.monthDay} de {dates.month}
+          {recentAppointment !== null || recentAppointment !== undefined
+            ? dates.day + ", " + dates.monthDay + " de " + dates.month
+            : "No hay asesorías próximas"}
         </Heading>
         <HStack gap={6} mt={2}>
           <Text color={"white"}>{dates.hours}</Text>
@@ -95,7 +98,7 @@ export const MainCard = ({
       {!mobile &&
         (type === EUserType.student ? (
           <Box position={"absolute"} top="7%" left={"46%"}>
-            <FlagMan />
+            <Image src={bandera} />
           </Box>
         ) : (
           <Box position={"absolute"} top="15%" left={"40%"}>

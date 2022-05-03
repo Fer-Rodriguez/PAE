@@ -6,16 +6,14 @@ import { Menu } from "../../components/Menu";
 //Interfaces
 import { IUserComponents } from "../../interfaces";
 
+//Assets
+import { Logo } from "../../assets/Logo";
+
 export const MobileComponents = ({ userComponent }: IUserComponents) => (
   <Flex flexDirection={"column"} minH={"100vh"}>
     <Spacer />
     <Flex justifyContent={"space-around"}>
-      <Image
-        maxWidth={"30vw"}
-        src="https://orienta-me.com/assets/globals/img/orienta-me/login/t_queremos.png"
-        alt="Logo del Programa de Acompañamiento Estudiantil"
-        justifyContent="space-around"
-      />
+      <Logo maxWidth="20vw" />
       <Flex alignItems="center" pr="6" gap={"6"}>
         <CloseIcon boxSize={6} />
         <BellIcon boxSize={8} />
