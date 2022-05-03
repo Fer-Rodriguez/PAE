@@ -12,7 +12,7 @@ import { ButtonGeneric } from "../../components/Button";
 import { updateAppointment } from "../../api/appointments/update";
 
 //Interfaces
-import { EStatusAppointment } from "../../interfaces/enums";
+import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 interface IColumnDetails {
   [key: string]: string;
@@ -20,6 +20,7 @@ interface IColumnDetails {
 
 import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
+import { updateAppointmentDetails } from "../../api/appointments-user/update";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const [myData, setMyData] = useState([]);
@@ -54,22 +55,29 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   //Las siguientes operaciones variarán según el tipo de tabla que se quiera construir
   //TODO: meter estas operaciones en una función
-  columns.shift();
-  columns.push({
-    Header: "",
-    accessor: "accept",
-    Cell: (cell: Cell<any, any>) => (
-      <ButtonGeneric
-        text={"Aceptar"}
-        color={"purple"}
-        onClick={() => {
-          updateAppointment(cell.row.values.id, {
-            status: EStatusAppointment.ACCEPTED,
-          });
-        }}
-      />
-    ),
-  });
+  if (userType == EUserType.admin) {
+    columns.shift();
+    columns.push({
+      Header: "",
+      accessor: "accept",
+      Cell: (cell: Cell<any, any>) => (
+        <ButtonGeneric
+          text={"Aceptar"}
+          color={"purple"}
+          onClick={() => {
+            updateAppointment(cell.row.values.id, {
+              status: EStatusAppointment.ACCEPTED,
+            });
+            updateAppointmentDetails(
+              cell.row.values.id,
+              cell.row.values.id_advisor,
+              "id_advisor"
+            );
+          }}
+        />
+      ),
+    });
+  }
   columns.push({
     Header: "",
     accessor: "details",
