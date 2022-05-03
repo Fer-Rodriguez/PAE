@@ -54,9 +54,9 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   );
 
   //Las siguientes operaciones variarán según el tipo de tabla que se quiera construir
-  //TODO: meter estas operaciones en una función
+  //TODO: meter estas operaciones en una función? hacer algo más limpio, pues
+  //columns.shift();
   if (userType == EUserType.admin) {
-    columns.shift();
     columns.push({
       Header: "",
       accessor: "accept",
@@ -65,12 +65,14 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
           text={"Aceptar"}
           color={"purple"}
           onClick={() => {
+            console.log(cell.row.values.id);
+            console.log(cell.row.values.id_advisor);
             updateAppointment(cell.row.values.id, {
               status: EStatusAppointment.ACCEPTED,
             });
             updateAppointmentDetails(
               cell.row.values.id,
-              cell.row.values.id_advisor,
+              "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
               "id_advisor"
             );
           }}
