@@ -1,4 +1,6 @@
 import axios from "axios";
+import qs from "qs";
+
 import { INewUserSchedule } from "../../../interfaces";
 import { EStatus, EUserType } from "../../../interfaces/enums";
 
@@ -16,7 +18,7 @@ interface ICreateUserData {
 }
 
 export const CreateUser = async (newValues: ICreateUserData) => {
-  const data = JSON.stringify({
+  const data = qs.stringify({
     name: newValues.name,
     email: newValues.email,
     password: newValues.password,
@@ -30,7 +32,7 @@ export const CreateUser = async (newValues: ICreateUserData) => {
     method: "post",
     url: "http://localhost:6070/register/create",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     data: data,
   };

@@ -21,7 +21,10 @@ import { TypeUserDrop } from "../../components/FormsRegister/TypeUserDrop";
 import { Confirmation } from "./Confirmation";
 import { InfoIcon } from "@chakra-ui/icons";
 import { CreateUser } from "../../api/users/create";
-import { EStatus, EUserType } from "../../interfaces/enums";
+import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
+import { GetUser, GetUserInfo } from "../../api/users/get";
+import { IUserData } from "../../interfaces";
+import { useStore } from "../../state/store";
 
 interface IForms2 {
   setInfo: React.Dispatch<any>;
@@ -31,6 +34,7 @@ interface IForms2 {
 
 export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
   const navigate = useNavigate();
+  const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
   const [doubleCarrera, setDoubleCarrera] = useState("");
   const [semesterCarrera, setSemesterCarrera] = useState("");
@@ -47,7 +51,38 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
       semester: info.semestreCarrera,
       status: EStatus.active,
       type: EUserType.student,
-    }).then(() => navigate("/"));
+    });
+    const idUserData = await GetUser(info.mail, info.password);
+    const userData = await GetUserInfo(idUserData.userId);
+
+    if (idUserData.status == "OK") {
+      const correctUser: IUserData = {
+        id: userData.user.id,
+        status:
+          userData.user.status === EStatus.active
+            ? EStatus.active
+            : userData.user.status === EStatus.deleted
+            ? EStatus.deleted
+            : EStatus.inactive,
+        name: userData.user.name,
+        email: userData.user.email,
+        type:
+          userData.user.type === EUserType.advisor
+            ? EUserType.advisor
+            : userData.user.type === EUserType.student
+            ? EUserType.student
+            : userData.user.type === EUserType.admin
+            ? EUserType.admin
+            : EUserType.root,
+        semester: info.semestreCarrera,
+        career: info.carrera,
+        config: { language: ELanguage.spanish, theme: ETheme.white },
+        profilePic: "No tengo",
+        schedule: null,
+      };
+      setUser(correctUser);
+      navigate("/dashboard");
+    }
   };
 
   const login = () => {
