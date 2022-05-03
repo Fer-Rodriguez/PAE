@@ -1,5 +1,5 @@
 //Libraries
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
 
 //Zustand
@@ -12,8 +12,7 @@ import { ButtonGeneric } from "../../components/Button";
 import { updateAppointment } from "../../api/appointments/update";
 
 //Interfaces
-import { IDataProfileCard } from "../../interfaces";
-import { EStatusAppointment, EUserType } from "../../interfaces/enums";
+import { EStatusAppointment } from "../../interfaces/enums";
 
 interface IColumnDetails {
   [key: string]: string;
@@ -23,75 +22,76 @@ import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
+  const [myData, setMyData] = useState([]);
   const userType = useStore((state) => state.type);
   const userId = useStore((state) => state.id);
 
-  const apiAcceptAppointment = async () => {
-    await updateAppointment("4901dfc1-42c0-46bf-82f6-93e3609ae2b3", {
-      status: EStatusAppointment.ACCEPTED,
-    });
+  const obtainData = async () => {
+    const response = await getAllAppointments(userId, userType);
+    setMyData(response);
   };
 
-  let dataFromAPI: IColumnDetails[] = [];
-  let columnsFromData: (
-    | {
-        Header: string;
-        accessor: string;
-        Cell?: undefined;
-      }
-    | {
-        Header: string;
-        accessor: string;
-        Cell: (cell: Cell<any, any>) => JSX.Element;
-      }
-  )[] = [];
-  getAllAppointments(userId, userType).then((res) => {
-    dataFromAPI = res.data;
-    columnsFromData = Object.keys(res.data[0]).map((key, _value) => {
-      return {
-        Header: key,
-        accessor: key,
-      };
-    });
-    console.log("COLUMNAS: " + columnsFromData);
-  });
+  useEffect(() => {
+    obtainData();
+  }, []);
 
-  columnsFromData.push({
+  const columns: {
+    Header: string;
+    accessor: string;
+    Cell?: (cell: Cell<any, any>) => any;
+  }[] = useMemo(
+    () =>
+      myData[0]
+        ? Object.keys(myData[0]).map((key, _value) => {
+            return {
+              Header: key,
+              accessor: key,
+            };
+          })
+        : [],
+    [myData]
+  );
+
+  //Las siguientes operaciones variarán según el tipo de tabla que se quiera construir
+  //TODO: meter estas operaciones en una función
+  columns.shift();
+  columns.push({
     Header: "",
     accessor: "accept",
     Cell: (cell: Cell<any, any>) => (
       <ButtonGeneric
         text={"Aceptar"}
         color={"purple"}
-        onClick={() =>
+        onClick={() => {
           updateAppointment(cell.row.values.id, {
             status: EStatusAppointment.ACCEPTED,
-          })
-        }
+          });
+        }}
       />
     ),
   });
-  columnsFromData.push({
+  columns.push({
     Header: "",
     accessor: "details",
     Cell: (cell: Cell<any, any>) => (
       <ButtonGeneric text={"Detalles"} color={"blue"} />
     ),
   });
+  const data = useMemo<IColumnDetails[]>(() => [...myData], [myData]);
 
-  useMemo(() => {
-    columnsFromData;
-  }, []);
-
-  console.log("DATA: " + dataFromAPI);
-  const data = useMemo<IColumnDetails[]>(() => dataFromAPI, []);
-  return (
-    <Managment
-      columns={columnsFromData}
-      data={data}
-      headColor={"pink"}
-      mobile={mobile}
-      header={"Asesorías"}
-    />
-  );
+  //TODO: mejorar esta condicional para que se tome en cuenta que myData puede quedar vacío si
+  //no hay datos en la db
+  if (myData.length === 0) {
+    return <>Cargando...</>;
+  } else {
+    return (
+      <Managment
+        columns={columns}
+        data={data}
+        headColor={"pink"}
+        mobile={mobile}
+        header={"Asesorías"}
+      />
+    );
+  }
 };
