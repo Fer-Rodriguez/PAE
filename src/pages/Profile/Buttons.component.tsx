@@ -85,7 +85,7 @@ const MyAlert = ({
 };
 
 export const ButtonChangePassword = ({ onOpen }: { onOpen: () => void }) => (
-  <Center>
+  <Center mb={6}>
     <ButtonGeneric
       onClick={() => onOpen()}
       color={theme.colors.purple}

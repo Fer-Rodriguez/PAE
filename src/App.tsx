@@ -1,26 +1,32 @@
+import { useMemo } from "react";
+
 //Libraries
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 //Layout
 import { Login } from "./layouts/Login";
 
 //Pages
 import { Managment } from "./pages/Managment";
 
-import { CitasPage } from "./pages/Agenda_Citas";
-import { CitasPage2 } from "./pages/Agenda_Citas/citas_2";
-import { CitasPage3 } from "./pages/Agenda_Citas/citas_3";
+import { ScheduleAppointment } from "./pages/ScheduleAppointment";
 import { Dashboard } from "./pages/Dashboard";
 
 import { MainLayout } from "./layouts/Main";
+
+import { ProfilePage } from "./pages/Profile";
+
+import { AppointmentsPage } from "./pages/Appointments";
+import { AdvisorsPage } from "./pages/Advisors";
+
+import { FormsLogin } from "./pages/Login";
+import { FormsRegister } from "./pages/Register";
 
 //CSS
 import "./App.css";
 
 import theme from "./theme";
-import { ProfilePage } from "./pages/Profile";
-import { FormsLogin } from "./pages/Login";
-import { FormsRegister } from "./pages/Register";
 
 export function App() {
   return (
@@ -59,7 +65,14 @@ export function App() {
               path="asesorias"
               element={
                 <>
-                  <h1>Hola</h1>
+                  <MainLayout
+                    desktop={<AppointmentsPage mobile={false} />}
+                    mobile={
+                      <Box m={6}>
+                        <AppointmentsPage mobile />
+                      </Box>
+                    }
+                  />
                 </>
               }
             />
@@ -68,7 +81,25 @@ export function App() {
               element={
                 <MainLayout
                   desktop={<ProfilePage />}
-                  mobile={<ProfilePage />}
+                  mobile={<ProfilePage mobile />}
+                />
+              }
+            />
+            <Route
+              path="crear_asesoria"
+              element={
+                <MainLayout
+                  desktop={<ScheduleAppointment />}
+                  mobile={<ScheduleAppointment mobile />}
+                />
+              }
+            />
+            <Route
+              path="asesores"
+              element={
+                <MainLayout
+                  desktop={<AdvisorsPage />}
+                  mobile={<AdvisorsPage mobile />}
                 />
               }
             />

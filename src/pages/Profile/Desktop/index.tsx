@@ -11,6 +11,7 @@ import {
   GridItem,
   useDisclosure,
   HStack,
+  Center,
 } from "@chakra-ui/react";
 
 import { EditIcon } from "@chakra-ui/icons";
@@ -35,6 +36,7 @@ import { titleProfileCard } from "../../../data";
 
 //Assets
 import theme from "../../../theme";
+import profile_image from "../Assets/profile_image.png";
 
 /**
  *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
@@ -84,14 +86,15 @@ export const ProfileDesktop = ({
         >
           <Flex my={"5rem"}>
             <Spacer />
-
-            <Circle backgroundColor={"#8963D9"} size="10rem" mx={15}>
-              <Image
-                maxW={"80%"}
-                minW={"50%"}
-                src={data.profilePic}
-                alt="Imagen de perfil del usuario en cuestión."
-              />
+            <Circle backgroundColor={"blue"} size="10rem">
+              <Center>
+                <Image
+                  maxW={"70%"}
+                  src={profile_image}
+                  mb="5"
+                  alt="Imagen de perfil del usuario en cuestión."
+                />
+              </Center>
             </Circle>
 
             <Spacer />

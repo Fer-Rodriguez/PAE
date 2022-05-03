@@ -1,18 +1,20 @@
 import { StoreSlice } from "./store";
-import { EStatus_Appointement } from "../interfaces/enums";
+import { EStatusAppointment } from "../interfaces/enums";
 import {
   INewAppointment,
   TAppointment,
   TCreateAppointment,
 } from "../interfaces/types";
+import { IAppointmentDataMod } from "../interfaces";
 
 export type TAppointmentSlice = {
   appointments: Array<TAppointment>;
+  recentAppointment: IAppointmentDataMod;
   newAppointment: INewAppointment;
   modifyAppointment: (
     index: number,
     property: string,
-    value: string | EStatus_Appointement
+    value: string | EStatusAppointment
   ) => void;
   addNewAppointment: ({
     date,
@@ -20,11 +22,24 @@ export type TAppointmentSlice = {
     photo_url,
     id_subject,
     id_petitioner,
+    phase,
   }: TCreateAppointment) => void;
+
+  setRecentAppointment: (newRecentAppointment: IAppointmentDataMod) => void;
 };
 
 export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
   appointments: [],
+  recentAppointment: {
+    date: "",
+    id_subject: "",
+    status: EStatusAppointment.ACCEPTED,
+    location: "",
+    problem_description: "",
+    photo_url: "",
+    created_at: "",
+    updated_at: "",
+  },
   newAppointment: {
     date: "",
     description: "",
@@ -57,5 +72,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     const newAppointments = get().appointments;
     newAppointments[index] = { ...newAppointments[index], [property]: value };
     set({ appointments: newAppointments });
+  },
+
+  setRecentAppointment: (newRecentAppointment) => {
+    set({ recentAppointment: newRecentAppointment });
   },
 });

@@ -15,6 +15,7 @@ import { IDataProfileCard } from "../../interfaces";
 export const ProfilePage = ({ mobile }: { mobile?: boolean }) => {
   const userData: IDataProfileCard = useStore(
     (state) => ({
+      id: state.id,
       name: state.name,
       email: state.email,
       type: state.type,

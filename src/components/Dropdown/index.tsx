@@ -15,6 +15,8 @@ interface IDropDown {
   color?: string;
   fontColor?: string;
   borderRadius?: string;
+  isInvalid?: boolean;
+  value?: string;
 }
 
 /**
@@ -55,10 +57,14 @@ export const DropDown = ({
   color,
   fontColor,
   borderRadius,
+  isInvalid,
+  value,
 }: IDropDown) => {
   //TODO: Change color with theme value.
   return (
     <Select
+      value={value}
+      isInvalid={isInvalid}
       backgroundColor={color}
       textColor={fontColor}
       borderRadius={borderRadius}

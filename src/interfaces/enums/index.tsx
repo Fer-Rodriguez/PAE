@@ -1,13 +1,14 @@
 const enum EStatus {
-  active,
-  inactive,
+  active = "ACTIVE",
+  inactive = "INACTIVE",
+  deleted = "DELETED",
 }
 
 const enum EUserType {
-  advisor,
-  student,
-  admin,
-  root,
+  advisor = "advisor",
+  student = "student",
+  admin = "admin",
+  root = "root",
 }
 
 const enum ELanguage {
@@ -18,13 +19,6 @@ const enum ELanguage {
 const enum ETheme {
   white,
   dark,
-}
-
-enum EStatus_Appointement {
-  pending,
-  accepted,
-  completed,
-  canceled,
 }
 
 enum ETypeDropdown {
@@ -50,14 +44,21 @@ enum EMyCalendarView {
   month = "month",
 }
 
+enum EStatusAppointment {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  COMPLETED = "COMPLETED",
+  CANCELED = "CANCELED",
+}
+
 export {
   EStatus,
   EUserType,
   ELanguage,
   ETheme,
-  EStatus_Appointement,
   ETypeDropdown,
   EStatusAlert,
   EModalCalendarType,
   EMyCalendarView,
+  EStatusAppointment,
 };

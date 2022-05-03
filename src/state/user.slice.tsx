@@ -1,27 +1,15 @@
 import { StoreSlice } from "./store";
 import { ELanguage, ETheme, EUserType, EStatus } from "../interfaces/enums";
-import { ISchedule } from "../interfaces";
+import { ISchedule, IUserData, TConfigObject } from "../interfaces";
 
-export type TConfigObject = {
-  language: ELanguage;
-  theme: ETheme;
-};
-
-export type TUserSlice = {
-  status: EStatus;
-  name: string;
-  email: string;
-  type: EUserType;
-  semester: number;
-  career: string;
-  config: TConfigObject;
-  profilePic: string;
-  schedule: ISchedule | null;
+export interface TUserSlice extends IUserData {
   setLanguage: (newLanguage: ELanguage) => void;
   setTheme: (newTheme: ETheme) => void;
-};
+  setUser: (newUserData: IUserData) => void;
+}
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
+  id: "d6cf55f4-72ff-4295-a4a1-d96e39ad6cf8",
   status: EStatus.active,
   name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
@@ -43,5 +31,19 @@ export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
     const newConfig: TConfigObject = { ...get().config };
     newConfig.theme = newTheme;
     set({ config: newConfig });
+  },
+  setUser: (newUserData) => {
+    set({
+      id: newUserData.id,
+      status: newUserData.status,
+      name: newUserData.name,
+      email: newUserData.email,
+      type: newUserData.type,
+      career: newUserData.career,
+      semester: newUserData.semester,
+      profilePic: newUserData.profilePic,
+      schedule: newUserData.schedule,
+      config: newUserData.config,
+    });
   },
 });

@@ -1,6 +1,6 @@
 //Libraries
 import { useCallback, useRef, useState } from "react";
-import { Heading, useDisclosure, HStack, Box } from "@chakra-ui/react";
+import { Heading, useDisclosure, HStack, Box, Text } from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -43,13 +43,21 @@ import {
 
 //Assets
 import theme from "../../theme";
+import { idText } from "typescript";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
+  setSelectedDay?: React.Dispatch<Date>;
+  daySelected?: Date;
   h?: string;
 }
 
-export const MyCalendar = ({ view = EMyCalendarView.week, h }: IMyCalendar) => {
+export const MyCalendar = ({
+  view = EMyCalendarView.week,
+  setSelectedDay,
+  daySelected,
+  h,
+}: IMyCalendar) => {
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
   const [totalHours, setTotalHours] = useState<number>(0);
@@ -58,6 +66,7 @@ export const MyCalendar = ({ view = EMyCalendarView.week, h }: IMyCalendar) => {
     EModalCalendarType.create
   );
   const [currentMonth, setMonth] = useState(new Date());
+
   //-----------------------------------
 
   //Use Ref
@@ -274,6 +283,9 @@ export const MyCalendar = ({ view = EMyCalendarView.week, h }: IMyCalendar) => {
           <Heading color={theme.colors.pink}>
             {currentMonth.toLocaleString("mx-MX", { month: "long" })}
           </Heading>
+          <Text>
+            Fecha Seleccionada: {daySelected?.toLocaleString().split(",")[0]}
+          </Text>
           <HStack my={4}>
             <ButtonGeneric
               text="Anterior"
@@ -307,8 +319,14 @@ export const MyCalendar = ({ view = EMyCalendarView.week, h }: IMyCalendar) => {
             height="600px"
             view={view}
             disableDblClick
-            useCreationPopup
-            useDetailPopup
+            useCreationPopup={false}
+            useDetailPopup={false}
+            onBeforeCreateSchedule={(e: any) => {
+              if (setSelectedDay !== undefined) {
+                setSelectedDay(e.start._date);
+                console.log(cal.current.calendarInst.clear());
+              }
+            }}
             scheduleView={["time"]}
             month={{
               daynames: [
