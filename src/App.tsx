@@ -27,6 +27,7 @@ import { FormsRegister } from "./pages/Register";
 import "./App.css";
 
 import theme from "./theme";
+import { PollCard } from "./pages/Poll";
 
 export function App() {
   return (
@@ -100,6 +101,15 @@ export function App() {
                 <MainLayout
                   desktop={<AdvisorsPage />}
                   mobile={<AdvisorsPage mobile />}
+                />
+              }
+            />
+            <Route
+              path="encuestas"
+              element={
+                <MainLayout
+                  desktop={<PollCard />}
+                  mobile={<PollCard mobile />}
                 />
               }
             />

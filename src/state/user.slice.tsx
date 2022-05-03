@@ -9,11 +9,11 @@ export interface TUserSlice extends IUserData {
 }
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
-  id: "d6cf55f4-72ff-4295-a4a1-d96e39ad6cf8",
+  id: "b4753ce1-0332-4a25-80bb-f6b5962b492f",
   status: EStatus.active,
   name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
-  type: EUserType.student,
+  type: EUserType.admin,
   career: "Economía",
   semester: 6,
   profilePic: "",

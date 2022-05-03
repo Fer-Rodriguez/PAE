@@ -117,7 +117,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
                       >
                         <GridItem colStart={2} colEnd={12} rowSpan={1}>
                           <DividedCard
-                            contentFirst={<Image src={user} boxSize={55} />}
+                            contentFirst={<Image src={user} boxSize={"50vw"} />}
                             contentSecond={
                               <ButtonGeneric
                                 text="Asesorado"
@@ -184,10 +184,10 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
                     <Text fontSize="1xl">Escala </Text>
                   </GridItem>
                   <GridItem rowStart={1} colStart={10} colEnd={12}>
-                    <Image src={radial} boxSize={5} />
+                    <Image src={radial} boxSize={"50vw"} />
                   </GridItem>
                   <GridItem rowSpan={1} colStart={12} colEnd={12}>
-                    <Image src={edit} boxSize={5} />
+                    <Image src={edit} boxSize={"50vw"} />
                   </GridItem>
                   <GridItem rowSpan={1} colSpan={12}>
                     <Divider

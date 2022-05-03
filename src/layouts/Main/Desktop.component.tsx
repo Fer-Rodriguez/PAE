@@ -23,6 +23,7 @@ import { ButtonGeneric } from "../../components/Button";
 //Assets
 import cross from "../../assets/Cross.png";
 import { useNavigate } from "react-router-dom";
+import { Logo } from "../../assets/Logo";
 
 function GetData() {
   const columns = useMemo(
@@ -62,12 +63,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
     >
       <GridItem rowStart={1} rowSpan={2} colSpan={2}>
         <Flex justifyContent={"center"} alignContent={"flex-end "}>
-          <Image
-            maxWidth={"9vw"}
-            src="https://orienta-me.com/assets/globals/img/orienta-me/login/t_queremos.png"
-            alt="Logo del Programa de Acompañamiento Estudiantil"
-            justifyContent="space-around"
-          />
+          <Logo maxWidth="50vw" />
         </Flex>
       </GridItem>
 
@@ -89,7 +85,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
       </GridItem>
       <GridItem rowStart={5} colSpan={2} colStart={1}>
         <Center>
-          <Menu mobile={false} />
+          <Menu userType="user" mobile={false} />
         </Center>
       </GridItem>
 

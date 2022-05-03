@@ -14,6 +14,7 @@ import { useStore } from "../../../state/store";
 import FlagMan from "../Icons/FlagMan";
 import theme from "../../../theme";
 import rocket from "../Icons/cohete.png";
+import bandera from "../Icons/bandera.png";
 
 import "../style.css";
 import { IAppointmentDataMod } from "../../../interfaces";
@@ -34,6 +35,7 @@ export const MainCard = ({
   mobile?: boolean;
 }) => {
   const recentAppointment = useStore((state) => state.recentAppointment);
+  const [appointments, setAppointments] = useState(false);
   const [dates, setDates] = useState<IDates>({
     day: "",
     month: "",
@@ -50,15 +52,21 @@ export const MainCard = ({
         hours: "",
       };
       const myDate = new Date(recentAppointment.date as string);
-      dateObject.day = myDate.toLocaleDateString("mx-MX", { weekday: "long" });
-      dateObject.monthDay = myDate.getDate().toString();
-      dateObject.month = myDate.toLocaleString("mx-Mx", { month: "long" });
 
-      const initialHour = myDate.getHours() + ":" + myDate.getMinutes();
-      myDate.setHours(myDate.getHours() + 1);
-      const finalHpur = myDate.getHours() + ":" + myDate.getMinutes();
+      if (myDate.toString() !== "Invalid Date") {
+        setAppointments(true);
+        dateObject.day = myDate.toLocaleDateString("mx-MX", {
+          weekday: "long",
+        });
+        dateObject.monthDay = myDate.getDate().toString();
+        dateObject.month = myDate.toLocaleString("mx-Mx", { month: "long" });
 
-      dateObject.hours = initialHour + " - " + finalHpur;
+        const initialHour = myDate.getHours() + ":" + myDate.getMinutes();
+        myDate.setHours(myDate.getHours() + 1);
+        const finalHpur = myDate.getHours() + ":" + myDate.getMinutes();
+
+        dateObject.hours = initialHour + " - " + finalHpur;
+      }
 
       return dateObject;
     };
@@ -81,7 +89,9 @@ export const MainCard = ({
             : "Tu próxima asesoria"}
         </Text>
         <Heading color={"white"}>
-          {dates.day}, {dates.monthDay} de {dates.month}
+          {appointments
+            ? dates.day + ", " + dates.monthDay + " de " + dates.month
+            : "No hay asesorías próximas"}
         </Heading>
         <HStack gap={6} mt={2}>
           <Text color={"white"}>{dates.hours}</Text>
@@ -95,7 +105,7 @@ export const MainCard = ({
       {!mobile &&
         (type === EUserType.student ? (
           <Box position={"absolute"} top="7%" left={"46%"}>
-            <FlagMan />
+            <Image src={bandera} />
           </Box>
         ) : (
           <Box position={"absolute"} top="15%" left={"40%"}>

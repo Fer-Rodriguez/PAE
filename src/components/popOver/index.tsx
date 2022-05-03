@@ -34,6 +34,9 @@ export interface IPopOver {
     alignment: ResponsiveValue<any>;
   };
   closeButton: boolean;
+  customOpen?: boolean;
+  customClose?: () => void;
+  customCancelRef?: any;
 }
 
 const PopOver: React.FunctionComponent<IPopOver> = ({
@@ -41,6 +44,9 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
   title,
   closeButton,
   children,
+  customOpen,
+  customClose,
+  customCancelRef,
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   useEffect(() => onOpen(), [onOpen]);
@@ -61,9 +67,11 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
     <>
       <AlertDialog
         closeOnOverlayClick={false}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isOpen={isOpen}
+        leastDestructiveRef={
+          customCancelRef == undefined ? cancelRef : customCancelRef
+        }
+        onClose={customClose == undefined ? onClose : customClose}
+        isOpen={customOpen == undefined ? isOpen : customOpen}
         isCentered
       >
         <AlertDialogOverlay />
