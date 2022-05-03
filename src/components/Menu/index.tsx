@@ -9,13 +9,14 @@ import { IMenuOptions } from "../../interfaces";
 import menuImg1 from "../../assets/House.png";
 import menuImg2 from "../../assets/Calendar.png";
 import menuImg3 from "../../assets/menu_user.png";
+import { useStore } from "../../state/store";
 
 function getMenuOptions(userType: string): Array<IMenuOptions> {
   let menuOption;
   if (userType === "root") {
     menuOption = [
       {
-        linkTo: "dashboard",
+        linkTo: "../../dashboard",
         imgSrc: menuImg1,
       },
       {
@@ -38,34 +39,34 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
   } else if (userType === "admin") {
     menuOption = [
       {
-        linkTo: "dashboard",
+        linkTo: "../../dashboard",
         imgSrc: menuImg1,
       },
       {
-        linkTo: "asesorias",
+        linkTo: "../asesorias",
         imgSrc: menuImg2,
       },
       {
-        linkTo: "perfil",
+        linkTo: "../perfil",
         imgSrc: menuImg3,
       },
       {
-        linkTo: "perfil",
+        linkTo: "../perfil",
         imgSrc: menuImg3,
       },
     ];
   } else {
     menuOption = [
       {
-        linkTo: "dashboard",
+        linkTo: "../../dashboard",
         imgSrc: menuImg1,
       },
       {
-        linkTo: "asesorias",
+        linkTo: "../asesorias",
         imgSrc: menuImg2,
       },
       {
-        linkTo: "perfil",
+        linkTo: "../perfil",
         imgSrc: menuImg3,
       },
     ];
@@ -76,8 +77,10 @@ interface IMenu {
   userType: string;
   mobile: boolean;
 }
-export const Menu = ({ userType, mobile }: IMenu) => {
+export const Menu = ({ mobile }: IMenu) => {
+  const userType = useStore((state) => state.type);
   const options = getMenuOptions(userType);
+
   if (mobile) {
     return (
       <div>

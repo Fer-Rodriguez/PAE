@@ -35,6 +35,7 @@ export const MainCard = ({
   mobile?: boolean;
 }) => {
   const recentAppointment = useStore((state) => state.recentAppointment);
+  const [appointments, setAppointments] = useState(false);
   const [dates, setDates] = useState<IDates>({
     day: "",
     month: "",
@@ -51,15 +52,21 @@ export const MainCard = ({
         hours: "",
       };
       const myDate = new Date(recentAppointment.date as string);
-      dateObject.day = myDate.toLocaleDateString("mx-MX", { weekday: "long" });
-      dateObject.monthDay = myDate.getDate().toString();
-      dateObject.month = myDate.toLocaleString("mx-Mx", { month: "long" });
 
-      const initialHour = myDate.getHours() + ":" + myDate.getMinutes();
-      myDate.setHours(myDate.getHours() + 1);
-      const finalHpur = myDate.getHours() + ":" + myDate.getMinutes();
+      if (myDate.toString() !== "Invalid Date") {
+        setAppointments(true);
+        dateObject.day = myDate.toLocaleDateString("mx-MX", {
+          weekday: "long",
+        });
+        dateObject.monthDay = myDate.getDate().toString();
+        dateObject.month = myDate.toLocaleString("mx-Mx", { month: "long" });
 
-      dateObject.hours = initialHour + " - " + finalHpur;
+        const initialHour = myDate.getHours() + ":" + myDate.getMinutes();
+        myDate.setHours(myDate.getHours() + 1);
+        const finalHpur = myDate.getHours() + ":" + myDate.getMinutes();
+
+        dateObject.hours = initialHour + " - " + finalHpur;
+      }
 
       return dateObject;
     };
@@ -82,7 +89,7 @@ export const MainCard = ({
             : "Tu próxima asesoria"}
         </Text>
         <Heading color={"white"}>
-          {recentAppointment !== null || recentAppointment !== undefined
+          {appointments
             ? dates.day + ", " + dates.monthDay + " de " + dates.month
             : "No hay asesorías próximas"}
         </Heading>
