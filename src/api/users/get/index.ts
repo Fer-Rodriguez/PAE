@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import { EStatusAppointment } from "../../../interfaces/enums";
-
 export const GetUser = async (email: string, password: string) => {
   const config = {
     method: "get",

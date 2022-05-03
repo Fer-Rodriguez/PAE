@@ -161,3 +161,9 @@ export interface IUserData {
   profilePic: string;
   schedule: ISchedule | null;
 }
+
+export interface INewUserSchedule {
+  start: Date;
+  finish: Date;
+  period: Number;
+}

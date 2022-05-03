@@ -20,6 +20,8 @@ import { SemesterDoubleCarreraInput } from "../../components/FormsRegister/Semes
 import { TypeUserDrop } from "../../components/FormsRegister/TypeUserDrop";
 import { Confirmation } from "./Confirmation";
 import { InfoIcon } from "@chakra-ui/icons";
+import { CreateUser } from "../../api/users/create";
+import { EStatus, EUserType } from "../../interfaces/enums";
 
 interface IForms2 {
   setInfo: React.Dispatch<any>;
@@ -36,6 +38,18 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
   const [typeUser, setTypeUser] = useState("");
   const [seeModal, setSeeModal] = useState(false);
 
+  const createUser = async () => {
+    await CreateUser({
+      name: info.name,
+      email: info.mail,
+      password: info.password,
+      career: info.carrera,
+      semester: info.semestreCarrera,
+      status: EStatus.active,
+      type: EUserType.student,
+    }).then(() => navigate("/"));
+  };
+
   const login = () => {
     navigate("/");
   };
@@ -45,7 +59,6 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
     if (data.typeUserDrop == "asesor") {
       setFormStep(2);
     } else {
-      console.log("Usuario creado");
       setSeeModal(true);
     }
   };
@@ -122,7 +135,6 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
       </FormControl>
       {seeModal ? (
         <Confirmation info={info}>
-          {" "}
           <Text>
             Nombre: {info.name} <br />
             <br />
@@ -131,7 +143,17 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
             Carrera: {info.carrera} <br />
             <br />
             Semestre: {info.semestreCarrera}
-          </Text>{" "}
+            <br />
+            <br />
+          </Text>
+          <Center>
+            <ButtonGeneric
+              bgColor="blue"
+              sizePX="50%"
+              text="Registrarse"
+              onClick={() => createUser()}
+            ></ButtonGeneric>
+          </Center>
         </Confirmation>
       ) : null}
     </div>
