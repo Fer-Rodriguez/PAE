@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
 import axios from "axios";
 
-const Desktop = ({ type }: { type: EUserType }) => (
+const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
   <Grid
     templateColumns="repeat(14, 1fr)"
     templateRows="repeat(8, 1fr)"
@@ -32,7 +32,7 @@ const Desktop = ({ type }: { type: EUserType }) => (
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
       <Flex gap={1} mb={6}>
         <Text fontWeight={"bold"}>Hola, </Text>
-        <Text> Shalom Pineda</Text>
+        <Text> {name}</Text>
       </Flex>
 
       <MainCard type={type} />
@@ -56,7 +56,7 @@ const Desktop = ({ type }: { type: EUserType }) => (
   </Grid>
 );
 
-const Mobile = ({ type }: { type: EUserType }) => {
+const Mobile = ({ type, name }: { type: EUserType; name: string }) => {
   const FirstPage = () => (
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
@@ -112,8 +112,8 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   }, []);
 
   return mobile ? (
-    <Mobile type={userData.type} />
+    <Mobile type={userData.type} name={userData.name} />
   ) : (
-    <Desktop type={userData.type} />
+    <Desktop type={userData.type} name={userData.name} />
   );
 };
