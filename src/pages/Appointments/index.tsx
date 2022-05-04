@@ -7,6 +7,7 @@ import { useStore } from "../../state/store";
 
 //Components
 import { ButtonGeneric } from "../../components/Button";
+import { AppointmentDetails } from "../AppointmentDetails";
 
 //Functions
 import { updateAppointment } from "../../api/appointments/update";
@@ -95,13 +96,16 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
     return <>Cargando...</>;
   } else {
     return (
-      <Managment
-        columns={columns}
-        data={data}
-        headColor={"pink"}
-        mobile={mobile}
-        header={"Asesorías"}
-      />
+      <>
+        <AppointmentDetails />
+        <Managment
+          columns={columns}
+          data={data}
+          headColor={"pink"}
+          mobile={mobile}
+          header={"Asesorías"}
+        />
+      </>
     );
   }
 };
