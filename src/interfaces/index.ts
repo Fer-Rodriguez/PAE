@@ -172,3 +172,19 @@ export interface INewUserSchedule {
   finish: Date;
   period: Number;
 }
+
+export interface IDetailsAppointmentData {
+  subject: { name: string };
+  appointment: {
+    date: string;
+    id: string;
+    id_subject: string;
+    status: EStatusAppointment;
+    problem_description: string;
+    photo_url: string;
+    location: string;
+  };
+  student: { name: string };
+  admin: { name: string };
+  advisor: { name: string };
+}

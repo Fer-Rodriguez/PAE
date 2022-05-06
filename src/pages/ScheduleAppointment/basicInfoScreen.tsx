@@ -103,14 +103,15 @@ export const BasicInfoScreen = ({
             <>
               <TextInput
                 isInvalid={Boolean(error)}
-                multiLine={false}
+                multiLine
                 placeholderText="Escribe aquí el problema en cuestión"
                 width={mobile ? "85%" : "100%"}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                value={value}
+                onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
                   onChange(e);
                   onTextFieldChange?.(e.target.value);
+                  console.log("Value TextInput: ", e.target.value);
                 }}
-                value={value}
               />
               {error ? (
                 <FormErrorMessage>{error?.message}</FormErrorMessage>

@@ -1,6 +1,7 @@
 //Libraries
 import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
+import { useDisclosure, Box } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -9,97 +10,135 @@ import { useStore } from "../../state/store";
 import { ButtonGeneric } from "../../components/Button";
 import { AppointmentDetails } from "../AppointmentDetails";
 
-//Functions
-import { updateAppointment } from "../../api/appointments/update";
-
 //Interfaces
 import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
-interface IColumnDetails {
-  [key: string]: string;
-}
-
 import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
-import { updateAppointmentDetails } from "../../api/appointments-user/update";
+import { IDetailsAppointmentData } from "../../interfaces";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
-  const [myData, setMyData] = useState([]);
+  const [savedChange, setSavedChange] = useState(false);
+  //Data states
+  const [fullData, setFullData] = useState<IDetailsAppointmentData[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
+
+  //Edit state
+  const [editAppointment, setEditAppointment] = useState(false);
+
+  //Details Modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //Store
   const userType = useStore((state) => state.type);
   const userId = useStore((state) => state.id);
-
-  const obtainData = async () => {
-    const response = await getAllAppointments(userId, userType);
-    setMyData(response);
-  };
+  const setSelectedData = useStore((state) => state.setSelectedAppointment);
 
   useEffect(() => {
+    console.log("mE EJECUTE");
+    const obtainData = async () => {
+      const response = await getAllAppointments(userId, userType);
+      setFullData(response);
+
+      const dataTable: any[] = [];
+      response.map((data: any) =>
+        dataTable.push({
+          date: new Date(data.appointment.date).toLocaleString(),
+          asesor:
+            data.advisor !== undefined ? data.advisor.name : "Sin asignar",
+          materia: data.subject.name,
+          usuario: data.student.name,
+          status: data.appointment.status,
+        })
+      );
+      setTableData(dataTable);
+    };
+
     obtainData();
-  }, []);
+  }, [userId, userType, savedChange]);
 
-  const columns: {
-    Header: string;
-    accessor: string;
-    Cell?: (cell: Cell<any, any>) => any;
-  }[] = useMemo(
-    () =>
-      myData[0]
-        ? Object.keys(myData[0]).map((key, _value) => {
-            return {
-              Header: key,
-              accessor: key,
-            };
-          })
-        : [],
-    [myData]
-  );
+  const myOnClick = (index: number, edit: boolean) => {
+    setEditAppointment(edit);
+    onOpen();
+    setSelectedData(fullData[index]);
+  };
 
-  //Las siguientes operaciones variarán según el tipo de tabla que se quiera construir
-  //TODO: meter estas operaciones en una función? hacer algo más limpio, pues
-  //columns.shift();
-  if (userType == EUserType.admin) {
-    columns.push({
+  //Functions who determines which button is presented
+  const DetailsEditsButton = (
+    status = EStatusAppointment.ACCEPTED,
+    index: number
+  ) => {
+    if (userType !== EUserType.admin) {
+      if (status !== EStatusAppointment.PENDING) {
+        return (
+          <ButtonGeneric
+            text={"Detalles"}
+            fontColor="white"
+            color={"blue"}
+            onClick={() => {
+              myOnClick(index, false);
+            }}
+          />
+        );
+      }
+    } else {
+      if (status === EStatusAppointment.PENDING) {
+        return (
+          <ButtonGeneric
+            text={"Editar"}
+            fontColor="white"
+            color={"pink"}
+            onClick={() => {
+              myOnClick(index, true);
+            }}
+          />
+        );
+      } else {
+        return (
+          <ButtonGeneric
+            text={"Detalles"}
+            fontColor="white"
+            color={"blue"}
+            onClick={() => {
+              myOnClick(index, false);
+            }}
+          />
+        );
+      }
+    }
+  };
+
+  const myColumns = [
+    { Header: "Fecha", accessor: "date" },
+    { Header: "Asesor", accessor: "asesor" },
+    { Header: "Materia", accessor: "materia" },
+    { Header: "Asesorado", accessor: "usuario" },
+    { Header: "Estatus", accessor: "status" },
+    {
       Header: "",
-      accessor: "accept",
-      Cell: (cell: Cell<any, any>) => (
-        <ButtonGeneric
-          text={"Aceptar"}
-          color={"purple"}
-          onClick={() => {
-            console.log(cell.row.values.id);
-            console.log(cell.row.values.id_advisor);
-            updateAppointment(cell.row.values.id, {
-              status: EStatusAppointment.ACCEPTED,
-            });
-            updateAppointmentDetails(
-              cell.row.values.id,
-              "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
-              "id_advisor"
-            );
-          }}
-        />
-      ),
-    });
-  }
-  columns.push({
-    Header: "",
-    accessor: "details",
-    Cell: (cell: Cell<any, any>) => (
-      <ButtonGeneric text={"Detalles"} color={"blue"} />
-    ),
-  });
-  const data = useMemo<IColumnDetails[]>(() => [...myData], [myData]);
+      accessor: "details",
+      Cell: (cell: Cell<any, any>) =>
+        DetailsEditsButton(cell.row.values.status, cell.row.index),
+    },
+  ];
+
+  const data = useMemo(() => [...tableData], [tableData]);
 
   //TODO: mejorar esta condicional para que se tome en cuenta que myData puede quedar vacío si
   //no hay datos en la db
-  if (myData.length === 0) {
+  if (tableData.length === 0) {
     return <>Cargando...</>;
   } else {
     return (
       <>
-        <AppointmentDetails />
+        <AppointmentDetails
+          isOpen={isOpen}
+          onClose={onClose}
+          editAppointment={editAppointment}
+          savedChange={setSavedChange}
+        />
         <Managment
-          columns={columns}
+          columns={myColumns}
           data={data}
           headColor={"pink"}
           mobile={mobile}
