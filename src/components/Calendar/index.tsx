@@ -1,6 +1,19 @@
 //Libraries
 import { useCallback, useRef, useState } from "react";
-import { Heading, useDisclosure, HStack, Box, Text } from "@chakra-ui/react";
+import {
+  Heading,
+  useDisclosure,
+  HStack,
+  Box,
+  Text,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -50,6 +63,47 @@ interface IMyCalendar {
   setSelectedDay?: React.Dispatch<Date>;
   daySelected?: Date;
   h?: string;
+}
+
+function AlertDialogExample({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const cancelRef = useRef();
+
+  return (
+    <>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef as any}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Customer
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef as any} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={onClose} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
+  );
 }
 
 export const MyCalendar = ({
@@ -230,7 +284,7 @@ export const MyCalendar = ({
         </>
       )}
 
-      {view === EMyCalendarView.week ? (
+      {view === EMyCalendarView.week && (
         <Calendar
           ref={cal}
           className="calendar"
@@ -278,83 +332,6 @@ export const MyCalendar = ({
             visibleScheduleCount: 4,
           }}
         />
-      ) : (
-        <>
-          <Heading color={theme.colors.pink}>
-            {currentMonth.toLocaleString("mx-MX", { month: "long" })}
-          </Heading>
-          <Text>
-            Fecha Seleccionada: {daySelected?.toLocaleString().split(",")[0]}
-          </Text>
-          <HStack my={4}>
-            <ButtonGeneric
-              text="Anterior"
-              color={theme.colors.purple}
-              fontColor="white"
-              onClick={(e) =>
-                nextMonth({
-                  currentMonth,
-                  setMonth,
-                  type: ETypeUpdateMonth.Subtract,
-                  cal,
-                })
-              }
-            />
-            <ButtonGeneric
-              text="Siguiente"
-              color={theme.colors.blue}
-              fontColor="white"
-              onClick={() =>
-                nextMonth({
-                  currentMonth,
-                  setMonth,
-                  type: ETypeUpdateMonth.Add,
-                  cal,
-                })
-              }
-            />
-          </HStack>
-          <Calendar
-            ref={cal}
-            height="600px"
-            view={view}
-            disableDblClick
-            useCreationPopup={false}
-            useDetailPopup={false}
-            onBeforeCreateSchedule={(e: any) => {
-              if (setSelectedDay !== undefined) {
-                setSelectedDay(e.start._date);
-                console.log(cal.current.calendarInst.clear());
-              }
-            }}
-            scheduleView={["time"]}
-            month={{
-              daynames: [
-                "Domingo",
-                "Lunes",
-                "Martes",
-                "Miércoles",
-                "Jueves",
-                "Viernes",
-                "Sábado",
-              ],
-              workweek: true,
-              moreLayerSize: {
-                height: "auto",
-              },
-              grid: {
-                header: {
-                  height: 34,
-                },
-                footer: {
-                  height: 10,
-                },
-              },
-              narrowWeekend: true,
-              startDayOfWeek: 1, // monday
-            }}
-          />
-        </>
       )}
     </Box>
   );

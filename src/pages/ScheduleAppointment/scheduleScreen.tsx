@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { EMyCalendarView } from "../../interfaces/enums";
 import { Box, Center, Spacer, VStack, HStack } from "@chakra-ui/react";
+import Calendar from "react-calendar";
 
 import { ButtonGeneric } from "../../components/Button";
 import { Info_Button } from "../../components/Info_Button";
 import { ScheduleList } from "../../components/ScheduleList";
 import { MyCalendar } from "../../components/Calendar";
 
+import "react-calendar/dist/Calendar.css";
+
 //Assets
 import theme from "../../theme/index";
+import { addDays, getDayName, isSameDayByName } from "../../services/Functions";
 
 const myOptions = [
   {
@@ -52,14 +56,18 @@ export const ScheduleScreen = ({
     onFullDateSelected?.(constructedString);
   }, [selectedHour]);
 
+  const disableDates = ({ date, view }: { date: Date; view: string }) => {
+    const disabledDayNames = ["sábado", "domingo"];
+
+    // Check if a date React-Calendar wants to check is on the list of disabled dates
+    return disabledDayNames.some((dDate) => isSameDayByName(date, dDate));
+  };
+
   if (mobile) {
     return (
       <VStack w="100%" spacing="25px" alignItems="center">
-        <MyCalendar
-          view={EMyCalendarView.month}
-          setSelectedDay={setSelectedDay}
-          daySelected={selectedDay}
-        />
+        <Calendar onChange={setSelectedDay} value={selectedDay} />
+
         <ScheduleList schedules={myOptions} width="80%"></ScheduleList>
 
         <ButtonGeneric
@@ -76,10 +84,13 @@ export const ScheduleScreen = ({
         <Info_Button />
         <HStack w={"100%"} spacing={"120"}>
           <Box w={"40vw"}>
-            <MyCalendar
-              view={EMyCalendarView.month}
-              setSelectedDay={setSelectedDay}
-              daySelected={selectedDay}
+            <Calendar
+              onChange={setSelectedDay}
+              value={selectedDay}
+              maxDetail={"month"}
+              maxDate={addDays(new Date(), 14)}
+              minDate={new Date()}
+              tileDisabled={disableDates}
             />
           </Box>
           <ScheduleList
