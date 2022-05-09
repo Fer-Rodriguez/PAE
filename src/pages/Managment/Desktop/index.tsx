@@ -26,6 +26,7 @@ export const ManagmentDesktop = ({
   internalProps: IManagingTableInternal;
 }) => (
   <>
+    <Heading mb={"5vh"}>{header}</Heading>
     <Flex marginBottom="5vh" justifyContent="space-between">
       <Flex gap="10%" w="55%">
         <InputGroup>
@@ -48,7 +49,6 @@ export const ManagmentDesktop = ({
           aria-label="Filtros"
         />
       </Flex>
-      <Heading>{header}</Heading>
     </Flex>
     <Flex
       hidden={hideFilters}

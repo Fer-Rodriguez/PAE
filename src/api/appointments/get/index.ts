@@ -21,10 +21,10 @@ export const getRecentAppointment = (
 export const getAllAppointments = async (id: string, type: string) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/allAppointments?id=${id}&id_type=${type}`,
+    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}`,
   };
 
-  let response: never[] = [];
+  let response: any;
   await axios(config).then((res) => {
     response = res.data;
   });
