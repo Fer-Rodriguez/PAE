@@ -1,7 +1,7 @@
 //Libraries
 import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import { useDisclosure, Box, Heading } from "@chakra-ui/react";
+import { useDisclosure, Box, Heading, Spinner, Flex } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -139,7 +139,11 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   if (tableData.length === 0) {
     if (!calledAPI) {
-      return <>Cargando...</>;
+      return (
+        <Flex h="50vh" justifyContent="center" alignItems="center">
+          <Spinner color="purple" size="xl" />
+        </Flex>
+      );
     }
     return noDataView;
   } else {
