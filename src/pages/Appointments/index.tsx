@@ -1,7 +1,7 @@
 //Libraries
 import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import { useDisclosure, Box, Heading, Spinner, Flex } from "@chakra-ui/react";
+import { useDisclosure, Heading, Spinner, Flex } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -70,9 +70,11 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   const noDataView = (
     <>
-      <Heading textAlign="center" margin="0 auto">
-        No hay datos de asesorías disponibles
-      </Heading>
+      <Flex h="50vh" justifyContent="center" alignItems="center">
+        <Heading textAlign="center">
+          No hay datos de asesorías disponibles
+        </Heading>
+      </Flex>
     </>
   );
 
