@@ -43,15 +43,6 @@ export const Managment = ({
     setGlobalFilter(value);
   };
 
-  // TODO: Hacer esto menos aburrido xd
-  const noDataView = (
-    <>
-      <Heading textAlign="center" margin="0 auto">
-        No hay datos de {header.toLowerCase()} disponibles
-      </Heading>
-    </>
-  );
-
   const [hideFilters, setHideFilters] = useState(true);
   const onFilterClick = () => setHideFilters(!hideFilters);
 
@@ -80,9 +71,5 @@ export const Managment = ({
     internalProps,
   });
 
-  if (data.length === 0) {
-    return <>{noDataView}</>;
-  } else {
-    return <>{mobile ? mobileLayout : desktopLayout}</>;
-  }
+  return <>{mobile ? mobileLayout : desktopLayout}</>;
 };
