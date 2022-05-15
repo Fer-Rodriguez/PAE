@@ -110,7 +110,11 @@ export const ButtonChangeSchedules = ({
   </Center>
 );
 
-export const ButtonEraseAdmin = ({ mobile = false }: { mobile?: boolean }) => {
+export const ButtonEraseAdvisor = ({
+  mobile = false,
+}: {
+  mobile?: boolean;
+}) => {
   const cancelRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
