@@ -19,7 +19,7 @@ export const FormsRegister = (props: IRegister) => {
     } else if (step == 1) {
       return <Forms2 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
     } else if (step == 2) {
-      return <>HOLA POPO</>;
+      return <>Miau Miau</>;
     }
   };
   return (
