@@ -1,5 +1,4 @@
 import { useState } from "react";
-import qs from "qs";
 
 import { Box } from "@chakra-ui/react";
 

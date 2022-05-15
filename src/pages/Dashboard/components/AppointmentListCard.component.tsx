@@ -110,7 +110,7 @@ export const AppointmentListCard = ({
     );
 
   return (
-    <Box my={mobile ? 6 : 0}>
+    <Box mt={mobile ? 6 : 0} mb={mobile ? 12 : 0}>
       <DividedCard
         colorFirst={
           type === EUserType.admin ? theme.colors.blue : theme.colors.pink
