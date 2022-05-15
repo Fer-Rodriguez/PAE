@@ -105,7 +105,7 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
   } = useForm({ mode: "onChange" });
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <FormControl isRequired isInvalid={!isValid} w={"100%"}>
         <Stack spacing={4} w={"100%"}>
           <CarreraInput

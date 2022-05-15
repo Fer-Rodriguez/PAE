@@ -13,7 +13,7 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             maskImage: `radial-gradient(110% 50% at bottom, transparent 50%, #fff 51%)`,
             WebkitMaskImage: `radial-gradient(110% 50% at bottom, transparent 50%, #fff 51%)`,
             background: `linear-gradient(to right, rgba(114,9,183,0.6), rgba(67,97,238,0.6))`,
-            width: "100vw",
+            width: "min(100vw,100%)",
             height: "22vh",
             maxHeight: "160px",
             minHeight: "120px",
@@ -24,11 +24,11 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             {/* Img1 */}
             <div
               style={{
-                maxWidth: "100%",
                 position: "absolute",
                 top: "0px",
                 right: "0px",
-                width: "8%",
+                width: "12%",
+                minWidth: "50px",
               }}
             >
               <Img1></Img1>
@@ -36,11 +36,11 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             {/* Img2 */}
             <div
               style={{
-                maxWidth: "100%",
-                width: "8%",
+                width: "12%",
+                minWidth: "48px",
                 position: "absolute",
                 top: "25px",
-                right: "15vw",
+                right: "12vw",
               }}
             >
               <Img2></Img2>
@@ -48,11 +48,11 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             {/* Img3 */}
             <div
               style={{
-                maxWidth: "100%",
                 position: "absolute",
                 top: "0px",
                 left: "15vw",
-                width: "8%",
+                width: "14%",
+                minWidth: "50px",
               }}
             >
               <Img3></Img3>
@@ -60,11 +60,11 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             {/* Img4 */}
             <div
               style={{
-                maxWidth: "100%",
                 position: "absolute",
                 top: "25px",
                 left: "0px",
-                width: "8%",
+                width: "12%",
+                minWidth: "55px",
               }}
             >
               <Img4></Img4>
@@ -73,7 +73,8 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
             <Center>
               <div
                 style={{
-                  maxWidth: "20%",
+                  width: "20%",
+                  minWidth: "140px",
                   position: "absolute",
                   top: "20px",
                 }}

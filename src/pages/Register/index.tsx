@@ -24,8 +24,8 @@ export const FormsRegister = (props: IRegister) => {
   };
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
-      <Center h={"100%"}>
-        <Flex direction={"column"} align={"center"}>
+      <Center {...(props.mobile ? { h: "100%" } : { h: "max(100vh, 100%)" })}>
+        <Flex direction={"column"} align={"center"} w="100%">
           <Logo
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "35%" })}
           ></Logo>
