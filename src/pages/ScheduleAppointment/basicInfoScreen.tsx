@@ -26,7 +26,7 @@ export const BasicInfoScreen = ({
 }: {
   mobile?: boolean;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
-  onDropDownChange?: (newValue: string) => void;
+  onDropDownChange?: React.Dispatch<string>;
   onTextFieldChange?: (newValue: string) => void;
   valueForDropDown?: string;
   valueForTextField?: string;
