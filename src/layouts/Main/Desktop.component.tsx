@@ -50,6 +50,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
   const navigate = useNavigate();
 
   const logout = () => {
+    localStorage.removeItem("user_id");
     navigate("/");
   };
 
