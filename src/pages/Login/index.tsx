@@ -36,6 +36,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [visibleAlert, setVisibleAlert] = useState(false);
+  const [saveData, setSaveData] = useState(true);
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (userId) {
@@ -113,7 +114,9 @@ export const FormsLogin = (props: IFormsLogin) => {
           profilePic: "No tengo",
           schedule: null,
         };
-        localStorage.setItem("user_id", userData.user.id);
+        if (saveData) {
+          localStorage.setItem("user_id", userData.user.id);
+        }
         setUser(correctUser);
         navigate("/dashboard");
       } else {
@@ -166,7 +169,12 @@ export const FormsLogin = (props: IFormsLogin) => {
               <PasswordInput control={control} secondValidation={true} />
 
               <Flex>
-                <Checkbox size="sm" defaultChecked colorScheme={"cyan"}>
+                <Checkbox
+                  size="sm"
+                  defaultChecked
+                  colorScheme={"cyan"}
+                  onChange={() => setSaveData(!saveData)}
+                >
                   Recuérdame
                 </Checkbox>
                 <Spacer />
