@@ -25,14 +25,21 @@ export const FormsRegister = (props: IRegister) => {
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
       <Center {...(props.mobile ? { h: "100%" } : { h: "max(100vh, 100%)" })}>
-        <Flex direction={"column"} align={"center"} w="100%">
+        <Flex
+          direction={"column"}
+          align={"center"}
+          w="100%"
+          {...(props.mobile
+            ? { marginBottom: "20px" }
+            : { marginTop: "20px", marginBottom: "20px" })}
+        >
           <Logo
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "35%" })}
           ></Logo>
           <Text
             color={"purpleLight"}
             fontWeight={"semibold"}
-            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "3xl" })}
+            {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}
             paddingBottom={"20px"}
           >
