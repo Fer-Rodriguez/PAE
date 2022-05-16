@@ -50,6 +50,10 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
     }
   };
 
+  const closePopUp = () => {
+    setSeeModal(false);
+  };
+
   const createUser = async () => {
     await CreateUser({
       name: info.name,
@@ -177,7 +181,7 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
         </Stack>
       </FormControl>
       {seeModal ? (
-        <Confirmation info={info}>
+        <Confirmation info={info} customClose={() => closePopUp()}>
           <Text>
             Nombre: {info.name} <br />
             <br />
