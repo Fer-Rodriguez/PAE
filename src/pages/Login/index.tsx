@@ -26,7 +26,7 @@ import {
   EUserType,
 } from "../../interfaces/enums";
 import { MyAlert } from "../../components/MyAlert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IFormsLogin {
   mobile?: boolean;
@@ -36,6 +36,39 @@ export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [visibleAlert, setVisibleAlert] = useState(false);
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (userId) {
+      GetUserInfo(userId).then((userData) => {
+        const correctUser: IUserData = {
+          id: userData.user.id,
+          status:
+            userData.user.status === EStatus.active
+              ? EStatus.active
+              : userData.user.status === EStatus.deleted
+              ? EStatus.deleted
+              : EStatus.inactive,
+          name: userData.user.name,
+          email: userData.user.email,
+          type:
+            userData.user.type === EUserType.advisor
+              ? EUserType.advisor
+              : userData.user.type === EUserType.student
+              ? EUserType.student
+              : userData.user.type === EUserType.admin
+              ? EUserType.admin
+              : EUserType.root,
+          semester: 5,
+          career: "ITC",
+          config: { language: ELanguage.spanish, theme: ETheme.white },
+          profilePic: "No tengo",
+          schedule: null,
+        };
+        setUser(correctUser);
+        navigate("/dashboard");
+      });
+    }
+  }, []);
 
   const {
     control,
@@ -80,6 +113,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           profilePic: "No tengo",
           schedule: null,
         };
+        localStorage.setItem("user_id", userData.user.id);
         setUser(correctUser);
         navigate("/dashboard");
       } else {
