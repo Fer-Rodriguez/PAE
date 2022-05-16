@@ -71,8 +71,8 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
           {/* ImgMan */}
           <div
             style={{
-              maxWidth: "15%",
-              minWidth: "150px",
+              width: "15%",
+              minWidth: "250px",
               position: "absolute",
               left: "15vw",
               top: "max(50vh, 50%)",
