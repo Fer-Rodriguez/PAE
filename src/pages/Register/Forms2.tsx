@@ -42,17 +42,25 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
   const [typeUser, setTypeUser] = useState("");
   const [seeModal, setSeeModal] = useState(false);
 
+  const capitalize = (str: string) => {
+    if (typeof str === "string") {
+      return str.replace(/^\w/, (c) => c.toUpperCase());
+    } else {
+      return "";
+    }
+  };
+
   const createUser = async () => {
     await CreateUser({
       name: info.name,
-      email: info.mail,
+      email: capitalize(info.mail),
       password: info.password,
       career: info.carrera,
       semester: info.semestreCarrera,
       status: EStatus.active,
       type: EUserType.student,
     });
-    const idUserData = await GetUser(info.mail, info.password);
+    const idUserData = await GetUser(capitalize(info.mail), info.password);
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {

@@ -34,10 +34,10 @@ export const MailInput = ({
       name="mail"
       control={control || null}
       rules={{
-        required: `Por favor ingresa tu correo institucional`,
+        required: `Por favor ingresa un correo válido`,
         pattern: {
-          value: /^[A||a][0-9]{8}@tec.mx$/,
-          message: `Ese no es un correo institucional válido. Por favor inténtalo de nuevo`,
+          value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+          message: `Por favor ingresa un correo válido`,
         },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
