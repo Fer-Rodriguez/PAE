@@ -1,4 +1,11 @@
-import { Box, Heading, Text, HStack, Flex, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  HStack as VStack,
+  Flex,
+  Image,
+} from "@chakra-ui/react";
 
 //Components
 
@@ -75,32 +82,35 @@ export const MainCard = ({
 
   return (
     <Flex
+      mt={mobile ? 4 : 0}
       className="MainCard"
       p={6}
       flexDirection="row"
       rounded={theme.radii.general}
       alignContent="center"
       justifyContent={mobile ? "center" : "flex-start"}
+      w="100%"
     >
-      <Flex flexDirection={"column"}>
+      <Flex flexDirection={"column"} alignItems={mobile ? "center" : "start"}>
         <Text color={"white"}>
           {type === EUserType.admin
             ? "Tienes una nueva solicitud"
             : "Tu próxima asesoria"}
         </Text>
-        <Heading color={"white"}>
+        <Heading color={"white"} size={mobile ? "sm" : "lg"}>
           {appointments
             ? dates.day + ", " + dates.monthDay + " de " + dates.month
             : "No hay asesorías próximas"}
         </Heading>
-        <HStack gap={6} mt={2}>
+        <VStack mt={mobile ? 6 : 2} justifyContent={"center"}>
           <Text color={"white"}>{dates.hours}</Text>
+
           <ButtonGeneric
             text="Detalles"
             color={theme.colors.pink}
             fontColor="white"
           />
-        </HStack>
+        </VStack>
       </Flex>
       {!mobile &&
         (type === EUserType.student ? (

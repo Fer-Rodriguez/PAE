@@ -1,5 +1,14 @@
-import { Grid, GridItem, Text, Flex, Box, Center } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Text,
+  Flex,
+  Box,
+  Center,
+  Spacer,
+} from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
 
 //Components
@@ -10,7 +19,7 @@ import { MainCard } from "./components/MainCard.component";
 
 //Interfaces
 import { EUserType } from "../../interfaces/enums";
-import { IAppointmentDataMod, IDataProfileCard } from "../../interfaces";
+import { IDataProfileCard } from "../../interfaces";
 
 //Store
 import { useStore } from "../../state/store";
@@ -18,9 +27,9 @@ import { useStore } from "../../state/store";
 //Assets
 import "./style.css";
 import "swiper/css";
-import { useEffect, useState } from "react";
+import "swiper/css/pagination";
+import { useEffect } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
-import axios from "axios";
 
 const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
   <Grid
@@ -65,12 +74,12 @@ const Mobile = ({ type, name }: { type: EUserType; name: string }) => {
   );
 
   const SecondPage = ({ type }: { type: EUserType }) => (
-    <Flex flexDirection={"column"} gap={6}>
-      <Box w={"60%"} mx={"25%"}>
-        <AppointmentsPollCard type={type} mobile />
-      </Box>
-      <Box width={"80%"} h="35vh" mx={"15%"}>
+    <Flex flexDirection={"column"} gap={8} mt="8">
+      <Box width={"80%"} h="35vh" mx={"10%"} mb="6">
         <SwitchesCards mobile />
+      </Box>
+      <Box maxW={"80%"} mx="15%" mb={12}>
+        <AppointmentsPollCard type={type} mobile />
       </Box>
     </Flex>
   );
@@ -78,10 +87,13 @@ const Mobile = ({ type, name }: { type: EUserType; name: string }) => {
   return (
     <Box maxW={"100vw"} mx={"15vw"}>
       <Swiper
+        pagination={true}
+        modules={[Pagination]}
         spaceBetween={30}
         slidesPerView={1}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
+        className="mySwiper"
       >
         <SwiperSlide>{FirstPage}</SwiperSlide>
         <SwiperSlide>{SecondPage}</SwiperSlide>

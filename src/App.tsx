@@ -28,6 +28,7 @@ import "./App.css";
 
 import theme from "./theme";
 import { PollCard } from "./pages/Poll";
+import { CreateAppointmentLayout } from "./layouts/createAppointment";
 
 export function App() {
   return (
@@ -88,12 +89,7 @@ export function App() {
             />
             <Route
               path="crear_asesoria"
-              element={
-                <MainLayout
-                  desktop={<ScheduleAppointment />}
-                  mobile={<ScheduleAppointment mobile />}
-                />
-              }
+              element={<CreateAppointmentLayout />}
             />
             <Route
               path="asesores"

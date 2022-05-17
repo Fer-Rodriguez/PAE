@@ -21,7 +21,7 @@ import { ModifySchedulesContent } from "../ModifySchedule.component";
 import {
   ButtonChangePassword,
   ButtonChangeSchedules,
-  ButtonEraseAdmin,
+  ButtonEraseAdvisor,
   ButtonSaveChanges,
 } from "../Buttons.component";
 import { PasswordProfileModal } from "../Modal.component";
@@ -51,6 +51,7 @@ export const ProfileDesktop = ({
   setPeriod,
   period,
   type,
+  modAdmin = false,
 }: IProfileCard) => {
   const [modSchedules, setModSchedules] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -114,7 +115,11 @@ export const ProfileDesktop = ({
                 {data.type !== EUserType.student && (
                   <Flex flexDirection={"column"} m={2} gap={2}>
                     <ButtonChangePassword onOpen={onOpen} />
-                    <ButtonChangeSchedules setModeSchedules={setModSchedules} />
+                    {type === EUserType.admin && modAdmin && (
+                      <ButtonChangeSchedules
+                        setModeSchedules={setModSchedules}
+                      />
+                    )}
                   </Flex>
                 )}
               </Flex>
@@ -154,7 +159,7 @@ export const ProfileDesktop = ({
           {type === EUserType.admin && (
             <HStack justifyContent={"center"} mb={6}>
               {" "}
-              <ButtonEraseAdmin />
+              {modAdmin && <ButtonEraseAdvisor />}
               <ButtonSaveChanges setMyData={setMyDataChangesDB} />
             </HStack>
           )}

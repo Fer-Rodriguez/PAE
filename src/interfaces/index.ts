@@ -130,6 +130,7 @@ export interface IProfileCard {
   period: number;
   setPeriod: React.Dispatch<number>;
   baseProps?: { [key: string]: any };
+  modAdmin?: boolean;
 }
 
 export interface IModalCalendarOperations {

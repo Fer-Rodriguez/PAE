@@ -16,7 +16,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   ButtonChangePassword,
   ButtonChangeSchedules,
-  ButtonEraseAdmin,
+  ButtonEraseAdvisor,
   ButtonSaveChanges,
 } from "../Buttons.component";
 import { PasswordProfileModal } from "../Modal.component";
@@ -125,7 +125,7 @@ export const ProfileCardMobile = ({
                       setMyData={() => console.log("saving data")}
                       mobile
                     />
-                    <ButtonEraseAdmin mobile />
+                    <ButtonEraseAdvisor mobile />
                   </Center>
                 )}
               </Flex>
