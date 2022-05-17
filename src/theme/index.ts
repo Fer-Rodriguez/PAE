@@ -1,8 +1,20 @@
 //libraries
 import { extendTheme } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
 const theme = extendTheme({
+  styles: {
+    global: (props: any) => ({
+      body: {
+        //fontFamily: "body",
+        backgroundColor: mode(
+          "lightThemeBackground",
+          "darkThemeBackground"
+        )(props),
+      },
+    }),
+  },
   //Adding a custom component (Chakra UI Steps) into the main library of chakra, in order to use all the theme properties.
   components: {
     Steps,
@@ -17,6 +29,9 @@ const theme = extendTheme({
   },
   //Color palette
   colors: {
+    lightThemeBackground: "#F2F1FF",
+    darkThemeBackground: "#202020",
+
     pink: "#f72585",
     blue: "#4CC9F0",
     purple: "#8963DA",

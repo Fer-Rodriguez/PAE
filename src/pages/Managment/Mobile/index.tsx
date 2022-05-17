@@ -43,6 +43,7 @@ export const ManagmentMobile = ({
           />
           <Input
             onChange={handleFilterInputChange}
+            background="white"
             borderRadius="general"
             boxShadow="general"
             type="search"
