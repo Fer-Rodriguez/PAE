@@ -1,19 +1,6 @@
 //Libraries
-import { useCallback, useRef, useState } from "react";
-import {
-  Heading,
-  useDisclosure,
-  HStack,
-  Box,
-  Text,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDisclosure, Box } from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -23,7 +10,6 @@ import "tui-time-picker/dist/tui-time-picker.css";
 //Components
 import { MyAlert } from "../MyAlert";
 import { MyModal } from "./Modal.component";
-import { ButtonGeneric } from "../Button";
 
 //Interfaces, types & enums
 import {
@@ -41,7 +27,6 @@ import {
   EBeforeType,
   IdeletSchedule,
   IacceptSchedule,
-  ETypeUpdateMonth,
 } from "./interfaces";
 
 //Functions
@@ -51,84 +36,87 @@ import {
   deleteSchedule,
   updateSchedule,
   acceptSchedule,
-  nextMonth,
 } from "./functions";
-
-//Assets
-import theme from "../../theme";
-import { idText } from "typescript";
+import axios from "axios";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
-  setSelectedDay?: React.Dispatch<Date>;
-  daySelected?: Date;
+  period: "0" | "1" | "2";
   h?: string;
+  register?: boolean;
+  idUser?: string;
 }
 
-function AlertDialogExample({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const cancelRef = useRef();
+function addHours(numOfHours: number, date = new Date()) {
+  date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
 
-  return (
-    <>
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef as any}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Customer
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef as any} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={onClose} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
-  );
+  return date;
 }
 
 export const MyCalendar = ({
   view = EMyCalendarView.week,
-  setSelectedDay,
-  daySelected,
+  period,
+  idUser,
   h,
+  register = false,
 }: IMyCalendar) => {
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
   const [totalHours, setTotalHours] = useState<number>(0);
-  const [schedules, setSchedules] = useState<Array<ISchedule>>([]);
+
+  const [schedulesFirst, setSchedulesFirst] = useState<Array<ISchedule>>([
+    {
+      id: String(Math.random()),
+      start: new Date(),
+      title: "Hola",
+      category: "time",
+      isAllDay: false,
+      end: addHours(2),
+
+      isVisible: true,
+    },
+  ]);
+  const [schedulesSecond, setSchedulesSecond] = useState<Array<ISchedule>>([]);
+  const [schedulesThird, setSchedulesThird] = useState<Array<ISchedule>>([]);
+
   const [modalType, setModalType] = useState<EModalCalendarType>(
     EModalCalendarType.create
   );
-  const [currentMonth, setMonth] = useState(new Date());
 
   //-----------------------------------
 
   //Use Ref
   const cal = useRef(null) as any;
 
+  // -------------------------------------
+
+  //UseEffect
+
+  const getSchedules = async () => {
+    axios
+      .get(`http://localhost:6090/schedule/?idUser=${idUser}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    if (!register) getSchedules();
+  }, []);
+
   //Modal states
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [alertHours, setAlertHours] = useState<boolean>(false);
+  const [disponibilityTimeAlert, setDispTimeAlert] = useState(false);
+  const [wholeHourAlert, setWholeHourAlert] = useState(false);
+
+  const getCurrentSchedule = () => {
+    if (period === "0") {
+      return { schedules: schedulesFirst, setSchedules: setSchedulesFirst };
+    } else if (period === "1") {
+      return { schedules: schedulesSecond, setSchedules: setSchedulesSecond };
+    } else
+      return { schedules: schedulesThird, setSchedules: setSchedulesThird };
+  };
 
   /**
    * modifySchedulesState
@@ -138,6 +126,7 @@ export const MyCalendar = ({
    * key? (Key which hold the value to mnodify), newValue? (New value to place in the key described above)
    */
   const modifySchedulesState = (props: ImodifySchedule) => {
+    const { schedules, setSchedules } = getCurrentSchedule();
     if (props.operation === EUpdateScheduleOperation.remove) {
       const updatedSchedules = schedules.filter(
         (schedule) => schedule.id !== props.scheduleId
@@ -182,6 +171,8 @@ export const MyCalendar = ({
       setEvent,
       setModalType,
       setAlertHours,
+      setDispTimeAlert,
+      setWholeHourAlert,
     };
 
     beforeCreateSchedule(props);
@@ -225,6 +216,7 @@ export const MyCalendar = ({
   };
 
   const middleAccept = () => {
+    const { schedules, setSchedules } = getCurrentSchedule();
     const props: IacceptSchedule = {
       setTotalHours,
       setAlertHours,
@@ -258,8 +250,6 @@ export const MyCalendar = ({
     eliminateSchedule: middleDelete,
   };
 
-  //TODO: Add methods for day selection at monthly view
-  //TODO: Restrict multiple selection at monthly view
   //TODO: On creation, fill calendar with schedules from advisors.
 
   return (
@@ -273,6 +263,20 @@ export const MyCalendar = ({
             active={alertHours}
             setActive={setAlertHours}
           />
+          <MyAlert
+            title="Error"
+            description="La disponibilidad mínima es de 1 hora."
+            status={EStatusAlert.error}
+            active={disponibilityTimeAlert}
+            setActive={setDispTimeAlert}
+          />
+          <MyAlert
+            title="Error"
+            description="El tiempo inicial y fnal de disponibilidad debe ser al comienzo de la hora en cuestión."
+            status={EStatusAlert.error}
+            active={wholeHourAlert}
+            setActive={setWholeHourAlert}
+          />
           <MyModal
             onClose={onClose}
             onOpen={onOpen}
@@ -285,53 +289,41 @@ export const MyCalendar = ({
       )}
 
       {view === EMyCalendarView.week && (
-        <Calendar
-          ref={cal}
-          className="calendar"
-          {...(h ? { height: h } : { height: "65vh" })}
-          view={view}
-          disableDblClick
-          scheduleView={["time"]}
-          taskView={false}
-          useCreationPopup={false}
-          onClickSchedule={middleBeforeClick}
-          onBeforeCreateSchedule={middleBeforeCreate}
-          onBeforeUpdateSchedule={middleBeforeUpdate}
-          week={{
-            startDayOfWeek: 1,
-            daynames: [
-              "Domingo",
-              "Lunes",
-              "Martes",
-              "Miércoles",
-              "Jueves",
-              "Viernes",
-              "Sábado",
-            ],
-            showTimezoneCollapseButton: true,
-            timezonesCollapsed: true,
-            workweek: true,
-            hourStart: 8,
-            hourEnd: 20,
-          }}
-          month={{
-            moreLayerSize: {
-              height: "auto",
-            },
-            grid: {
-              header: {
-                height: 34,
-              },
-              footer: {
-                height: 10,
-              },
-            },
-            narrowWeekend: true,
-            startDayOfWeek: 1, // monday
-            visibleWeeksCount: 3,
-            visibleScheduleCount: 4,
-          }}
-        />
+        <>
+          <h1>Periodo: {period}</h1>
+          <h1>Horas: {totalHours}</h1>
+          <Calendar
+            ref={cal}
+            className="calendar"
+            height="100%"
+            view={view}
+            disableDblClick
+            scheduleView={["time"]}
+            schedules={getCurrentSchedule().schedules}
+            taskView={false}
+            useCreationPopup={false}
+            onClickSchedule={middleBeforeClick}
+            onBeforeCreateSchedule={middleBeforeCreate}
+            onBeforeUpdateSchedule={middleBeforeUpdate}
+            week={{
+              startDayOfWeek: 1,
+              daynames: [
+                "Domingo",
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+              ],
+              showTimezoneCollapseButton: true,
+              timezonesCollapsed: true,
+              workweek: true,
+              hourStart: 8,
+              hourEnd: 20,
+            }}
+          />
+        </>
       )}
     </Box>
   );

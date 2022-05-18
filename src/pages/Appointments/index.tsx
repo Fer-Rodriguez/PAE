@@ -15,12 +15,10 @@ import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
-import { IDetailsAppointmentData } from "../../interfaces";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const [savedChange, setSavedChange] = useState(false);
   //Data states
-  const [fullData, setFullData] = useState<IDetailsAppointmentData[]>([]);
   const [tableData, setTableData] = useState<any[]>([]);
 
   //Edit state
@@ -32,26 +30,28 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   //Store
   const userType = useStore((state) => state.type);
   const userId = useStore((state) => state.id);
+  const allAppointments = useStore((state) => state.allAppointments);
+  const setAllAppointments = useStore((state) => state.setAllAppointments);
   const setSelectedData = useStore((state) => state.setSelectedAppointment);
 
   useEffect(() => {
-    console.log("mE EJECUTE");
-    const obtainData = async () => {
-      const response = await getAllAppointments(userId, userType);
-      setFullData(response);
+    const dataTable: any[] = [];
+    allAppointments.map((data: any) =>
+      dataTable.push({
+        date: new Date(data.appointment.date).toLocaleString(),
+        asesor: data.advisor !== undefined ? data.advisor.name : "Sin asignar",
+        materia: data.subject.name,
+        usuario: data.student.name,
+        status: data.appointment.status,
+      })
+    );
+    setTableData(dataTable);
+  }, [allAppointments]);
 
-      const dataTable: any[] = [];
-      response.map((data: any) =>
-        dataTable.push({
-          date: new Date(data.appointment.date).toLocaleString(),
-          asesor:
-            data.advisor !== undefined ? data.advisor.name : "Sin asignar",
-          materia: data.subject.name,
-          usuario: data.student.name,
-          status: data.appointment.status,
-        })
-      );
-      setTableData(dataTable);
+  useEffect(() => {
+    const obtainData = async () => {
+      const response = await getAllAppointments(userId, userType, true);
+      setAllAppointments(response);
     };
 
     obtainData();
@@ -60,7 +60,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const myOnClick = (index: number, edit: boolean) => {
     setEditAppointment(edit);
     onOpen();
-    setSelectedData(fullData[index]);
+    setSelectedData(allAppointments[index]);
   };
 
   //Functions who determines which button is presented

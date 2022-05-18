@@ -1,4 +1,6 @@
-import React, { useMemo } from "react";
+import axios from "axios";
+import React, { useMemo, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
 
@@ -9,6 +11,9 @@ interface IColumnDetails {
 import { Managment } from "../Managment";
 
 export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
+  const [apiData, setData] = useState([{}]);
+  const [selectedAdivosr, setSelectedAdvisor] = useState({});
+
   const columns = useMemo(
     () => [
       {
@@ -35,15 +40,27 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
         Header: "",
         accessor: "edit",
         Cell: (cell: Cell<any, any>) => (
-          <ButtonGeneric text={"Editar"} color={"pink"} fontColor="white" />
+          <Link to={`../perfil/${tuArregloDeObjetos[cell.row.index].id}`}>
+            <ButtonGeneric text={"Editar"} color={"pink"} fontColor="white" />
+          </Link>
         ),
       },
     ],
     []
   );
 
+  //TODO: Añadir la llamada al endpoint para obtener todos los usuarios asesores.
+  const getAdvisorData = async () => {
+    console.log("Obteniendo asesores");
+  };
+
+  useEffect(() => {
+    getAdvisorData();
+  }, []);
+
   const tuArregloDeObjetos = [
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",
@@ -51,6 +68,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       status: "Correcto",
     },
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",
@@ -58,6 +76,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       status: "Correcto",
     },
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",
@@ -65,6 +84,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       status: "Correcto",
     },
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",
@@ -72,6 +92,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       status: "Correcto",
     },
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",
@@ -79,6 +100,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       status: "Correcto",
     },
     {
+      id: "asdasdawdawd",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",

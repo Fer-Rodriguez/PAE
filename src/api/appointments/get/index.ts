@@ -1,10 +1,6 @@
 import axios from "axios";
-import React from "react";
 import { EUserType } from "../../../interfaces/enums";
-import { IAppointmentDataMod } from "../../../interfaces";
-interface IColumnDetails {
-  [key: string]: string;
-}
+
 export const getRecentAppointment = (
   id: string,
   type: EUserType,
@@ -18,15 +14,21 @@ export const getRecentAppointment = (
   axios(config).then((res) => setRecentAppointment(res.data));
 };
 
-export const getAllAppointments = async (id: string, type: string) => {
+export const getAllAppointments = async (
+  id: string,
+  type: string,
+  full: boolean
+) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}`,
+    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}&full=${full}`,
   };
 
   let response: any;
   await axios(config).then((res) => {
     response = res.data;
+    console.log("respuesta: ", response);
   });
+
   return response;
 };

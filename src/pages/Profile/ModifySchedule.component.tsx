@@ -14,40 +14,46 @@ import { IConfigurationsDropdown, IObjectData } from "../../interfaces/index";
 
 //Assets
 import theme from "../../theme";
+import { useParams } from "react-router-dom";
+import { useStore } from "../../state/store";
 
 interface IModifySchedulesContent {
-  setPeriod: React.Dispatch<number>;
+  setPeriod: React.Dispatch<"0" | "1" | "2">;
   setModeSchedules?: React.Dispatch<boolean>;
-  period: number;
+  period: "0" | "1" | "2";
   mobile?: boolean;
+  adminMod: boolean;
 }
 
 export const ModifySchedulesContent = ({
   setPeriod,
   setModeSchedules,
   period,
+  adminMod,
   mobile = false,
 }: IModifySchedulesContent) => {
   const toast = useToast();
+  const { id } = useParams();
+  const idCurrentUser = useStore((state) => state.id);
 
   const periodOptions: Array<IObjectData> = [
     {
       title: "Primer Periodo",
-      value: 0,
+      value: "0",
     },
     {
       title: "Segundo Periodo",
-      value: 1,
+      value: "1",
     },
     {
       title: "Tercer Periodo",
-      value: 2,
+      value: "2",
     },
   ];
 
   const configurations: IConfigurationsDropdown = {
     onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-      setPeriod(Number(e.target.value));
+      setPeriod(e.target.value as any);
     },
     placeholder: "Selecciona el periodo",
     type: ETypeDropdown.three,
@@ -72,7 +78,11 @@ export const ModifySchedulesContent = ({
           <DropDown configuration={configurations} options={periodOptions} />
         </Box>
       </Center>
-      <MyCalendar view={EMyCalendarView.week} />
+      <MyCalendar
+        view={EMyCalendarView.week}
+        period={period}
+        idUser={adminMod && id !== undefined ? id : idCurrentUser}
+      />
       <Center margin={12}>
         <ButtonGeneric
           text="Guardar"

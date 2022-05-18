@@ -10,7 +10,7 @@ export const Forms3 = () => {
   return (
     <Box width={"100%"}>
       <Text> Ingresa tus horas disponibles del primer periodo </Text>
-      <MyCalendar view={EMyCalendarView.week} h={"50vh"} />
+      <MyCalendar view={EMyCalendarView.week} h={"50vh"} period={"0"} />
     </Box>
   );
 };

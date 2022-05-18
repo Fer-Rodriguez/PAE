@@ -39,6 +39,7 @@ export const ProfileCardMobile = ({
   type,
   setPeriod,
   period,
+  modAdmin,
 }: IProfileCard) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modSchedules, setModSchedules] = useState(false);
@@ -50,8 +51,9 @@ export const ProfileCardMobile = ({
         setPeriod !== undefined &&
         period !== undefined && (
           <ModifySchedulesContent
-            setPeriod={setPeriod}
+            adminMod={modAdmin !== undefined && modAdmin}
             period={period}
+            setPeriod={setPeriod}
             setModeSchedules={setModSchedules}
             mobile
           />

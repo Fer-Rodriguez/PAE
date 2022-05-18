@@ -9,6 +9,7 @@ import { IAppointmentDataMod, IDetailsAppointmentData } from "../interfaces";
 
 export type TAppointmentSlice = {
   appointments: Array<TAppointment>;
+  allAppointments: IDetailsAppointmentData[];
   selectedAppointment: IDetailsAppointmentData;
   recentAppointment: IAppointmentDataMod;
   newAppointment: INewAppointment;
@@ -25,7 +26,7 @@ export type TAppointmentSlice = {
     id_petitioner,
     phase,
   }: TCreateAppointment) => void;
-
+  setAllAppointments: (newAppointments: IDetailsAppointmentData[]) => void;
   setRecentAppointment: (newRecentAppointment: IAppointmentDataMod) => void;
   setSelectedAppointment: (
     newSelectedAppointment: IDetailsAppointmentData
@@ -36,9 +37,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
   appointments: [],
   selectedAppointment: {
     subject: { name: "" },
-    student: { name: "" },
-    admin: { name: "" },
-    advisor: { name: "" },
+    student: { id: "", name: "" },
+    admin: { id: "", name: "" },
+    advisor: { id: "", name: "" },
     appointment: {
       date: "",
       id: "",
@@ -49,6 +50,7 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
       location: "",
     },
   },
+  allAppointments: [],
   recentAppointment: {
     date: "",
     id_subject: "",
@@ -93,6 +95,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     set({ appointments: newAppointments });
   },
 
+  setAllAppointments: (newAllAppointments) => {
+    set({ allAppointments: newAllAppointments });
+  },
   setRecentAppointment: (newRecentAppointment) => {
     set({ recentAppointment: newRecentAppointment });
   },

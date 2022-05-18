@@ -1,12 +1,5 @@
-import {
-  Grid,
-  GridItem,
-  Text,
-  Flex,
-  Box,
-  Center,
-  Spacer,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -24,12 +17,16 @@ import { IDataProfileCard } from "../../interfaces";
 //Store
 import { useStore } from "../../state/store";
 
+//Socket
+import socket from "../../socket";
+
 //Assets
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useEffect } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
+import { useToastHook } from "../../hooks";
 
 const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
   <Grid
@@ -120,12 +117,18 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
 
   useEffect(() => {
+    socket.connect();
+    socket.emit("initial", { myId: userData.id }, (response: any) => {
+      console.log(response.status);
+    });
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
   }, []);
 
   return mobile ? (
     <Mobile type={userData.type} name={userData.name} />
   ) : (
-    <Desktop type={userData.type} name={userData.name} />
+    <>
+      <Desktop type={userData.type} name={userData.name} />
+    </>
   );
 };

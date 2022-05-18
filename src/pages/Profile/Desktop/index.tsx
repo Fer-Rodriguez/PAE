@@ -14,7 +14,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 
-import { EditIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
 
 //Components
 import { ModifySchedulesContent } from "../ModifySchedule.component";
@@ -36,7 +36,8 @@ import { titleProfileCard } from "../../../data";
 
 //Assets
 import theme from "../../../theme";
-import profile_image from "../Assets/profile_image.png";
+import avatarProfile from "../Assets/avatarProfile.png";
+import { Link } from "react-router-dom";
 
 /**
  *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
@@ -76,6 +77,7 @@ export const ProfileDesktop = ({
             setPeriod={setPeriod}
             period={period}
             setModeSchedules={setModSchedules}
+            adminMod={modAdmin}
           />
         )
       ) : (
@@ -85,22 +87,18 @@ export const ProfileDesktop = ({
           className="drop-shadow-xl"
           flexDirection={"column"}
         >
-          <Flex my={"5rem"}>
-            <Spacer />
-            <Circle backgroundColor={"blue"} size="10rem">
-              <Center>
-                <Image
-                  maxW={"70%"}
-                  src={profile_image}
-                  mb="5"
-                  alt="Imagen de perfil del usuario en cuestión."
-                />
-              </Center>
-            </Circle>
+          <Flex>
+            {modAdmin && (
+              <Link to={"../asesores"}>
+                <ArrowBackIcon boxSize={"8"} ml={6} mt={6} />
+              </Link>
+            )}
+
+            <Image src={avatarProfile} boxSize="25vw" objectFit="contain" />
 
             <Spacer />
 
-            <Flex flexDirection={"column"} w={"50%"}>
+            <Flex flexDirection={"column"} w={"50%"} justifyContent="center">
               <Flex justifyContent={"space-between"}>
                 <Flex flexDirection={"column"}>
                   <Heading>{data.name}</Heading>

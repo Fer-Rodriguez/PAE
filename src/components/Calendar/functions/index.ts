@@ -17,7 +17,6 @@ import { EModalCalendarType } from "../../../interfaces/enums";
 
 //Functions
 import { getHoursBetweenDates } from "../../../services/Functions";
-import React from "react";
 
 // -----------------------
 // Weekly
@@ -29,10 +28,27 @@ const beforeCreateSchedule = ({
   setEvent,
   setModalType,
   setAlertHours,
+  setDispTimeAlert,
+  setWholeHourAlert,
 }: IbeforeCreateSchedule) => {
   const difference = getHoursBetweenDates(e.start, e.end);
 
-  if (setAlertHours !== undefined) {
+  if (
+    (e.start.getMinutes() !== 0 || e.end.getMinutes() !== 0) &&
+    setWholeHourAlert
+  ) {
+    setWholeHourAlert(true);
+    return;
+  }
+
+  if (difference <= 0.5 && setDispTimeAlert) {
+    setDispTimeAlert(true);
+    return;
+  }
+
+  if (setAlertHours !== undefined && setDispTimeAlert && setWholeHourAlert) {
+    setWholeHourAlert(false);
+    setDispTimeAlert(false);
     if (totalHours + difference <= 5) {
       e.guide.clearGuideElement();
       onOpen();
@@ -160,6 +176,7 @@ const acceptSchedule = ({
     raw: {
       class: "public",
     },
+    isVisible: true,
     state: "Disponible",
   };
 

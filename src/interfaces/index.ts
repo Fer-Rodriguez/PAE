@@ -127,8 +127,8 @@ export interface IMenuOptions {
 export interface IProfileCard {
   data: IDataProfileCard;
   type: EUserType;
-  period: number;
-  setPeriod: React.Dispatch<number>;
+  period: "0" | "1" | "2";
+  setPeriod: React.Dispatch<"0" | "1" | "2">;
   baseProps?: { [key: string]: any };
   modAdmin?: boolean;
 }
@@ -185,7 +185,7 @@ export interface IDetailsAppointmentData {
     photo_url: string;
     location: string;
   };
-  student: { name: string };
-  admin: { name: string };
-  advisor: { name: string };
+  student: { id: string; name: string };
+  admin: { id: string; name: string };
+  advisor: { id: string; name: string };
 }

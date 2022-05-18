@@ -2,7 +2,12 @@ import axios from "axios";
 
 import { EStatusAppointment } from "../../../interfaces/enums";
 
-interface IAppointmentDataMod {
+interface IIdsAppointmentDataMod {
+  id_advisor?: string;
+  id_admin?: string;
+}
+
+interface IBaseChanges {
   date?: string | Date;
   id_subject?: string;
   status?: EStatusAppointment;
@@ -13,11 +18,15 @@ interface IAppointmentDataMod {
 
 export const updateAppointment = (
   id: string,
-  newValues: IAppointmentDataMod
+  idStudent: string,
+  baseChanges: IBaseChanges,
+  detailChanges: IIdsAppointmentDataMod
 ) => {
   const data = JSON.stringify({
     id,
-    newValues,
+    idStudent,
+    baseChanges,
+    detailChanges,
   });
 
   const config = {
