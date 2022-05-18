@@ -28,10 +28,28 @@ import { useStore } from "../../state/store";
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
+import { Survey } from "../../components/Survey";
 
-const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
+const Desktop = ({
+  type,
+  name,
+  surveyAnswered,
+  surveyController,
+  surveyQuestions,
+}: {
+  type: EUserType;
+  name: string;
+  surveyAnswered: boolean;
+  surveyController: React.Dispatch<React.SetStateAction<boolean>>;
+  surveyQuestions: {
+    question: string;
+    type: "text" | "scale" | "yesOrNo";
+    scaleBegining?: string;
+    scaleEnding?: string;
+  }[];
+}) => (
   <Grid
     templateColumns="repeat(14, 1fr)"
     templateRows="repeat(8, 1fr)"
@@ -62,14 +80,53 @@ const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
     <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
       <AppointmentListCard type={type} />
     </GridItem>
+    {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
+    se actualice y solo dejamos la misma instancia de survey o vamos creando instancias de survey*/}
+    {surveyAnswered ? (
+      <></>
+    ) : (
+      <Survey
+        surveyController={surveyController}
+        surveyQuestions={surveyQuestions}
+        triggeringNotificationId={""}
+        appointmentId={""}
+      ></Survey>
+    )}
   </Grid>
 );
 
-const Mobile = ({ type, name }: { type: EUserType; name: string }) => {
+const Mobile = ({
+  type,
+  name,
+  surveyAnswered,
+  surveyController,
+  surveyQuestions,
+}: {
+  type: EUserType;
+  name: string;
+  surveyAnswered: boolean;
+  surveyController: React.Dispatch<React.SetStateAction<boolean>>;
+  surveyQuestions: {
+    question: string;
+    type: "text" | "scale" | "yesOrNo";
+    scaleBegining?: string;
+    scaleEnding?: string;
+  }[];
+}) => {
   const FirstPage = () => (
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
       <AppointmentListCard type={type} mobile />
+      {surveyAnswered ? (
+        <></>
+      ) : (
+        <Survey
+          surveyQuestions={surveyQuestions}
+          triggeringNotificationId={""}
+          surveyController={surveyController}
+          appointmentId={""}
+        ></Survey>
+      )}
     </Flex>
   );
 
@@ -117,6 +174,33 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     shallow
   );
 
+  //TODO: Use effect cuando cambie surveyAnswered para comprobar si hay otra survey que contestar
+  //TODO: Usar setSurveyQuestions cuando se tengan las notificaciones, se rescate el id de la appointment pendiente y se obtengan las preguntas
+  const [surveyAnswered, setSurveyAnswered] = useState(false);
+  const [surveyQuestions, setSurveyQuestions] = useState<
+    {
+      question: string;
+      type: "text" | "scale" | "yesOrNo";
+      scaleBegining?: string;
+      scaleEnding?: string;
+    }[]
+  >([
+    {
+      question: "¿Qué tan útil te pareció la asesoría?",
+      type: "scale",
+      scaleBegining: "Para nada útil",
+      scaleEnding: "Muy útil",
+    },
+    {
+      question: "¿Qué tan profesional fue el asesor?",
+      type: "scale",
+      scaleBegining: "Nada profesional",
+      scaleEnding: "Muy profesional",
+    },
+    { question: "Comentarios generales", type: "text" },
+    { question: "El asesor no asistió", type: "yesOrNo" },
+  ]);
+
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
 
   useEffect(() => {
@@ -124,8 +208,20 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   }, []);
 
   return mobile ? (
-    <Mobile type={userData.type} name={userData.name} />
+    <Mobile
+      type={userData.type}
+      name={userData.name}
+      surveyAnswered={surveyAnswered}
+      surveyController={setSurveyAnswered}
+      surveyQuestions={surveyQuestions}
+    />
   ) : (
-    <Desktop type={userData.type} name={userData.name} />
+    <Desktop
+      type={userData.type}
+      name={userData.name}
+      surveyAnswered={surveyAnswered}
+      surveyController={setSurveyAnswered}
+      surveyQuestions={surveyQuestions}
+    />
   );
 };
