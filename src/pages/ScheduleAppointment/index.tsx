@@ -1,11 +1,4 @@
-import { useState } from "react";
-
 import { Box } from "@chakra-ui/react";
-
-import axios from "axios";
-
-//Zustand
-import { useStore } from "../../state/store";
 
 import { BasicInfoScreen } from "./basicInfoScreen";
 import { ScheduleScreen } from "./scheduleScreen";
@@ -16,13 +9,14 @@ interface ISetters {
   setIdSubject: React.Dispatch<string>;
   setProblemDescription: React.Dispatch<string>;
   setDate: React.Dispatch<string>;
-  setImage: React.Dispatch<string>;
+  setImageFile: React.Dispatch<File>;
 }
 
 interface IInfo {
   idSubject: string;
   problemDescription: string;
   formStep: number;
+  imageFile: File | undefined;
 }
 
 export const ScheduleAppointment = ({
@@ -32,12 +26,18 @@ export const ScheduleAppointment = ({
   info,
 }: {
   mobile?: boolean;
-  createAppointment: () => Promise<boolean>;
+  createAppointment: () => Promise<boolean | undefined>;
   setters: ISetters;
   info: IInfo;
 }) => {
-  const { setFormStep, setDate, setIdSubject, setProblemDescription } = setters;
-  const { idSubject, problemDescription, formStep } = info;
+  const {
+    setFormStep,
+    setDate,
+    setIdSubject,
+    setProblemDescription,
+    setImageFile,
+  } = setters;
+  const { idSubject, problemDescription, formStep, imageFile } = info;
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
@@ -48,6 +48,8 @@ export const ScheduleAppointment = ({
           }}
           onDropDownChange={setIdSubject}
           onTextFieldChange={setProblemDescription}
+          onFileUploaded={setImageFile}
+          valueForFileInput={imageFile}
           valueForDropDown={idSubject}
           valueForTextField={problemDescription}
         ></BasicInfoScreen>
@@ -55,17 +57,17 @@ export const ScheduleAppointment = ({
     } else if (step == 1) {
       return (
         <ScheduleScreen
-          onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            //Llamada a API aquí xd
-            createAppointment().then((sucess) => {
-              if (sucess) {
-                setFormStep(2);
-              } else {
-                alert(
-                  "No podemos completar tu solicitud en este momento. Intenta de nuevo más tarde."
-                );
-              }
-            });
+          onNextScreenButtonClick={async (
+            e: React.MouseEvent<HTMLButtonElement>
+          ) => {
+            try {
+              await createAppointment();
+              setFormStep(2);
+            } catch (e) {
+              alert(
+                "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."
+              );
+            }
           }}
           onFullDateSelected={setDate}
         ></ScheduleScreen>

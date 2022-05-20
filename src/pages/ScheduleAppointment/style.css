@@ -1,0 +1,32 @@
+.FileUpload:hover,
+.FileUpload[data-hover] {
+  opacity: 0.8;
+}
+
+.FileUpload:active,
+.FileUpload[data-active] {
+  opacity: 1;
+  -webkit-transform: scale(0.98);
+  -moz-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  transform: scale(0.98);
+}
+
+.FileUpload:focus,
+.FileUpload[data-focus] {
+  box-shadow: 0 0 1px 2px rgba(88, 144, 255, 0.75),
+    0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.FileUpload[disabled],
+.FileUpload[aria-disabled="true"],
+.FileUpload[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.FileUpload {
+  transition-property: var(--chakra-transition-property-common);
+  transition-duration: var(--chakra-transition-duration-normal);
+}
