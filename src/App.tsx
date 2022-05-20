@@ -29,6 +29,7 @@ import "./App.css";
 import theme from "./theme";
 import { PollCard } from "./pages/Poll";
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
+import { FormsRecovery } from "./pages/RecoverPassword";
 
 export function App() {
   return (
@@ -50,6 +51,15 @@ export function App() {
               <Login
                 desktop={<FormsRegister />}
                 mobile={<FormsRegister mobile={true} />}
+              />
+            }
+          />
+          <Route
+            path="/recoverPassword"
+            element={
+              <Login
+                desktop={<FormsRecovery />}
+                mobile={<FormsRecovery mobile={true} />}
               />
             }
           />
