@@ -35,7 +35,6 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
   const setSelectedData = useStore((state) => state.setSelectedAppointment);
 
   useEffect(() => {
-    console.log("mE EJECUTE");
     const obtainData = async () => {
       const response = await getAllAppointments(userId, userType);
       setFullData(response);
@@ -123,8 +122,6 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
 
   const data = useMemo(() => [...tableData], [tableData]);
 
-  //TODO: mejorar esta condicional para que se tome en cuenta que myData puede quedar vacío si
-  //no hay datos en la db
   if (tableData.length === 0) {
     return <>Cargando...</>;
   } else {

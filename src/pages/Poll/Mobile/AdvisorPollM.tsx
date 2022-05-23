@@ -26,6 +26,9 @@ import theme from "../../../theme/index";
 import edit from "../../../assets/edit-icon.svg";
 import radial from "../../../assets/radial-icon.svg";
 import text from "../../../assets/text-icon.svg";
+import scale from "../../../assets/scale-icon.png";
+import yesno from "../../../assets/yesno-icon.png";
+import deletee from "../../../assets/delete-icon.png";
 import { Card } from "../Card";
 
 const style = {
@@ -98,7 +101,14 @@ export const AdvisorPollM: FC = () => {
       setCards((prevCards: Item[]) => {
         const idx = prevCards.findIndex((p) => p.id === idEdit);
         prevCards[idx].text = textEdit;
-        prevCards[idx].imageQuestion = questionEdit == "Text" ? text : radial;
+        prevCards[idx].imageQuestion =
+          questionEdit == "Text"
+            ? text
+            : questionEdit == "Radial"
+            ? radial
+            : questionEdit == "Scale"
+            ? scale
+            : yesno;
         prevCards[idx].typeQuestion = questionEdit;
         return [...prevCards];
       });
@@ -168,7 +178,7 @@ export const AdvisorPollM: FC = () => {
                   backgroundColor="pink"
                   onClick={() => deleteQuestion(card.id)}
                 >
-                  Borrar
+                  <Image src={deletee} />
                 </Button>
               </GridItem>
               <GridItem rowSpan={1} colStart={12} colEnd={12}>
@@ -237,6 +247,8 @@ export const AdvisorPollM: FC = () => {
               >
                 <option value="Text">Text</option>
                 <option value="Radial">Radial</option>
+                <option value="Yes/No">Yes/No</option>
+                <option value="Scale">Scale</option>
               </Select>
             </ModalBody>
 
