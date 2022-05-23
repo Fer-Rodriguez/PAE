@@ -15,6 +15,8 @@ import { Dashboard } from "./pages/Dashboard";
 
 import { MainLayout } from "./layouts/Main";
 
+import { SubjectPage } from "./pages/Subject";
+
 import { ProfilePage } from "./pages/Profile";
 
 import { AppointmentsPage } from "./pages/Appointments";
