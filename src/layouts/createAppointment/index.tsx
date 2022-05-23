@@ -18,19 +18,23 @@ export const CreateAppointmentLayout = () => {
   const [formStep, setFormStep] = useState(0);
   const [date, setDate] = useState("");
   const [idSubject, setIdSubject] = useState("");
+  const [subjectName, setSubjectName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
+
   const [image, setImage] = useState(""); //TODO: implementar la subida de archivos
 
   const setters = {
     setFormStep,
-    setDate,
     setIdSubject,
+    setSubjectName,
     setProblemDescription,
+    setDate,
     setImage,
   };
 
   const info = {
     idSubject,
+    subjectName,
     problemDescription,
     formStep,
   };
