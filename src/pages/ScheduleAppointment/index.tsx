@@ -14,6 +14,7 @@ import { SuccessScreen } from "./successScreen";
 interface ISetters {
   setFormStep: React.Dispatch<number>;
   setIdSubject: React.Dispatch<string>;
+  setSubjectName: React.Dispatch<string>;
   setProblemDescription: React.Dispatch<string>;
   setDate: React.Dispatch<string>;
   setImage: React.Dispatch<string>;
@@ -21,6 +22,7 @@ interface ISetters {
 
 interface IInfo {
   idSubject: string;
+  subjectName: string;
   problemDescription: string;
   formStep: number;
 }
@@ -36,17 +38,25 @@ export const ScheduleAppointment = ({
   setters: ISetters;
   info: IInfo;
 }) => {
-  const { setFormStep, setDate, setIdSubject, setProblemDescription } = setters;
-  const { idSubject, problemDescription, formStep } = info;
+  const {
+    setFormStep,
+    setDate,
+    setIdSubject,
+    setSubjectName,
+    setProblemDescription,
+  } = setters;
+  const { idSubject, subjectName, problemDescription, formStep } = info;
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return (
         <BasicInfoScreen
+          mobile={mobile}
           onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             setFormStep(1);
           }}
           onDropDownChange={setIdSubject}
+          onSubjectChange={setSubjectName}
           onTextFieldChange={setProblemDescription}
           valueForDropDown={idSubject}
           valueForTextField={problemDescription}
@@ -55,6 +65,8 @@ export const ScheduleAppointment = ({
     } else if (step == 1) {
       return (
         <ScheduleScreen
+          mobile={mobile}
+          subjectName={subjectName}
           onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             //Llamada a API aquí xd
             createAppointment().then((sucess) => {
@@ -71,7 +83,7 @@ export const ScheduleAppointment = ({
         ></ScheduleScreen>
       );
     } else if (step == 2) {
-      return <SuccessScreen></SuccessScreen>;
+      return <SuccessScreen mobile={mobile}></SuccessScreen>;
     } else {
       return <Box>Invalid form step</Box>;
     }
