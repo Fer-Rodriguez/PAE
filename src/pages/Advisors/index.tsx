@@ -60,7 +60,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
 
   const tuArregloDeObjetos = [
     {
-      id: "asdasdawdawd",
+      id: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
       date: "16/01/2022 12:00",
       name: "Julián Martinez",
       career: "IRS",

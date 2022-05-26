@@ -1,3 +1,12 @@
+import startOfWeek from "date-fns/startOfWeek";
+import getHours from "date-fns/getHours";
+import setHours from "date-fns/setHours";
+
+import nextTuesday from "date-fns/esm/fp/nextTuesday/index.js";
+import nextWednesday from "date-fns/esm/fp/nextWednesday/index.js";
+import nextThursday from "date-fns/nextThursday";
+import nextFriday from "date-fns/esm/fp/nextFriday/index.js";
+
 //Interfaces
 import {
   IbeforeCreateSchedule,
@@ -17,6 +26,7 @@ import { EModalCalendarType } from "../../../interfaces/enums";
 
 //Functions
 import { getHoursBetweenDates } from "../../../services/Functions";
+import React from "react";
 
 // -----------------------
 // Weekly
@@ -168,8 +178,8 @@ const acceptSchedule = ({
     id: String(Math.random()),
     title: "Asesoría",
     isAllDay: false,
-    start: event?.start,
-    end: event?.end,
+    start: event?.start._date,
+    end: event?.end._date,
     category: "time",
     dueDateClass: "",
     location: "",
@@ -179,6 +189,8 @@ const acceptSchedule = ({
     isVisible: true,
     state: "Disponible",
   };
+
+  console.log("Creado: ", schedule);
 
   const difference = getHoursBetweenDates(event?.start, event?.end);
 
@@ -216,4 +228,127 @@ export {
   acceptSchedule,
   //Montly
   updateMonth as nextMonth,
+};
+
+interface ISettersSchedules {
+  setInitialSchedulesFirst: React.Dispatch<Array<ISchedule>>;
+  setInitialSchedulesSecond: React.Dispatch<Array<ISchedule>>;
+  setInitialSchedulesThird: React.Dispatch<Array<ISchedule>>;
+  setTotalHours: React.Dispatch<number>;
+}
+
+interface IGettersSchedules {
+  initialSchedulesFirst: Array<ISchedule>;
+  initialSchedulesSecond: Array<ISchedule>;
+  initialSchedulesThird: Array<ISchedule>;
+  totalHours: number;
+}
+
+export const processSchedules = (
+  schedules: Array<any>,
+  setters: ISettersSchedules,
+  getters: IGettersSchedules
+) => {
+  const {
+    setInitialSchedulesFirst,
+    setInitialSchedulesSecond,
+    setInitialSchedulesThird,
+    setTotalHours,
+  } = setters;
+  const {
+    initialSchedulesFirst,
+    initialSchedulesSecond,
+    initialSchedulesThird,
+    totalHours,
+  } = getters;
+
+  const dayStartWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
+
+  const periodOneSchedules: Array<ISchedule> = [];
+  const periodTwoSchedules: Array<ISchedule> = [];
+  const periodThreeSchedules: Array<ISchedule> = [];
+
+  schedules.map((schedule) => {
+    setTotalHours(totalHours + 1);
+
+    let newStart;
+    let newEnd;
+
+    const originalStart = new Date(Date.parse(schedule.start));
+    const originalEnd = new Date(Date.parse(schedule.finish));
+
+    const startHours = getHours(originalStart);
+    const endHours = getHours(originalEnd);
+
+    const upcomingTuesday = nextTuesday(dayStartWeek);
+    const upcomingWednesday = nextWednesday(dayStartWeek);
+    const upcomingThursday = nextThursday(dayStartWeek);
+    const upcomingFriday = nextFriday(dayStartWeek);
+
+    switch (schedule.day) {
+      case "Lunes":
+        newStart = setHours(dayStartWeek, startHours);
+        newEnd = setHours(dayStartWeek, endHours);
+        break;
+
+      case "Martes":
+        newStart = setHours(upcomingTuesday, startHours);
+        newEnd = setHours(upcomingTuesday, endHours);
+        break;
+
+      case "Miércoles":
+        newStart = setHours(upcomingWednesday, startHours);
+        newEnd = setHours(upcomingWednesday, endHours);
+        break;
+
+      case "Jueves":
+        newStart = setHours(upcomingThursday, startHours);
+        newEnd = setHours(upcomingThursday, endHours);
+        break;
+
+      case "Viernes":
+        newStart = setHours(upcomingFriday, startHours);
+        newEnd = setHours(upcomingFriday, endHours);
+        break;
+
+      default:
+        break;
+    }
+
+    const newSchedule: ISchedule = {
+      id: String(Math.random()),
+      title: "Disponible",
+      isAllDay: false,
+      start: newStart,
+      end: newEnd,
+      category: "time",
+      dueDateClass: "",
+      location: "",
+      raw: {
+        class: "public",
+      },
+      isVisible: true,
+      state: "Disponible",
+    };
+
+    switch (schedule.period.toString()) {
+      case "0":
+        periodOneSchedules.push(newSchedule);
+        break;
+      case "1":
+        periodTwoSchedules.push(newSchedule);
+        break;
+      case "2":
+        periodThreeSchedules.push(newSchedule);
+        break;
+      default:
+        break;
+    }
+  });
+
+  console.log(periodOneSchedules);
+
+  setInitialSchedulesFirst(periodOneSchedules);
+  setInitialSchedulesSecond(periodTwoSchedules);
+  setInitialSchedulesThird(periodThreeSchedules);
 };

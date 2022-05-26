@@ -1,6 +1,6 @@
 //Libraries
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDisclosure, Box } from "@chakra-ui/react";
+import { useDisclosure, Box, Button } from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -36,8 +36,10 @@ import {
   deleteSchedule,
   updateSchedule,
   acceptSchedule,
+  processSchedules,
 } from "./functions";
 import axios from "axios";
+import { getHours } from "date-fns";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
@@ -64,18 +66,7 @@ export const MyCalendar = ({
   const [myEvent, setEvent] = useState<any>(null);
   const [totalHours, setTotalHours] = useState<number>(0);
 
-  const [schedulesFirst, setSchedulesFirst] = useState<Array<ISchedule>>([
-    {
-      id: String(Math.random()),
-      start: new Date(),
-      title: "Hola",
-      category: "time",
-      isAllDay: false,
-      end: addHours(2),
-
-      isVisible: true,
-    },
-  ]);
+  const [schedulesFirst, setSchedulesFirst] = useState<Array<ISchedule>>([]);
   const [schedulesSecond, setSchedulesSecond] = useState<Array<ISchedule>>([]);
   const [schedulesThird, setSchedulesThird] = useState<Array<ISchedule>>([]);
 
@@ -92,12 +83,51 @@ export const MyCalendar = ({
 
   //UseEffect
 
+  const updateSchedules = async () => {
+    try {
+      console.log("Esto enviamos: ", schedulesFirst); //TODO: Si eliminaos el de la API, aun así se cuela por aquí corregir.
+      await axios.patch("http://localhost:6090/schedule", {
+        schedules:
+          period === "0"
+            ? schedulesFirst
+            : period === "1"
+            ? schedulesSecond
+            : schedulesThird,
+
+        period,
+        idAdvisor: idUser,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getSchedules = async () => {
     axios
       .get(`http://localhost:6090/schedule/?idUser=${idUser}`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        processSchedules(
+          res.data,
+          {
+            setInitialSchedulesFirst: setSchedulesFirst,
+            setInitialSchedulesSecond: setSchedulesSecond,
+            setInitialSchedulesThird: setSchedulesThird,
+            setTotalHours,
+          },
+          {
+            initialSchedulesFirst: schedulesFirst,
+            initialSchedulesSecond: schedulesSecond,
+            initialSchedulesThird: schedulesThird,
+            totalHours,
+          }
+        );
+      })
       .catch((err) => console.error(err));
   };
+
+  useEffect(() => {
+    console.log("Este es el schedule actual: ", schedulesFirst);
+  }, [schedulesFirst]);
 
   useEffect(() => {
     if (!register) getSchedules();
@@ -290,6 +320,9 @@ export const MyCalendar = ({
 
       {view === EMyCalendarView.week && (
         <>
+          <Button onClick={async () => await updateSchedules()}>
+            Revela los secretos del mal
+          </Button>
           <h1>Periodo: {period}</h1>
           <h1>Horas: {totalHours}</h1>
           <Calendar
