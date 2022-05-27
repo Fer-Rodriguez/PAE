@@ -69,7 +69,6 @@ export const DropDown = ({
       textColor={fontColor}
       _focus={{ background: "#ff78b6" }}
       borderRadius={borderRadius}
-      variant="filled"
       placeholder={configuration.placeholder}
       onChange={(e) => configuration.onChange(e)}
       focusBorderColor={color}

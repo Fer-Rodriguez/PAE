@@ -18,7 +18,7 @@ import persona from "../../assets/persona.png";
 import adminRobot from "../../assets/adminRobot.png";
 import { DropDown } from "../../components/Dropdown";
 import { IConfigurationsDropdown, IObjectData } from "../../interfaces";
-import { ETypeDropdown } from "../../interfaces/enums";
+import { EStatusAppointment, ETypeDropdown } from "../../interfaces/enums";
 
 interface ICardComponent {
   type?: number;

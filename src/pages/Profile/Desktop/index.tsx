@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Circle,
   Image,
@@ -14,7 +14,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 
-import { EditIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
 
 //Components
 import { ModifySchedulesContent } from "../ModifySchedule.component";
@@ -36,7 +36,11 @@ import { titleProfileCard } from "../../../data";
 
 //Assets
 import theme from "../../../theme";
-import profile_image from "../Assets/profile_image.png";
+import avatarProfile from "../Assets/avatarProfile.png";
+import { Link } from "react-router-dom";
+import { updateUser } from "../../../api/users/update";
+import { useStore } from "../../../state/store";
+import { GetAllAdvisors } from "../../../api/users/get";
 
 /**
  *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
@@ -55,15 +59,34 @@ export const ProfileDesktop = ({
 }: IProfileCard) => {
   const [modSchedules, setModSchedules] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [myData, setMyData] = useState(data);
+  const [email, setEmail] = useState(data.email);
+  const [career, setCareer] = useState(data.career);
+  const [semester, setSemester] = useState(data.semester);
+
+  const setAllUsers = useStore((state) => state.setAllUsers);
+
+  useEffect(() => {
+    setEmail(data.email);
+    setCareer(data.career);
+    setSemester(data.semester);
+  }, [data]);
 
   const setMyDataLocal = (value: string | number | boolean, key: string) => {
-    console.log("Updating local data");
+    if (key === "Email") {
+      setEmail(value as string);
+    } else if (key === "Career") setCareer(value as string);
+    else setSemester(value as number);
   };
 
   const setMyDataChangesDB = () => {
-    //TODO: Save data changes inside this function onto the database
-    console.log("Saving data");
+    const dataToUpdate = {
+      email,
+      //career, TODO: Reemplazar career de un input a un dropdwon con las carreras que sí están disponibles.
+      //semester, TODO: El endpoint solo acepta las propiedades de la tabla de usuarios (No de sus subtablas)
+      updated_at: new Date(),
+    };
+    updateUser(dataToUpdate, data.id);
+    GetAllAdvisors(setAllUsers);
   };
 
   return (
@@ -76,6 +99,7 @@ export const ProfileDesktop = ({
             setPeriod={setPeriod}
             period={period}
             setModeSchedules={setModSchedules}
+            adminMod={modAdmin}
           />
         )
       ) : (
@@ -85,27 +109,23 @@ export const ProfileDesktop = ({
           className="drop-shadow-xl"
           flexDirection={"column"}
         >
-          <Flex my={"5rem"}>
-            <Spacer />
-            <Circle backgroundColor={"blue"} size="10rem">
-              <Center>
-                <Image
-                  maxW={"70%"}
-                  src={profile_image}
-                  mb="5"
-                  alt="Imagen de perfil del usuario en cuestión."
-                />
-              </Center>
-            </Circle>
+          <Flex>
+            {modAdmin && (
+              <Link to={"../asesores"}>
+                <ArrowBackIcon boxSize={"8"} ml={6} mt={6} />
+              </Link>
+            )}
+
+            <Image src={avatarProfile} boxSize="25vw" objectFit="contain" />
 
             <Spacer />
 
-            <Flex flexDirection={"column"} w={"50%"}>
+            <Flex flexDirection={"column"} w={"50%"} justifyContent="center">
               <Flex justifyContent={"space-between"}>
                 <Flex flexDirection={"column"}>
                   <Heading>{data.name}</Heading>
                   <Text fontSize="2xl" mb={"2.5"}>
-                    {type === EUserType.advisor
+                    {data.type === EUserType.advisor
                       ? "Asesor/a"
                       : data.type === EUserType.student
                       ? "Asesorado"
@@ -115,7 +135,7 @@ export const ProfileDesktop = ({
                 {data.type !== EUserType.student && (
                   <Flex flexDirection={"column"} m={2} gap={2}>
                     <ButtonChangePassword onOpen={onOpen} />
-                    {type === EUserType.admin && modAdmin && (
+                    {data.type === EUserType.advisor && (
                       <ButtonChangeSchedules
                         setModeSchedules={setModSchedules}
                       />
@@ -137,13 +157,19 @@ export const ProfileDesktop = ({
                   {titleProfileCard.map((title) =>
                     type !== EUserType.admin ? (
                       <Text size="sm" my={4}>
-                        {data[title.toLowerCase()]}
+                        {title}
                       </Text>
                     ) : (
                       <IconPopOverForm
-                        text={data[title.toLowerCase()]}
+                        text={
+                          title === "Email"
+                            ? email
+                            : title === "Career"
+                            ? career
+                            : semester.toString()
+                        }
                         icon={<EditIcon />}
-                        key={title.toLowerCase()}
+                        myKey={title}
                         setData={setMyDataLocal}
                       />
                     )
@@ -159,7 +185,7 @@ export const ProfileDesktop = ({
           {type === EUserType.admin && (
             <HStack justifyContent={"center"} mb={6}>
               {" "}
-              {modAdmin && <ButtonEraseAdvisor />}
+              {modAdmin && <ButtonEraseAdvisor id={data.id} />}
               <ButtonSaveChanges setMyData={setMyDataChangesDB} />
             </HStack>
           )}

@@ -1,19 +1,7 @@
 //Libraries
-import { useCallback, useRef, useState } from "react";
-import {
-  Heading,
-  useDisclosure,
-  HStack,
-  Box,
-  Text,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
+import axios from "axios";
+import { useCallback, useEffect, useRef, useState, ChangeEvent } from "react";
+import { useDisclosure, Box, Center, useToast } from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -23,13 +11,16 @@ import "tui-time-picker/dist/tui-time-picker.css";
 //Components
 import { MyAlert } from "../MyAlert";
 import { MyModal } from "./Modal.component";
-import { ButtonGeneric } from "../Button";
+import { ButtonGeneric } from "../ButtonGeneric";
 
 //Interfaces, types & enums
+
+import { IConfigurationsDropdown, IObjectData } from "../../interfaces/index";
 import {
   EStatusAlert,
   EModalCalendarType,
   EMyCalendarView,
+  ETypeDropdown,
 } from "../../interfaces/enums";
 import {
   ISchedule,
@@ -41,7 +32,6 @@ import {
   EBeforeType,
   IdeletSchedule,
   IacceptSchedule,
-  ETypeUpdateMonth,
 } from "./interfaces";
 
 //Functions
@@ -51,84 +41,138 @@ import {
   deleteSchedule,
   updateSchedule,
   acceptSchedule,
-  nextMonth,
+  processSchedules,
 } from "./functions";
-
-//Assets
-import theme from "../../theme";
-import { idText } from "typescript";
+import { DropDown } from "../Dropdown";
+import { useNavigate } from "react-router-dom";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
-  setSelectedDay?: React.Dispatch<Date>;
-  daySelected?: Date;
-  h?: string;
-}
-
-function AlertDialogExample({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const cancelRef = useRef();
-
-  return (
-    <>
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef as any}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Customer
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef as any} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={onClose} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
-  );
+  register?: boolean;
+  idUser: string;
+  mobile: boolean;
 }
 
 export const MyCalendar = ({
   view = EMyCalendarView.week,
-  setSelectedDay,
-  daySelected,
-  h,
+  idUser,
+  register = false,
+  mobile,
 }: IMyCalendar) => {
+  const toast = useToast();
+  const navigate = useNavigate();
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
-  const [totalHours, setTotalHours] = useState<number>(0);
-  const [schedules, setSchedules] = useState<Array<ISchedule>>([]);
+  const [period, setPeriod] = useState<"0" | "1" | "2">("0");
+
+  const [totalHoursOne, setTotalHoursOne] = useState<number>(0);
+  const [totalHoursTwo, setTotalHoursTwo] = useState<number>(0);
+  const [totalHoursThree, setTotalHoursThree] = useState<number>(0);
+
+  const [schedulesFirst, setSchedulesFirst] = useState<Array<ISchedule>>([]);
+  const [schedulesSecond, setSchedulesSecond] = useState<Array<ISchedule>>([]);
+  const [schedulesThird, setSchedulesThird] = useState<Array<ISchedule>>([]);
+
   const [modalType, setModalType] = useState<EModalCalendarType>(
     EModalCalendarType.create
   );
-  const [currentMonth, setMonth] = useState(new Date());
 
   //-----------------------------------
 
   //Use Ref
   const cal = useRef(null) as any;
 
+  const getCurrentSchedule = () => {
+    if (period === "0") {
+      return { schedules: schedulesFirst, setSchedules: setSchedulesFirst };
+    } else if (period === "1") {
+      return { schedules: schedulesSecond, setSchedules: setSchedulesSecond };
+    } else
+      return { schedules: schedulesThird, setSchedules: setSchedulesThird };
+  };
+
+  const getCurrentHours = (period: string) => {
+    if (period === "0") {
+      return { totalHours: totalHoursOne, setTotalHours: setTotalHoursOne };
+    } else if (period === "1") {
+      return { totalHours: totalHoursTwo, setTotalHours: setTotalHoursTwo };
+    } else
+      return { totalHours: totalHoursThree, setTotalHours: setTotalHoursThree };
+  };
+
+  // -------------------------------------
+
+  //UseEffect
+
+  const updateSchedules = async () => {
+    try {
+      await axios.patch("http://localhost:6090/schedule", {
+        scheduleOne: schedulesFirst,
+        scheduleTwo: schedulesSecond,
+        scheduleThree: schedulesThird,
+        idAdvisor: idUser,
+      });
+      if (register) navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getSchedules = async () => {
+    axios
+      .get(`http://localhost:6090/schedule/?idUser=${idUser}`)
+      .then((res) => {
+        processSchedules(
+          res.data,
+          {
+            setInitialSchedulesFirst: setSchedulesFirst,
+            setInitialSchedulesSecond: setSchedulesSecond,
+            setInitialSchedulesThird: setSchedulesThird,
+            getTotalHours: getCurrentHours,
+          },
+          {
+            initialSchedulesFirst: schedulesFirst,
+            initialSchedulesSecond: schedulesSecond,
+            initialSchedulesThird: schedulesThird,
+            totalHours: totalHoursOne,
+          }
+        );
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const periodDropdownOptions: Array<IObjectData> = [
+    {
+      title: "Primer Periodo",
+      value: "0",
+    },
+    {
+      title: "Segundo Periodo",
+      value: "1",
+    },
+    {
+      title: "Tercer Periodo",
+      value: "2",
+    },
+  ];
+
+  const dropdownConfigurations: IConfigurationsDropdown = {
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => {
+      setPeriod(e.target.value as any);
+    },
+    placeholder: "Selecciona el periodo",
+    type: ETypeDropdown.three,
+  };
+
+  useEffect(() => {
+    if (!register) getSchedules();
+  }, []);
+
   //Modal states
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [alertHours, setAlertHours] = useState<boolean>(false);
+  const [disponibilityTimeAlert, setDispTimeAlert] = useState(false);
+  const [wholeHourAlert, setWholeHourAlert] = useState(false);
 
   /**
    * modifySchedulesState
@@ -138,6 +182,7 @@ export const MyCalendar = ({
    * key? (Key which hold the value to mnodify), newValue? (New value to place in the key described above)
    */
   const modifySchedulesState = (props: ImodifySchedule) => {
+    const { schedules, setSchedules } = getCurrentSchedule();
     if (props.operation === EUpdateScheduleOperation.remove) {
       const updatedSchedules = schedules.filter(
         (schedule) => schedule.id !== props.scheduleId
@@ -177,11 +222,13 @@ export const MyCalendar = ({
   const middleBeforeCreate = useCallback((e) => {
     const props: IbeforeCreateSchedule = {
       e,
-      totalHours,
+      totalHours: totalHoursOne,
       onOpen,
       setEvent,
       setModalType,
       setAlertHours,
+      setDispTimeAlert,
+      setWholeHourAlert,
     };
 
     beforeCreateSchedule(props);
@@ -214,24 +261,25 @@ export const MyCalendar = ({
 
   const middleDelete = () => {
     const props: IdeletSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       modifySchedulesState,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     deleteSchedule(props);
   };
 
   const middleAccept = () => {
+    const { schedules, setSchedules } = getCurrentSchedule();
     const props: IacceptSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       setSchedules,
       schedules,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     acceptSchedule(props);
@@ -239,12 +287,12 @@ export const MyCalendar = ({
 
   const middleUpdate = () => {
     const props: IupdateSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       setModalType,
       modifySchedulesState,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     updateSchedule(props);
@@ -258,10 +306,6 @@ export const MyCalendar = ({
     eliminateSchedule: middleDelete,
   };
 
-  //TODO: Add methods for day selection at monthly view
-  //TODO: Restrict multiple selection at monthly view
-  //TODO: On creation, fill calendar with schedules from advisors.
-
   return (
     <Box overflowY={"scroll"}>
       {view === EMyCalendarView.week && (
@@ -272,6 +316,20 @@ export const MyCalendar = ({
             status={EStatusAlert.error}
             active={alertHours}
             setActive={setAlertHours}
+          />
+          <MyAlert
+            title="Error"
+            description="La disponibilidad mínima es de 1 hora."
+            status={EStatusAlert.error}
+            active={disponibilityTimeAlert}
+            setActive={setDispTimeAlert}
+          />
+          <MyAlert
+            title="Error"
+            description="El tiempo inicial y fnal de disponibilidad debe ser al comienzo de la hora en cuestión."
+            status={EStatusAlert.error}
+            active={wholeHourAlert}
+            setActive={setWholeHourAlert}
           />
           <MyModal
             onClose={onClose}
@@ -285,53 +343,65 @@ export const MyCalendar = ({
       )}
 
       {view === EMyCalendarView.week && (
-        <Calendar
-          ref={cal}
-          className="calendar"
-          {...(h ? { height: h } : { height: "65vh" })}
-          view={view}
-          disableDblClick
-          scheduleView={["time"]}
-          taskView={false}
-          useCreationPopup={false}
-          onClickSchedule={middleBeforeClick}
-          onBeforeCreateSchedule={middleBeforeCreate}
-          onBeforeUpdateSchedule={middleBeforeUpdate}
-          week={{
-            startDayOfWeek: 1,
-            daynames: [
-              "Domingo",
-              "Lunes",
-              "Martes",
-              "Miércoles",
-              "Jueves",
-              "Viernes",
-              "Sábado",
-            ],
-            showTimezoneCollapseButton: true,
-            timezonesCollapsed: true,
-            workweek: true,
-            hourStart: 8,
-            hourEnd: 20,
-          }}
-          month={{
-            moreLayerSize: {
-              height: "auto",
-            },
-            grid: {
-              header: {
-                height: 34,
-              },
-              footer: {
-                height: 10,
-              },
-            },
-            narrowWeekend: true,
-            startDayOfWeek: 1, // monday
-            visibleWeeksCount: 3,
-            visibleScheduleCount: 4,
-          }}
-        />
+        <>
+          <Box w={mobile ? "70vw" : "30vw"} my={6}>
+            <DropDown
+              configuration={dropdownConfigurations}
+              options={periodDropdownOptions}
+            />
+          </Box>
+          <h1>Horas disponbiles: {getCurrentHours(period).totalHours}</h1>
+          <Calendar
+            ref={cal}
+            className="calendar"
+            height="100%"
+            view={view}
+            disableDblClick
+            scheduleView={["time"]}
+            schedules={getCurrentSchedule().schedules}
+            taskView={false}
+            useCreationPopup={false}
+            onClickSchedule={middleBeforeClick}
+            onBeforeCreateSchedule={middleBeforeCreate}
+            onBeforeUpdateSchedule={middleBeforeUpdate}
+            week={{
+              startDayOfWeek: 1,
+              daynames: [
+                "Domingo",
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+              ],
+              showTimezoneCollapseButton: true,
+              timezonesCollapsed: true,
+              workweek: true,
+              hourStart: 8,
+              hourEnd: 20,
+            }}
+          />
+          <Center margin={12}>
+            <ButtonGeneric
+              sizePX="100"
+              text="Guardar"
+              bgColor={"purple"}
+              fontColor="white"
+              onClick={async () => {
+                await updateSchedules();
+                toast({
+                  title: "¡Listo!",
+                  description: "El Horario se ha guardado con éxito.",
+                  position: "top",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true,
+                });
+              }}
+            />
+          </Center>
+        </>
       )}
     </Box>
   );

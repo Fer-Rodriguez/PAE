@@ -38,16 +38,12 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
         imgSrc: menuCitas,
       },
       {
-        linkTo: "../perfil",
-        imgSrc: menuAsesores,
+        linkTo: "../asesores",
+        imgSrc: menuImg3,
       },
       {
-        linkTo: "../perfil",
-        imgSrc: menuMaterias,
-      },
-      {
-        linkTo: "../perfil",
-        imgSrc: menuPerfil,
+        linkTo: "../perfil/user",
+        imgSrc: menuImg3,
       },
     ];
   } else {
@@ -61,8 +57,8 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
         imgSrc: menuCitas,
       },
       {
-        linkTo: "../perfil",
-        imgSrc: menuPerfil,
+        linkTo: "../perfil/user",
+        imgSrc: menuImg3,
       },
     ];
   }
