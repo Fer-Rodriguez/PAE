@@ -41,6 +41,19 @@ const theme = extendTheme({
 
     white: "#FFFFFF",
     black: "#000000",
+
+    pinkScheme: {
+      50: "#f72585",
+      100: "#f72585",
+      200: "#f72585",
+      300: "#f72585",
+      400: "#f72585",
+      500: "#f72585",
+      600: "#f72585",
+      700: "#f72585",
+      800: "#f72585",
+      900: "#f72585",
+    },
   },
   //Border radii for components
   radii: {
