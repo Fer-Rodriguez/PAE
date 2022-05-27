@@ -113,9 +113,9 @@ export interface IUserComponents {
 }
 
 export interface ICitasDaySchedules {
-  dia?: string;
-  asesor?: string;
-  horario: string;
+  day: string;
+  finish: string;
+  start: string;
 }
 
 export interface IMenuOptions {

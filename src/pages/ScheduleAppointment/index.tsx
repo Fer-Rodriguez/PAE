@@ -63,6 +63,8 @@ export const ScheduleAppointment = ({
     } else if (step == 1) {
       return (
         <ScheduleScreen
+          idSubject={idSubject}
+
           mobile={mobile}
           subjectName={subjectName}
           onPreviousScreenButtonClick={(
