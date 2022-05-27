@@ -5,44 +5,44 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Select,
-  FormControl,
+  Input,
 } from "@chakra-ui/react";
 
-interface ICarreraInput {
+interface IMailInput {
   control: Control<any>;
   defaultValue?: string;
-  setCarrera?: React.Dispatch<React.SetStateAction<string>>;
+  setMail?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
 }
 
-export const CarreraInput = ({
+export const MailInput = ({
   control,
   defaultValue = "",
-  setCarrera,
+  setMail,
   secondValidation = false,
-}: ICarreraInput) => {
+}: IMailInput) => {
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (setCarrera) {
-      setCarrera(e.target.value);
+    if (setMail) {
+      setMail(e.target.value);
     }
   };
 
   return (
     <Controller
-      name="carrera"
+      name="mail"
       control={control || null}
       rules={{
-        required: `Por favor selecciona tu carrera`,
+        required: `Por favor ingresa un correo válido`,
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <div>
-          <FormLabel htmlFor="carrera">Carrera</FormLabel>
-          <Select
-            id="carrera"
-            placeholder="Selecciona tu carrera"
+          <FormLabel htmlFor="mail">Correo eléctrónico</FormLabel>
+          <Input
+            type={"email"}
+            size={"sm"}
+            placeholder="Correo institucional"
             onChange={(e) => {
               onChange(e);
               if (secondValidation) {
@@ -51,15 +51,10 @@ export const CarreraInput = ({
             }}
             value={value}
             isInvalid={Boolean(error)}
-          >
-            <option>ITC</option>
-            <option>IRS</option>
-            <option>IBT</option>
-            <option>IMT</option>
-          </Select>
+          ></Input>
 
           {!error ? (
-            <FormHelperText>Ingresa tu carrera</FormHelperText>
+            <FormHelperText>Ingresa tu correo institucional</FormHelperText>
           ) : (
             <FormErrorMessage>{error?.message}</FormErrorMessage>
           )}

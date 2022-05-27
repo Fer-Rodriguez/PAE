@@ -131,6 +131,10 @@ export const FormsLogin = (props: IFormsLogin) => {
     navigate("/register");
   };
 
+  const recovery = () => {
+    navigate("/recoverPassword");
+  };
+
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
       <Center {...(props.mobile ? { h: "100%" } : { h: "max(100vh, 100%)" })}>
@@ -181,7 +185,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                 <Link
                   fontSize="sm"
                   color="cyan.400"
-                  href="#"
+                  onClick={() => recovery()}
                   textAlign={"right"}
                 >
                   ¿Olvidaste tu contraseña?

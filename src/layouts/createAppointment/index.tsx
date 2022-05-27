@@ -20,19 +20,22 @@ export const CreateAppointmentLayout = () => {
   const [formStep, setFormStep] = useState(0);
   const [date, setDate] = useState("");
   const [idSubject, setIdSubject] = useState("");
+  const [subjectName, setSubjectName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
   const [imageFile, setImageFile] = useState<File>();
 
   const setters = {
     setFormStep,
-    setDate,
     setIdSubject,
+    setSubjectName,
     setProblemDescription,
     setImageFile,
+    setDate,
   };
 
   const info = {
     idSubject,
+    subjectName,
     problemDescription,
     formStep,
     imageFile,

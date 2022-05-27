@@ -7,6 +7,7 @@ import { SuccessScreen } from "./successScreen";
 interface ISetters {
   setFormStep: React.Dispatch<number>;
   setIdSubject: React.Dispatch<string>;
+  setSubjectName: React.Dispatch<string>;
   setProblemDescription: React.Dispatch<string>;
   setDate: React.Dispatch<string>;
   setImageFile: React.Dispatch<File>;
@@ -14,6 +15,7 @@ interface ISetters {
 
 interface IInfo {
   idSubject: string;
+  subjectName: string;
   problemDescription: string;
   formStep: number;
   imageFile: File | undefined;
@@ -32,21 +34,25 @@ export const ScheduleAppointment = ({
 }) => {
   const {
     setFormStep,
-    setDate,
     setIdSubject,
+    setSubjectName,
     setProblemDescription,
+    setDate,
     setImageFile,
   } = setters;
-  const { idSubject, problemDescription, formStep, imageFile } = info;
+  const { idSubject, subjectName, problemDescription, formStep, imageFile } = info;
+
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return (
         <BasicInfoScreen
+          mobile={mobile}
           onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             setFormStep(1);
           }}
           onDropDownChange={setIdSubject}
+          onSubjectChange={setSubjectName}
           onTextFieldChange={setProblemDescription}
           onFileUploaded={setImageFile}
           valueForFileInput={imageFile}
@@ -68,12 +74,13 @@ export const ScheduleAppointment = ({
                 "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."
               );
             }
+
           }}
           onFullDateSelected={setDate}
         ></ScheduleScreen>
       );
     } else if (step == 2) {
-      return <SuccessScreen></SuccessScreen>;
+      return <SuccessScreen mobile={mobile}></SuccessScreen>;
     } else {
       return <Box>Invalid form step</Box>;
     }

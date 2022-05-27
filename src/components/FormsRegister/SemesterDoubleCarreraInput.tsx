@@ -46,13 +46,12 @@ export const SemesterDoubleCarreraInput = ({
           <FormLabel htmlFor="semestreDoubleCarrera">
             Último semestre cursado
           </FormLabel>
-          <NumberInput isInvalid={Boolean(error)}>
+          <NumberInput isInvalid={Boolean(error)} defaultValue={defaultValue}>
             <NumberInputField
               id="semesterDoubleCarrera"
               placeholder="1-10"
               onChange={(e) => {
                 onChange(e);
-                console.log(error);
                 if (secondValidation) {
                   handleChange(e);
                 }
