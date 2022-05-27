@@ -10,6 +10,7 @@ interface IButtonGeneric {
   isDisabled?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
   baseProps?: { [key: string]: any };
+  value?: any;
 }
 
 export const ButtonGeneric = ({
@@ -20,12 +21,14 @@ export const ButtonGeneric = ({
   onClick,
   isDisabled,
   type = "button",
+  value,
   baseProps,
 }: IButtonGeneric) => {
   return (
     <Button
       type={type}
       bg={bgColor}
+      value={value}
       opacity={"0.75"}
       rounded={theme.radii.button}
       textColor={fontColor}

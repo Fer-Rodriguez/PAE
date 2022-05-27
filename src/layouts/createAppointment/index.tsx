@@ -37,21 +37,20 @@ export const CreateAppointmentLayout = () => {
 
   const idPetitioner = useStore((state) => state.id);
   const createAppointment = async () => {
-    const data = qs.stringify({
+    const data = {
       idPetitioner: idPetitioner,
       date: date,
       idSubject: idSubject,
       problemDescription: problemDescription,
       image: "https://aunnotenemosestaparte.com/imagen.jpg",
-    });
+    };
+
+    console.log("Data que envío: ", data);
 
     const config = {
       method: "post",
       url: "http://localhost:6060/appointment",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: data,
+      data,
     };
 
     let successfulRequest = false;

@@ -1,23 +1,38 @@
-import { Center, VStack } from "@chakra-ui/react";
+import { Center, VStack, Text } from "@chakra-ui/react";
 
 import { ICitasDaySchedules } from "../../interfaces";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 
 import theme from "../../theme/index";
 import "./estilo.css";
+import { useEffect, useState } from "react";
+
+import { getHours } from "date-fns";
 
 interface IScheduleList {
   schedules: Array<ICitasDaySchedules>;
   onScheduleButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   scheduleSelected?: string;
   width: string;
+  daySelected: string;
 }
 export const ScheduleList = ({
   schedules,
   width,
   onScheduleButtonClick,
   scheduleSelected,
+  daySelected,
 }: IScheduleList) => {
+  const [possibleDates, setPossibleDates] = useState<ICitasDaySchedules[]>([]);
+
+  useEffect(() => {
+    const datesAccordingToDay = schedules.filter(
+      (schedule) => schedule.day === daySelected
+    );
+
+    setPossibleDates(datesAccordingToDay);
+  }, [daySelected]);
+
   return (
     <Center
       w={width}
@@ -34,17 +49,30 @@ export const ScheduleList = ({
         borderRadius={theme.radii.general}
         overflow="auto"
       >
-        {schedules.map((schedules) => (
-          <ButtonGeneric
-            bgColor="purpleLight"
-            sizePX="80%"
-            text={schedules.horario}
-            onClick={onScheduleButtonClick}
-            baseProps={{
-              opacity: schedules.horario === scheduleSelected ? "100%" : "40%",
-            }}
-          ></ButtonGeneric>
-        ))}
+        {possibleDates.length === 0 ? (
+          <Text m={7}>No hay asesores disponibles en este día.</Text>
+        ) : (
+          possibleDates.map((myDate) => (
+            <>
+              <ButtonGeneric
+                bgColor="purpleLight"
+                value={myDate.start}
+                sizePX="80%"
+                text={new Date(Date.parse(myDate.start)).toLocaleTimeString(
+                  "mx",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )}
+                onClick={onScheduleButtonClick}
+                baseProps={{
+                  opacity: myDate.start === scheduleSelected ? "100%" : "40%",
+                }}
+              ></ButtonGeneric>
+            </>
+          ))
+        )}
       </VStack>
     </Center>
   );

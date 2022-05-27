@@ -55,6 +55,7 @@ export const ScheduleAppointment = ({
     } else if (step == 1) {
       return (
         <ScheduleScreen
+          idSubject={idSubject}
           onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             //Llamada a API aquí xd
             createAppointment().then((sucess) => {

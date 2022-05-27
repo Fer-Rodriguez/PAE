@@ -110,7 +110,6 @@ export const BasicInfoScreen = ({
                 onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
                   onChange(e);
                   onTextFieldChange?.(e.target.value);
-                  console.log("Value TextInput: ", e.target.value);
                 }}
               />
               {error ? (
