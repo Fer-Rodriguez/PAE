@@ -8,6 +8,7 @@ interface ITextInput {
   onChangeArea?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string;
   isInvalid?: boolean;
+  extraInputProps?: { [key: string]: any };
 }
 export const TextInput = ({
   multiLine,
@@ -17,6 +18,7 @@ export const TextInput = ({
   onChangeArea,
   value,
   isInvalid,
+  extraInputProps,
 }: ITextInput) => {
   if (!multiLine)
     return (
@@ -31,6 +33,7 @@ export const TextInput = ({
         value={value}
         isInvalid={isInvalid}
         onChange={onChange}
+        {...extraInputProps}
       />
     );
   else
@@ -43,14 +46,14 @@ export const TextInput = ({
         }}
         rows={7}
         resize="none"
-        borderRadius="25px"
-        backgroundColor="#F8F8F8"
         color="black"
-        borderColor="#FFFFFF"
         placeholder={placeholderText}
         width={width}
         value={value}
         isInvalid={isInvalid}
+        focusBorderColor="pink"
+        borderRadius="25px"
+        {...extraInputProps}
       />
     );
 };

@@ -78,6 +78,7 @@ export const DropDown = ({
           style={customOptionStyle(index, configuration.type)}
           value={myOption.value ? myOption.value : myOption.title}
           className=""
+          title={myOption.title}
         >
           {myOption.title}
         </option>

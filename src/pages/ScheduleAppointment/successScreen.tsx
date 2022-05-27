@@ -10,7 +10,7 @@ export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
   const goBackToDashboard = () => {
     navigate("/dashboard");
   };
-
+  console.log("This is an easter egg, Hello World");
   if (mobile) {
     return (
       <VStack w="100%" spacing="50px" alignItems="center">

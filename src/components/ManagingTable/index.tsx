@@ -10,15 +10,6 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 
-import {
-  ColumnInstance,
-  Row,
-  TableBodyPropGetter,
-  TableBodyProps,
-  TablePropGetter,
-  TableProps,
-} from "react-table";
-
 import { IManagingTableInternal } from "../../interfaces";
 
 /**
@@ -44,7 +35,7 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
             ))}
           </Tr>
         </Thead>
-        <Tbody {...internalProps.getTableBodyProps()}>
+        <Tbody background="white" {...internalProps.getTableBodyProps()}>
           {internalProps.rows.map((row) => {
             internalProps.prepareRow(row);
             return (
@@ -55,7 +46,13 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
               >
                 {row.cells.map((cell) => {
                   return (
-                    <Td textAlign="center" {...cell.getCellProps()}>
+                    <Td
+                      textOverflow="ellipsis"
+                      maxWidth="15vw"
+                      overflow="hidden"
+                      textAlign="center"
+                      {...cell.getCellProps()}
+                    >
                       {cell.render("Cell")}
                     </Td>
                   );

@@ -1,7 +1,7 @@
 //Libraries
 import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import { useDisclosure, Box } from "@chakra-ui/react";
+import { useDisclosure, Heading, Spinner, Flex } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -20,6 +20,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const [savedChange, setSavedChange] = useState(false);
   //Data states
   const [tableData, setTableData] = useState<any[]>([]);
+  const [calledAPI, setCalledAPI] = useState<boolean>(false);
 
   //Edit state
   const [editAppointment, setEditAppointment] = useState(false);
@@ -53,8 +54,14 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
       const response = await getAllAppointments(userId, userType, true);
       setAllAppointments(response);
     };
-
-    obtainData();
+    obtainData().then(
+      () => {
+        setCalledAPI(true);
+      },
+      () => {
+        setCalledAPI(true);
+      }
+    );
   }, [userId, userType, savedChange]);
 
   const myOnClick = (index: number, edit: boolean) => {
@@ -62,6 +69,16 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
     onOpen();
     setSelectedData(allAppointments[index]);
   };
+
+  const noDataView = (
+    <>
+      <Flex h="50vh" justifyContent="center" alignItems="center">
+        <Heading textAlign="center">
+          No hay datos de asesorías disponibles
+        </Heading>
+      </Flex>
+    </>
+  );
 
   //Functions who determines which button is presented
   const DetailsEditsButton = (
@@ -124,10 +141,15 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   const data = useMemo(() => [...tableData], [tableData]);
 
-  //TODO: mejorar esta condicional para que se tome en cuenta que myData puede quedar vacío si
-  //no hay datos en la db
   if (tableData.length === 0) {
-    return <>Cargando...</>;
+    if (!calledAPI) {
+      return (
+        <Flex h="50vh" justifyContent="center" alignItems="center">
+          <Spinner color="purple" size="xl" />
+        </Flex>
+      );
+    }
+    return noDataView;
   } else {
     return (
       <>

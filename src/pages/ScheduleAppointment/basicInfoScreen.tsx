@@ -5,6 +5,7 @@ import {
   Box,
   Center,
   VStack,
+  Image,
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/react";
@@ -13,23 +14,31 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { DropDown } from "../../components/Dropdown";
 import { TextInput } from "../../components/TextInput";
 //Assets
+import imageBasicInfo from "../../assets/appoint_basicInfo.png";
 import theme from "../../theme/index";
 import { Controller, useForm } from "react-hook-form";
+import { FileUploadButton } from "./fileUploadButton";
 
 export const BasicInfoScreen = ({
   mobile,
   onNextScreenButtonClick,
   onDropDownChange,
+  onSubjectChange,
   onTextFieldChange,
+  onFileUploaded,
   valueForDropDown,
   valueForTextField,
+  valueForFileInput,
 }: {
   mobile?: boolean;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onDropDownChange?: React.Dispatch<string>;
+  onSubjectChange?: React.Dispatch<string>;
   onTextFieldChange?: (newValue: string) => void;
+  onFileUploaded?: React.Dispatch<File>;
   valueForDropDown?: string;
   valueForTextField?: string;
+  valueForFileInput?: File;
 }) => {
   //TODO: Remplazar esto con una llamada GET a la base de datos
   const myOptions = [
@@ -67,6 +76,12 @@ export const BasicInfoScreen = ({
                     onChange: (e: ChangeEvent<HTMLSelectElement>) => {
                       //TODO: Darle focus al text in
                       onChange(e);
+                      const currentSubject = e.target.options.item(
+                        e.target.options.selectedIndex
+                      )?.title;
+                      if (currentSubject !== undefined) {
+                        onSubjectChange?.(currentSubject);
+                      }
                       onDropDownChange?.(e.target.value);
                     },
                     placeholder: "Seleccionar materia",
@@ -110,7 +125,6 @@ export const BasicInfoScreen = ({
                 onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
                   onChange(e);
                   onTextFieldChange?.(e.target.value);
-                  console.log("Value TextInput: ", e.target.value);
                 }}
               />
               {error ? (
@@ -121,12 +135,10 @@ export const BasicInfoScreen = ({
             </>
           )}
         ></Controller>
-        <ButtonGeneric
-          bgColor="blue"
-          sizePX=""
-          fontColor="black"
-          text="Añadir foto"
-        ></ButtonGeneric>
+        <FileUploadButton
+          currentFile={valueForFileInput}
+          onChange={onFileUploaded}
+        ></FileUploadButton>
         <Center w="100%">
           <ButtonGeneric
             bgColor="pink"
@@ -137,6 +149,18 @@ export const BasicInfoScreen = ({
           ></ButtonGeneric>
         </Center>
       </VStack>
+      <Box w="40%">
+        <Image
+          maxW={mobile ? "30%" : "20%"}
+          bottom="0%"
+          right="0%"
+          zIndex="2"
+          objectFit="contain"
+          position="absolute"
+          float="right"
+          src={imageBasicInfo}
+        />
+      </Box>
     </FormControl>
   );
 };
