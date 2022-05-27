@@ -14,6 +14,7 @@ import { ScaleQuestion } from "./scaleQuestion";
 import { TextQuestion } from "./textQuestion";
 
 export const Survey = ({
+  surveyAnswered,
   surveyQuestions,
   surveyController,
   triggeringNotificationId,
@@ -25,6 +26,7 @@ export const Survey = ({
     scaleBegining?: string;
     scaleEnding?: string;
   }[];
+  surveyAnswered: boolean;
   surveyController: React.Dispatch<React.SetStateAction<boolean>>;
   triggeringNotificationId: string;
   appointmentId: string;
@@ -42,7 +44,11 @@ export const Survey = ({
   } = useForm({ mode: "onChange" });
 
   return (
-    <PopOver size={ETypeSize.s} closeButton={false}>
+    <PopOver
+      size={ETypeSize.s}
+      closeButton={false}
+      customOpen={!surveyAnswered}
+    >
       <Heading textAlign="center" as="h2" fontSize="2xl" marginBlockEnd="20px">
         ¿Qué tal te fue en tu asesoría con Bruce Wayne?
       </Heading>

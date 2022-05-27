@@ -19,7 +19,6 @@ import imageBasicInfo from "../../assets/appoint_basicInfo.png";
 import theme from "../../theme/index";
 import { Controller, useForm } from "react-hook-form";
 import { FileUploadButton } from "./fileUploadButton";
-import { Progress } from "../../components/Progress";
 
 export const BasicInfoScreen = ({
   mobile,

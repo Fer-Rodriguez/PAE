@@ -1,12 +1,4 @@
-import {
-  Grid,
-  GridItem,
-  Text,
-  Flex,
-  Box,
-  Center,
-  Spacer,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Text, Flex, Box } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -51,19 +43,17 @@ const Desktop = ({
   }[];
 }) => (
   <Grid
-    id="cobs"
     templateColumns="repeat(14, 1fr)"
     templateRows="repeat(8, 1fr)"
     gap={7}
     height={"100vh"}
   >
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
-      <Flex gap={1} mb={4}>
-        <Text fontSize={"2rem"} fontWeight={"bold"}>
-          Hola,{" "}
-        </Text>
-        <Text fontSize={"2rem"}> {name}</Text>
+      <Flex gap={1} mb={6}>
+        <Text fontWeight={"bold"}>Hola, </Text>
+        <Text> {name}</Text>
       </Flex>
+
       <MainCard type={type} />
     </GridItem>
     <GridItem
@@ -79,21 +69,18 @@ const Desktop = ({
     <GridItem w="100%" rowStart={2} colSpan={4} rowSpan={3}>
       <SwitchesCards />
     </GridItem>
-    <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={16}>
+    <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
       <AppointmentListCard type={type} />
     </GridItem>
     {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
     se actualice y solo dejamos la misma instancia de survey o vamos creando instancias de survey*/}
-    {surveyAnswered ? (
-      <></>
-    ) : (
-      <Survey
-        surveyController={surveyController}
-        surveyQuestions={surveyQuestions}
-        triggeringNotificationId={""}
-        appointmentId={""}
-      ></Survey>
-    )}
+    <Survey
+      surveyAnswered={surveyAnswered}
+      surveyController={surveyController}
+      surveyQuestions={surveyQuestions}
+      triggeringNotificationId={""}
+      appointmentId={""}
+    ></Survey>
   </Grid>
 );
 
@@ -119,16 +106,13 @@ const Mobile = ({
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
       <AppointmentListCard type={type} mobile />
-      {surveyAnswered ? (
-        <></>
-      ) : (
-        <Survey
-          surveyQuestions={surveyQuestions}
-          triggeringNotificationId={""}
-          surveyController={surveyController}
-          appointmentId={""}
-        ></Survey>
-      )}
+      <Survey
+        surveyAnswered={surveyAnswered}
+        surveyQuestions={surveyQuestions}
+        triggeringNotificationId={""}
+        surveyController={surveyController}
+        appointmentId={""}
+      ></Survey>
     </Flex>
   );
 
@@ -178,7 +162,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
 
   //TODO: Use effect cuando cambie surveyAnswered para comprobar si hay otra survey que contestar
   //TODO: Usar setSurveyQuestions cuando se tengan las notificaciones, se rescate el id de la appointment pendiente y se obtengan las preguntas
-  const [surveyAnswered, setSurveyAnswered] = useState(true);
+  const [surveyAnswered, setSurveyAnswered] = useState(false);
   const [surveyQuestions, setSurveyQuestions] = useState<
     {
       question: string;
