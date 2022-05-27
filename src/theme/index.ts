@@ -1,8 +1,20 @@
 //libraries
 import { extendTheme } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
 
 const theme = extendTheme({
+  styles: {
+    global: (props: any) => ({
+      body: {
+        //fontFamily: "body",
+        backgroundColor: mode(
+          "lightThemeBackground",
+          "darkThemeBackground"
+        )(props),
+      },
+    }),
+  },
   //Adding a custom component (Chakra UI Steps) into the main library of chakra, in order to use all the theme properties.
   components: {
     Steps,
@@ -17,6 +29,9 @@ const theme = extendTheme({
   },
   //Color palette
   colors: {
+    lightThemeBackground: "#F2F1FF",
+    darkThemeBackground: "#202020",
+
     pink: "#f72585",
     blue: "#4CC9F0",
     purple: "#8963DA",
@@ -26,6 +41,31 @@ const theme = extendTheme({
 
     white: "#FFFFFF",
     black: "#000000",
+
+    pinkScheme: {
+      50: "#f72585",
+      100: "#f72585",
+      200: "#f72585",
+      300: "#f72585",
+      400: "#f72585",
+      500: "#f72585",
+      600: "#f72585",
+      700: "#f72585",
+      800: "#f72585",
+      900: "#f72585",
+    },
+    purpleScheme: {
+      50: "#8963DA",
+      100: "#8963DA",
+      200: "#8963DA",
+      300: "#8963DA",
+      400: "#8963DA",
+      500: "#8963DA",
+      600: "#8963DA",
+      700: "#8963DA",
+      800: "#8963DA",
+      900: "#8963DA",
+    },
   },
   //Border radii for components
   radii: {

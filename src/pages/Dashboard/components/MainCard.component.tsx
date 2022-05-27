@@ -114,11 +114,11 @@ export const MainCard = ({
       </Flex>
       {!mobile &&
         (type === EUserType.student ? (
-          <Box position={"absolute"} top="7%" left={"46%"}>
+          <Box position={"absolute"} top="10%" left={"50%"}>
             <Image src={bandera} />
           </Box>
         ) : (
-          <Box position={"absolute"} top="15%" left={"40%"}>
+          <Box position={"absolute"} top="4%" left={"44%"}>
             <Image boxSize={"20vw"} src={rocket} />
           </Box>
         ))}

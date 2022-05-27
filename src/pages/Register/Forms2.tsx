@@ -19,7 +19,6 @@ import { SemesterDoubleCarreraInput } from "../../components/FormsRegister/Semes
 // import { TypeUserInput } from "../../components/FormsRegister/TypeUserInput";
 import { TypeUserDrop } from "../../components/FormsRegister/TypeUserDrop";
 import { Confirmation } from "./Confirmation";
-import { InfoIcon } from "@chakra-ui/icons";
 import { CreateUser } from "../../api/users/create";
 import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 import { GetUser, GetUserInfo } from "../../api/users/get";
@@ -125,19 +124,21 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
             control={control}
             setCarrera={setCarrera}
             secondValidation={true}
-            defaultValue={info.carreraInput}
+            defaultValue={info.carrera}
           />
           <SemesterCarreraInput
             control={control}
             setSemesterCarrera={setSemesterCarrera}
             secondValidation={true}
+            defaultValue={info.semestreCarrera}
           />
           <DoubleCarreraInput
             control={control}
             setDoubleCarrera={setDoubleCarrera}
             secondValidation={true}
           />
-          {doubleCarrera && doubleCarrera !== "NA" ? (
+          {(doubleCarrera && doubleCarrera !== "NA") ||
+          info.semestreDoueblaCarrera ? (
             <SemesterDoubleCarreraInput
               control={control}
               setSemesterDoubleCarrera={setSemesterDoubleCarrera}
@@ -147,6 +148,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
           <TypeUserDrop
             control={control}
             setTypeUser={setTypeUser}
+            defaultValue={info.typeUserDrop}
           ></TypeUserDrop>
           <Flex>
             <Spacer></Spacer>

@@ -90,8 +90,6 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
           <AlertDialogHeader>
             {title ? (
               <>
-                <div ref={boton1Ref}>Hola</div>
-                <Button onClick={() => boton1Ref.current?.focus}></Button>
                 <Text
                   {...(title.titleColor ? { color: title.titleColor } : {})}
                   fontWeight={"semibold"}

@@ -4,6 +4,7 @@ import { Step, Steps, useSteps } from "chakra-ui-steps";
 
 //Enums, Tyoes & Interfaces
 import { IStep, IFinalProgressContent } from "../../interfaces";
+import { ButtonGeneric } from "../ButtonGeneric";
 
 //Local Interfaces
 interface IProgress {
@@ -28,7 +29,7 @@ export const Progress = ({ steps, finalContent, baseProps }: IProgress) => {
   //TODO: Modificar los "Buttons" por los botones del template de componente.
   return (
     <Flex flexDir={"column"} width="100%">
-      <Steps activeStep={activeStep} {...baseProps} colorScheme="purple">
+      <Steps colorScheme="purpleScheme" activeStep={activeStep} {...baseProps}>
         {steps.map((step) => (
           <Step
             label={step.label}
@@ -48,22 +49,25 @@ export const Progress = ({ steps, finalContent, baseProps }: IProgress) => {
           </Button>
         </Flex>
       ) : (
-        <Flex width="100%" justify="flex-end">
+        <Flex width="100%" alignContent={"center"} justifyContent="center">
           {activeStep < steps.length && (
             <>
               {" "}
-              <Button
+              <ButtonGeneric
                 isDisabled={activeStep === 0}
-                mr={4}
+                text="Anterior"
                 onClick={prevStep}
-                size="sm"
-                variant="ghost"
-              >
-                Anterior
-              </Button>
-              <Button size="sm" onClick={nextStep}>
-                {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
-              </Button>
+                bgColor={"pink"}
+                sizePX={""}
+              ></ButtonGeneric>
+              <ButtonGeneric
+                onClick={nextStep}
+                text={
+                  activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"
+                }
+                bgColor="pink"
+                sizePX={""}
+              ></ButtonGeneric>
             </>
           )}
         </Flex>
