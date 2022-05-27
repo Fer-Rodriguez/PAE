@@ -132,6 +132,7 @@ export const Menu = ({ mobile }: IMenu) => {
     return (
       <VStack
         maxW="100px"
+        top="35vh"
         spacing="5px"
         bgGradient="linear(to-r, #8482FF , #A462FF)"
         borderRadius="25px"

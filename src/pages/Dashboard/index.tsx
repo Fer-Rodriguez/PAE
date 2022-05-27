@@ -51,17 +51,19 @@ const Desktop = ({
   }[];
 }) => (
   <Grid
+    id="cobs"
     templateColumns="repeat(14, 1fr)"
     templateRows="repeat(8, 1fr)"
     gap={7}
     height={"100vh"}
   >
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
-      <Flex gap={1} mb={6}>
-        <Text fontWeight={"bold"}>Hola, </Text>
-        <Text> {name}</Text>
+      <Flex gap={1} mb={4}>
+        <Text fontSize={"2rem"} fontWeight={"bold"}>
+          Hola,{" "}
+        </Text>
+        <Text fontSize={"2rem"}> {name}</Text>
       </Flex>
-
       <MainCard type={type} />
     </GridItem>
     <GridItem
@@ -77,7 +79,7 @@ const Desktop = ({
     <GridItem w="100%" rowStart={2} colSpan={4} rowSpan={3}>
       <SwitchesCards />
     </GridItem>
-    <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
+    <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={16}>
       <AppointmentListCard type={type} />
     </GridItem>
     {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
@@ -176,7 +178,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
 
   //TODO: Use effect cuando cambie surveyAnswered para comprobar si hay otra survey que contestar
   //TODO: Usar setSurveyQuestions cuando se tengan las notificaciones, se rescate el id de la appointment pendiente y se obtengan las preguntas
-  const [surveyAnswered, setSurveyAnswered] = useState(false);
+  const [surveyAnswered, setSurveyAnswered] = useState(true);
   const [surveyQuestions, setSurveyQuestions] = useState<
     {
       question: string;
