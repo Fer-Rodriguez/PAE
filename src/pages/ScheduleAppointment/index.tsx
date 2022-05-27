@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 import { BasicInfoScreen } from "./basicInfoScreen";
 import { ScheduleScreen } from "./scheduleScreen";
@@ -65,12 +65,19 @@ export const ScheduleAppointment = ({
         <ScheduleScreen
           mobile={mobile}
           subjectName={subjectName}
+          onPreviousScreenButtonClick={(
+            e: React.MouseEvent<HTMLButtonElement>
+          ) => setFormStep(0)}
           onNextScreenButtonClick={async (
             e: React.MouseEvent<HTMLButtonElement>
           ) => {
             try {
-              await createAppointment();
-              setFormStep(2);
+              const successfulRequest = await createAppointment();
+              if (successfulRequest) {
+                setFormStep(2);
+              } else {
+                throw "error";
+              }
             } catch (e) {
               alert(
                 "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."
@@ -87,5 +94,10 @@ export const ScheduleAppointment = ({
     }
   };
 
-  return <Box>{getScreenFromStep(formStep)}</Box>;
+  return (
+    <Box>
+      <Heading>Agenda una asesoría</Heading>
+      {getScreenFromStep(formStep)}
+    </Box>
+  );
 };

@@ -175,6 +175,7 @@ export const FormsLogin = (props: IFormsLogin) => {
 
               <Flex>
                 <Checkbox
+                  isInvalid={false}
                   size="sm"
                   defaultChecked
                   colorScheme={"cyan"}

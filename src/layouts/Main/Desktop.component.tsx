@@ -56,19 +56,24 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
 
   return (
     <Grid
-      templateRows="repeat(12, 1fr)"
+      id="wow"
       templateColumns="repeat(16, 1fr)"
+      templateRows="repeat(14, 1fr)"
       h={"100vh"}
       mx={4}
       gap={6}
     >
-      <GridItem rowStart={1} rowSpan={2} colSpan={2}>
-        <Flex justifyContent={"center"} alignContent={"flex-end "}>
-          <Logo maxWidth="50vw" />
-        </Flex>
+      <GridItem
+        margin={"auto"}
+        paddingLeft="25%"
+        rowStart={1}
+        rowSpan={3}
+        colStart={1}
+        colSpan={2}
+      >
+        <Logo maxWidth="50vw" />
       </GridItem>
-
-      <GridItem rowStart={1} rowSpan={4} colStart={14}>
+      <GridItem rowStart={1} rowSpan={3} colStart={15}>
         <Flex
           w={"100%"}
           h={"100%"}
@@ -90,7 +95,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
         </Center>
       </GridItem>
 
-      <GridItem rowStart={4} rowSpan={6} colStart={3} colSpan={12}>
+      <GridItem rowStart={3} rowSpan={6} colStart={3} colSpan={13}>
         <Box>
           {/** Here is going to be render the corresponding child component */}
           {userComponent}
