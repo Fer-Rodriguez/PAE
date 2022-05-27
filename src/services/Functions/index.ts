@@ -13,7 +13,5 @@ export function getDayName(date: Date, locale: string) {
 }
 
 export function isSameDayByName(date1: Date, dayName: string): boolean {
-  console.log(getDayName(date1, "mx-MX"));
-
   return getDayName(date1, "mx-MX") === dayName;
 }

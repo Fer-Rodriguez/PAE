@@ -11,6 +11,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Calendar from "react-calendar";
+import { getDay, startOfWeek } from "date-fns";
 
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { Info_Button } from "../../components/Info_Button";
@@ -22,25 +23,15 @@ import "react-calendar/dist/Calendar.css";
 //Assets
 import theme from "../../theme/index";
 import { addDays, getDayName, isSameDayByName } from "../../services/Functions";
+import { getPossibleDates } from "../../api/appointments/get";
 import PopOver, { ETypeSize } from "../../components/popOver";
-
-const myOptions = [
-  {
-    horario: "10:15",
-  },
-  {
-    horario: "12:15",
-  },
-  {
-    horario: "15:15",
-  },
-];
 
 export const ScheduleScreen = ({
   mobile,
   subjectName,
   onNextScreenButtonClick,
   onFullDateSelected,
+  idSubject,
   onPreviousScreenButtonClick,
 }: {
   mobile?: boolean;
@@ -48,9 +39,17 @@ export const ScheduleScreen = ({
   onPreviousScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onFullDateSelected?: (newValue: string) => void;
+  idSubject: string;
 }) => {
   const [selectedDay, setSelectedDay] = useState(new Date());
+  const [selectedDayString, setSelectedDayString] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
+  const [possibleDates, setPossibleDates] = useState([]);
+  const obtainPossibleDates = async () => {
+    const posibleDatesApi = await getPossibleDates(idSubject);
+    setPossibleDates(posibleDatesApi);
+  };
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: infoOpen,
@@ -60,21 +59,28 @@ export const ScheduleScreen = ({
   const cancelRef = useRef();
 
   useEffect(() => {
-    //console.log(selectedDay);
+    obtainPossibleDates();
+  }, []);
+
+  useEffect(() => {
+    const days = [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+    ];
+    const dayIndex = getDay(selectedDay);
+    const dayName = days[dayIndex];
+    setSelectedDayString(dayName);
   }, [selectedDay]);
   useEffect(() => {
-    //console.log(selectedHour);
+    console.log("CAMBIANDO: ", selectedDay);
+    if (onFullDateSelected) {
+      onFullDateSelected(selectedDay.toString());
+    }
     // Le damos formato al espacio seleccionado por el usuario como lo necesitamos para hacer la requesta
-    const constructedString = `${selectedDay.getFullYear()}-${
-      selectedDay.getMonth() < 10
-        ? "0" + selectedDay.getMonth()
-        : selectedDay.getMonth()
-    }-${
-      selectedDay.getDate() < 10
-        ? "0" + selectedDay.getDate()
-        : selectedDay.getDate()
-    }T${selectedHour}:00.000`;
-    onFullDateSelected?.(constructedString);
   }, [selectedHour]);
 
   const disableDates = ({ date, view }: { date: Date; view: string }) => {
@@ -86,7 +92,6 @@ export const ScheduleScreen = ({
 
   if (mobile) {
     return (
-      <>
         <Text color="grey" as="i">
           Escoge el horario que más se te acomode
         </Text>
@@ -103,12 +108,19 @@ export const ScheduleScreen = ({
           />
 
           <ScheduleList
+            daySelected={selectedDayString}
             onScheduleButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              setSelectedHour(e.currentTarget.innerText);
+              const dateSelected = new Date(Date.parse(e.currentTarget.value));
+              const finalDate = selectedDay;
+              finalDate.setHours(dateSelected.getHours());
+
+              setSelectedDay(finalDate);
+
+              setSelectedHour(e.currentTarget.value);
             }}
             scheduleSelected={selectedHour}
-            schedules={myOptions}
-            width="80%"
+            schedules={possibleDates}
+            width="30%"
           ></ScheduleList>
           <ButtonGeneric
             text="Agendar"

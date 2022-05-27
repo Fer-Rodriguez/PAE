@@ -1,7 +1,8 @@
 import axios from "axios";
+import { config } from "process";
 import { EUserType } from "../../../interfaces/enums";
 
-export const getRecentAppointment = (
+export const getRecentAppointment = async (
   id: string,
   type: EUserType,
   setRecentAppointment: any
@@ -11,7 +12,7 @@ export const getRecentAppointment = (
     url: `http://localhost:6060/appointment/admin?id=${id}&id_type=${type}`,
   };
 
-  axios(config).then((res) => setRecentAppointment(res.data));
+  await axios(config).then((res) => setRecentAppointment(res.data));
 };
 
 export const getAllAppointments = async (
@@ -31,4 +32,18 @@ export const getAllAppointments = async (
   });
 
   return response;
+};
+
+export const getPossibleDates = async (idSubject: string) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6060/appointment/possibleDates?idSubject=${idSubject}`,
+  };
+
+  return axios(config)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };
