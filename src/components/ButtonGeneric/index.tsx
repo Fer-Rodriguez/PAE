@@ -11,6 +11,8 @@ interface IButtonGeneric {
   type?: "button" | "submit" | "reset" | undefined;
   baseProps?: { [key: string]: any };
   value?: any;
+  enabledHoverText?: string;
+  disabledHoverText?: string;
 }
 
 export const ButtonGeneric = ({
@@ -23,6 +25,8 @@ export const ButtonGeneric = ({
   type = "button",
   value,
   baseProps,
+  enabledHoverText,
+  disabledHoverText,
 }: IButtonGeneric) => {
   return (
     <Button
@@ -43,6 +47,7 @@ export const ButtonGeneric = ({
         boxShadow:
           "0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
       }}
+      title={isDisabled ? disabledHoverText : enabledHoverText}
       onClick={onClick}
       isDisabled={isDisabled}
       {...baseProps}
