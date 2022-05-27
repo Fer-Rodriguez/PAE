@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 import { BasicInfoScreen } from "./basicInfoScreen";
 import { ScheduleScreen } from "./scheduleScreen";
@@ -65,6 +65,9 @@ export const ScheduleAppointment = ({
         <ScheduleScreen
           mobile={mobile}
           subjectName={subjectName}
+          onPreviousScreenButtonClick={(
+            e: React.MouseEvent<HTMLButtonElement>
+          ) => setFormStep(0)}
           onNextScreenButtonClick={async (
             e: React.MouseEvent<HTMLButtonElement>
           ) => {
@@ -87,5 +90,10 @@ export const ScheduleAppointment = ({
     }
   };
 
-  return <Box>{getScreenFromStep(formStep)}</Box>;
+  return (
+    <Box>
+      <Heading>Agenda una asesoría</Heading>
+      {getScreenFromStep(formStep)}
+    </Box>
+  );
 };

@@ -8,6 +8,7 @@ import {
   Image,
   FormControl,
   FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
 
 import { ButtonGeneric } from "../../components/ButtonGeneric";
@@ -18,6 +19,7 @@ import imageBasicInfo from "../../assets/appoint_basicInfo.png";
 import theme from "../../theme/index";
 import { Controller, useForm } from "react-hook-form";
 import { FileUploadButton } from "./fileUploadButton";
+import { Progress } from "../../components/Progress";
 
 export const BasicInfoScreen = ({
   mobile,
@@ -58,39 +60,84 @@ export const BasicInfoScreen = ({
   } = useForm({ mode: "onChange" });
 
   return (
-    <FormControl isRequired isInvalid={!isValid}>
-      <VStack spacing="50px" alignItems={mobile ? "center" : "start"}>
-        <Box w="40%">
+    <>
+      {" "}
+      <Text color="grey" as="i">
+        ¿Qué tema quieres tratar en la asesoría?
+      </Text>
+      <br></br>
+      <br></br>
+      <FormControl isRequired isInvalid={!isValid}>
+        <VStack spacing="50px" alignItems={mobile ? "center" : "start"}>
+          <Box w="40%">
+            <Controller
+              name="idSubject"
+              control={control}
+              rules={{
+                required: "No puedes dejar la materia vacía",
+              }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <>
+                  <DropDown
+                    isInvalid={Boolean(error)}
+                    options={myOptions}
+                    configuration={{
+                      onChange: (e: ChangeEvent<HTMLSelectElement>) => {
+                        //TODO: Darle focus al text in
+                        onChange(e);
+                        const currentSubject = e.target.options.item(
+                          e.target.options.selectedIndex
+                        )?.title;
+                        if (currentSubject !== undefined) {
+                          onSubjectChange?.(currentSubject);
+                        }
+                        onDropDownChange?.(e.target.value);
+                      },
+                      placeholder: "Seleccionar materia",
+                      type: ETypeDropdown.normal,
+                    }}
+                    value={value}
+                    color={theme.colors.pink}
+                    fontColor="white"
+                    borderRadius={theme.radii.button}
+                  />
+                  {error ? (
+                    <FormErrorMessage>{error?.message}</FormErrorMessage>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+              defaultValue={valueForDropDown}
+            ></Controller>
+          </Box>
           <Controller
-            name="idSubject"
+            name="problemDescription"
             control={control}
             rules={{
-              required: "No puedes dejar la materia vacía",
+              required:
+                "Por favor proporciona una descripción al problema que quieres tratar en la asesoría",
+              pattern: {
+                value: /^(?!\s*$).+/,
+                message: `La descripción no puede estar vacía`,
+              },
             }}
+            defaultValue={valueForTextField}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <>
-                <DropDown
+                <TextInput
                   isInvalid={Boolean(error)}
-                  options={myOptions}
-                  configuration={{
-                    onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-                      //TODO: Darle focus al text in
-                      onChange(e);
-                      const currentSubject = e.target.options.item(
-                        e.target.options.selectedIndex
-                      )?.title;
-                      if (currentSubject !== undefined) {
-                        onSubjectChange?.(currentSubject);
-                      }
-                      onDropDownChange?.(e.target.value);
-                    },
-                    placeholder: "Seleccionar materia",
-                    type: ETypeDropdown.normal,
-                  }}
+                  multiLine
+                  placeholderText="Escribe aquí el problema en cuestión"
+                  width={mobile ? "85%" : "100%"}
                   value={value}
-                  color={theme.colors.pink}
-                  fontColor="white"
-                  borderRadius={theme.radii.button}
+                  onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                    onChange(e);
+                    onTextFieldChange?.(e.target.value);
+                  }}
                 />
                 {error ? (
                   <FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -99,68 +146,34 @@ export const BasicInfoScreen = ({
                 )}
               </>
             )}
-            defaultValue={valueForDropDown}
           ></Controller>
+          <FileUploadButton
+            currentFile={valueForFileInput}
+            onChange={onFileUploaded}
+          ></FileUploadButton>
+          <Center w="100%">
+            <ButtonGeneric
+              bgColor="pink"
+              sizePX=""
+              text="Siguiente"
+              isDisabled={!isValid}
+              onClick={onNextScreenButtonClick}
+            ></ButtonGeneric>
+          </Center>
+        </VStack>
+        <Box w="40%">
+          <Image
+            maxW={mobile ? "30%" : "20%"}
+            bottom="0%"
+            right="0%"
+            zIndex="2"
+            objectFit="contain"
+            position="absolute"
+            float="right"
+            src={imageBasicInfo}
+          />
         </Box>
-        <Controller
-          name="problemDescription"
-          control={control}
-          rules={{
-            required:
-              "Por favor proporciona una descripción al problema que quieres tratar en la asesoría",
-            pattern: {
-              value: /^(?!\s*$).+/,
-              message: `La descripción no puede estar vacía`,
-            },
-          }}
-          defaultValue={valueForTextField}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <>
-              <TextInput
-                isInvalid={Boolean(error)}
-                multiLine
-                placeholderText="Escribe aquí el problema en cuestión"
-                width={mobile ? "85%" : "100%"}
-                value={value}
-                onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
-                  onChange(e);
-                  onTextFieldChange?.(e.target.value);
-                }}
-              />
-              {error ? (
-                <FormErrorMessage>{error?.message}</FormErrorMessage>
-              ) : (
-                <></>
-              )}
-            </>
-          )}
-        ></Controller>
-        <FileUploadButton
-          currentFile={valueForFileInput}
-          onChange={onFileUploaded}
-        ></FileUploadButton>
-        <Center w="100%">
-          <ButtonGeneric
-            bgColor="pink"
-            sizePX=""
-            text="Siguiente"
-            isDisabled={!isValid}
-            onClick={onNextScreenButtonClick}
-          ></ButtonGeneric>
-        </Center>
-      </VStack>
-      <Box w="40%">
-        <Image
-          maxW={mobile ? "30%" : "20%"}
-          bottom="0%"
-          right="0%"
-          zIndex="2"
-          objectFit="contain"
-          position="absolute"
-          float="right"
-          src={imageBasicInfo}
-        />
-      </Box>
-    </FormControl>
+      </FormControl>
+    </>
   );
 };

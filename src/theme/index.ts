@@ -54,6 +54,18 @@ const theme = extendTheme({
       800: "#f72585",
       900: "#f72585",
     },
+    purpleScheme: {
+      50: "#8963DA",
+      100: "#8963DA",
+      200: "#8963DA",
+      300: "#8963DA",
+      400: "#8963DA",
+      500: "#8963DA",
+      600: "#8963DA",
+      700: "#8963DA",
+      800: "#8963DA",
+      900: "#8963DA",
+    },
   },
   //Border radii for components
   radii: {

@@ -80,6 +80,7 @@ export const CreateAppointmentLayout = () => {
       let successfulRequest = false;
 
       const res = await axios(config);
+      console.log("MIERF");
       if (res.status === 200) {
         successfulRequest = true;
         console.log(res);
