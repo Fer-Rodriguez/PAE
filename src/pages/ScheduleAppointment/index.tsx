@@ -72,8 +72,12 @@ export const ScheduleAppointment = ({
             e: React.MouseEvent<HTMLButtonElement>
           ) => {
             try {
-              await createAppointment();
-              setFormStep(2);
+              const successfulRequest = await createAppointment();
+              if (successfulRequest) {
+                setFormStep(2);
+              } else {
+                throw "error";
+              }
             } catch (e) {
               alert(
                 "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."

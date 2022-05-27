@@ -67,6 +67,7 @@ export const DropDown = ({
       isInvalid={isInvalid}
       backgroundColor={color}
       textColor={fontColor}
+      _focus={{ background: "#ff78b6" }}
       borderRadius={borderRadius}
       variant="filled"
       placeholder={configuration.placeholder}
