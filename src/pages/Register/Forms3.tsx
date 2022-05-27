@@ -4,13 +4,16 @@ import { MyCalendar } from "../../components/Calendar";
 import { EMyCalendarView } from "../../interfaces/enums";
 import { useNavigate } from "react-router-dom";
 
-export const Forms3 = () => {
-  const navigate = useNavigate();
-  const [carrera, setCarrera] = useState("");
+export const Forms3 = ({ id }: { id: string }) => {
   return (
     <Box width={"100%"}>
-      <Text> Ingresa tus horas disponibles del primer periodo </Text>
-      <MyCalendar view={EMyCalendarView.week} h={"50vh"} period={"0"} />
+      <Text> Ingresa tus horas disponibles en cada uno de los periodos </Text>
+      <MyCalendar
+        view={EMyCalendarView.week}
+        mobile={false}
+        idUser={id}
+        register
+      />
     </Box>
   );
 };

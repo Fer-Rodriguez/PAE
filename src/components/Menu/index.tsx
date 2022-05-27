@@ -66,7 +66,7 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
         imgSrc: menuImg2,
       },
       {
-        linkTo: "../perfil",
+        linkTo: "../perfil/user",
         imgSrc: menuImg3,
       },
     ];

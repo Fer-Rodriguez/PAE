@@ -32,7 +32,6 @@ export const ModifySchedulesContent = ({
   adminMod,
   mobile = false,
 }: IModifySchedulesContent) => {
-  const toast = useToast();
   const { id } = useParams();
   const idCurrentUser = useStore((state) => state.id);
 
@@ -73,33 +72,12 @@ export const ModifySchedulesContent = ({
 
         <Heading color={theme.colors.purple}>Modificar Horarios</Heading>
       </Center>
-      <Center>
-        <Box w={mobile ? "70vw" : "30vw"} my={6}>
-          <DropDown configuration={configurations} options={periodOptions} />
-        </Box>
-      </Center>
+
       <MyCalendar
         view={EMyCalendarView.week}
-        period={period}
         idUser={adminMod && id !== undefined ? id : idCurrentUser}
+        mobile={mobile}
       />
-      <Center margin={12}>
-        <ButtonGeneric
-          text="Guardar"
-          color={theme.colors.purple}
-          fontColor="white"
-          onClick={() =>
-            toast({
-              title: "¡Listo!",
-              description: "El Horario se ha guardado con éxito.",
-              position: "top",
-              status: "success",
-              duration: 9000,
-              isClosable: true,
-            })
-          }
-        />
-      </Center>
     </Box>
   );
 };

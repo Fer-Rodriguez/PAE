@@ -113,11 +113,12 @@ export const ProfileDesktop = ({
                 {data.type !== EUserType.student && (
                   <Flex flexDirection={"column"} m={2} gap={2}>
                     <ButtonChangePassword onOpen={onOpen} />
-                    {type === EUserType.admin && modAdmin && (
-                      <ButtonChangeSchedules
-                        setModeSchedules={setModSchedules}
-                      />
-                    )}
+                    {modAdmin ||
+                      (type === EUserType.advisor && (
+                        <ButtonChangeSchedules
+                          setModeSchedules={setModSchedules}
+                        />
+                      ))}
                   </Flex>
                 )}
               </Flex>

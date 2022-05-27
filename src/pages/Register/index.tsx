@@ -12,14 +12,22 @@ interface IRegister {
 export const FormsRegister = (props: IRegister) => {
   const [formStep, setFormStep] = useState(0);
   const [info, setInfo] = useState<any>({});
+  const [newId, setnewId] = useState("");
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
     } else if (step == 1) {
-      return <Forms2 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+      return (
+        <Forms2
+          info={info}
+          setInfo={setInfo}
+          setFormStep={setFormStep}
+          setNewId={setnewId}
+        />
+      );
     } else if (step == 2) {
-      return <>Miau Miau</>;
+      return <Forms3 id={newId} />;
     }
   };
   return (

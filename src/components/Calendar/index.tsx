@@ -1,6 +1,7 @@
 //Libraries
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useDisclosure, Box, Button } from "@chakra-ui/react";
+import axios from "axios";
+import { useCallback, useEffect, useRef, useState, ChangeEvent } from "react";
+import { useDisclosure, Box, Center, useToast } from "@chakra-ui/react";
 
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
@@ -10,12 +11,16 @@ import "tui-time-picker/dist/tui-time-picker.css";
 //Components
 import { MyAlert } from "../MyAlert";
 import { MyModal } from "./Modal.component";
+import { ButtonGeneric } from "../ButtonGeneric";
 
 //Interfaces, types & enums
+
+import { IConfigurationsDropdown, IObjectData } from "../../interfaces/index";
 import {
   EStatusAlert,
   EModalCalendarType,
   EMyCalendarView,
+  ETypeDropdown,
 } from "../../interfaces/enums";
 import {
   ISchedule,
@@ -38,33 +43,31 @@ import {
   acceptSchedule,
   processSchedules,
 } from "./functions";
-import axios from "axios";
-import { getHours } from "date-fns";
+import { DropDown } from "../Dropdown";
+import { useNavigate } from "react-router-dom";
 
 interface IMyCalendar {
   view?: EMyCalendarView;
-  period: "0" | "1" | "2";
-  h?: string;
   register?: boolean;
-  idUser?: string;
-}
-
-function addHours(numOfHours: number, date = new Date()) {
-  date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
-
-  return date;
+  idUser: string;
+  mobile: boolean;
 }
 
 export const MyCalendar = ({
   view = EMyCalendarView.week,
-  period,
   idUser,
-  h,
   register = false,
+  mobile,
 }: IMyCalendar) => {
+  const toast = useToast();
+  const navigate = useNavigate();
   //Set States
   const [myEvent, setEvent] = useState<any>(null);
-  const [totalHours, setTotalHours] = useState<number>(0);
+  const [period, setPeriod] = useState<"0" | "1" | "2">("0");
+
+  const [totalHoursOne, setTotalHoursOne] = useState<number>(0);
+  const [totalHoursTwo, setTotalHoursTwo] = useState<number>(0);
+  const [totalHoursThree, setTotalHoursThree] = useState<number>(0);
 
   const [schedulesFirst, setSchedulesFirst] = useState<Array<ISchedule>>([]);
   const [schedulesSecond, setSchedulesSecond] = useState<Array<ISchedule>>([]);
@@ -79,24 +82,37 @@ export const MyCalendar = ({
   //Use Ref
   const cal = useRef(null) as any;
 
+  const getCurrentSchedule = () => {
+    if (period === "0") {
+      return { schedules: schedulesFirst, setSchedules: setSchedulesFirst };
+    } else if (period === "1") {
+      return { schedules: schedulesSecond, setSchedules: setSchedulesSecond };
+    } else
+      return { schedules: schedulesThird, setSchedules: setSchedulesThird };
+  };
+
+  const getCurrentHours = (period: string) => {
+    if (period === "0") {
+      return { totalHours: totalHoursOne, setTotalHours: setTotalHoursOne };
+    } else if (period === "1") {
+      return { totalHours: totalHoursTwo, setTotalHours: setTotalHoursTwo };
+    } else
+      return { totalHours: totalHoursThree, setTotalHours: setTotalHoursThree };
+  };
+
   // -------------------------------------
 
   //UseEffect
 
   const updateSchedules = async () => {
     try {
-      console.log("Esto enviamos: ", schedulesFirst); //TODO: Si eliminaos el de la API, aun así se cuela por aquí corregir.
       await axios.patch("http://localhost:6090/schedule", {
-        schedules:
-          period === "0"
-            ? schedulesFirst
-            : period === "1"
-            ? schedulesSecond
-            : schedulesThird,
-
-        period,
+        scheduleOne: schedulesFirst,
+        scheduleTwo: schedulesSecond,
+        scheduleThree: schedulesThird,
         idAdvisor: idUser,
       });
+      if (register) navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -112,22 +128,41 @@ export const MyCalendar = ({
             setInitialSchedulesFirst: setSchedulesFirst,
             setInitialSchedulesSecond: setSchedulesSecond,
             setInitialSchedulesThird: setSchedulesThird,
-            setTotalHours,
+            getTotalHours: getCurrentHours,
           },
           {
             initialSchedulesFirst: schedulesFirst,
             initialSchedulesSecond: schedulesSecond,
             initialSchedulesThird: schedulesThird,
-            totalHours,
+            totalHours: totalHoursOne,
           }
         );
       })
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    console.log("Este es el schedule actual: ", schedulesFirst);
-  }, [schedulesFirst]);
+  const periodDropdownOptions: Array<IObjectData> = [
+    {
+      title: "Primer Periodo",
+      value: "0",
+    },
+    {
+      title: "Segundo Periodo",
+      value: "1",
+    },
+    {
+      title: "Tercer Periodo",
+      value: "2",
+    },
+  ];
+
+  const dropdownConfigurations: IConfigurationsDropdown = {
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => {
+      setPeriod(e.target.value as any);
+    },
+    placeholder: "Selecciona el periodo",
+    type: ETypeDropdown.three,
+  };
 
   useEffect(() => {
     if (!register) getSchedules();
@@ -138,15 +173,6 @@ export const MyCalendar = ({
   const [alertHours, setAlertHours] = useState<boolean>(false);
   const [disponibilityTimeAlert, setDispTimeAlert] = useState(false);
   const [wholeHourAlert, setWholeHourAlert] = useState(false);
-
-  const getCurrentSchedule = () => {
-    if (period === "0") {
-      return { schedules: schedulesFirst, setSchedules: setSchedulesFirst };
-    } else if (period === "1") {
-      return { schedules: schedulesSecond, setSchedules: setSchedulesSecond };
-    } else
-      return { schedules: schedulesThird, setSchedules: setSchedulesThird };
-  };
 
   /**
    * modifySchedulesState
@@ -196,7 +222,7 @@ export const MyCalendar = ({
   const middleBeforeCreate = useCallback((e) => {
     const props: IbeforeCreateSchedule = {
       e,
-      totalHours,
+      totalHours: totalHoursOne,
       onOpen,
       setEvent,
       setModalType,
@@ -235,11 +261,11 @@ export const MyCalendar = ({
 
   const middleDelete = () => {
     const props: IdeletSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       modifySchedulesState,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     deleteSchedule(props);
@@ -248,12 +274,12 @@ export const MyCalendar = ({
   const middleAccept = () => {
     const { schedules, setSchedules } = getCurrentSchedule();
     const props: IacceptSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       setSchedules,
       schedules,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     acceptSchedule(props);
@@ -261,12 +287,12 @@ export const MyCalendar = ({
 
   const middleUpdate = () => {
     const props: IupdateSchedule = {
-      setTotalHours,
+      setTotalHours: getCurrentHours(period).setTotalHours,
       setAlertHours,
       setModalType,
       modifySchedulesState,
       cal,
-      totalHours,
+      totalHours: getCurrentHours(period).totalHours,
       e: myEvent,
     };
     updateSchedule(props);
@@ -279,8 +305,6 @@ export const MyCalendar = ({
     applyUpdate: middleUpdate,
     eliminateSchedule: middleDelete,
   };
-
-  //TODO: On creation, fill calendar with schedules from advisors.
 
   return (
     <Box overflowY={"scroll"}>
@@ -320,11 +344,13 @@ export const MyCalendar = ({
 
       {view === EMyCalendarView.week && (
         <>
-          <Button onClick={async () => await updateSchedules()}>
-            Revela los secretos del mal
-          </Button>
-          <h1>Periodo: {period}</h1>
-          <h1>Horas: {totalHours}</h1>
+          <Box w={mobile ? "70vw" : "30vw"} my={6}>
+            <DropDown
+              configuration={dropdownConfigurations}
+              options={periodDropdownOptions}
+            />
+          </Box>
+          <h1>Horas disponbiles: {getCurrentHours(period).totalHours}</h1>
           <Calendar
             ref={cal}
             className="calendar"
@@ -356,6 +382,25 @@ export const MyCalendar = ({
               hourEnd: 20,
             }}
           />
+          <Center margin={12}>
+            <ButtonGeneric
+              sizePX="100"
+              text="Guardar"
+              bgColor={"purple"}
+              fontColor="white"
+              onClick={async () => {
+                await updateSchedules();
+                toast({
+                  title: "¡Listo!",
+                  description: "El Horario se ha guardado con éxito.",
+                  position: "top",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true,
+                });
+              }}
+            />
+          </Center>
         </>
       )}
     </Box>

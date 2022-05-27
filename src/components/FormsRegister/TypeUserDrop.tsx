@@ -2,11 +2,12 @@ import React, { ChangeEvent } from "react";
 import { Controller, Control } from "react-hook-form";
 
 import { FormLabel, FormHelperText, Select } from "@chakra-ui/react";
+import { EUserType } from "../../interfaces/enums";
 
 interface ITypeUserDrop {
   control: Control<any>;
   defaultValue?: string;
-  setTypeUser?: React.Dispatch<React.SetStateAction<string>>;
+  setTypeUser?: React.Dispatch<EUserType>;
   secondValidation?: boolean;
 }
 
@@ -20,7 +21,7 @@ export const TypeUserDrop = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     if (setTypeUser) {
-      setTypeUser(e.target.value);
+      setTypeUser(e.target.value as EUserType);
     }
   };
 
@@ -46,8 +47,8 @@ export const TypeUserDrop = ({
             }}
             value={value}
           >
-            <option value={"asesorado"}>Asesorado</option>
-            <option value={"asesor"}>Asesor</option>
+            <option value={EUserType.student}>Asesorado</option>
+            <option value={EUserType.advisor}>Asesor</option>
           </Select>
           <FormHelperText>Selecciona el tipo de usuario</FormHelperText>
         </div>

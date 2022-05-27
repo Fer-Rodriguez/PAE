@@ -7,6 +7,8 @@ import nextWednesday from "date-fns/esm/fp/nextWednesday/index.js";
 import nextThursday from "date-fns/nextThursday";
 import nextFriday from "date-fns/esm/fp/nextFriday/index.js";
 
+import { differenceInHours } from "date-fns";
+
 //Interfaces
 import {
   IbeforeCreateSchedule,
@@ -190,8 +192,6 @@ const acceptSchedule = ({
     state: "Disponible",
   };
 
-  console.log("Creado: ", schedule);
-
   const difference = getHoursBetweenDates(event?.start, event?.end);
 
   if (setAlertHours !== undefined && setTotalHours !== undefined) {
@@ -234,7 +234,10 @@ interface ISettersSchedules {
   setInitialSchedulesFirst: React.Dispatch<Array<ISchedule>>;
   setInitialSchedulesSecond: React.Dispatch<Array<ISchedule>>;
   setInitialSchedulesThird: React.Dispatch<Array<ISchedule>>;
-  setTotalHours: React.Dispatch<number>;
+  getTotalHours: (period: string) => {
+    totalHours: number;
+    setTotalHours: React.Dispatch<number>;
+  };
 }
 
 interface IGettersSchedules {
@@ -253,14 +256,9 @@ export const processSchedules = (
     setInitialSchedulesFirst,
     setInitialSchedulesSecond,
     setInitialSchedulesThird,
-    setTotalHours,
+    getTotalHours,
   } = setters;
-  const {
-    initialSchedulesFirst,
-    initialSchedulesSecond,
-    initialSchedulesThird,
-    totalHours,
-  } = getters;
+  const { totalHours } = getters;
 
   const dayStartWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 
@@ -268,14 +266,22 @@ export const processSchedules = (
   const periodTwoSchedules: Array<ISchedule> = [];
   const periodThreeSchedules: Array<ISchedule> = [];
 
-  schedules.map((schedule) => {
-    setTotalHours(totalHours + 1);
+  let hoursDetectedOne = 0;
+  let hoursDetectedTwo = 0;
+  let hoursDetectedThree = 0;
 
+  schedules.map((schedule) => {
     let newStart;
     let newEnd;
 
     const originalStart = new Date(Date.parse(schedule.start));
     const originalEnd = new Date(Date.parse(schedule.finish));
+
+    const diferencia = differenceInHours(originalEnd, originalStart);
+
+    if (schedule.period === 0) hoursDetectedOne += diferencia;
+    else if (schedule.period === 1) hoursDetectedTwo += diferencia;
+    else hoursDetectedThree += diferencia;
 
     const startHours = getHours(originalStart);
     const endHours = getHours(originalEnd);
@@ -346,7 +352,9 @@ export const processSchedules = (
     }
   });
 
-  console.log(periodOneSchedules);
+  getTotalHours("0").setTotalHours(hoursDetectedOne);
+  getTotalHours("1").setTotalHours(hoursDetectedTwo);
+  getTotalHours("2").setTotalHours(hoursDetectedThree);
 
   setInitialSchedulesFirst(periodOneSchedules);
   setInitialSchedulesSecond(periodTwoSchedules);
