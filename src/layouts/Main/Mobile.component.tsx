@@ -10,11 +10,19 @@ import { IUserComponents } from "../../interfaces";
 import { Logo } from "../../assets/Logo";
 
 export const MobileComponents = ({ userComponent }: IUserComponents) => (
-  <Flex flexDirection={"column"} minH={"100vh"}>
+  <Flex flexDirection={"column"} minH={"100vh"} mt="3vh" gap={12}>
     <Spacer />
-    <Flex justifyContent={"space-around"}>
-      <Logo maxWidth="20vw" />
-      <Flex alignItems="center" pr="6" gap={"6"}>
+    <Flex position={"absolute"}>
+      <Box position={"relative"} left="40%">
+        <Logo maxWidth="20vw" />
+      </Box>
+      <Flex
+        position={"absolute"}
+        left="75vw"
+        alignItems="center"
+        pr="6"
+        gap={"6"}
+      >
         <CloseIcon boxSize={6} />
         <BellIcon boxSize={8} />
       </Flex>
@@ -23,7 +31,7 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => (
     {/** Here is going to be render the corresponding child component */}
     {userComponent}
     {/* TODO: Add responsive menu instead of Spacer**/}
-    <Spacer />
+
     <Menu userType="user" mobile={true} />
   </Flex>
 );

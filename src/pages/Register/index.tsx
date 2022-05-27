@@ -13,6 +13,7 @@ interface IRegister {
 export const FormsRegister = (props: IRegister) => {
   const [formStep, setFormStep] = useState(0);
   const [info, setInfo] = useState<any>({});
+  const [newId, setnewId] = useState("");
 
   const getProgress = () => {
     return (
@@ -39,34 +40,16 @@ export const FormsRegister = (props: IRegister) => {
     if (step == 0) {
       return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
     } else if (step == 1) {
-      return <Forms2 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
+      return (
+        <Forms2
+          info={info}
+          setInfo={setInfo}
+          setFormStep={setFormStep}
+          setNewId={setnewId}
+        />
+      );
     } else if (step == 2) {
-      return (
-        <Forms3
-          info={info}
-          setInfo={setInfo}
-          setFormStep={setFormStep}
-          step={2}
-        />
-      );
-    } else if (step == 3) {
-      return (
-        <Forms3
-          info={info}
-          setInfo={setInfo}
-          setFormStep={setFormStep}
-          step={3}
-        />
-      );
-    } else if (step == 4) {
-      return (
-        <Forms3
-          info={info}
-          setInfo={setInfo}
-          setFormStep={setFormStep}
-          step={4}
-        />
-      );
+      return <Forms3 id={newId} />;
     }
   };
   return (

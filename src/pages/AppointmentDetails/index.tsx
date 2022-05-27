@@ -52,17 +52,17 @@ export const AppointmentDetails = ({
 
   const save = () => {
     try {
-      updateAppointment(detailsData.appointment.id, {
-        status: status,
-        location: location,
-      });
-
-      updateAppointmentDetails(
+      updateAppointment(
         detailsData.appointment.id,
-        selectedAdvisor,
-        "id_advisor"
+        detailsData.student.id,
+        {
+          status: status,
+          location: location,
+        },
+        {
+          id_advisor: selectedAdvisor,
+        }
       );
-
       toast({
         title: "¡Listo!",
         description: "Los cambios se han guardado correctamente.",

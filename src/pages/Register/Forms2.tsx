@@ -29,16 +29,17 @@ interface IForms2 {
   setInfo: React.Dispatch<any>;
   info: any;
   setFormStep: React.Dispatch<number>;
+  setNewId: React.Dispatch<string>;
 }
 
-export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
+export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
   const [doubleCarrera, setDoubleCarrera] = useState("");
   const [semesterCarrera, setSemesterCarrera] = useState("");
   const [semesterDoubleCarrera, setSemesterDoubleCarrera] = useState("");
-  const [typeUser, setTypeUser] = useState("");
+  const [typeUser, setTypeUser] = useState<EUserType | null>(null);
   const [seeModal, setSeeModal] = useState(false);
 
   const capitalize = (str: string) => {
@@ -61,9 +62,11 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
       career: info.carrera,
       semester: info.semestreCarrera,
       status: EStatus.active,
-      type: EUserType.student,
+      type: info.typeUserDrop,
     });
+
     const idUserData = await GetUser(capitalize(info.mail), info.password);
+    setNewId(idUserData.userId);
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
@@ -89,11 +92,12 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
         career: info.carrera,
         config: { language: ELanguage.spanish, theme: ETheme.white },
         profilePic: "No tengo",
-        schedule: null,
+        notifications: [],
       };
       setUser(correctUser);
-      navigate("/dashboard");
     }
+    if (info.typeUserDrop === EUserType.student) navigate("/dashboard");
+    else setFormStep(2);
   };
 
   const login = () => {
@@ -102,11 +106,7 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
 
   const saveData = async (data: any) => {
     setInfo({ ...info, ...data });
-    if (data.typeUserDrop == "asesor") {
-      setFormStep(2);
-    } else {
-      setSeeModal(true);
-    }
+    setSeeModal(true);
   };
 
   const {
@@ -188,8 +188,8 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
             Nombre: {info.name} <br />
             <br />
             Correo: {info.mail} <br />
-            <br />
-            Carrera: {info.carrera} <br />
+            {/**            <br />
+            Carrera: {info.carrera} <br /> */}
             <br />
             Semestre: {info.semestreCarrera}
             <br />

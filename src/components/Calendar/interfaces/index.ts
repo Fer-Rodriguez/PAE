@@ -29,19 +29,23 @@ export interface ICommonHours {
   totalHours?: number;
   setAlertHours?: React.Dispatch<boolean>;
   setTotalHours?: React.Dispatch<number>;
+  setDispTimeAlert?: React.Dispatch<boolean>;
+  setWholeHourAlert?: React.Dispatch<boolean>;
 }
 
 export interface ISchedule {
-  id: string;
-  title: string;
-  isAllDay: boolean;
-  start: Date;
-  end: Date;
-  category: string;
-  dueDateClass: string;
-  location: string;
-  raw: { class: string };
-  state: string;
+  id?: string;
+  title?: string;
+  calendarId?: string;
+  isAllDay?: boolean;
+  start?: any;
+  isVisible: boolean;
+  end?: any;
+  category?: string;
+  dueDateClass?: string;
+  location?: string;
+  raw?: { class: string };
+  state?: string;
 }
 
 export enum EUpdateScheduleOperation {

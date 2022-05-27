@@ -1,12 +1,5 @@
-import {
-  Grid,
-  GridItem,
-  Text,
-  Flex,
-  Box,
-  Center,
-  Spacer,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -24,12 +17,18 @@ import { IDataProfileCard } from "../../interfaces";
 //Store
 import { useStore } from "../../state/store";
 
+//Socket
+import socket from "../../socket";
+
 //Assets
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useEffect, useState } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
+import { useToastHook } from "../../hooks";
+import { GetAllAdvisors } from "../../api/users/get";
+import { getAllNotifications } from "../../api/notifications/get";
 import { Survey } from "../../components/Survey";
 
 const Desktop = ({
@@ -168,7 +167,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
       type: state.type,
       semester: state.semester,
       career: state.career,
-      schedule: state.schedule,
+
       profilePic: state.profilePic,
     }),
     shallow
@@ -202,9 +201,17 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   ]);
 
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
+  const setAllUsers = useStore((state) => state.setAllUsers);
+  const setAllNotifications = useStore((state) => state.setNotifications);
 
   useEffect(() => {
+    socket.connect();
+    socket.emit("initial", { myId: userData.id }, (response: any) => {
+      console.log(response.status);
+    });
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
+    GetAllAdvisors(setAllUsers);
+    getAllNotifications(userData.id, setAllNotifications);
   }, []);
 
   return mobile ? (

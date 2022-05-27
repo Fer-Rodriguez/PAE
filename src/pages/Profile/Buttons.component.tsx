@@ -13,9 +13,12 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useRef } from "react";
+import { DeleteUser } from "../../api/users/delete";
+import { GetAllAdvisors } from "../../api/users/get";
 
 //Components
 import { ButtonGeneric } from "../../components/Button";
+import { useStore } from "../../state/store";
 
 //Assets
 import theme from "../../theme";
@@ -112,22 +115,40 @@ export const ButtonChangeSchedules = ({
 
 export const ButtonEraseAdvisor = ({
   mobile = false,
+  id,
 }: {
   mobile?: boolean;
+  id: string;
 }) => {
   const cancelRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const onClickAccept = () => {
-    toast({
-      title: "¡Listo!",
-      description: "El administrador ha sido eliminado.",
-      position: "top",
-      status: "error",
-      duration: 9000,
-      isClosable: true,
-    });
+  const setAllUsers = useStore((state) => state.setAllUsers);
+
+  const onClickAccept = async () => {
+    try {
+      await DeleteUser(id);
+      GetAllAdvisors(setAllUsers);
+      toast({
+        title: "¡Listo!",
+        description: "El administrador ha sido eliminado.",
+        position: "top",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Vuelve a intentarlo más tarde",
+        position: "top",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
     onClose();
   };
 

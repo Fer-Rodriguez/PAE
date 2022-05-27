@@ -12,12 +12,14 @@ import {
   MenuButton,
   MenuList,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 //  Hook to create the table data model
 import { Cell, useTable } from "react-table";
 // Component interface
 
 //Assets
 import notifications from "../../assets/Bell.png";
+import { useStore } from "../../state/store";
 import theme from "../../theme/index";
 
 /*
@@ -39,11 +41,31 @@ interface IBell {
   headColor: string;
 }
 
-export const Bell = ({ columns, data, headColor }: IBell) => {
+export const Bell = ({ columns, headColor }: IBell) => {
+  const [notificationDataColum, setNotiColumn] = useState([
+    { notification: "", dataNotification: "" },
+  ]);
+
+  const notificationsData = useStore((state) => state.notifications);
+
+  useEffect(() => {
+    const arrayNotis: any = [];
+    notificationsData.forEach((noti) => {
+      const notiColumnData = {
+        notification: noti.title,
+        dataNotification: noti.description,
+      };
+
+      arrayNotis.push(notiColumnData);
+    });
+
+    setNotiColumn(arrayNotis);
+  }, [notificationsData]);
+
   // Properties needed to form the table's data model
   // Further reading: https://react-table.tanstack.com/docs/api/useTable#instance-properties
   const { getTableProps, getTableBodyProps, flatHeaders, rows, prepareRow } =
-    useTable({ columns, data });
+    useTable({ columns: columns as any, data: notificationDataColum });
 
   return (
     <Menu>
@@ -53,8 +75,8 @@ export const Bell = ({ columns, data, headColor }: IBell) => {
         rounded={theme.radii.menu}
         icon={<img src={notifications} height="40em" width="40em" />}
       ></MenuButton>
-      <MenuList>
-        <TableContainer boxShadow="general" borderRadius="general">
+      <MenuList zIndex={2}>
+        <TableContainer boxShadow="general" borderRadius="general" zIndex={3}>
           <Table variant="simple" {...getTableProps()}>
             <Thead background={headColor}>
               <Tr>
@@ -69,7 +91,7 @@ export const Bell = ({ columns, data, headColor }: IBell) => {
                 ))}
               </Tr>
             </Thead>
-            <Tbody {...getTableBodyProps()}>
+            <Tbody {...getTableBodyProps()} zIndex={3}>
               {rows.map((row) => {
                 prepareRow(row);
                 return (
