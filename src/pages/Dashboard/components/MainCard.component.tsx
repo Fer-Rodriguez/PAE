@@ -118,7 +118,7 @@ export const MainCard = ({
             <Image src={bandera} />
           </Box>
         ) : (
-          <Box position={"absolute"} top="15%" left={"40%"}>
+          <Box position={"absolute"} top="4%" left={"44%"}>
             <Image boxSize={"20vw"} src={rocket} />
           </Box>
         ))}

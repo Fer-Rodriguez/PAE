@@ -9,6 +9,7 @@ import { IMenuOptions } from "../../interfaces";
 import menuDash from "../../assets/House.png";
 import menuCitas from "../../assets/Calendar.png";
 import menuPerfil from "../../assets/menu_user.png";
+import menuImg3 from "../../assets/persona.png";
 import menuMaterias from "../../assets/menuOpt_materias.png";
 import menuAsesores from "../../assets/menuOpt_asesores.png";
 import { useStore } from "../../state/store";
@@ -39,11 +40,11 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
       },
       {
         linkTo: "../asesores",
-        imgSrc: menuImg3,
+        imgSrc: menuAsesores,
       },
       {
         linkTo: "../perfil/user",
-        imgSrc: menuImg3,
+        imgSrc: menuPerfil,
       },
     ];
   } else {
@@ -58,7 +59,7 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
       },
       {
         linkTo: "../perfil/user",
-        imgSrc: menuImg3,
+        imgSrc: menuPerfil,
       },
     ];
   }
