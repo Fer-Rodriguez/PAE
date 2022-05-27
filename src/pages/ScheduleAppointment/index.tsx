@@ -40,8 +40,8 @@ export const ScheduleAppointment = ({
     setDate,
     setImageFile,
   } = setters;
-  const { idSubject, subjectName, problemDescription, formStep, imageFile } = info;
-
+  const { idSubject, subjectName, problemDescription, formStep, imageFile } =
+    info;
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
@@ -63,6 +63,8 @@ export const ScheduleAppointment = ({
     } else if (step == 1) {
       return (
         <ScheduleScreen
+          mobile={mobile}
+          subjectName={subjectName}
           onNextScreenButtonClick={async (
             e: React.MouseEvent<HTMLButtonElement>
           ) => {
@@ -74,7 +76,6 @@ export const ScheduleAppointment = ({
                 "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."
               );
             }
-
           }}
           onFullDateSelected={setDate}
         ></ScheduleScreen>
