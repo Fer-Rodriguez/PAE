@@ -93,7 +93,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
         career: info.carrera,
         config: { language: ELanguage.spanish, theme: ETheme.white },
         profilePic: "No tengo",
-        schedule: null,
+        notifications: [],
       };
       setUser(correctUser);
     }

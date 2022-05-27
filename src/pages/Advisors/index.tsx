@@ -3,6 +3,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
+import { useStore } from "../../state/store";
 
 interface IColumnDetails {
   [key: string]: string;
@@ -11,8 +12,10 @@ interface IColumnDetails {
 import { Managment } from "../Managment";
 
 export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
-  const [apiData, setData] = useState([{}]);
-  const [selectedAdivosr, setSelectedAdvisor] = useState({});
+  const advisors = useStore((state) => state.allUsers);
+  const [advisorsColumnData, setAdvisorsColumn] = useState<
+    Array<IColumnDetails>
+  >([{ id: "" }]);
 
   const columns = useMemo(
     () => [
@@ -39,83 +42,65 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       {
         Header: "",
         accessor: "edit",
-        Cell: (cell: Cell<any, any>) => (
-          <Link to={`../perfil/${tuArregloDeObjetos[cell.row.index].id}`}>
-            <ButtonGeneric text={"Editar"} color={"pink"} fontColor="white" />
-          </Link>
-        ),
+        Cell: (cell: Cell<any, any>) => {
+          const id = advisorsColumnData[cell.row.index].id;
+          return (
+            <>
+              {id !== undefined && (
+                <Link to={`../perfil/${id}`}>
+                  <ButtonGeneric
+                    text={"Editar"}
+                    color={"pink"}
+                    fontColor="white"
+                  />
+                </Link>
+              )}
+            </>
+          );
+        },
       },
     ],
-    []
+    [advisorsColumnData]
   );
 
   //TODO: Añadir la llamada al endpoint para obtener todos los usuarios asesores.
   const getAdvisorData = async () => {
-    console.log("Obteniendo asesores");
+    const advisorsColumn: Array<IColumnDetails> = [];
+    await advisors.forEach((advisor) => {
+      const columnData: IColumnDetails = {
+        id: advisor.id,
+        date: new Date(advisor.createDate!).toLocaleString(),
+        name: advisor.name,
+        semester: advisor.semester.toString(),
+        status: advisor.status,
+        career: advisor.career,
+      };
+
+      advisorsColumn.push(columnData);
+    });
+
+    console.log("Columns: ", advisorsColumn);
+
+    setAdvisorsColumn(advisorsColumn);
   };
 
   useEffect(() => {
     getAdvisorData();
   }, []);
 
-  const tuArregloDeObjetos = [
-    {
-      id: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-    {
-      id: "asdasdawdawd",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-    {
-      id: "asdasdawdawd",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-    {
-      id: "asdasdawdawd",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-    {
-      id: "asdasdawdawd",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-    {
-      id: "asdasdawdawd",
-      date: "16/01/2022 12:00",
-      name: "Julián Martinez",
-      career: "IRS",
-      semester: "6to",
-      status: "Correcto",
-    },
-  ];
-  const data = useMemo<IColumnDetails[]>(() => tuArregloDeObjetos, []);
   return (
-    <Managment
-      columns={columns}
-      data={data}
-      headColor={"blue"}
-      mobile={mobile}
-      header={"Asesores"}
-    />
+    <>
+      {advisorsColumnData === [] ? (
+        <h1>Cargando</h1>
+      ) : (
+        <Managment
+          columns={columns}
+          data={advisorsColumnData}
+          headColor={"blue"}
+          mobile={mobile}
+          header={"Asesores"}
+        />
+      )}
+    </>
   );
 };

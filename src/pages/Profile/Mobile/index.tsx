@@ -100,7 +100,7 @@ export const ProfileCardMobile = ({
                     <IconPopOverForm
                       text={data[title.toLowerCase()]}
                       icon={<EditIcon />}
-                      key={title.toLowerCase()}
+                      myKey={title.toLowerCase()}
                       mobile
                       setData={() => console.log("Guardando la info en local")}
                     />
@@ -127,7 +127,7 @@ export const ProfileCardMobile = ({
                       setMyData={() => console.log("saving data")}
                       mobile
                     />
-                    <ButtonEraseAdvisor mobile />
+                    <ButtonEraseAdvisor mobile id={data.id} />
                   </Center>
                 )}
               </Flex>

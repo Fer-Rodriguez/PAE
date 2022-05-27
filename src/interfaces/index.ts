@@ -106,7 +106,6 @@ export interface IDataProfileCard {
   career: string;
   semester: number;
   profilePic: string;
-  schedule?: ISchedule | null;
 }
 
 export interface IUserComponents {
@@ -155,6 +154,15 @@ export type TConfigObject = {
   theme: ETheme;
 };
 
+export interface INotification {
+  id: string;
+  id_user: string;
+  title: string;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
 export interface IUserData {
   id: string;
   status: EStatus;
@@ -165,7 +173,8 @@ export interface IUserData {
   career: string;
   config: TConfigObject;
   profilePic: string;
-  schedule: ISchedule | null;
+  createDate?: string;
+  notifications: Array<INotification>;
 }
 
 export interface INewUserSchedule {

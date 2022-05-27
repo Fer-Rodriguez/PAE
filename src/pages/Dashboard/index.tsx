@@ -27,6 +27,8 @@ import "swiper/css/pagination";
 import { useEffect } from "react";
 import { getRecentAppointment } from "../../api/appointments/get";
 import { useToastHook } from "../../hooks";
+import { GetAllAdvisors } from "../../api/users/get";
+import { getAllNotifications } from "../../api/notifications/get";
 
 const Desktop = ({ type, name }: { type: EUserType; name: string }) => (
   <Grid
@@ -108,13 +110,15 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
       type: state.type,
       semester: state.semester,
       career: state.career,
-      schedule: state.schedule,
+
       profilePic: state.profilePic,
     }),
     shallow
   );
 
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
+  const setAllUsers = useStore((state) => state.setAllUsers);
+  const setAllNotifications = useStore((state) => state.setNotifications);
 
   useEffect(() => {
     socket.connect();
@@ -122,6 +126,8 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
       console.log(response.status);
     });
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
+    GetAllAdvisors(setAllUsers);
+    getAllNotifications(userData.id, setAllNotifications);
   }, []);
 
   return mobile ? (

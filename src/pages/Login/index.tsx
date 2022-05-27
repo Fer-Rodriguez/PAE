@@ -63,7 +63,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           career: "ITC",
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
-          schedule: null,
+          notifications: [],
         };
         setUser(correctUser);
         navigate("/dashboard");
@@ -87,6 +87,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   const tryLogin = async (data: any) => {
     try {
       const idUserData = await GetUser(capitalize(data.mail), data.password);
+      console.log("MI DATA: ", idUserData);
       const userData = await GetUserInfo(idUserData.userId);
 
       if (idUserData.status == "OK") {
@@ -112,7 +113,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           career: "ITC",
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
-          schedule: null,
+          notifications: [],
         };
         if (saveData) {
           localStorage.setItem("user_id", userData.user.id);
