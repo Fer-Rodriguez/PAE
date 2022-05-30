@@ -20,12 +20,14 @@ export const Survey = ({
   triggeringNotificationId,
   appointmentId,
 }: {
-  surveyQuestions: {
-    question: string;
-    type: "text" | "scale" | "yesOrNo";
-    scaleBegining?: string;
-    scaleEnding?: string;
-  }[];
+  surveyQuestions:
+    | {
+        question: string;
+        type: "text" | "scale" | "yesOrNo";
+        scaleBegining?: string;
+        scaleEnding?: string;
+      }[]
+    | undefined;
   surveyAnswered: boolean;
   surveyController: React.Dispatch<React.SetStateAction<boolean>>;
   triggeringNotificationId: string;
@@ -34,6 +36,7 @@ export const Survey = ({
   /* Aquí haz el POST a reports*/
   const sendAnswers = async (data: any) => {
     alert(JSON.stringify(data));
+    surveyController(true);
   };
 
   const {
@@ -53,7 +56,7 @@ export const Survey = ({
         ¿Qué tal te fue en tu asesoría con Bruce Wayne?
       </Heading>
       <FormControl>
-        <form>
+        <form onSubmit={handleSubmit(sendAnswers)}>
           <Flex direction="column" gap="20px">
             {surveyQuestions?.map((entry) => {
               switch (entry.type) {
@@ -104,23 +107,20 @@ export const Survey = ({
               }
             })}
           </Flex>
+          <br></br>
+          <br></br>
+          <Center w="100%">
+            <ButtonGeneric
+              type="submit"
+              bgColor="blue"
+              sizePX="fit-content"
+              text="Enviar respuestas"
+              isDisabled={!isValid}
+              disabledHoverText="Por favor contesta las preguntas obligatorias"
+            ></ButtonGeneric>
+          </Center>
         </form>
       </FormControl>
-      <br></br>
-      <Center w="100%">
-        <ButtonGeneric
-          type="submit"
-          bgColor="blue"
-          sizePX="fit-content"
-          text="Enviar respuestas"
-          isDisabled={!isValid}
-          disabledHoverText="Por favor contesta las preguntas obligatorias"
-          onClick={() => {
-            handleSubmit(sendAnswers);
-            surveyController(true);
-          }}
-        ></ButtonGeneric>
-      </Center>
     </PopOver>
   );
 };

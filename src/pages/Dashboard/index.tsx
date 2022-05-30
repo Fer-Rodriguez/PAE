@@ -30,24 +30,29 @@ import { useToastHook } from "../../hooks";
 import { GetAllAdvisors } from "../../api/users/get";
 import { getAllNotifications } from "../../api/notifications/get";
 import { Survey } from "../../components/Survey";
+import { getSurveyQuestions } from "../../api/surveys/get";
 
 const Desktop = ({
   type,
   name,
   surveyAnswered,
+  surveyLoaded,
   surveyController,
   surveyQuestions,
 }: {
   type: EUserType;
   name: string;
+  surveyLoaded: boolean;
   surveyAnswered: boolean;
   surveyController: React.Dispatch<React.SetStateAction<boolean>>;
-  surveyQuestions: {
-    question: string;
-    type: "text" | "scale" | "yesOrNo";
-    scaleBegining?: string;
-    scaleEnding?: string;
-  }[];
+  surveyQuestions:
+    | {
+        question: string;
+        type: "text" | "scale" | "yesOrNo";
+        scaleBegining?: string;
+        scaleEnding?: string;
+      }[]
+    | undefined;
 }) => (
   <Grid
     templateColumns="repeat(14, 1fr)"
@@ -81,13 +86,17 @@ const Desktop = ({
     </GridItem>
     {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
     se actualice y solo dejamos la misma instancia de survey o vamos creando instancias de survey*/}
-    <Survey
-      surveyAnswered={surveyAnswered}
-      surveyController={surveyController}
-      surveyQuestions={surveyQuestions}
-      triggeringNotificationId={""}
-      appointmentId={""}
-    ></Survey>
+    {surveyLoaded ? (
+      <Survey
+        surveyAnswered={surveyAnswered}
+        surveyController={surveyController}
+        surveyQuestions={surveyQuestions}
+        triggeringNotificationId={""}
+        appointmentId={""}
+      ></Survey>
+    ) : (
+      <></>
+    )}
   </Grid>
 );
 
@@ -95,31 +104,39 @@ const Mobile = ({
   type,
   name,
   surveyAnswered,
+  surveyLoaded,
   surveyController,
   surveyQuestions,
 }: {
   type: EUserType;
   name: string;
   surveyAnswered: boolean;
+  surveyLoaded: boolean;
   surveyController: React.Dispatch<React.SetStateAction<boolean>>;
-  surveyQuestions: {
-    question: string;
-    type: "text" | "scale" | "yesOrNo";
-    scaleBegining?: string;
-    scaleEnding?: string;
-  }[];
+  surveyQuestions:
+    | {
+        question: string;
+        type: "text" | "scale" | "yesOrNo";
+        scaleBegining?: string;
+        scaleEnding?: string;
+      }[]
+    | undefined;
 }) => {
   const FirstPage = () => (
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
       <AppointmentListCard type={type} mobile />
-      <Survey
-        surveyAnswered={surveyAnswered}
-        surveyQuestions={surveyQuestions}
-        triggeringNotificationId={""}
-        surveyController={surveyController}
-        appointmentId={""}
-      ></Survey>
+      {surveyLoaded ? (
+        <Survey
+          surveyAnswered={surveyAnswered}
+          surveyQuestions={surveyQuestions}
+          triggeringNotificationId={""}
+          surveyController={surveyController}
+          appointmentId={""}
+        ></Survey>
+      ) : (
+        <></>
+      )}
     </Flex>
   );
 
@@ -167,9 +184,13 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     shallow
   );
 
+  const userNotifications = useStore((state) => state.notifications);
+
   //TODO: Use effect cuando cambie surveyAnswered para comprobar si hay otra survey que contestar
   //TODO: Usar setSurveyQuestions cuando se tengan las notificaciones, se rescate el id de la appointment pendiente y se obtengan las preguntas
-  const [surveyAnswered, setSurveyAnswered] = useState(false);
+  const [surveyAppointmentId, setSurveyAppointmentId] = useState("");
+  const [surveyLoaded, setSurveyLoaded] = useState(false);
+  const [surveyAnswered, setSurveyAnswered] = useState(true);
   const [surveyQuestions, setSurveyQuestions] = useState<
     {
       question: string;
@@ -177,22 +198,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
       scaleBegining?: string;
       scaleEnding?: string;
     }[]
-  >([
-    {
-      question: "¿Qué tan útil te pareció la asesoría?",
-      type: "scale",
-      scaleBegining: "Para nada útil",
-      scaleEnding: "Muy útil",
-    },
-    {
-      question: "¿Qué tan profesional fue el asesor?",
-      type: "scale",
-      scaleBegining: "Nada profesional",
-      scaleEnding: "Muy profesional",
-    },
-    { question: "Comentarios generales", type: "text" },
-    { question: "El asesor no asistió", type: "yesOrNo" },
-  ]);
+  >();
 
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
   const setAllUsers = useStore((state) => state.setAllUsers);
@@ -206,13 +212,37 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
     GetAllAdvisors(setAllUsers);
     getAllNotifications(userData.id, setAllNotifications);
+    if (userNotifications != []) {
+      userNotifications.forEach((x) => {
+        if (x.title == "survey") {
+          setSurveyAppointmentId(x.description);
+        }
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    const obtainData = async () => {
+      await getSurveyQuestions(userData.type, setSurveyQuestions);
+    };
+    obtainData().then(
+      () => {
+        console.log("fumar roca", surveyAppointmentId);
+        setSurveyAnswered(false);
+        setSurveyLoaded(true);
+      },
+      () => {
+        console.log("NO HUBO RESPUESTA AL TENER LAS PREGUNTAS");
+      }
+    );
+  }, [surveyAppointmentId]);
 
   return mobile ? (
     <Mobile
       type={userData.type}
       name={userData.name}
       surveyAnswered={surveyAnswered}
+      surveyLoaded={surveyLoaded}
       surveyController={setSurveyAnswered}
       surveyQuestions={surveyQuestions}
     />
@@ -221,6 +251,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
       type={userData.type}
       name={userData.name}
       surveyAnswered={surveyAnswered}
+      surveyLoaded={surveyLoaded}
       surveyController={setSurveyAnswered}
       surveyQuestions={surveyQuestions}
     />
