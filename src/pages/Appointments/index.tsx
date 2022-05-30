@@ -52,6 +52,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   useEffect(() => {
     const obtainData = async () => {
       const response = await getAllAppointments(userId, userType, true);
+      console.log("Respuesta lmao:  ", response);
       setAllAppointments(response);
     };
     obtainData().then(

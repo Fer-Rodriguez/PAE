@@ -66,6 +66,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
     });
 
     const idUserData = await GetUser(capitalize(info.mail), info.password);
+    console.log("User data: ", idUserData);
     setNewId(idUserData.userId);
     const userData = await GetUserInfo(idUserData.userId);
 

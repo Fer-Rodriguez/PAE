@@ -38,8 +38,8 @@ const InfoContent = ({
   //TODO: Las opciones las tiene que dar la API
   const dropdownOption: IObjectData[] = [
     {
-      title: "Alejandro Lopez",
-      value: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
+      title: "Víctor Mancera",
+      value: "7746ad47-7664-4043-ab40-5aca0ce6872b",
     },
   ];
 
