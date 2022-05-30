@@ -172,56 +172,7 @@ export const BasicInfoScreen = ({
             src={imageBasicInfo}
           />
         </Box>
-        <Controller
-          name="problemDescription"
-          control={control}
-          rules={{
-            required:
-              "Por favor proporciona una descripción al problema que quieres tratar en la asesoría",
-            pattern: {
-              value: /^(?!\s*$).+/,
-              message: `La descripción no puede estar vacía`,
-            },
-          }}
-          defaultValue={valueForTextField}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <>
-              <TextInput
-                isInvalid={Boolean(error)}
-                multiLine
-                placeholderText="Escribe aquí el problema en cuestión"
-                width={mobile ? "85%" : "100%"}
-                value={value}
-                onChangeArea={(e: ChangeEvent<HTMLTextAreaElement>) => {
-                  onChange(e);
-                  onTextFieldChange?.(e.target.value);
-                }}
-              />
-              {error ? (
-                <FormErrorMessage>{error?.message}</FormErrorMessage>
-              ) : (
-                <></>
-              )}
-            </>
-          )}
-        ></Controller>
-        <ButtonGeneric
-          bgColor="blue"
-          sizePX=""
-          fontColor="black"
-          text="Añadir foto"
-        ></ButtonGeneric>
-        <Center w="100%">
-          <ButtonGeneric
-            bgColor="pink"
-            sizePX=""
-            text="Siguiente"
-            isDisabled={!isValid}
-            onClick={onNextScreenButtonClick}
-          ></ButtonGeneric>
-        </Center>
-      </VStack>
-    </FormControl>
+      </FormControl>
     </>
   );
 };

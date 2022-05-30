@@ -44,21 +44,35 @@ export const CreateAppointmentLayout = () => {
   const idPetitioner = useStore((state) => state.id);
 
   const createAppointment = async () => {
-    const data = {
-      idPetitioner: idPetitioner,
-      date: date,
-      idSubject: idSubject,
-      problemDescription: problemDescription,
-      image: "https://aunnotenemosestaparte.com/imagen.jpg",
-    };
+    try {
+      let data = qs.stringify({
+        idPetitioner: idPetitioner,
+        date: date,
+        idSubject: idSubject,
+        problemDescription: problemDescription,
+        image: "",
+      });
 
-    console.log("Data que envío: ", data);
+      if (imageFile) {
+        const storageRef = ref(
+          storage,
+          `/appointmentImages/${Date.now().toString() + imageFile.name}`
+        );
+        const uploadTask = await uploadBytesResumable(storageRef, imageFile);
+        data = qs.stringify({
+          idPetitioner: idPetitioner,
+          date: date,
+          idSubject: idSubject,
+          problemDescription: problemDescription,
+          image: await getDownloadURL(uploadTask.ref),
+        });
+      }
 
-    const config = {
-      method: "post",
-      url: "http://localhost:6060/appointment",
-      data,
-    };
+      const config = {
+        method: "post",
+        url: "http://localhost:6060/appointment",
+        data,
+      };
 
       let successfulRequest = false;
 

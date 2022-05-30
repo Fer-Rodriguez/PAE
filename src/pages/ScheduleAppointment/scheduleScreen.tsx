@@ -92,6 +92,7 @@ export const ScheduleScreen = ({
 
   if (mobile) {
     return (
+      <>
         <Text color="grey" as="i">
           Escoge el horario que más se te acomode
         </Text>
@@ -207,8 +208,9 @@ export const ScheduleScreen = ({
                 setSelectedHour(e.currentTarget.innerText);
               }}
               scheduleSelected={selectedHour}
-              schedules={myOptions}
+              schedules={possibleDates}
               width="30%"
+              daySelected={selectedDayString}
             ></ScheduleList>
           </HStack>
           <Spacer />
