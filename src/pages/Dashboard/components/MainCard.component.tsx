@@ -89,11 +89,15 @@ export const MainCard = ({
 
   const findSelectedAppointment = () => {
     allAppointments.map((appointmentData) => {
-      if (appointmentData.appointment.id === recentAppointment.id)
+      if (appointmentData.appointment.id === recentAppointment.id) {
         setSelectedAppointment(appointmentData);
-      if (appointmentData.appointment.status === EStatusAppointment.PENDING)
-        setEditActivation(true);
-      else setEditActivation(false);
+        if (appointmentData.appointment.status === EStatusAppointment.PENDING) {
+          setEditActivation(true);
+        } else {
+          setEditActivation(false);
+        }
+        return;
+      }
     });
   };
 
@@ -129,7 +133,6 @@ export const MainCard = ({
               fontColor="white"
               onClick={() => {
                 findSelectedAppointment();
-                setEditActivation(true);
                 setDetailsActivation(true);
               }}
             />
