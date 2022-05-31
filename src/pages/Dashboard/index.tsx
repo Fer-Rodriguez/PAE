@@ -89,13 +89,13 @@ const Desktop = ({
     </GridItem>
     {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
     se actualice y solo dejamos la misma instancia de survey o vamos creando instancias de survey*/}
-    <Survey
+    {/** <Survey
       surveyAnswered={surveyAnswered}
       surveyController={surveyController}
       surveyQuestions={surveyQuestions}
       triggeringNotificationId={""}
       appointmentId={""}
-    ></Survey>
+    ></Survey>*/}
   </Grid>
 );
 
@@ -121,13 +121,13 @@ const Mobile = ({
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
       <AppointmentListCard type={type} mobile />
-      <Survey
+      {/**   <Survey
         surveyAnswered={surveyAnswered}
         surveyQuestions={surveyQuestions}
         triggeringNotificationId={""}
         surveyController={surveyController}
         appointmentId={""}
-      ></Survey>
+      ></Survey> */}
     </Flex>
   );
 
