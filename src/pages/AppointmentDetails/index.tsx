@@ -120,7 +120,7 @@ export const AppointmentDetails = ({
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={"6xl"}>
         <ModalOverlay />
-        <ModalContent shadow={0}>
+        <ModalContent shadow={0} borderRadius={"25px"}>
           <Button
             backgroundColor={"pink"}
             w={"10%"}
@@ -162,9 +162,10 @@ export const AppointmentDetails = ({
           <Flex>
             <Flex
               backgroundColor="gray.50"
-              h={"90vh"}
+              maxH={"100vh"}
               rounded={theme.radii.general}
               flexDir="column"
+              overflowY={"auto"}
             >
               <CardContent
                 editAppointment={editAppointment}
@@ -175,9 +176,10 @@ export const AppointmentDetails = ({
             </Flex>
             <Flex
               backgroundColor="gray.50"
-              h={"90vh"}
+              h={"100vh"}
               rounded={theme.radii.general}
               flexDir="column"
+              overflowY={"auto"}
             >
               <CardContent
                 type={1}
