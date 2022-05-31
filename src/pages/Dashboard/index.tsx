@@ -1,5 +1,12 @@
-import { Grid, GridItem, Text, Flex, Box } from "@chakra-ui/react";
-
+import { useEffect, useState } from "react";
+import {
+  Grid,
+  GridItem,
+  Text,
+  Flex,
+  Box,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -9,6 +16,12 @@ import { AppointmentListCard } from "./components/AppointmentListCard.component"
 import { SwitchesCards } from "./components/SwitchesCards.components";
 import { AppointmentsPollCard } from "./components/AppointMentPollCard.component";
 import { MainCard } from "./components/MainCard.component";
+import { Survey } from "../../components/Survey";
+
+//APIS
+import { getRecentAppointment } from "../../api/appointments/get";
+import { GetAllAdvisors } from "../../api/users/get";
+import { getAllNotifications } from "../../api/notifications/get";
 
 //Interfaces
 import { EUserType } from "../../interfaces/enums";
@@ -24,12 +37,7 @@ import socket from "../../socket";
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useEffect, useState } from "react";
-import { getRecentAppointment } from "../../api/appointments/get";
-import { useToastHook } from "../../hooks";
-import { GetAllAdvisors } from "../../api/users/get";
-import { getAllNotifications } from "../../api/notifications/get";
-import { Survey } from "../../components/Survey";
+import { AppointmentDetails } from "../AppointmentDetails";
 
 const Desktop = ({
   type,
@@ -167,6 +175,10 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     shallow
   );
 
+  const detailsActivation = useStore((state) => state.detailsActivation);
+  const editDetails = useStore((state) => state.editDetails);
+  const setDetailsActivation = useStore((state) => state.setDetailsActivation);
+
   //TODO: Use effect cuando cambie surveyAnswered para comprobar si hay otra survey que contestar
   //TODO: Usar setSurveyQuestions cuando se tengan las notificaciones, se rescate el id de la appointment pendiente y se obtengan las preguntas
   const [surveyAnswered, setSurveyAnswered] = useState(false);
@@ -208,21 +220,30 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     getAllNotifications(userData.id, setAllNotifications);
   }, []);
 
-  return mobile ? (
-    <Mobile
-      type={userData.type}
-      name={userData.name}
-      surveyAnswered={surveyAnswered}
-      surveyController={setSurveyAnswered}
-      surveyQuestions={surveyQuestions}
-    />
-  ) : (
-    <Desktop
-      type={userData.type}
-      name={userData.name}
-      surveyAnswered={surveyAnswered}
-      surveyController={setSurveyAnswered}
-      surveyQuestions={surveyQuestions}
-    />
+  return (
+    <>
+      <AppointmentDetails
+        isOpen={detailsActivation}
+        onClose={() => setDetailsActivation(false)}
+        editAppointment={editDetails}
+      />
+      {mobile ? (
+        <Mobile
+          type={userData.type}
+          name={userData.name}
+          surveyAnswered={surveyAnswered}
+          surveyController={setSurveyAnswered}
+          surveyQuestions={surveyQuestions}
+        />
+      ) : (
+        <Desktop
+          type={userData.type}
+          name={userData.name}
+          surveyAnswered={surveyAnswered}
+          surveyController={setSurveyAnswered}
+          surveyQuestions={surveyQuestions}
+        />
+      )}
+    </>
   );
 };

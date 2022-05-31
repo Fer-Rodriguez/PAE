@@ -12,6 +12,8 @@ export type TAppointmentSlice = {
   allAppointments: IDetailsAppointmentData[];
   selectedAppointment: IDetailsAppointmentData;
   recentAppointment: IAppointmentDataMod;
+  detailsActivation: boolean;
+  editDetails: boolean;
   newAppointment: INewAppointment;
   modifyAppointment: (
     index: number,
@@ -26,6 +28,8 @@ export type TAppointmentSlice = {
     id_petitioner,
     phase,
   }: TCreateAppointment) => void;
+  setDetailsActivation: (value: boolean) => void;
+  setEditActivation: (value: boolean) => void;
   setAllAppointments: (newAppointments: IDetailsAppointmentData[]) => void;
   setRecentAppointment: (newRecentAppointment: IAppointmentDataMod) => void;
   setSelectedAppointment: (
@@ -52,6 +56,7 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
   },
   allAppointments: [],
   recentAppointment: {
+    id: "",
     date: "",
     id_subject: "",
     status: EStatusAppointment.ACCEPTED,
@@ -67,6 +72,14 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     photo_url: "",
     id_subject: "",
     id_petitioner: "",
+  },
+  detailsActivation: false,
+  editDetails: false,
+  setDetailsActivation: (value) => {
+    set({ detailsActivation: value });
+  },
+  setEditActivation: (value) => {
+    set({ editDetails: value });
   },
   addNewAppointment: ({
     date,

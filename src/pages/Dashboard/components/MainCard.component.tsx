@@ -12,7 +12,7 @@ import {
 import { ButtonGeneric } from "../../../components/Button";
 
 //Interfaces
-import { EUserType } from "../../../interfaces/enums";
+import { EStatusAppointment, EUserType } from "../../../interfaces/enums";
 
 //Zustand
 import { useStore } from "../../../state/store";
@@ -41,7 +41,14 @@ export const MainCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  const setDetailsActivation = useStore((state) => state.setDetailsActivation);
+  const setEditActivation = useStore((state) => state.setEditActivation);
+  const setSelectedAppointment = useStore(
+    (state) => state.setSelectedAppointment
+  );
   const recentAppointment = useStore((state) => state.recentAppointment);
+  const allAppointments = useStore((state) => state.allAppointments);
+
   const [appointments, setAppointments] = useState(false);
   const [dates, setDates] = useState<IDates>({
     day: "",
@@ -80,6 +87,16 @@ export const MainCard = ({
     setDates(convertDate());
   }, [recentAppointment]);
 
+  const findSelectedAppointment = () => {
+    allAppointments.map((appointmentData) => {
+      if (appointmentData.appointment.id === recentAppointment.id)
+        setSelectedAppointment(appointmentData);
+      if (appointmentData.appointment.status === EStatusAppointment.PENDING)
+        setEditActivation(true);
+      else setEditActivation(false);
+    });
+  };
+
   return (
     <Flex
       mt={mobile ? 4 : 0}
@@ -105,11 +122,18 @@ export const MainCard = ({
         <VStack mt={mobile ? 6 : 2} justifyContent={"center"}>
           <Text color={"white"}>{dates.hours}</Text>
 
-          <ButtonGeneric
-            text="Detalles"
-            color={theme.colors.pink}
-            fontColor="white"
-          />
+          {appointments && (
+            <ButtonGeneric
+              text="Detalles"
+              color={theme.colors.pink}
+              fontColor="white"
+              onClick={() => {
+                findSelectedAppointment();
+                setEditActivation(true);
+                setDetailsActivation(true);
+              }}
+            />
+          )}
         </VStack>
       </Flex>
       {!mobile &&
