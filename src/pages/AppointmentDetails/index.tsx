@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -27,6 +27,9 @@ import { EStatusAppointment } from "../../interfaces/enums";
 //Assets
 import theme from "../../theme";
 import { IDetailsAppointmentData } from "../../interfaces";
+import { EStatus, EStatusAppointment } from "../../interfaces/enums";
+import { QuestionAnswer } from "../../components/QuestionAnswer";
+import { ButtonGeneric } from "../../components/Button";
 
 export const AppointmentDetails = ({
   editAppointment = false,
@@ -121,12 +124,32 @@ export const AppointmentDetails = ({
       if (selectedAdvisor !== "" && location !== "") save();
     }
   };
-
+  const { isOpen: qOpen, onOpen: qOnOpen, onClose: qClose } = useDisclosure();
+  const cancelRef = useRef();
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={"6xl"}>
         <ModalOverlay />
+
         <ModalContent shadow={0} borderRadius={"25px"}>
+
+        <ModalContent shadow={0}>
+          <ButtonGeneric
+            text="Ver respuestas"
+            color="#f72585"
+            onClick={qOnOpen}
+          />
+          <QuestionAnswer
+            title="Preguntas y respuestas"
+            customOpen={qOpen}
+            customClose={qClose}
+            customCancelRef={cancelRef}
+            questions={[
+              { question: "pregunta 1", answer: "respuesta 1" },
+              { question: "pregunta 2", answer: "respuesta 2" },
+              { question: "pregunta 3", answer: "respuesta 3" },
+            ]}
+          />
           <Button
             backgroundColor={"pink"}
             w={"10%"}

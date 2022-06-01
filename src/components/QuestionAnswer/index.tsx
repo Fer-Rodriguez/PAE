@@ -8,7 +8,6 @@ interface IQuestions {
 interface IQuestionAnswer {
   title: string;
   customOpen: boolean;
-  customOnOpen: () => void;
   customClose: () => void;
   customCancelRef: any;
   questions: Array<IQuestions>;
@@ -17,7 +16,7 @@ interface IQuestionAnswer {
 export const QuestionAnswer = (props: IQuestionAnswer) => {
   return (
     <PopOver
-      size={ETypeSize.s}
+      size={ETypeSize.m}
       title={{ text: props.title, alignment: "center" }}
       closeButton={true}
       customOpen={props.customOpen}
