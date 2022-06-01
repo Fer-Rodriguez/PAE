@@ -38,9 +38,9 @@ export interface ISchedule {
   title?: string;
   calendarId?: string;
   isAllDay?: boolean;
-  start?: any;
+  start?: Date;
   isVisible: boolean;
-  end?: any;
+  end?: Date;
   category?: string;
   dueDateClass?: string;
   location?: string;

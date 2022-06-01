@@ -66,6 +66,7 @@ export const Main = () => {
     const updateAppointments = async () => {
       await getRecentAppointment(id, type, setRecentAppointment);
       const response = await getAllAppointments(id, type, true);
+      console.log("Todos los appointments: ", response);
       setAllAppointments(response);
       //TODO: Solo funciona con este comentario...
       console.log("Actualizando");
