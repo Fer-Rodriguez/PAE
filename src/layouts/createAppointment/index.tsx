@@ -53,6 +53,7 @@ export const CreateAppointmentLayout = () => {
         image: "",
       });
 
+      console.log("On ta la date: ", date);
       if (imageFile) {
         const storageRef = ref(
           storage,
