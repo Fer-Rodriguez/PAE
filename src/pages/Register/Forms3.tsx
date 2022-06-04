@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { MyCalendar } from "../../components/Calendar";
 import { EMyCalendarView } from "../../interfaces/enums";
-import { useNavigate } from "react-router-dom";
 
-export const Forms3 = () => {
-  const navigate = useNavigate();
-  const [carrera, setCarrera] = useState("");
+export const Forms3 = ({ id }: { id: string }) => {
+  useEffect(() => {
+    console.log("Id que recibí: ", id);
+  }, []);
+
   return (
     <Box width={"100%"}>
-      <Text> Ingresa tus horas disponibles del primer periodo </Text>
-      <MyCalendar view={EMyCalendarView.week} h={"50vh"} />
+      <Text> Ingresa tus horas disponibles en cada uno de los periodos </Text>
+      <MyCalendar
+        view={EMyCalendarView.week}
+        mobile={false}
+        idUser={id}
+        register
+      />
     </Box>
   );
 };

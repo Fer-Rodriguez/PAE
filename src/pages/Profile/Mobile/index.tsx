@@ -16,7 +16,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import {
   ButtonChangePassword,
   ButtonChangeSchedules,
-  ButtonEraseAdmin,
+  ButtonEraseAdvisor,
   ButtonSaveChanges,
 } from "../Buttons.component";
 import { PasswordProfileModal } from "../Modal.component";
@@ -39,6 +39,7 @@ export const ProfileCardMobile = ({
   type,
   setPeriod,
   period,
+  modAdmin,
 }: IProfileCard) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modSchedules, setModSchedules] = useState(false);
@@ -50,8 +51,9 @@ export const ProfileCardMobile = ({
         setPeriod !== undefined &&
         period !== undefined && (
           <ModifySchedulesContent
-            setPeriod={setPeriod}
+            adminMod={modAdmin !== undefined && modAdmin}
             period={period}
+            setPeriod={setPeriod}
             setModeSchedules={setModSchedules}
             mobile
           />
@@ -98,7 +100,7 @@ export const ProfileCardMobile = ({
                     <IconPopOverForm
                       text={data[title.toLowerCase()]}
                       icon={<EditIcon />}
-                      key={title.toLowerCase()}
+                      myKey={title.toLowerCase()}
                       mobile
                       setData={() => console.log("Guardando la info en local")}
                     />
@@ -125,7 +127,7 @@ export const ProfileCardMobile = ({
                       setMyData={() => console.log("saving data")}
                       mobile
                     />
-                    <ButtonEraseAdmin mobile />
+                    <ButtonEraseAdvisor mobile id={data.id} />
                   </Center>
                 )}
               </Flex>

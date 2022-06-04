@@ -1,65 +1,61 @@
-import { useState } from "react";
-import qs from "qs";
-
-import { Box } from "@chakra-ui/react";
-
-import axios from "axios";
-
-//Zustand
-import { useStore } from "../../state/store";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 import { BasicInfoScreen } from "./basicInfoScreen";
 import { ScheduleScreen } from "./scheduleScreen";
 import { SuccessScreen } from "./successScreen";
 
-export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
-  const [formStep, setFormStep] = useState(0);
-  const [date, setDate] = useState("");
-  const [idSubject, setIdSubject] = useState("");
-  const [problemDescription, setProblemDescription] = useState("");
-  const [image, setImage] = useState(""); //TODO: implementar la subida de archivos
+interface ISetters {
+  setFormStep: React.Dispatch<number>;
+  setIdSubject: React.Dispatch<string>;
+  setSubjectName: React.Dispatch<string>;
+  setProblemDescription: React.Dispatch<string>;
+  setDate: React.Dispatch<string>;
+  setImageFile: React.Dispatch<File>;
+}
 
-  const idPetitioner = useStore((state) => state.id);
-  const createAppointment = async () => {
-    const data = qs.stringify({
-      idPetitioner: idPetitioner,
-      date: date,
-      idSubject: idSubject,
-      problemDescription: problemDescription,
-      image: "https://aunnotenemosestaparte.com/imagen.jpg",
-    });
+interface IInfo {
+  idSubject: string;
+  subjectName: string;
+  problemDescription: string;
+  formStep: number;
+  imageFile: File | undefined;
+}
 
-    const config = {
-      method: "post",
-      url: "http://localhost:6060/appointment",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: data,
-    };
-
-    let successfulRequest = false;
-    await axios(config)
-      .then(function (response) {
-        successfulRequest = true;
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    return successfulRequest;
-  };
+export const ScheduleAppointment = ({
+  mobile = false,
+  createAppointment,
+  setters,
+  info,
+}: {
+  mobile?: boolean;
+  createAppointment: () => Promise<boolean | undefined>;
+  setters: ISetters;
+  info: IInfo;
+}) => {
+  const {
+    setFormStep,
+    setIdSubject,
+    setSubjectName,
+    setProblemDescription,
+    setDate,
+    setImageFile,
+  } = setters;
+  const { idSubject, subjectName, problemDescription, formStep, imageFile } =
+    info;
 
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return (
         <BasicInfoScreen
+          mobile={mobile}
           onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             setFormStep(1);
           }}
           onDropDownChange={setIdSubject}
+          onSubjectChange={setSubjectName}
           onTextFieldChange={setProblemDescription}
+          onFileUploaded={setImageFile}
+          valueForFileInput={imageFile}
           valueForDropDown={idSubject}
           valueForTextField={problemDescription}
         ></BasicInfoScreen>
@@ -67,27 +63,43 @@ export const ScheduleAppointment = ({ mobile }: { mobile?: boolean }) => {
     } else if (step == 1) {
       return (
         <ScheduleScreen
-          onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            //Llamada a API aquí xd
-            createAppointment().then((sucess) => {
-              if (sucess) {
+          idSubject={idSubject}
+          mobile={mobile}
+          subjectName={subjectName}
+          onPreviousScreenButtonClick={(
+            e: React.MouseEvent<HTMLButtonElement>
+          ) => setFormStep(0)}
+          onNextScreenButtonClick={async (
+            e: React.MouseEvent<HTMLButtonElement>
+          ) => {
+            try {
+              console.log("hola");
+              const successfulRequest = await createAppointment();
+              if (successfulRequest) {
                 setFormStep(2);
               } else {
-                alert(
-                  "No podemos completar tu solicitud en este momento. Intenta de nuevo más tarde."
-                );
+                throw "error";
               }
-            });
+            } catch (e) {
+              alert(
+                "No podemos completar tu solicitud en este momento. Intentalo de nuevo más tarde."
+              );
+            }
           }}
           onFullDateSelected={setDate}
         ></ScheduleScreen>
       );
     } else if (step == 2) {
-      return <SuccessScreen></SuccessScreen>;
+      return <SuccessScreen mobile={mobile}></SuccessScreen>;
     } else {
       return <Box>Invalid form step</Box>;
     }
   };
 
-  return <Box>{getScreenFromStep(formStep)}</Box>;
+  return (
+    <Box>
+      <Heading>Agenda una asesoría</Heading>
+      {getScreenFromStep(formStep)}
+    </Box>
+  );
 };

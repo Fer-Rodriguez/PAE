@@ -23,7 +23,7 @@ export const AppointmentsPollCard = ({
 
   const BottomContent = () => (
     <Flex flexDirection={"column"} m={"2"} gap={3}>
-      <Heading as="h4" size="md">
+      <Heading as="h4" size="md" textAlign={"center"}>
         {type === EUserType.admin
           ? "¡Encuestas!"
           : type === EUserType.advisor
@@ -61,7 +61,7 @@ export const AppointmentsPollCard = ({
         mobile ? (
           <Image
             src={type === EUserType.admin ? hamds : notebook}
-            boxSize={"30vw"}
+            boxSize={mobile ? "25vw" : "30vw"}
           />
         ) : (
           <Image

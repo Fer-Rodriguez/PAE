@@ -106,7 +106,6 @@ export interface IDataProfileCard {
   career: string;
   semester: number;
   profilePic: string;
-  schedule?: ISchedule | null;
 }
 
 export interface IUserComponents {
@@ -114,9 +113,8 @@ export interface IUserComponents {
 }
 
 export interface ICitasDaySchedules {
-  dia?: string;
-  asesor?: string;
-  horario: string;
+  day: string;
+  hour: string;
 }
 
 export interface IMenuOptions {
@@ -127,9 +125,10 @@ export interface IMenuOptions {
 export interface IProfileCard {
   data: IDataProfileCard;
   type: EUserType;
-  period: number;
-  setPeriod: React.Dispatch<number>;
+  period: "0" | "1" | "2";
+  setPeriod: React.Dispatch<"0" | "1" | "2">;
   baseProps?: { [key: string]: any };
+  modAdmin?: boolean;
 }
 
 export interface IModalCalendarOperations {
@@ -139,6 +138,7 @@ export interface IModalCalendarOperations {
 }
 
 export interface IAppointmentDataMod {
+  id: string;
   date?: string | Date;
   id_subject?: string;
   status?: EStatusAppointment;
@@ -154,6 +154,15 @@ export type TConfigObject = {
   theme: ETheme;
 };
 
+export interface INotification {
+  id: string;
+  id_user: string;
+  title: string;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
 export interface IUserData {
   id: string;
   status: EStatus;
@@ -164,7 +173,8 @@ export interface IUserData {
   career: string;
   config: TConfigObject;
   profilePic: string;
-  schedule: ISchedule | null;
+  createDate?: string;
+  notifications: Array<INotification>;
 }
 
 export interface INewUserSchedule {
@@ -184,7 +194,23 @@ export interface IDetailsAppointmentData {
     photo_url: string;
     location: string;
   };
-  student: { name: string };
-  admin: { name: string };
-  advisor: { name: string };
+  student: { id: string; name: string };
+  admin: { id: string; name: string };
+  advisor: { id: string; name: string };
+}
+
+export interface ISurveyData {
+  loaded: boolean;
+  answered: boolean;
+  controller: React.Dispatch<React.SetStateAction<boolean>>;
+  questions:
+    | {
+        question: string;
+        type: "text" | "scale" | "yesOrNo";
+        scaleBegining?: string;
+        scaleEnding?: string;
+      }[]
+    | undefined;
+  appointmentId: string;
+  triggeringNotificationId: string;
 }

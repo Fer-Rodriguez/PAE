@@ -6,13 +6,14 @@ import { Center } from "@chakra-ui/react";
 export const MobileComponents = ({ userComponent }: IUserComponents) => {
   return (
     <>
-      <div style={{ height: "30vh", minHeight: "190px" }}>
+      <div style={{ height: "25vh", minHeight: "190px" }}>
         {/* Background */}
         <div
           style={{
             maskImage: `radial-gradient(110% 50% at bottom, transparent 50%, #fff 51%)`,
+            WebkitMaskImage: `radial-gradient(110% 50% at bottom, transparent 50%, #fff 51%)`,
             background: `linear-gradient(to right, rgba(114,9,183,0.6), rgba(67,97,238,0.6))`,
-            width: "100vw",
+            width: "min(100vw,100%)",
             height: "22vh",
             maxHeight: "160px",
             minHeight: "120px",
@@ -26,21 +27,23 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
                 position: "absolute",
                 top: "0px",
                 right: "0px",
-                width: "8%",
+                width: "12%",
+                minWidth: "50px",
               }}
             >
-              <Img1 maxWidth="100%"></Img1>
+              <Img1></Img1>
             </div>
             {/* Img2 */}
             <div
               style={{
-                width: "8%",
+                width: "12%",
+                minWidth: "48px",
                 position: "absolute",
                 top: "25px",
-                right: "15vw",
+                right: "12vw",
               }}
             >
-              <Img2 maxWidth="100%"></Img2>
+              <Img2></Img2>
             </div>
             {/* Img3 */}
             <div
@@ -48,10 +51,11 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
                 position: "absolute",
                 top: "0px",
                 left: "15vw",
-                width: "8%",
+                width: "14%",
+                minWidth: "50px",
               }}
             >
-              <Img3 maxWidth="100%"></Img3>
+              <Img3></Img3>
             </div>
             {/* Img4 */}
             <div
@@ -59,22 +63,25 @@ export const MobileComponents = ({ userComponent }: IUserComponents) => {
                 position: "absolute",
                 top: "25px",
                 left: "0px",
-                width: "8%",
+                width: "12%",
+                minWidth: "55px",
               }}
             >
-              <Img4 maxWidth="100%"></Img4>
+              <Img4></Img4>
             </div>
             {/* Man */}
-            <div
-              style={{
-                position: "absolute",
-                top: "20px",
-              }}
-            >
-              <Center>
-                <ImgMan maxWidth="20%"></ImgMan>
-              </Center>
-            </div>
+            <Center>
+              <div
+                style={{
+                  width: "20%",
+                  minWidth: "140px",
+                  position: "absolute",
+                  top: "20px",
+                }}
+              >
+                <ImgMan></ImgMan>
+              </div>
+            </Center>
           </div>
         </Center>
       </div>

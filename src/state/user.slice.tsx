@@ -1,26 +1,44 @@
 import { StoreSlice } from "./store";
 import { ELanguage, ETheme, EUserType, EStatus } from "../interfaces/enums";
-import { ISchedule, IUserData, TConfigObject } from "../interfaces";
+import {
+  INotification,
+  ISchedule,
+  IUserData,
+  TConfigObject,
+} from "../interfaces";
 
-export interface TUserSlice extends IUserData {
+interface IAllUsers {
+  allUsers: Array<IUserData>;
+  setAllUsers: (newAllUsers: Array<IUserData>) => void;
+}
+
+export interface TUserSlice extends IUserData, IAllUsers {
   setLanguage: (newLanguage: ELanguage) => void;
   setTheme: (newTheme: ETheme) => void;
   setUser: (newUserData: IUserData) => void;
+  setNotifications: (newNotifications: Array<INotification>) => void;
 }
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
-  id: "b4753ce1-0332-4a25-80bb-f6b5962b492f",
+  allUsers: [],
+  id: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
   status: EStatus.active,
   name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
-  type: EUserType.admin,
+  type: EUserType.advisor,
   career: "Economía",
   semester: 6,
   profilePic: "",
-  schedule: null,
+  notifications: [],
   config: {
     language: ELanguage.spanish,
     theme: ETheme.white,
+  },
+  setNotifications: (newNotifications) => {
+    set({ notifications: newNotifications });
+  },
+  setAllUsers: (newAllUsers) => {
+    set({ allUsers: newAllUsers });
   },
   setLanguage: (newLanguage) => {
     const newConfig: TConfigObject = { ...get().config };
@@ -42,7 +60,7 @@ export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
       career: newUserData.career,
       semester: newUserData.semester,
       profilePic: newUserData.profilePic,
-      schedule: newUserData.schedule,
+
       config: newUserData.config,
     });
   },

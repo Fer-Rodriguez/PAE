@@ -12,13 +12,13 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 interface IIconPopOverForm {
   setData: (value: string | number | boolean, key: string) => void;
   icon: ReactElement<any, string>;
   text: string;
-  key: string;
+  myKey: string;
   mobile?: boolean;
 }
 
@@ -27,15 +27,19 @@ export const IconPopOverForm = ({
   mobile = false,
   icon,
   text,
-  key,
+  myKey,
 }: IIconPopOverForm) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [value, setValue] = useState(text);
   const firstFieldRef = React.useRef(null);
 
+  useEffect(() => {
+    setValue(text);
+  }, [text]);
+
   const accept = () => {
     onClose();
-    setData(value, key);
+    setData(value, myKey);
   };
 
   return (
@@ -59,7 +63,7 @@ export const IconPopOverForm = ({
           <PopoverCloseButton />
           <Input
             ref={firstFieldRef}
-            defaultValue={value}
+            defaultValue={""}
             onChange={(e) => setValue(e.target.value)}
           />
           <ButtonGroup d="flex" justifyContent="flex-end">

@@ -18,7 +18,15 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { useNavigate } from "react-router-dom";
 import { GetUser, GetUserInfo } from "../../api/users/get";
 import { IUserData } from "../../interfaces";
-import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
+import {
+  ELanguage,
+  EStatus,
+  EStatusAlert,
+  ETheme,
+  EUserType,
+} from "../../interfaces/enums";
+import { MyAlert } from "../../components/MyAlert";
+import { useEffect, useState } from "react";
 
 interface IFormsLogin {
   mobile?: boolean;
@@ -27,44 +35,96 @@ interface IFormsLogin {
 export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
+  const [visibleAlert, setVisibleAlert] = useState(false);
+  const [saveData, setSaveData] = useState(true);
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (userId) {
+      GetUserInfo(userId).then((userData) => {
+        const correctUser: IUserData = {
+          id: userData.user.id,
+          status:
+            userData.user.status === EStatus.active
+              ? EStatus.active
+              : userData.user.status === EStatus.deleted
+              ? EStatus.deleted
+              : EStatus.inactive,
+          name: userData.user.name,
+          email: userData.user.email,
+          type:
+            userData.user.type === EUserType.advisor
+              ? EUserType.advisor
+              : userData.user.type === EUserType.student
+              ? EUserType.student
+              : userData.user.type === EUserType.admin
+              ? EUserType.admin
+              : EUserType.root,
+          semester: 5,
+          career: "ITC",
+          config: { language: ELanguage.spanish, theme: ETheme.white },
+          profilePic: "No tengo",
+          notifications: [],
+        };
+        setUser(correctUser);
+        navigate("/dashboard");
+      });
+    }
+  }, []);
 
   const {
     control,
     formState: { isValid },
     handleSubmit,
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onSubmit" });
 
+  const capitalize = (str: string) => {
+    if (typeof str === "string") {
+      return str.replace(/^\w/, (c) => c.toUpperCase());
+    } else {
+      return "";
+    }
+  };
   const tryLogin = async (data: any) => {
-    const idUserData = await GetUser(data.mail, data.password);
-    const userData = await GetUserInfo(idUserData.userId);
+    try {
+      const idUserData = await GetUser(capitalize(data.mail), data.password);
+      console.log("MI DATA: ", idUserData);
+      const userData = await GetUserInfo(idUserData.userId);
 
-    if (idUserData.status == "OK") {
-      const correctUser: IUserData = {
-        id: userData.user.id,
-        status:
-          userData.user.status === EStatus.active
-            ? EStatus.active
-            : userData.user.status === EStatus.deleted
-            ? EStatus.deleted
-            : EStatus.inactive,
-        name: userData.user.name,
-        email: userData.user.email,
-        type:
-          userData.user.type === EUserType.advisor
-            ? EUserType.advisor
-            : userData.user.type === EUserType.student
-            ? EUserType.student
-            : userData.user.type === EUserType.admin
-            ? EUserType.admin
-            : EUserType.root,
-        semester: 5,
-        career: "ITC",
-        config: { language: ELanguage.spanish, theme: ETheme.white },
-        profilePic: "No tengo",
-        schedule: null,
-      };
-      setUser(correctUser);
-      navigate("/dashboard");
+      if (idUserData.status == "OK") {
+        const correctUser: IUserData = {
+          id: userData.user.id,
+          status:
+            userData.user.status === EStatus.active
+              ? EStatus.active
+              : userData.user.status === EStatus.deleted
+              ? EStatus.deleted
+              : EStatus.inactive,
+          name: userData.user.name,
+          email: userData.user.email,
+          type:
+            userData.user.type === EUserType.advisor
+              ? EUserType.advisor
+              : userData.user.type === EUserType.student
+              ? EUserType.student
+              : userData.user.type === EUserType.admin
+              ? EUserType.admin
+              : EUserType.root,
+          semester: 5,
+          career: "ITC",
+          config: { language: ELanguage.spanish, theme: ETheme.white },
+          profilePic: "No tengo",
+          notifications: [],
+        };
+        if (saveData) {
+          localStorage.setItem("user_id", userData.user.id);
+        }
+        setUser(correctUser);
+        navigate("/dashboard");
+      } else {
+        setVisibleAlert(true);
+      }
+    } catch (e) {
+      setVisibleAlert(true);
     }
   };
 
@@ -72,36 +132,62 @@ export const FormsLogin = (props: IFormsLogin) => {
     navigate("/register");
   };
 
+  const recovery = () => {
+    navigate("/recoverPassword");
+  };
+
   return (
     <Container {...(props.mobile ? { w: "60%" } : { w: "40%" })} maxW="60%">
-      <Center h={"100%"}>
-        <Flex direction={"column"} align={"center"}>
+      <Center {...(props.mobile ? { h: "100%" } : { h: "max(100vh, 100%)" })}>
+        <Flex
+          direction={"column"}
+          align={"center"}
+          w="100%"
+          {...(props.mobile
+            ? { marginBottom: "20px" }
+            : { marginTop: "20px", marginBottom: "20px" })}
+        >
           <Logo
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
           ></Logo>
           <Text
             color={"purpleLight"}
             fontWeight={"semibold"}
-            {...(props.mobile ? { fontSize: "2xl" } : { fontSize: "3xl" })}
+            {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}
             paddingBottom={"20px"}
           >
             Inicia sesión
           </Text>
+          <div style={{ marginBottom: "10px", width: "100%" }}>
+            <MyAlert
+              status={EStatusAlert.error}
+              title={"Usuario y/o contraseña incorrectos"}
+              description={""}
+              active={visibleAlert}
+              setActive={setVisibleAlert}
+            ></MyAlert>
+          </div>
           <FormControl isRequired isInvalid={!isValid}>
             <Stack spacing={7} w={"100%"}>
               <MailInput control={control} secondValidation={true} />
               <PasswordInput control={control} secondValidation={true} />
 
               <Flex>
-                <Checkbox size="sm" defaultChecked colorScheme={"cyan"}>
+                <Checkbox
+                  isInvalid={false}
+                  size="sm"
+                  defaultChecked
+                  colorScheme={"cyan"}
+                  onChange={() => setSaveData(!saveData)}
+                >
                   Recuérdame
                 </Checkbox>
                 <Spacer />
                 <Link
                   fontSize="sm"
                   color="cyan.400"
-                  href="#"
+                  onClick={() => recovery()}
                   textAlign={"right"}
                 >
                   ¿Olvidaste tu contraseña?
@@ -112,7 +198,6 @@ export const FormsLogin = (props: IFormsLogin) => {
                   bgColor="purpleLight"
                   sizePX="40%"
                   text="Ingresar"
-                  isDisabled={!isValid}
                   onClick={handleSubmit(tryLogin)}
                 ></ButtonGeneric>
               </Center>

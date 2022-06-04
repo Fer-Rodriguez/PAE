@@ -38,7 +38,7 @@ export const Forms1 = ({ info, setInfo, setFormStep }: IForms1) => {
   } = useForm({ mode: "onChange" });
 
   return (
-    <FormControl isRequired isInvalid={!isValid}>
+    <FormControl isRequired isInvalid={!isValid} w={"100%"}>
       <Stack spacing={4} w={"100%"}>
         <NameInput
           control={control}

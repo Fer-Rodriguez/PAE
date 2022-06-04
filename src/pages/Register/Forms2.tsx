@@ -19,7 +19,6 @@ import { SemesterDoubleCarreraInput } from "../../components/FormsRegister/Semes
 // import { TypeUserInput } from "../../components/FormsRegister/TypeUserInput";
 import { TypeUserDrop } from "../../components/FormsRegister/TypeUserDrop";
 import { Confirmation } from "./Confirmation";
-import { InfoIcon } from "@chakra-ui/icons";
 import { CreateUser } from "../../api/users/create";
 import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 import { GetUser, GetUserInfo } from "../../api/users/get";
@@ -30,29 +29,45 @@ interface IForms2 {
   setInfo: React.Dispatch<any>;
   info: any;
   setFormStep: React.Dispatch<number>;
+  setNewId: React.Dispatch<string>;
 }
 
-export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
+export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
   const [doubleCarrera, setDoubleCarrera] = useState("");
   const [semesterCarrera, setSemesterCarrera] = useState("");
   const [semesterDoubleCarrera, setSemesterDoubleCarrera] = useState("");
-  const [typeUser, setTypeUser] = useState("");
+  const [typeUser, setTypeUser] = useState<EUserType | null>(null);
   const [seeModal, setSeeModal] = useState(false);
+
+  const capitalize = (str: string) => {
+    if (typeof str === "string") {
+      return str.replace(/^\w/, (c) => c.toUpperCase());
+    } else {
+      return "";
+    }
+  };
+
+  const closePopUp = () => {
+    setSeeModal(false);
+  };
 
   const createUser = async () => {
     await CreateUser({
       name: info.name,
-      email: info.mail,
+      email: capitalize(info.mail),
       password: info.password,
       career: info.carrera,
       semester: info.semestreCarrera,
       status: EStatus.active,
-      type: EUserType.student,
+      type: info.typeUserDrop,
     });
-    const idUserData = await GetUser(info.mail, info.password);
+
+    const idUserData = await GetUser(capitalize(info.mail), info.password);
+    console.log("User data: ", idUserData);
+    setNewId(idUserData.userId);
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
@@ -78,11 +93,12 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
         career: info.carrera,
         config: { language: ELanguage.spanish, theme: ETheme.white },
         profilePic: "No tengo",
-        schedule: null,
+        notifications: [],
       };
       setUser(correctUser);
-      navigate("/dashboard");
     }
+    if (info.typeUserDrop === EUserType.student) navigate("/dashboard");
+    else setFormStep(2);
   };
 
   const login = () => {
@@ -91,11 +107,7 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
 
   const saveData = async (data: any) => {
     setInfo({ ...info, ...data });
-    if (data.typeUserDrop == "asesor") {
-      setFormStep(2);
-    } else {
-      setSeeModal(true);
-    }
+    setSeeModal(true);
   };
 
   const {
@@ -105,26 +117,28 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
   } = useForm({ mode: "onChange" });
 
   return (
-    <div>
-      <FormControl isRequired isInvalid={!isValid}>
+    <div style={{ width: "100%" }}>
+      <FormControl isRequired isInvalid={!isValid} w={"100%"}>
         <Stack spacing={4} w={"100%"}>
           <CarreraInput
             control={control}
             setCarrera={setCarrera}
             secondValidation={true}
-            defaultValue={info.carreraInput}
+            defaultValue={info.carrera}
           />
           <SemesterCarreraInput
             control={control}
             setSemesterCarrera={setSemesterCarrera}
             secondValidation={true}
+            defaultValue={info.semestreCarrera}
           />
           <DoubleCarreraInput
             control={control}
             setDoubleCarrera={setDoubleCarrera}
             secondValidation={true}
           />
-          {doubleCarrera && doubleCarrera !== "NA" ? (
+          {(doubleCarrera && doubleCarrera !== "NA") ||
+          info.semestreDoueblaCarrera ? (
             <SemesterDoubleCarreraInput
               control={control}
               setSemesterDoubleCarrera={setSemesterDoubleCarrera}
@@ -134,6 +148,7 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
           <TypeUserDrop
             control={control}
             setTypeUser={setTypeUser}
+            defaultValue={info.typeUserDrop}
           ></TypeUserDrop>
           <Flex>
             <Spacer></Spacer>
@@ -169,13 +184,13 @@ export const Forms2 = ({ info, setInfo, setFormStep }: IForms2) => {
         </Stack>
       </FormControl>
       {seeModal ? (
-        <Confirmation info={info}>
+        <Confirmation info={info} customClose={() => closePopUp()}>
           <Text>
             Nombre: {info.name} <br />
             <br />
             Correo: {info.mail} <br />
-            <br />
-            Carrera: {info.carrera} <br />
+            {/**            <br />
+            Carrera: {info.carrera} <br /> */}
             <br />
             Semestre: {info.semestreCarrera}
             <br />

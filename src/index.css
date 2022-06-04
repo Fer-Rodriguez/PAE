@@ -8,6 +8,10 @@
   margin: 0;
 }
 
+html {
+  height: 100%;
+}
+
 .box-body {
   min-height: 0; /* new */
 }

@@ -7,11 +7,15 @@ import {
   Center,
   Box,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DividedCard } from "../../../components/DividedCard";
+import { IDetailsAppointmentData } from "../../../interfaces";
 
 //Interfaces
-import { EUserType } from "../../../interfaces/enums";
+import { EStatusAppointment, EUserType } from "../../../interfaces/enums";
+import { useStore } from "../../../state/store";
 
 //Assets
 import theme from "../../../theme";
@@ -25,61 +29,98 @@ export const AppointmentListCard = ({
   mobile?: boolean;
 }) => {
   const navigate = useNavigate();
-  const appointments = [
-    { subject: "Matemáticas", date: "25 de Feb" },
-    { subject: "Derecho Inter...", date: "10 de Ene" },
-    { subject: "Metodologías...", date: "2 de Dic" },
-    { subject: "Metodologías..", date: "2 de Dic" },
-  ];
+
+  const allAppointments = useStore((state) => state.allAppointments);
 
   const AppointmentContent = ({
     appointment,
   }: {
-    appointment: { subject: string; date: string };
-  }) => (
-    <>
-      <Flex flexDirection={"row"}>
-        <Text color={"white"} mr={1}>
-          {appointment.subject}
-        </Text>
-        -
-        <Text color={"white"} ml={1} fontWeight={"bold"}>
-          {appointment.date}
-        </Text>
-      </Flex>
-      <Button
-        borderRadius={theme.radii.general}
-        backgroundColor={theme.colors.purple}
-        color="white"
-        size="xs"
-        w={"40%"}
-      >
-        Detalles
-      </Button>
-      <Divider />
-    </>
-  );
+    appointment: {
+      subject: string;
+      date: string;
+      myAppointment: IDetailsAppointmentData;
+    };
+  }) => {
+    const setDetailsActivation = useStore(
+      (state) => state.setDetailsActivation
+    );
+    const setEditActivation = useStore((state) => state.setEditActivation);
+    const setSelectedAppointment = useStore(
+      (state) => state.setSelectedAppointment
+    );
+
+    return (
+      <>
+        <Flex flexDirection={"column"}>
+          <Text color={"white"} mr={1}>
+            {appointment.subject}
+          </Text>
+
+          <Text color={"white"} ml={1} fontWeight={"bold"} fontSize="sm">
+            {appointment.date}
+          </Text>
+        </Flex>
+        <Button
+          borderRadius={theme.radii.general}
+          backgroundColor={theme.colors.purple}
+          color="white"
+          size="xs"
+          w={"40%"}
+          onClick={() => {
+            setSelectedAppointment(appointment.myAppointment);
+            if (
+              appointment.myAppointment.appointment.status ===
+              EStatusAppointment.PENDING
+            ) {
+              setEditActivation(true);
+            } else setEditActivation(false);
+
+            setDetailsActivation(true);
+          }}
+        >
+          Detalles
+        </Button>
+        <Divider />
+      </>
+    );
+  };
 
   const MainContent = () => (
     <>
       {mobile ? (
         <Heading size={"xl"} mt={2} color="white">
-          {type === EUserType.admin ? "Asesorías Administradas" : "Asesorías"}
+          {"Asesorías recientes"}
         </Heading>
       ) : (
         <Heading size={EUserType.admin ? "md" : "lg"} mt={2} color="white">
-          {type === EUserType.admin ? "Asesorías Administradas" : "Asesorías"}
+          {"Asesorías recientes"}
         </Heading>
       )}
 
-      {appointments.map((appointment) =>
+      {allAppointments.slice(0, 5).map((appointment) =>
         mobile ? (
           <Center flexDirection={"column"} gap={1} w={"100%"}>
-            {<AppointmentContent appointment={appointment} />}
+            {
+              <AppointmentContent
+                appointment={{
+                  date: new Date(appointment.appointment.date).toLocaleString(),
+                  subject: appointment.subject.name,
+                  myAppointment: appointment,
+                }}
+              />
+            }
           </Center>
         ) : (
           <Flex flexDirection={"column"} gap={1} w={"100%"}>
-            {<AppointmentContent appointment={appointment} />}
+            {
+              <AppointmentContent
+                appointment={{
+                  date: new Date(appointment.appointment.date).toLocaleString(),
+                  subject: appointment.subject.name,
+                  myAppointment: appointment,
+                }}
+              />
+            }
           </Flex>
         )
       )}
@@ -110,7 +151,7 @@ export const AppointmentListCard = ({
     );
 
   return (
-    <Box my={mobile ? 6 : 0}>
+    <Box mt={mobile ? 6 : 0} mb={mobile ? 12 : 0}>
       <DividedCard
         colorFirst={
           type === EUserType.admin ? theme.colors.blue : theme.colors.pink

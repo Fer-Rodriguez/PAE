@@ -9,8 +9,11 @@ import { IAppointmentDataMod, IDetailsAppointmentData } from "../interfaces";
 
 export type TAppointmentSlice = {
   appointments: Array<TAppointment>;
+  allAppointments: IDetailsAppointmentData[];
   selectedAppointment: IDetailsAppointmentData;
   recentAppointment: IAppointmentDataMod;
+  detailsActivation: boolean;
+  editDetails: boolean;
   newAppointment: INewAppointment;
   modifyAppointment: (
     index: number,
@@ -25,7 +28,9 @@ export type TAppointmentSlice = {
     id_petitioner,
     phase,
   }: TCreateAppointment) => void;
-
+  setDetailsActivation: (value: boolean) => void;
+  setEditActivation: (value: boolean) => void;
+  setAllAppointments: (newAppointments: IDetailsAppointmentData[]) => void;
   setRecentAppointment: (newRecentAppointment: IAppointmentDataMod) => void;
   setSelectedAppointment: (
     newSelectedAppointment: IDetailsAppointmentData
@@ -36,9 +41,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
   appointments: [],
   selectedAppointment: {
     subject: { name: "" },
-    student: { name: "" },
-    admin: { name: "" },
-    advisor: { name: "" },
+    student: { id: "", name: "" },
+    admin: { id: "", name: "" },
+    advisor: { id: "", name: "" },
     appointment: {
       date: "",
       id: "",
@@ -49,7 +54,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
       location: "",
     },
   },
+  allAppointments: [],
   recentAppointment: {
+    id: "",
     date: "",
     id_subject: "",
     status: EStatusAppointment.ACCEPTED,
@@ -65,6 +72,14 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     photo_url: "",
     id_subject: "",
     id_petitioner: "",
+  },
+  detailsActivation: false,
+  editDetails: false,
+  setDetailsActivation: (value) => {
+    set({ detailsActivation: value });
+  },
+  setEditActivation: (value) => {
+    set({ editDetails: value });
   },
   addNewAppointment: ({
     date,
@@ -93,6 +108,9 @@ export const appointmentSlice: StoreSlice<TAppointmentSlice> = (set, get) => ({
     set({ appointments: newAppointments });
   },
 
+  setAllAppointments: (newAllAppointments) => {
+    set({ allAppointments: newAllAppointments });
+  },
   setRecentAppointment: (newRecentAppointment) => {
     set({ recentAppointment: newRecentAppointment });
   },

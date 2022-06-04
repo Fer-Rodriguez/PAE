@@ -67,8 +67,8 @@ export const DropDown = ({
       isInvalid={isInvalid}
       backgroundColor={color}
       textColor={fontColor}
+      _focus={{ background: "#ff78b6" }}
       borderRadius={borderRadius}
-      variant="filled"
       placeholder={configuration.placeholder}
       onChange={(e) => configuration.onChange(e)}
       focusBorderColor={color}
@@ -79,6 +79,7 @@ export const DropDown = ({
           style={customOptionStyle(index, configuration.type)}
           value={myOption.value ? myOption.value : myOption.title}
           className=""
+          title={myOption.title}
         >
           {myOption.title}
         </option>

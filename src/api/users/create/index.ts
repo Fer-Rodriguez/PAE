@@ -18,23 +18,20 @@ interface ICreateUserData {
 }
 
 export const CreateUser = async (newValues: ICreateUserData) => {
-  const data = qs.stringify({
-    name: newValues.name,
-    email: newValues.email,
-    password: newValues.password,
-    career: newValues.career,
-    semester: newValues.semester,
-    status: newValues.status,
-    type: newValues.type,
-  });
+  console.log("ESTO QUIERO MANDAR: ", newValues);
 
   const config = {
     method: "post",
     url: "http://localhost:6070/register/create",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+    data: {
+      name: newValues.name,
+      email: newValues.email,
+      password: newValues.password,
+      career: newValues.career,
+      semester: newValues.semester,
+      status: newValues.status,
+      type: newValues.type,
     },
-    data: data,
   };
 
   const responseData = await axios(config)

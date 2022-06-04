@@ -44,8 +44,9 @@ export const CarreraInput = ({
             id="carrera"
             placeholder="Selecciona tu carrera"
             onChange={(e) => {
-              onChange(e);
-              console.log(error);
+              console.log("Seleccionando carrera: ", e.target.value);
+              onChange(e.target.value);
+
               if (secondValidation) {
                 handleChange(e);
               }
@@ -53,10 +54,8 @@ export const CarreraInput = ({
             value={value}
             isInvalid={Boolean(error)}
           >
-            <option>ITC</option>
-            <option>IRS</option>
-            <option>IBT</option>
-            <option>IMT</option>
+            {/**TODO: Hacer esto dinámico desde la api de carreras */}
+            <option value={"f31755a0-26b1-414d-9b62-fd4be6346323"}>ITC</option>
           </Select>
 
           {!error ? (

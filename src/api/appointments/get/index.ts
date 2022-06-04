@@ -1,11 +1,8 @@
 import axios from "axios";
-import React from "react";
+import { config } from "process";
 import { EUserType } from "../../../interfaces/enums";
-import { IAppointmentDataMod } from "../../../interfaces";
-interface IColumnDetails {
-  [key: string]: string;
-}
-export const getRecentAppointment = (
+
+export const getRecentAppointment = async (
   id: string,
   type: EUserType,
   setRecentAppointment: any
@@ -15,18 +12,38 @@ export const getRecentAppointment = (
     url: `http://localhost:6060/appointment/admin?id=${id}&id_type=${type}`,
   };
 
-  axios(config).then((res) => setRecentAppointment(res.data));
+  await axios(config).then((res) => setRecentAppointment(res.data));
 };
 
-export const getAllAppointments = async (id: string, type: string) => {
+export const getAllAppointments = async (
+  id: string,
+  type: string,
+  full: boolean
+) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}`,
+    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}&full=${full}`,
   };
 
   let response: any;
   await axios(config).then((res) => {
     response = res.data;
+    console.log("respuesta: ", response);
   });
+
   return response;
+};
+
+export const getPossibleDates = async (idSubject: string) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6060/appointment/possibleDates?idSubject=${idSubject}`,
+  };
+
+  return axios(config)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };

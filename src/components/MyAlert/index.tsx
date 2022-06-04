@@ -27,7 +27,7 @@ export const MyAlert = ({
   return (
     <>
       {active && (
-        <Alert status={status}>
+        <Alert status={status} borderRadius={"5px"}>
           <AlertIcon />
           <AlertTitle mr={2}>{title}</AlertTitle>
           <AlertDescription>{description}</AlertDescription>
