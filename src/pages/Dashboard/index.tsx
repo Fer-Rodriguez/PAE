@@ -150,6 +150,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const detailsActivation = useStore((state) => state.detailsActivation);
   const editDetails = useStore((state) => state.editDetails);
   const setDetailsActivation = useStore((state) => state.setDetailsActivation);
+  const userNotifications = useStore((state) => state.notifications);
 
   const [surveyNotificationId, setSurveyNotificationId] = useState("");
   const [surveyAppointmentId, setSurveyAppointmentId] = useState("");
@@ -212,8 +213,6 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     }
   }, [surveyAppointmentId, userData.type]);
 
-
-
   return (
     <>
       <AppointmentDetails
@@ -222,15 +221,18 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
         editAppointment={editDetails}
       />
       {mobile ? (
-    <Mobile type={userData.type} name={userData.name} surveyData={surveyData} />
+        <Mobile
+          type={userData.type}
+          name={userData.name}
+          surveyData={surveyData}
+        />
       ) : (
-    <Desktop
-      type={userData.type}
-      name={userData.name}
-      surveyData={surveyData}
-    />
+        <Desktop
+          type={userData.type}
+          name={userData.name}
+          surveyData={surveyData}
+        />
       )}
     </>
-
   );
 };

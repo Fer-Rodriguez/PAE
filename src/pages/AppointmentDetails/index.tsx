@@ -3,7 +3,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  useDisclosure,
   Button,
   Flex,
   useToast,
@@ -33,7 +32,6 @@ import { EStatus, EStatusAppointment } from "../../interfaces/enums";
 
 //Assets
 import theme from "../../theme";
-
 
 export const AppointmentDetails = ({
   editAppointment = false,
@@ -136,7 +134,7 @@ export const AppointmentDetails = ({
         <ModalOverlay />
 
         <ModalContent shadow={0} borderRadius={"25px"} />
-        
+
         <ModalContent shadow={0}>
           <ButtonGeneric
             text="Ver respuestas"
