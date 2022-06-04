@@ -36,7 +36,7 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
 
   useEffect(() => {
     const obtainData = async () => {
-      const response = await getAllAppointments(userId, userType);
+      const response = await getAllAppointments(userId, userType, true);
       setFullData(response);
 
       const dataTable: any[] = [];
