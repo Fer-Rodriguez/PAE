@@ -29,7 +29,7 @@ export const BaseCard = (props: IBaseCard) => {
         margin={2}
         width="100%"
         height="35em"
-        boxShadow="dark-lg"
+        boxShadow="base"
         overflow="hidden"
         p="5"
         rounded={theme.radii.menu}
