@@ -166,6 +166,10 @@ const updateSchedule = ({
   }
 };
 
+function isValidDate(d: any) {
+  return d instanceof Date && !isNaN(d as any);
+}
+
 //Functions for actions witn the calendar and Schedules
 const acceptSchedule = ({
   e: event,
@@ -196,10 +200,14 @@ const acceptSchedule = ({
 
   if (setAlertHours !== undefined && setTotalHours !== undefined) {
     if (difference + totalHours <= 5) {
-      setAlertHours(false);
-      cal.current.calendarInst.createSchedules([schedule]);
-      setTotalHours(totalHours + difference);
-      setSchedules([...schedules, schedule]);
+      if (isValidDate(schedule.start) && isValidDate(schedule.end)) {
+        setAlertHours(false);
+        console.log("Horario: ", schedule);
+        cal.current.calendarInst.createSchedules([schedule]);
+        console.log("Añadio a la instancia del calendario");
+        setTotalHours(totalHours + difference);
+        setSchedules([...schedules, schedule]);
+      }
     } else {
       setAlertHours(true);
     }

@@ -11,9 +11,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DividedCard } from "../../../components/DividedCard";
+import { IDetailsAppointmentData } from "../../../interfaces";
 
 //Interfaces
-import { EUserType } from "../../../interfaces/enums";
+import { EStatusAppointment, EUserType } from "../../../interfaces/enums";
 import { useStore } from "../../../state/store";
 
 //Assets
@@ -34,8 +35,20 @@ export const AppointmentListCard = ({
   const AppointmentContent = ({
     appointment,
   }: {
-    appointment: { subject: string; date: string };
+    appointment: {
+      subject: string;
+      date: string;
+      myAppointment: IDetailsAppointmentData;
+    };
   }) => {
+    const setDetailsActivation = useStore(
+      (state) => state.setDetailsActivation
+    );
+    const setEditActivation = useStore((state) => state.setEditActivation);
+    const setSelectedAppointment = useStore(
+      (state) => state.setSelectedAppointment
+    );
+
     return (
       <>
         <Flex flexDirection={"column"}>
@@ -53,6 +66,17 @@ export const AppointmentListCard = ({
           color="white"
           size="xs"
           w={"40%"}
+          onClick={() => {
+            setSelectedAppointment(appointment.myAppointment);
+            if (
+              appointment.myAppointment.appointment.status ===
+              EStatusAppointment.PENDING
+            ) {
+              setEditActivation(true);
+            } else setEditActivation(false);
+
+            setDetailsActivation(true);
+          }}
         >
           Detalles
         </Button>
@@ -81,6 +105,7 @@ export const AppointmentListCard = ({
                 appointment={{
                   date: new Date(appointment.appointment.date).toLocaleString(),
                   subject: appointment.subject.name,
+                  myAppointment: appointment,
                 }}
               />
             }
@@ -92,6 +117,7 @@ export const AppointmentListCard = ({
                 appointment={{
                   date: new Date(appointment.appointment.date).toLocaleString(),
                   subject: appointment.subject.name,
+                  myAppointment: appointment,
                 }}
               />
             }

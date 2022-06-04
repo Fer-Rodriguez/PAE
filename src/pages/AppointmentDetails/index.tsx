@@ -8,6 +8,7 @@ import {
   Flex,
   useToast,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 
 //Store
 import { useStore } from "../../state/store";
@@ -21,9 +22,13 @@ import { CardContent } from "./Card.component";
 import { updateAppointment } from "../../api/appointments/update";
 import { updateAppointmentDetails } from "../../api/appointments-user/update";
 
+//Interfaces
+import { EStatus, EStatusAppointment } from "../../interfaces/enums";
+
 //Assets
 import theme from "../../theme";
-import { EStatus, EStatusAppointment } from "../../interfaces/enums";
+import { IDetailsAppointmentData } from "../../interfaces";
+
 import { QuestionAnswer } from "../../components/QuestionAnswer";
 import { ButtonGeneric } from "../../components/Button";
 
@@ -36,8 +41,10 @@ export const AppointmentDetails = ({
   editAppointment?: boolean;
   isOpen: boolean;
   onClose: () => void;
-  savedChange: React.Dispatch<boolean>;
+  savedChange?: React.Dispatch<boolean>;
 }) => {
+  const { id } = useParams();
+
   const [status, setStatus] = useState<EStatusAppointment>(
     EStatusAppointment.ACCEPTED
   );
@@ -45,12 +52,10 @@ export const AppointmentDetails = ({
   const [selectedAdvisor, setSelectedAdvisor] = useState("");
 
   const detailsData = useStore((state) => state.selectedAppointment);
+  const setDetailsData = useStore((state) => state.setSelectedAppointment);
+  const allAppointmentDetails = useStore((state) => state.allAppointments);
 
   const toast = useToast();
-
-  useEffect(() => {
-    //TODO: Cada vez que se cambie al advisor, debemos llamar a la api para obtener su info
-  }, [selectedAdvisor]);
 
   const save = () => {
     try {
@@ -88,8 +93,11 @@ export const AppointmentDetails = ({
   };
 
   const onMySave = () => {
-    savedChange(true);
-    savedChange(false);
+    if (savedChange !== undefined) {
+      savedChange(true);
+      savedChange(false);
+    }
+
     if (status !== EStatusAppointment.ACCEPTED) {
       save();
     } else {
@@ -123,6 +131,9 @@ export const AppointmentDetails = ({
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={"6xl"}>
         <ModalOverlay />
+
+        <ModalContent shadow={0} borderRadius={"25px"} />
+
         <ModalContent shadow={0}>
           <ButtonGeneric
             text="Ver respuestas"
@@ -181,9 +192,10 @@ export const AppointmentDetails = ({
           <Flex>
             <Flex
               backgroundColor="gray.50"
-              h={"90vh"}
+              maxH={"90vh"}
               rounded={theme.radii.general}
               flexDir="column"
+              overflowY={"auto"}
             >
               <CardContent
                 editAppointment={editAppointment}
@@ -197,6 +209,7 @@ export const AppointmentDetails = ({
               h={"90vh"}
               rounded={theme.radii.general}
               flexDir="column"
+              overflowY={"auto"}
             >
               <CardContent
                 type={1}

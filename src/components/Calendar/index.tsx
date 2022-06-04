@@ -104,13 +104,41 @@ export const MyCalendar = ({
 
   //UseEffect
 
+  const verifyHours = () => {
+    if (totalHoursOne === 5)
+      if (totalHoursTwo === 5) if (totalHoursThree === 5) return true;
+
+    return false;
+  };
+
   const updateSchedules = async () => {
+    if (!verifyHours()) {
+      toast({
+        title: "¡Error!",
+        description:
+          "Alguno de los periodos no posee 5 horas de disponibilidad totales.",
+        position: "top",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
       await axios.patch("http://localhost:6090/schedule", {
         scheduleOne: schedulesFirst,
         scheduleTwo: schedulesSecond,
         scheduleThree: schedulesThird,
         idAdvisor: idUser,
+      });
+      toast({
+        title: "¡Listo!",
+        description: "El Horario se ha guardado con éxito.",
+        position: "top",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
       });
       if (register) navigate("/dashboard");
     } catch (error) {
@@ -390,14 +418,6 @@ export const MyCalendar = ({
               fontColor="white"
               onClick={async () => {
                 await updateSchedules();
-                toast({
-                  title: "¡Listo!",
-                  description: "El Horario se ha guardado con éxito.",
-                  position: "top",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true,
-                });
               }}
             />
           </Center>

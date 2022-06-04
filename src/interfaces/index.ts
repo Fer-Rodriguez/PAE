@@ -139,6 +139,7 @@ export interface IModalCalendarOperations {
 }
 
 export interface IAppointmentDataMod {
+  id: string;
   date?: string | Date;
   id_subject?: string;
   status?: EStatusAppointment;

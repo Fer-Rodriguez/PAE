@@ -114,7 +114,7 @@ export const ScheduleScreen = ({
               const dateSelected = new Date(Date.parse(e.currentTarget.value));
               const finalDate = selectedDay;
               finalDate.setHours(dateSelected.getHours());
-
+              console.log("Date final: ", finalDate);
               setSelectedDay(finalDate);
 
               setSelectedHour(e.currentTarget.value);
@@ -205,7 +205,15 @@ export const ScheduleScreen = ({
               onScheduleButtonClick={(
                 e: React.MouseEvent<HTMLButtonElement>
               ) => {
-                setSelectedHour(e.currentTarget.innerText);
+                const dateSelected = new Date(
+                  Date.parse(e.currentTarget.value)
+                );
+                const finalDate = selectedDay;
+                finalDate.setHours(dateSelected.getHours());
+                console.log("Date final: ", finalDate);
+                setSelectedDay(finalDate);
+
+                setSelectedHour(e.currentTarget.value);
               }}
               scheduleSelected={selectedHour}
               schedules={possibleDates}
