@@ -51,12 +51,14 @@ export const Bell = ({ columns, headColor }: IBell) => {
   useEffect(() => {
     const arrayNotis: any = [];
     notificationsData.forEach((noti) => {
-      const notiColumnData = {
-        notification: noti.title,
-        dataNotification: noti.description,
-      };
+      if (noti.title != "survey") {
+        const notiColumnData = {
+          notification: noti.title,
+          dataNotification: noti.description,
+        };
 
-      arrayNotis.push(notiColumnData);
+        arrayNotis.push(notiColumnData);
+      }
     });
 
     setNotiColumn(arrayNotis);

@@ -199,3 +199,19 @@ export interface IDetailsAppointmentData {
   admin: { id: string; name: string };
   advisor: { id: string; name: string };
 }
+
+export interface ISurveyData {
+  loaded: boolean;
+  answered: boolean;
+  controller: React.Dispatch<React.SetStateAction<boolean>>;
+  questions:
+    | {
+        question: string;
+        type: "text" | "scale" | "yesOrNo";
+        scaleBegining?: string;
+        scaleEnding?: string;
+      }[]
+    | undefined;
+  appointmentId: string;
+  triggeringNotificationId: string;
+}
