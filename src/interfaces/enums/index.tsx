@@ -51,6 +51,11 @@ enum EStatusAppointment {
   CANCELED = "CANCELED",
 }
 
+const enum ENotificationStatus {
+  seen = "seen",
+  notSeen = "not seen",
+}
+
 export {
   EStatus,
   EUserType,
@@ -61,4 +66,5 @@ export {
   EModalCalendarType,
   EMyCalendarView,
   EStatusAppointment,
+  ENotificationStatus,
 };

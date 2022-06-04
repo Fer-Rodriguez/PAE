@@ -3,6 +3,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  useDisclosure,
   Button,
   Flex,
   useToast,
@@ -25,11 +26,14 @@ import { updateAppointment } from "../../api/appointments/update";
 import { updateAppointmentDetails } from "../../api/appointments-user/update";
 
 //Interfaces
+
 import { IDetailsAppointmentData } from "../../interfaces";
+
 import { EStatus, EStatusAppointment } from "../../interfaces/enums";
 
 //Assets
 import theme from "../../theme";
+
 
 export const AppointmentDetails = ({
   editAppointment = false,
@@ -131,6 +135,8 @@ export const AppointmentDetails = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={"6xl"}>
         <ModalOverlay />
 
+        <ModalContent shadow={0} borderRadius={"25px"} />
+        
         <ModalContent shadow={0}>
           <ButtonGeneric
             text="Ver respuestas"
