@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
@@ -16,20 +17,19 @@ import { useStore } from "../../state/store";
 import { DetailsContent } from "./Details.component";
 import { EditAppointmentContent } from "./EditAppointment.component";
 import { CardContent } from "./Card.component";
+import { QuestionAnswer } from "../../components/QuestionAnswer";
+import { ButtonGeneric } from "../../components/Button";
 
 //Functions
 import { updateAppointment } from "../../api/appointments/update";
 import { updateAppointmentDetails } from "../../api/appointments-user/update";
 
 //Interfaces
-import { EStatusAppointment } from "../../interfaces/enums";
+import { IDetailsAppointmentData } from "../../interfaces";
+import { EStatus, EStatusAppointment } from "../../interfaces/enums";
 
 //Assets
 import theme from "../../theme";
-import { IDetailsAppointmentData } from "../../interfaces";
-import { EStatus, EStatusAppointment } from "../../interfaces/enums";
-import { QuestionAnswer } from "../../components/QuestionAnswer";
-import { ButtonGeneric } from "../../components/Button";
 
 export const AppointmentDetails = ({
   editAppointment = false,
@@ -130,8 +130,6 @@ export const AppointmentDetails = ({
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size={"6xl"}>
         <ModalOverlay />
-
-        <ModalContent shadow={0} borderRadius={"25px"}>
 
         <ModalContent shadow={0}>
           <ButtonGeneric

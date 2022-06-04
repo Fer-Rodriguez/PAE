@@ -64,7 +64,6 @@ export const ScheduleAppointment = ({
       return (
         <ScheduleScreen
           idSubject={idSubject}
-
           mobile={mobile}
           subjectName={subjectName}
           onPreviousScreenButtonClick={(
@@ -74,6 +73,7 @@ export const ScheduleAppointment = ({
             e: React.MouseEvent<HTMLButtonElement>
           ) => {
             try {
+              console.log("hola");
               const successfulRequest = await createAppointment();
               if (successfulRequest) {
                 setFormStep(2);

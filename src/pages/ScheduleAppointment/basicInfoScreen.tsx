@@ -150,16 +150,16 @@ export const BasicInfoScreen = ({
             currentFile={valueForFileInput}
             onChange={onFileUploaded}
           ></FileUploadButton>
-          <Center w="100%">
-            <ButtonGeneric
-              bgColor="pink"
-              sizePX=""
-              text="Siguiente"
-              isDisabled={!isValid}
-              onClick={onNextScreenButtonClick}
-            ></ButtonGeneric>
-          </Center>
         </VStack>
+        <Center w="100%">
+          <ButtonGeneric
+            bgColor="pink"
+            sizePX=""
+            text="Siguiente"
+            isDisabled={!isValid}
+            onClick={onNextScreenButtonClick}
+          ></ButtonGeneric>
+        </Center>
         <Box w="40%">
           <Image
             maxW={mobile ? "30%" : "20%"}

@@ -11,20 +11,18 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Calendar from "react-calendar";
-import { getDay, startOfWeek } from "date-fns";
+import { getDay } from "date-fns";
 
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { Info_Button } from "../../components/Info_Button";
 import { ScheduleList } from "../../components/ScheduleList";
-import { MyCalendar } from "../../components/Calendar";
-
-import "react-calendar/dist/Calendar.css";
 
 //Assets
 import theme from "../../theme/index";
-import { addDays, getDayName, isSameDayByName } from "../../services/Functions";
+import { addDays, isSameDayByName } from "../../services/Functions";
 import { getPossibleDates } from "../../api/appointments/get";
 import PopOver, { ETypeSize } from "../../components/popOver";
+import { ICitasDaySchedules } from "../../interfaces";
 
 export const ScheduleScreen = ({
   mobile,
@@ -41,13 +39,21 @@ export const ScheduleScreen = ({
   onFullDateSelected?: (newValue: string) => void;
   idSubject: string;
 }) => {
+  const [isCreatingAppointment, setIsCreatingAppointment] = useState(false);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [selectedDayString, setSelectedDayString] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
-  const [possibleDates, setPossibleDates] = useState([]);
+  const [possibleDates, setPossibleDates] = useState<ICitasDaySchedules[]>([]);
+  const [dateHashes, setDateHashes] = useState<Set<string>>(new Set());
   const obtainPossibleDates = async () => {
     const posibleDatesApi = await getPossibleDates(idSubject);
-    setPossibleDates(posibleDatesApi);
+    if (Array.isArray(posibleDatesApi)) {
+      setPossibleDates(posibleDatesApi);
+    } else {
+      alert(
+        "No pudimos recuperar las fechas disponibles. Inténtalo más tarde."
+      );
+    }
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,6 +69,19 @@ export const ScheduleScreen = ({
   }, []);
 
   useEffect(() => {
+    if (
+      possibleDates !== undefined &&
+      Array.isArray(possibleDates) &&
+      possibleDates.length !== 0
+    ) {
+      for (const possibleDate of possibleDates) {
+        dateHashes.add(possibleDate["hour"].slice(0, 11));
+      }
+      setSelectedDay(new Date(possibleDates[0].hour)); //required to re-render the calendar
+    }
+  }, [possibleDates]);
+
+  useEffect(() => {
     const days = [
       "Domingo",
       "Lunes",
@@ -76,7 +95,6 @@ export const ScheduleScreen = ({
     setSelectedDayString(dayName);
   }, [selectedDay]);
   useEffect(() => {
-    console.log("CAMBIANDO: ", selectedDay);
     if (onFullDateSelected) {
       onFullDateSelected(selectedDay.toString());
     }
@@ -85,9 +103,11 @@ export const ScheduleScreen = ({
 
   const disableDates = ({ date, view }: { date: Date; view: string }) => {
     const disabledDayNames = ["sábado", "domingo"];
-
     // Check if a date React-Calendar wants to check is on the list of disabled dates
-    return disabledDayNames.some((dDate) => isSameDayByName(date, dDate));
+    return (
+      disabledDayNames.some((dDate) => isSameDayByName(date, dDate)) ||
+      !dateHashes.has(date.toUTCString().slice(0, 11))
+    );
   };
 
   if (mobile) {
@@ -102,9 +122,12 @@ export const ScheduleScreen = ({
           <Calendar
             onChange={setSelectedDay}
             value={selectedDay}
-            maxDetail={"month"}
-            maxDate={addDays(new Date(), 14)}
+            showFixedNumberOfWeeks
             minDate={new Date()}
+            maxDate={new Date(Date.now() + 12096e5)} //dos semanas
+            maxDetail={"month"}
+            minDetail={"month"}
+            view={"month"}
             tileDisabled={disableDates}
           />
 
@@ -114,14 +137,13 @@ export const ScheduleScreen = ({
               const dateSelected = new Date(Date.parse(e.currentTarget.value));
               const finalDate = selectedDay;
               finalDate.setHours(dateSelected.getHours());
-              console.log("Date final: ", finalDate);
               setSelectedDay(finalDate);
 
               setSelectedHour(e.currentTarget.value);
             }}
             scheduleSelected={selectedHour}
             schedules={possibleDates}
-            width="30%"
+            width="60%"
           ></ScheduleList>
           <ButtonGeneric
             text="Agendar"
@@ -169,112 +191,113 @@ export const ScheduleScreen = ({
   } else {
     return (
       <>
-        <Text color="grey" as="i">
+        <Text color="grey" as="i" display={"inline"} marginRight={"1rem"}>
           Escoge el horario que más se te acomode
         </Text>
-        <br></br>
-        <br></br>
-        <VStack alignItems="start">
-          <Info_Button
-            title="Seleccionar fecha y hora"
-            customOpen={infoOpen}
-            customOnOpen={infoOnOpen}
-            customClose={infoOnClose}
-            customCancelRef={cancelRef}
-            content={
-              <Box w="100%">
-                Selecciona uno de los días disponibles dentro del calendario en
-                el que quieras tener tu asesoría. Posteriormente se desplegará a
-                la derecha una lista de horarios en la cual podrás seleccionar
-                alguno.
-              </Box>
-            }
-          />
-          <HStack w={"100%"} spacing={"120"}>
-            <Box w={"40vw"}>
-              <Calendar
-                onChange={setSelectedDay}
-                value={selectedDay}
-                maxDetail={"month"}
-                maxDate={addDays(new Date(), 14)}
-                minDate={new Date()}
-                tileDisabled={disableDates}
-              />
+        <Info_Button
+          title="Seleccionar fecha y hora"
+          customOpen={infoOpen}
+          customOnOpen={infoOnOpen}
+          customClose={infoOnClose}
+          customCancelRef={cancelRef}
+          content={
+            <Box w="100%">
+              Selecciona uno de los días disponibles dentro del calendario en el
+              que quieras tener tu asesoría. Posteriormente se desplegará a la
+              derecha una lista de horarios en la cual podrás seleccionar
+              alguno.
             </Box>
-            <ScheduleList
-              onScheduleButtonClick={(
-                e: React.MouseEvent<HTMLButtonElement>
-              ) => {
-                const dateSelected = new Date(
-                  Date.parse(e.currentTarget.value)
-                );
-                const finalDate = selectedDay;
-                finalDate.setHours(dateSelected.getHours());
-                console.log("Date final: ", finalDate);
-                setSelectedDay(finalDate);
+          }
+        />
+        <br></br>
+        <br></br>
+        <Flex justifyContent="center" h="100%" gap="25%">
+          <Calendar
+            onChange={setSelectedDay}
+            value={selectedDay}
+            showFixedNumberOfWeeks
+            minDate={new Date()}
+            maxDate={new Date(Date.now() + 12096e5)} //dos semanas
+            maxDetail={"month"}
+            minDetail={"month"}
+            view={"month"}
+            tileDisabled={disableDates}
+          />
+          <ScheduleList
+            onScheduleButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              const dateSelected = new Date(Date.parse(e.currentTarget.value));
+              const finalDate = selectedDay;
+              finalDate.setHours(dateSelected.getHours());
+              setSelectedDay(finalDate);
 
-                setSelectedHour(e.currentTarget.value);
-              }}
-              scheduleSelected={selectedHour}
-              schedules={possibleDates}
-              width="30%"
-              daySelected={selectedDayString}
-            ></ScheduleList>
-          </HStack>
-          <Spacer />
-          <br></br>
-          <Flex direction={"row"} justifyContent="center" gap={"5vw"} w="100%">
-            <ButtonGeneric
-              text="Volver"
-              sizePX=""
-              bgColor={theme.colors.pink}
-              fontColor="white"
-              onClick={onPreviousScreenButtonClick}
-            />
-            <ButtonGeneric
-              text="Agendar"
-              isDisabled={selectedHour === ""}
-              sizePX=""
-              bgColor={theme.colors.pink}
-              fontColor="white"
-              onClick={() => onOpen()}
-            />
-          </Flex>
-          <Center w="100%">
-            <PopOver
-              size={ETypeSize.s}
-              title={{ text: "Resumen de la solicitud", alignment: "center" }}
-              closeButton={true}
-              customOpen={isOpen}
-              customClose={onClose}
-              customCancelRef={cancelRef}
-            >
-              {/*TODO: Show subject, day and hour in popup*/}
-              <VStack alignContent="center">
-                <Text>Materia: {subjectName}</Text>
-                <Spacer />
-                <Text>
-                  Día:{" "}
-                  {selectedDay.getDay().toString() +
-                    "/" +
-                    selectedDay.getMonth().toString() +
-                    "/" +
-                    selectedDay.getFullYear().toString()}
-                </Text>
-                <Spacer />
-                <Text>Hora: {selectedHour}</Text>
-                <Spacer />
-                <ButtonGeneric
-                  text="Confirmar"
-                  sizePX=""
-                  bgColor={theme.colors.pink}
-                  fontColor="white"
-                  onClick={onNextScreenButtonClick}
-                />
-              </VStack>
-            </PopOver>
-          </Center>
-        </VStack>
+              setSelectedHour(e.currentTarget.value);
+            }}
+            scheduleSelected={selectedHour}
+            schedules={possibleDates}
+            width="20%"
+            daySelected={selectedDayString}
+          ></ScheduleList>
+        </Flex>
+        <br></br>
+        <Flex direction={"row"} justifyContent="center" gap={"5vw"} w="100%">
+          <ButtonGeneric
+            text="Volver"
+            sizePX=""
+            bgColor={theme.colors.pink}
+            fontColor="white"
+            onClick={onPreviousScreenButtonClick}
+          />
+          <ButtonGeneric
+            text="Agendar"
+            isDisabled={selectedHour === ""}
+            sizePX=""
+            bgColor={theme.colors.pink}
+            fontColor="white"
+            onClick={() => onOpen()}
+          />
+        </Flex>
+        <Center w="100%">
+          <PopOver
+            size={ETypeSize.s}
+            title={{ text: "Resumen de la solicitud", alignment: "center" }}
+            closeButton={true}
+            customOpen={isOpen}
+            customClose={onClose}
+            customCancelRef={cancelRef}
+          >
+            {/*TODO: Show subject, day and hour in popup*/}
+            <VStack alignContent="center">
+              <Text>Materia: {subjectName}</Text>
+              <Spacer />
+              <Text>
+                Día:{" "}
+                {selectedDay.toLocaleString("es-MX", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+              <Spacer />
+              <Text>
+                Hora:{" "}
+                {new Date(selectedHour).toLocaleTimeString("es-MX", {
+                  timeZone: "America/Mexico_City",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </Text>
+              <Spacer />
+              <ButtonGeneric
+                text="Confirmar"
+                sizePX=""
+                bgColor={theme.colors.pink}
+                fontColor="white"
+                onClick={onNextScreenButtonClick}
+              />
+            </VStack>
+          </PopOver>
+        </Center>
       </>
     );
   }
