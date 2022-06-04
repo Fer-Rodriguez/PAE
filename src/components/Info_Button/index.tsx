@@ -19,8 +19,10 @@ export const Info_Button = (props: IInfoButton) => {
   return (
     <>
       <Image
+        _hover={{ cursor: "pointer" }}
+        display={"inline"}
         borderRadius="full"
-        boxSize="3%"
+        boxSize={"1.5rem"}
         src={imgInfo}
         onClick={props.customOnOpen}
       />
