@@ -25,7 +25,10 @@ import {
   ButtonSaveChanges,
 } from "../Buttons.component";
 import { PasswordProfileModal } from "../Modal.component";
-import { IconPopOverForm } from "../../../components/IconPopOver";
+import {
+  IconPopOverForm,
+  IconPopOverDropdown,
+} from "../../../components/IconPopOver";
 
 //Interfaces
 import { EUserType } from "../../../interfaces/enums";
@@ -61,6 +64,7 @@ export const ProfileDesktop = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState(data.email);
   const [career, setCareer] = useState(data.career);
+  const [careerName, setCareerName] = useState(data.careerName);
   const [semester, setSemester] = useState(data.semester);
 
   const setAllUsers = useStore((state) => state.setAllUsers);
@@ -68,6 +72,7 @@ export const ProfileDesktop = ({
   useEffect(() => {
     setEmail(data.email);
     setCareer(data.career);
+    setCareerName(data.careerName);
     setSemester(data.semester);
   }, [data]);
 
@@ -75,6 +80,7 @@ export const ProfileDesktop = ({
     if (key === "Email") {
       setEmail(value as string);
     } else if (key === "Career") setCareer(value as string);
+    else if (key === "careerName") setCareerName(value as string);
     else setSemester(value as number);
   };
 
@@ -85,7 +91,13 @@ export const ProfileDesktop = ({
       //semester, TODO: El endpoint solo acepta las propiedades de la tabla de usuarios (No de sus subtablas)
       updated_at: new Date(),
     };
-    updateUser(dataToUpdate, data.id);
+    const id_career = career;
+    const careerData = {
+      id_career,
+      semester,
+      updated_at: new Date(),
+    };
+    updateUser(dataToUpdate, careerData, data.id);
     GetAllAdvisors(setAllUsers);
   };
 
@@ -157,8 +169,18 @@ export const ProfileDesktop = ({
                   {titleProfileCard.map((title) =>
                     type !== EUserType.admin ? (
                       <Text size="sm" my={4}>
-                        {title}
+                        {title === "Career"
+                          ? data["careerName"]
+                          : data[title.toLowerCase()]}
                       </Text>
+                    ) : title === "Career" ? (
+                      <IconPopOverDropdown
+                        text={career}
+                        acronym={careerName ? careerName : career}
+                        icon={<EditIcon />}
+                        myKey={title}
+                        setData={setMyDataLocal}
+                      />
                     ) : (
                       <IconPopOverForm
                         text={

@@ -1,12 +1,13 @@
 import axios from "axios";
 
-export const updateUser = async (data: any, id: string) => {
+export const updateUser = async (data: any, careerData: any, id: string) => {
   const config = {
     method: "patch",
     url: `http://localhost:6070/register/update`,
     data: {
       id,
       dataToUpdate: data,
+      careerDataToUpdate: careerData,
     },
   };
 

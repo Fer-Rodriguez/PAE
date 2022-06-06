@@ -89,8 +89,9 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
             : userData.user.type === EUserType.admin
             ? EUserType.admin
             : EUserType.root,
-        semester: info.semestreCarrera,
-        career: info.carrera,
+        semester: userData.user.userSemesters[0].semester,
+        career: userData.user.career[0].id,
+        careerName: userData.user.career[0].acronym,
         config: { language: ELanguage.spanish, theme: ETheme.white },
         profilePic: "No tengo",
         notifications: [],

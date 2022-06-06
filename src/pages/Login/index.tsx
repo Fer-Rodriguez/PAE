@@ -59,8 +59,9 @@ export const FormsLogin = (props: IFormsLogin) => {
               : userData.user.type === EUserType.admin
               ? EUserType.admin
               : EUserType.root,
-          semester: 5,
-          career: "ITC",
+          semester: userData.user.userSemesters[0].semester,
+          career: userData.user.career[0].id,
+          careerName: userData.user.career[0].acronym,
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
@@ -109,8 +110,9 @@ export const FormsLogin = (props: IFormsLogin) => {
               : userData.user.type === EUserType.admin
               ? EUserType.admin
               : EUserType.root,
-          semester: 5,
-          career: "ITC",
+          semester: userData.user.userSemesters[0].semester,
+          career: userData.user.career[0].id,
+          careerName: userData.user.career[0].acronym,
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],

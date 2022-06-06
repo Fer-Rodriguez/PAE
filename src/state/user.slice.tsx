@@ -60,7 +60,7 @@ export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
       career: newUserData.career,
       semester: newUserData.semester,
       profilePic: newUserData.profilePic,
-
+      careerName: newUserData.careerName,
       config: newUserData.config,
     });
   },
