@@ -73,7 +73,7 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
         name: advisor.name,
         semester: advisor.semester.toString(),
         status: advisor.status,
-        career: advisor.career,
+        career: advisor.careerName ? advisor.careerName : advisor.career,
       };
 
       advisorsColumn.push(columnData);

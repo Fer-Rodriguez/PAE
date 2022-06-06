@@ -13,11 +13,20 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import React, { ReactElement, useEffect, useState } from "react";
-
+import { ETypeDropdown } from "../../interfaces/enums";
+import { DropDown } from "../../components/Dropdown";
 interface IIconPopOverForm {
   setData: (value: string | number | boolean, key: string) => void;
   icon: ReactElement<any, string>;
   text: string;
+  myKey: string;
+  mobile?: boolean;
+}
+interface IIconPopOverDropdown {
+  setData: (value: string | number | boolean, key: string) => void;
+  icon: ReactElement<any, string>;
+  text: string;
+  acronym: string;
   myKey: string;
   mobile?: boolean;
 }
@@ -65,6 +74,84 @@ export const IconPopOverForm = ({
             ref={firstFieldRef}
             defaultValue={""}
             onChange={(e) => setValue(e.target.value)}
+          />
+          <ButtonGroup d="flex" justifyContent="flex-end">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme="teal" onClick={() => accept()}>
+              Aceptar
+            </Button>
+          </ButtonGroup>
+        </PopoverContent>
+      </Popover>
+    </Flex>
+  );
+};
+export const IconPopOverDropdown = ({
+  setData,
+  mobile = false,
+  icon,
+  text,
+  acronym,
+  myKey,
+}: IIconPopOverDropdown) => {
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const [value, setValue] = useState(text);
+  const [label, setLabel] = useState(acronym);
+  const firstFieldRef = React.useRef(null);
+
+  useEffect(() => {
+    setValue(text);
+  }, [text]);
+
+  useEffect(() => {
+    setLabel(acronym);
+  }, [acronym]);
+
+  const accept = () => {
+    onClose();
+    setData(value, myKey);
+    setData(label, "careerName");
+  };
+
+  return (
+    <Flex flexDirection={"row"} my={3}>
+      <Box d="inline-block" mr={3}>
+        {acronym}
+      </Box>
+      <Popover
+        isOpen={isOpen}
+        initialFocusRef={firstFieldRef}
+        onOpen={onOpen}
+        onClose={onClose}
+        placement={mobile ? "top-start" : "right"}
+        closeOnBlur={false}
+      >
+        <PopoverTrigger>
+          <IconButton aria-label="Icono de ejecución" size="sm" icon={icon} />
+        </PopoverTrigger>
+        <PopoverContent p={5}>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <DropDown
+            options={[
+              { title: "ITC", value: "f31755a0-26b1-414d-9b62-fd4be6346323" },
+              { title: "IBT", value: "19c4229c-4845-4c83-b268-78797906c9c2" },
+            ]}
+            configuration={{
+              onChange: (e) => {
+                setValue(e.target.value);
+                const curLabel = e.target.options.item(
+                  e.target.options.selectedIndex
+                )?.title;
+                if (curLabel) {
+                  setLabel(curLabel);
+                }
+              },
+              placeholder: "Seleccionar carrera",
+              type: ETypeDropdown.normal,
+            }}
           />
           <ButtonGroup d="flex" justifyContent="flex-end">
             <Button variant="outline" onClick={onClose}>

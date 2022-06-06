@@ -25,7 +25,7 @@ export const ProfilePage = ({ mobile }: { mobile?: boolean }) => {
       type: state.type,
       semester: state.semester,
       career: state.career,
-
+      careerName: state.careerName,
       profilePic: state.profilePic,
     }),
     shallow

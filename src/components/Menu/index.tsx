@@ -66,7 +66,7 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
   return menuOption;
 }
 function isCurrentOption(linkTo: string): Target {
-  const patternOption = new RegExp("[^./]", "g");
+  const patternOption = new RegExp("([^/]+)(?=[^/]*/?$)", "g");
   const patternCurLink = new RegExp("([^/]+)(?=[^/]*/?$)", "g");
   const toCompareOption = linkTo.match(patternOption)?.join("");
   const toCompareLink = window.location.href.match(patternCurLink)?.join("");
