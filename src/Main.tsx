@@ -34,6 +34,7 @@ import shallow from "zustand/shallow";
 import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
 import { GetUserInfo } from "./api/users/get";
 import { IUserData } from "./interfaces";
+import { FormsRecovery } from "./pages/RecoverPassword";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -160,7 +161,18 @@ export const Main = () => {
           }
         />
         {id === "" ? (
-          <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          <>
+            <Route
+              path="/recoverPassword"
+              element={
+                <Login
+                  desktop={<FormsRecovery />}
+                  mobile={<FormsRecovery mobile={true} />}
+                />
+              }
+            />
+            <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          </>
         ) : (
           <Route path="/dashboard">
             <Route
