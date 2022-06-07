@@ -47,3 +47,31 @@ export const getPossibleDates = async (idSubject: string) => {
       return err;
     });
 };
+
+export const getAppointmentCandidates = async (idAppointment: string) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6060/appointment/candidates?id_appointment=${idAppointment}`,
+  };
+
+  return axios(config)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
+
+export const getBasicAppointmentInfo = async (idAppointment: string) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6060/appointment/basicInfo?idAppointment=${idAppointment}`,
+  };
+
+  return axios(config)
+    .then((res) => res)
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
