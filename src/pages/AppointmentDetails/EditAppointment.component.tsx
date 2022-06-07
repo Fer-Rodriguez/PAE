@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
 
 //Assets
@@ -23,10 +23,6 @@ export const EditAppointmentContent = ({
       title: "Cancelada",
       value: EStatusAppointment.CANCELED,
     },
-    {
-      title: "En revisión",
-      value: EStatusAppointment.PENDING,
-    },
   ];
 
   const configurationDropdown: IConfigurationsDropdown = {
@@ -36,24 +32,28 @@ export const EditAppointmentContent = ({
   };
 
   return (
-    <Flex flexDir={"column"} p={8} alignItems="center" mr={24}>
-      <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
-        Estatus
-      </Text>
-      <DropDown
-        configuration={configurationDropdown}
-        options={dropdownStatusOptions}
-        baseProps={{ width: "60%", mb: "3vh" }}
-      />
-      <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
-        Ubicación
-      </Text>
-      <TextInput
-        width="60%"
-        multiLine={false}
-        placeholderText="Colocar ubicación"
-        onChange={(e) => setLocation(e.target.value)}
-      />
+    <Flex gap="20%" w="100%" flexDir={"column"} p={8} alignItems="center">
+      <Flex flexDir={"column"} w="100%" alignItems="center">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+          Estatus
+        </Text>
+        <DropDown
+          configuration={configurationDropdown}
+          options={dropdownStatusOptions}
+          baseProps={{ width: "60%" }}
+        />
+      </Flex>
+      <Flex flexDir={"column"} w="100%" alignItems="center">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+          Ubicación
+        </Text>
+        <TextInput
+          width="60%"
+          multiLine={false}
+          placeholderText="Colocar ubicación"
+          onChange={(e) => setLocation(e.target.value)}
+        />
+      </Flex>
     </Flex>
   );
 };

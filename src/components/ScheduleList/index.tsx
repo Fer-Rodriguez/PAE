@@ -1,4 +1,4 @@
-import { Center, VStack, Text, Flex } from "@chakra-ui/react";
+import { Center, Text, Flex } from "@chakra-ui/react";
 
 import { ICitasDaySchedules } from "../../interfaces";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
@@ -6,8 +6,6 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 import theme from "../../theme/index";
 import "./estilo.css";
 import { useEffect, useState } from "react";
-
-import { getHours } from "date-fns";
 
 interface IScheduleList {
   schedules: Array<ICitasDaySchedules>;
@@ -29,9 +27,8 @@ export const ScheduleList = ({
     const datesAccordingToDay = schedules.filter(
       (schedule) => schedule.day === daySelected
     );
-
     setPossibleDates(datesAccordingToDay);
-  }, [daySelected]);
+  }, [daySelected, schedules]);
 
   return (
     <Center
