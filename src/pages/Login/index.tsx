@@ -36,11 +36,13 @@ export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [visibleAlert, setVisibleAlert] = useState(false);
-  const [saveData, setSaveData] = useState(true);
+  // const [saveData, setSaveData] = useState(true);
+  const saveData = true;
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (userId) {
       GetUserInfo(userId).then((userData) => {
+        const isRoot = userData.user.type === EUserType.root;
         const correctUser: IUserData = {
           id: userData.user.id,
           status:
@@ -59,9 +61,9 @@ export const FormsLogin = (props: IFormsLogin) => {
               : userData.user.type === EUserType.admin
               ? EUserType.admin
               : EUserType.root,
-          semester: userData.user.userSemesters[0].semester,
-          career: userData.user.career[0].id,
-          careerName: userData.user.career[0].acronym,
+          semester: isRoot ? null : userData.user.userSemesters[0].semester,
+          career: isRoot ? null : userData.user.career[0].id,
+          careerName: isRoot ? null : userData.user.career[0].acronym,
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
@@ -90,6 +92,7 @@ export const FormsLogin = (props: IFormsLogin) => {
       const idUserData = await GetUser(capitalize(data.mail), data.password);
       console.log("MI DATA: ", idUserData);
       const userData = await GetUserInfo(idUserData.userId);
+      const isRoot = userData.user.type === EUserType.root;
 
       if (idUserData.status == "OK") {
         const correctUser: IUserData = {
@@ -110,9 +113,9 @@ export const FormsLogin = (props: IFormsLogin) => {
               : userData.user.type === EUserType.admin
               ? EUserType.admin
               : EUserType.root,
-          semester: userData.user.userSemesters[0].semester,
-          career: userData.user.career[0].id,
-          careerName: userData.user.career[0].acronym,
+          semester: isRoot ? null : userData.user.userSemesters[0].semester,
+          career: isRoot ? null : userData.user.career[0].id,
+          careerName: isRoot ? null : userData.user.career[0].acronym,
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
@@ -176,7 +179,7 @@ export const FormsLogin = (props: IFormsLogin) => {
               <PasswordInput control={control} secondValidation={true} />
 
               <Flex>
-                <Checkbox
+                {/* <Checkbox
                   isInvalid={false}
                   size="sm"
                   defaultChecked
@@ -184,7 +187,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                   onChange={() => setSaveData(!saveData)}
                 >
                   Recuérdame
-                </Checkbox>
+                </Checkbox> */}
                 <Spacer />
                 <Link
                   fontSize="sm"
