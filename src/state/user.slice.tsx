@@ -21,13 +21,13 @@ export interface TUserSlice extends IUserData, IAllUsers {
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
   allUsers: [],
-  id: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
+  id: "",
   status: EStatus.active,
-  name: "Shalom Pineda",
-  email: "shalomPineda@gmail.com",
-  type: EUserType.admin,
-  career: "f31755a0-26b1-414d-9b62-fd4be6346323",
-  semester: 6,
+  name: "",
+  email: "",
+  type: EUserType.student,
+  career: "",
+  semester: 0,
   profilePic: "",
   notifications: [],
   config: {

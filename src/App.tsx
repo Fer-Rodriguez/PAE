@@ -6,9 +6,7 @@ import "./App.css";
 
 import theme from "./theme";
 
-
 import { Main } from "./Main";
-
 
 export function App() {
   return (
