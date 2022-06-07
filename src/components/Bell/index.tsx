@@ -22,6 +22,9 @@ import notifications from "../../assets/Bell.png";
 import { useStore } from "../../state/store";
 import theme from "../../theme/index";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 /*
  * Bell: Notification bell.
  *   IBell:
@@ -73,11 +76,12 @@ export const Bell = ({ columns, headColor }: IBell) => {
     <Menu>
       <MenuButton
         as={IconButton}
-        bg={theme.colors.white}
+        bg={DarkMode().bgTotal}
         rounded={theme.radii.menu}
         icon={<img src={notifications} height="40em" width="40em" />}
+        zIndex={100}
       ></MenuButton>
-      <MenuList zIndex={2}>
+      <MenuList zIndex={100}>
         <TableContainer boxShadow="general" borderRadius="general" zIndex={3}>
           <Table variant="simple" {...getTableProps()}>
             <Thead background={headColor}>

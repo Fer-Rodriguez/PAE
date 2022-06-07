@@ -6,6 +6,7 @@ import {
   Flex,
   Box,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
@@ -24,9 +25,10 @@ import { getRecentAppointment } from "../../api/appointments/get";
 import { getSurveyQuestions } from "../../api/surveys/get";
 import { GetAllAdvisors } from "../../api/users/get";
 import { getAllNotifications } from "../../api/notifications/get";
+import { updateNotification } from "../../api/notifications/update";
 
 //Interfaces
-import { EUserType } from "../../interfaces/enums";
+import { ENotificationStatus, EUserType } from "../../interfaces/enums";
 import { IDataProfileCard } from "../../interfaces";
 import { ISurveyData } from "../../interfaces";
 
@@ -40,6 +42,18 @@ import socket from "../../socket";
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
+
+import { UserContext } from "../../context";
+import { useTranslation } from "react-i18next";
+
+function Hola() {
+  const [t, i18n] = useTranslation("global");
+
+  return t("dashboard.hello");
+}
 
 const Desktop = ({
   type,
@@ -58,7 +72,7 @@ const Desktop = ({
   >
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
       <Flex gap={1} mb={6}>
-        <Text fontWeight={"bold"}>Hola, </Text>
+        <Text fontWeight={"bold"}>{Hola()} </Text>
         <Text> {name}</Text>
       </Flex>
 
@@ -133,6 +147,7 @@ const Mobile = ({
 };
 
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
+  const [value, setValue] = useState<string>("light");
   const userData: IDataProfileCard = useStore(
     (state) => ({
       id: state.id,
@@ -178,6 +193,16 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     triggeringNotificationId: surveyNotificationId,
   };
 
+  function actualizarNotis() {
+    const temp = [...userNotifications].filter(
+      (n) => n.title == "Solicitud de Asesoría" && n.status == "seen"
+    );
+    console.log(temp);
+    temp.forEach((x) => {
+      updateNotification(x.id, "not seen" as ENotificationStatus);
+    });
+  }
+
   useEffect(() => {
     socket.connect();
     socket.emit("initial", { myId: userData.id }, (response: any) => {
@@ -194,6 +219,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
         if (x.title == "survey" && x.status == "not seen") {
           setSurveyAppointmentId(x.description);
           setSurveyNotificationId(x.id);
+          updateNotification(x.id, "seen" as ENotificationStatus);
         }
       });
     }
@@ -227,11 +253,13 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
           surveyData={surveyData}
         />
       ) : (
-        <Desktop
-          type={userData.type}
-          name={userData.name}
-          surveyData={surveyData}
-        />
+        <UserContext.Provider value={{ value, setValue }}>
+          <Desktop
+            type={userData.type}
+            name={userData.name}
+            surveyData={surveyData}
+          />
+        </UserContext.Provider>
       )}
     </>
   );

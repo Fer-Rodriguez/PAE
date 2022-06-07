@@ -65,6 +65,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         setUser(correctUser);
         navigate("/dashboard");
@@ -116,6 +117,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         if (saveData) {
           localStorage.setItem("user_id", userData.user.id);

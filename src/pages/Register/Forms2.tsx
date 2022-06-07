@@ -95,6 +95,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
         config: { language: ELanguage.spanish, theme: ETheme.white },
         profilePic: "No tengo",
         notifications: [],
+        polls: [],
       };
       setUser(correctUser);
     }

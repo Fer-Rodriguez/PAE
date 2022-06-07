@@ -63,6 +63,7 @@ export const GetAllAdvisors = async (
           profilePic: "",
           createDate: advisor.created_at,
           notifications: [],
+          polls: [],
         };
 
         arrayAdvisorsUserData.push(advisorUserData);

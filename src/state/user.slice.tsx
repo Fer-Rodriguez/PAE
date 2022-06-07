@@ -2,6 +2,7 @@ import { StoreSlice } from "./store";
 import { ELanguage, ETheme, EUserType, EStatus } from "../interfaces/enums";
 import {
   INotification,
+  IPoll,
   ISchedule,
   IUserData,
   TConfigObject,
@@ -17,25 +18,30 @@ export interface TUserSlice extends IUserData, IAllUsers {
   setTheme: (newTheme: ETheme) => void;
   setUser: (newUserData: IUserData) => void;
   setNotifications: (newNotifications: Array<INotification>) => void;
+  setPolls: (newPolls: Array<IPoll>) => void;
 }
 
 export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
   allUsers: [],
-  id: "61ab6f07-72c9-4c37-ae27-b21d89823cc8",
+  id: "15bc1e73-20ad-43df-929b-4044da97e4e3",
   status: EStatus.active,
   name: "Shalom Pineda",
   email: "shalomPineda@gmail.com",
-  type: EUserType.advisor,
+  type: EUserType.admin,
   career: "Economía",
   semester: 6,
   profilePic: "",
   notifications: [],
+  polls: [],
   config: {
     language: ELanguage.spanish,
     theme: ETheme.white,
   },
   setNotifications: (newNotifications) => {
     set({ notifications: newNotifications });
+  },
+  setPolls: (newPolls) => {
+    set({ polls: newPolls });
   },
   setAllUsers: (newAllUsers) => {
     set({ allUsers: newAllUsers });

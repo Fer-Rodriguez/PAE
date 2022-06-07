@@ -16,7 +16,10 @@ export const updateNotification = async (
   };
 
   try {
-    await axios(config);
+    await axios.patch(`http://localhost:6090/notification`, {
+      idNotification,
+      status,
+    });
   } catch (error) {
     console.error(error);
   }
