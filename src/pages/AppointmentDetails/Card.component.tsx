@@ -9,6 +9,8 @@ import {
   Box,
 } from "@chakra-ui/react";
 
+import { getAppointmentCandidates } from "../../api/appointments/get";
+
 //Store
 import { useStore } from "../../state/store";
 
@@ -17,14 +19,32 @@ import robot from "../../assets/robot.png";
 import persona from "../../assets/persona.png";
 import adminRobot from "../../assets/adminRobot.png";
 import { DropDown } from "../../components/Dropdown";
-import { IConfigurationsDropdown, IObjectData } from "../../interfaces";
-import { EStatusAppointment, ETypeDropdown } from "../../interfaces/enums";
+import { IConfigurationsDropdown } from "../../interfaces";
+import { ETypeDropdown } from "../../interfaces/enums";
 
 interface ICardComponent {
   type?: number;
   editAppointment: boolean;
   setSelectedAdvisor: React.Dispatch<string>;
   selectedAdvisor: string;
+  appointmentId?: string;
+}
+
+interface IAdvisorCandidates {
+  confirmedAdvisors: {
+    id_advisor: string;
+    name: string;
+    completed_hours: number;
+    career_name: string;
+    semester: number;
+  }[];
+  pendingAdvisors: {
+    id_advisor: string;
+    name: string;
+    completed_hours: number;
+    career_name: string;
+    semester: number;
+  }[];
 }
 
 const InfoContent = ({
@@ -32,19 +52,102 @@ const InfoContent = ({
   editAppointment,
   setSelectedAdvisor,
   selectedAdvisor,
+  appointmentId,
 }: ICardComponent) => {
   const detailsData = useStore((state) => state.selectedAppointment);
 
-  //TODO: Las opciones las tiene que dar la API
-  const dropdownOption: IObjectData[] = [
+  useEffect(() => {
+    //Fetching advisor candidates
+    if (appointmentId) {
+      getAppointmentCandidates(appointmentId)
+        .then((res: IAdvisorCandidates) => {
+          const advisorsDetails: Map<
+            string,
+            {
+              name: string;
+              completed_hours: number;
+              career_name: string;
+              semester: number;
+            }
+          > = new Map();
+          const newAdvisors = [];
+          const pending = new Set<string>();
+          for (const advisor of res.pendingAdvisors) {
+            newAdvisors.push({
+              title: advisor.name + " (disponibilidad por confirmar)",
+              value: advisor.id_advisor,
+            });
+            advisorsDetails.set(advisor.id_advisor, {
+              name: advisor.name,
+              completed_hours: advisor.completed_hours,
+              career_name: advisor.career_name,
+              semester: advisor.semester,
+            });
+            pending.add(advisor.id_advisor);
+          }
+          for (const advisor of res.confirmedAdvisors) {
+            newAdvisors.push({
+              title: advisor.name,
+              value: advisor.id_advisor,
+            });
+            advisorsDetails.set(advisor.id_advisor, {
+              name: advisor.name,
+              completed_hours: advisor.completed_hours,
+              career_name: advisor.career_name,
+              semester: advisor.semester,
+            });
+          }
+          setAdvisorInfo(advisorsDetails);
+          setAdvisors(newAdvisors);
+          setPendingAdvisors(pending);
+        })
+        .catch((error) => {
+          error;
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedAdvisor);
+    if (selectedAdvisor !== "") {
+      if (pendingAdvisors?.has(selectedAdvisor)) {
+        setIsAdvisorPending(true);
+      } else {
+        setIsAdvisorPending(false);
+      }
+    } else if (selectedAdvisor == "") {
+      setIsAdvisorPending(false);
+    }
+  }, [selectedAdvisor]);
+
+  useEffect(() => {
+    setSelectedAdvisor("");
+  }, [appointmentId]);
+
+  const [advisors, setAdvisors] = useState<
     {
-      title: "Víctor Mancera",
-      value: "7746ad47-7664-4043-ab40-5aca0ce6872b",
-    },
-  ];
+      title: string;
+      value: string;
+    }[]
+  >([]);
+  const [isAdvisorPending, setIsAdvisorPending] = useState(false);
+  const [advisorInfo, setAdvisorInfo] = useState<
+    Map<
+      string,
+      {
+        name: string;
+        completed_hours: number;
+        career_name: string;
+        semester: number;
+      }
+    >
+  >(new Map());
+  const [pendingAdvisors, setPendingAdvisors] = useState<Set<string>>();
 
   const configurationDropdown: IConfigurationsDropdown = {
-    onChange: (e) => setSelectedAdvisor(e.target.value),
+    onChange: (e) => {
+      setSelectedAdvisor(e.target.value);
+    },
     placeholder: "Selecciona a un/a asesor/a",
     type: ETypeDropdown.normal,
   };
@@ -61,7 +164,8 @@ const InfoContent = ({
         </Text>
         {editAppointment && type === 0 ? (
           <DropDown
-            options={dropdownOption}
+            color="white"
+            options={advisors}
             configuration={configurationDropdown}
           />
         ) : (
@@ -76,20 +180,35 @@ const InfoContent = ({
           </Heading>
         )}
       </Box>
-      {type !== 0 || selectedAdvisor !== "" || !editAppointment ? (
+      {type !== 1 && selectedAdvisor !== "" ? (
         <Flex flexDir={"column"} padding={4} gap={2}>
-          <Text textColor={"white"}>Ing. Tecnologías Computacionales</Text>
           <Text textColor={"white"}>
-            <strong>6to</strong> Semestre
+            {advisorInfo.get(selectedAdvisor)?.career_name}
           </Text>
           <Text textColor={"white"}>
-            <strong>3</strong> horas completadas.
+            Semestre{" "}
+            <strong>{advisorInfo.get(selectedAdvisor)?.semester}</strong>
+          </Text>
+          <Text textColor={"white"}>
+            <strong>{advisorInfo.get(selectedAdvisor)?.completed_hours}</strong>{" "}
+            horas completadas.
           </Text>
         </Flex>
       ) : (
-        <Text color={"white"}>
-          Aquí se colocarán los detalles del asesor seleccionado
-        </Text>
+        <></>
+      )}
+      {isAdvisorPending ? (
+        <Box>
+          <Text color="black" as="b">
+            Atención:{" "}
+          </Text>
+          <Text color="white" as="em">
+            Este asesor no ha confirmado que puede dar la asesoría. Esto implica
+            que podría no asistir.
+          </Text>
+        </Box>
+      ) : (
+        <></>
       )}
     </Flex>
   );
@@ -99,6 +218,7 @@ export const CardContent = ({
   editAppointment = false,
   setSelectedAdvisor,
   selectedAdvisor,
+  appointmentId,
 }: ICardComponent) => (
   <Grid
     templateColumns="repeat(20, 1fr)"
@@ -131,6 +251,7 @@ export const CardContent = ({
             editAppointment={editAppointment}
             selectedAdvisor={selectedAdvisor}
             setSelectedAdvisor={setSelectedAdvisor}
+            appointmentId={appointmentId}
           />
         </GridItem>
         <GridItem colStart={12} colSpan={9} rowStart={3}>
