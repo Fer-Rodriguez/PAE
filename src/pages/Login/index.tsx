@@ -17,6 +17,7 @@ import { PasswordInput } from "../../components/FormsLogin/PasswordInput";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { useNavigate } from "react-router-dom";
 import { GetUser, GetUserInfo } from "../../api/users/get";
+import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
 import { IUserData } from "../../interfaces";
 import {
   ELanguage,
@@ -35,37 +36,71 @@ interface IFormsLogin {
 export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
+  const setAllCareers = useStore((state) => state.setAllCareers);
+  const setAllDDCareers = useStore((state) => state.setAllDDCareers);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [saveData, setSaveData] = useState(true);
   useEffect(() => {
+    GetAllCareers(setAllCareers);
+    GetAllDDCareers(setAllDDCareers);
     const userId = localStorage.getItem("user_id");
     if (userId) {
       GetUserInfo(userId).then((userData) => {
-        const correctUser: IUserData = {
-          id: userData.user.id,
-          status:
-            userData.user.status === EStatus.active
-              ? EStatus.active
-              : userData.user.status === EStatus.deleted
-              ? EStatus.deleted
-              : EStatus.inactive,
-          name: userData.user.name,
-          email: userData.user.email,
-          type:
-            userData.user.type === EUserType.advisor
-              ? EUserType.advisor
-              : userData.user.type === EUserType.student
-              ? EUserType.student
-              : userData.user.type === EUserType.admin
-              ? EUserType.admin
-              : EUserType.root,
-          semester: userData.user.userSemesters[0].semester,
-          career: userData.user.career[0].id,
-          careerName: userData.user.career[0].acronym,
-          config: { language: ELanguage.spanish, theme: ETheme.white },
-          profilePic: "No tengo",
-          notifications: [],
-        };
+        const correctUser: IUserData =
+          userData.user.career.length === 1
+            ? {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+              }
+            : {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                semesterDD: userData.user.userSemesters[1].semester,
+                careerDD: userData.user.career[1].id,
+                careerNameDD: userData.user.career[1].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+              };
         setUser(correctUser);
         navigate("/dashboard");
       });
@@ -89,37 +124,64 @@ export const FormsLogin = (props: IFormsLogin) => {
     try {
       const idUserData = await GetUser(capitalize(data.mail), data.password);
       console.log("MI DATA: ", idUserData);
-      const userData = await GetUserInfo(idUserData.userId);
 
       if (idUserData.status == "OK") {
-        const correctUser: IUserData = {
-          id: userData.user.id,
-          status:
-            userData.user.status === EStatus.active
-              ? EStatus.active
-              : userData.user.status === EStatus.deleted
-              ? EStatus.deleted
-              : EStatus.inactive,
-          name: userData.user.name,
-          email: userData.user.email,
-          type:
-            userData.user.type === EUserType.advisor
-              ? EUserType.advisor
-              : userData.user.type === EUserType.student
-              ? EUserType.student
-              : userData.user.type === EUserType.admin
-              ? EUserType.admin
-              : EUserType.root,
-          semester: userData.user.userSemesters[0].semester,
-          career: userData.user.career[0].id,
-          careerName: userData.user.career[0].acronym,
-          config: { language: ELanguage.spanish, theme: ETheme.white },
-          profilePic: "No tengo",
-          notifications: [],
-        };
-        if (saveData) {
-          localStorage.setItem("user_id", userData.user.id);
-        }
+        const userData = await GetUserInfo(idUserData.userId);
+        const correctUser: IUserData =
+          userData.user.career.length === 1
+            ? {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+              }
+            : {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                semesterDD: userData.user.userSemesters[1].semester,
+                careerDD: userData.user.career[1].id,
+                careerNameDD: userData.user.career[1].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+              };
         setUser(correctUser);
         navigate("/dashboard");
       } else {

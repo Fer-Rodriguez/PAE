@@ -63,6 +63,8 @@ export interface IManagingTableInternal {
 export interface IObjectData {
   title: string;
   value?: any;
+  valueII?: any;
+  valueIII?: any;
 }
 
 export interface IConfigurationsDropdown {
@@ -173,12 +175,21 @@ export interface IUserData {
   semester: number;
   career: string;
   careerName?: string;
+  semesterDD?: string;
+  careerDD?: string;
+  careerNameDD?: string;
   config: TConfigObject;
   profilePic: string;
   createDate?: string;
   notifications: Array<INotification>;
 }
-
+export interface ICareerData {
+  id: string;
+  name: string;
+  acronym: string;
+  length: number;
+  doubleDegree?: boolean;
+}
 export interface INewUserSchedule {
   start: Date;
   finish: Date;

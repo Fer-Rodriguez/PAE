@@ -51,17 +51,33 @@ export const userSlice: StoreSlice<TUserSlice> = (set, get) => ({
     set({ config: newConfig });
   },
   setUser: (newUserData) => {
-    set({
-      id: newUserData.id,
-      status: newUserData.status,
-      name: newUserData.name,
-      email: newUserData.email,
-      type: newUserData.type,
-      career: newUserData.career,
-      semester: newUserData.semester,
-      profilePic: newUserData.profilePic,
-      careerName: newUserData.careerName,
-      config: newUserData.config,
-    });
+    newUserData.careerDD === undefined
+      ? set({
+          id: newUserData.id,
+          status: newUserData.status,
+          name: newUserData.name,
+          email: newUserData.email,
+          type: newUserData.type,
+          career: newUserData.career,
+          semester: newUserData.semester,
+          careerName: newUserData.careerName,
+          profilePic: newUserData.profilePic,
+          config: newUserData.config,
+        })
+      : set({
+          id: newUserData.id,
+          status: newUserData.status,
+          name: newUserData.name,
+          email: newUserData.email,
+          type: newUserData.type,
+          career: newUserData.career,
+          semester: newUserData.semester,
+          careerName: newUserData.careerName,
+          careerDD: newUserData.careerDD,
+          semesterDD: newUserData.semesterDD,
+          careerNameDD: newUserData.careerNameDD,
+          profilePic: newUserData.profilePic,
+          config: newUserData.config,
+        });
   },
 });

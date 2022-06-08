@@ -24,6 +24,7 @@ import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 import { GetUser, GetUserInfo } from "../../api/users/get";
 import { IUserData } from "../../interfaces";
 import { useStore } from "../../state/store";
+import { GetAllCareers } from "../../api/careers/get";
 
 interface IForms2 {
   setInfo: React.Dispatch<any>;
@@ -36,11 +37,15 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
+  const [carreraName, setCarreraName] = useState("");
   const [doubleCarrera, setDoubleCarrera] = useState("");
+  const [doubleCarreraName, setDoubleCarreraName] = useState("");
   const [semesterCarrera, setSemesterCarrera] = useState("");
   const [semesterDoubleCarrera, setSemesterDoubleCarrera] = useState("");
   const [typeUser, setTypeUser] = useState<EUserType | null>(null);
   const [seeModal, setSeeModal] = useState(false);
+  const careers = useStore((state) => state.allCareers);
+  const ddCareers = useStore((state) => state.ddCareers);
 
   const capitalize = (str: string) => {
     if (typeof str === "string") {
@@ -55,47 +60,91 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
   };
 
   const createUser = async () => {
-    await CreateUser({
-      name: info.name,
-      email: capitalize(info.mail),
-      password: info.password,
-      career: info.carrera,
-      semester: info.semestreCarrera,
-      status: EStatus.active,
-      type: info.typeUserDrop,
-    });
-
+    console.log(info.semesterDoubleCarrera);
+    if (info.semesterDoubleCarrera !== undefined) {
+      await CreateUser({
+        name: info.name,
+        email: capitalize(info.mail),
+        password: info.password,
+        career: info.carrera,
+        semester: info.semestreCarrera,
+        status: EStatus.active,
+        type: info.typeUserDrop,
+        careerDD: info.doubleCarrera,
+        semesterDD: info.semesterDoubleCarrera,
+      });
+    } else {
+      await CreateUser({
+        name: info.name,
+        email: capitalize(info.mail),
+        password: info.password,
+        career: info.carrera,
+        semester: info.semestreCarrera,
+        status: EStatus.active,
+        type: info.typeUserDrop,
+      });
+    }
     const idUserData = await GetUser(capitalize(info.mail), info.password);
     console.log("User data: ", idUserData);
     setNewId(idUserData.userId);
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
-      const correctUser: IUserData = {
-        id: userData.user.id,
-        status:
-          userData.user.status === EStatus.active
-            ? EStatus.active
-            : userData.user.status === EStatus.deleted
-            ? EStatus.deleted
-            : EStatus.inactive,
-        name: userData.user.name,
-        email: userData.user.email,
-        type:
-          userData.user.type === EUserType.advisor
-            ? EUserType.advisor
-            : userData.user.type === EUserType.student
-            ? EUserType.student
-            : userData.user.type === EUserType.admin
-            ? EUserType.admin
-            : EUserType.root,
-        semester: userData.user.userSemesters[0].semester,
-        career: userData.user.career[0].id,
-        careerName: userData.user.career[0].acronym,
-        config: { language: ELanguage.spanish, theme: ETheme.white },
-        profilePic: "No tengo",
-        notifications: [],
-      };
+      const correctUser: IUserData =
+        userData.user.career.length === 1
+          ? {
+              id: userData.user.id,
+              status:
+                userData.user.status === EStatus.active
+                  ? EStatus.active
+                  : userData.user.status === EStatus.deleted
+                  ? EStatus.deleted
+                  : EStatus.inactive,
+              name: userData.user.name,
+              email: userData.user.email,
+              type:
+                userData.user.type === EUserType.advisor
+                  ? EUserType.advisor
+                  : userData.user.type === EUserType.student
+                  ? EUserType.student
+                  : userData.user.type === EUserType.admin
+                  ? EUserType.admin
+                  : EUserType.root,
+              semester: userData.user.userSemesters[0].semester,
+              career: userData.user.career[0].id,
+              careerName: userData.user.career[0].acronym,
+              config: { language: ELanguage.spanish, theme: ETheme.white },
+              profilePic: "No tengo",
+              notifications: [],
+            }
+          : {
+              id: userData.user.id,
+              status:
+                userData.user.status === EStatus.active
+                  ? EStatus.active
+                  : userData.user.status === EStatus.deleted
+                  ? EStatus.deleted
+                  : EStatus.inactive,
+              name: userData.user.name,
+              email: userData.user.email,
+              type:
+                userData.user.type === EUserType.advisor
+                  ? EUserType.advisor
+                  : userData.user.type === EUserType.student
+                  ? EUserType.student
+                  : userData.user.type === EUserType.admin
+                  ? EUserType.admin
+                  : EUserType.root,
+              semester: userData.user.userSemesters[0].semester,
+              career: userData.user.career[0].id,
+              careerName: userData.user.career[0].acronym,
+              semesterDD: userData.user.userSemesters[1].semester,
+              careerDD: userData.user.career[1].id,
+              careerNameDD: userData.user.career[1].acronym,
+              config: { language: ELanguage.spanish, theme: ETheme.white },
+              profilePic: "No tengo",
+              notifications: [],
+            };
       setUser(correctUser);
     }
     if (info.typeUserDrop === EUserType.student) navigate("/dashboard");
@@ -122,8 +171,10 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
       <FormControl isRequired isInvalid={!isValid} w={"100%"}>
         <Stack spacing={4} w={"100%"}>
           <CarreraInput
+            options={careers}
             control={control}
             setCarrera={setCarrera}
+            setCarreraName={setCarreraName}
             secondValidation={true}
             defaultValue={info.carrera}
           />
@@ -134,12 +185,14 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
             defaultValue={info.semestreCarrera}
           />
           <DoubleCarreraInput
+            options={ddCareers}
             control={control}
             setDoubleCarrera={setDoubleCarrera}
+            setDoubleCarreraName={setDoubleCarreraName}
             secondValidation={true}
           />
           {(doubleCarrera && doubleCarrera !== "NA") ||
-          info.semestreDoueblaCarrera ? (
+          info.semesterDoubleCarrera ? (
             <SemesterDoubleCarreraInput
               control={control}
               setSemesterDoubleCarrera={setSemesterDoubleCarrera}
@@ -186,22 +239,47 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
       </FormControl>
       {seeModal ? (
         <Confirmation info={info} customClose={() => closePopUp()}>
-          <Text>
-            Nombre: {info.name} <br />
-            <br />
-            Correo: {info.mail} <br />
-            {/**            <br />
-            Carrera: {info.carrera} <br /> */}
-            <br />
-            Semestre: {info.semestreCarrera}
-            <br />
-            <br />
-          </Text>
+          {(info.doubleCarrera && info.doubleCarrera !== "NA") ||
+          info.semesterDoubleCarrera ? (
+            <Text>
+              Nombre: {info.name} <br />
+              <br />
+              Correo: {info.mail} <br />
+              <br />
+              Carrera: {carreraName} <br />
+              <br />
+              Semestre: {info.semestreCarrera}
+              <br />
+              <br />
+              Carrera Doble Titulación: {doubleCarreraName} <br />
+              <br />
+              Semestre Doble Titulación: {info.semesterDoubleCarrera}
+              <br />
+              <br />
+            </Text>
+          ) : (
+            <Text>
+              Nombre: {info.name} <br />
+              <br />
+              Correo: {info.mail} <br />
+              <br />
+              Carrera: {carreraName} <br />
+              <br />
+              Semestre: {info.semestreCarrera}
+              <br />
+              <br />
+            </Text>
+          )}
+
           <Center>
             <ButtonGeneric
               bgColor="blue"
               sizePX="50%"
-              text="Registrarse"
+              text={
+                info.typeUserDrop === EUserType.student
+                  ? "Registrarse"
+                  : "Introducir mis horarios"
+              }
               onClick={() => createUser()}
             ></ButtonGeneric>
           </Center>
