@@ -90,6 +90,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
+
       const correctUser: IUserData =
         userData.user.career.length === 1
           ? {
@@ -116,6 +117,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
               config: { language: ELanguage.spanish, theme: ETheme.white },
               profilePic: "No tengo",
               notifications: [],
+              polls: [],
             }
           : {
               id: userData.user.id,
@@ -144,7 +146,9 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
               config: { language: ELanguage.spanish, theme: ETheme.white },
               profilePic: "No tengo",
               notifications: [],
+              polls: [],
             };
+
       setUser(correctUser);
     }
     if (info.typeUserDrop === EUserType.student) navigate("/dashboard");

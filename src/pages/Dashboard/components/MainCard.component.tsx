@@ -26,6 +26,7 @@ import bandera from "../Icons/bandera.png";
 import "../style.css";
 import { IAppointmentDataMod } from "../../../interfaces";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface IDates {
   day: string;
@@ -41,6 +42,8 @@ export const MainCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  const [t, i18n] = useTranslation("global");
+
   const setDetailsActivation = useStore((state) => state.setDetailsActivation);
   const setEditActivation = useStore((state) => state.setEditActivation);
   const setSelectedAppointment = useStore(
@@ -85,7 +88,7 @@ export const MainCard = ({
       return dateObject;
     };
     setDates(convertDate());
-  }, [recentAppointment]);
+  }, [recentAppointment, allAppointments]);
 
   const findSelectedAppointment = () => {
     allAppointments.map((appointmentData) => {
@@ -115,13 +118,13 @@ export const MainCard = ({
       <Flex flexDirection={"column"} alignItems={mobile ? "center" : "start"}>
         <Text color={"white"}>
           {type === EUserType.admin
-            ? "Tienes una nueva solicitud"
-            : "Tu próxima asesoria"}
+            ? t("dashboard.request")
+            : t("dashboard.nextAppointment")}
         </Text>
         <Heading color={"white"} size={mobile ? "sm" : "lg"}>
           {appointments
             ? dates.day + ", " + dates.monthDay + " de " + dates.month
-            : "No hay asesorías próximas"}
+            : t("dashboard.mainCardAppointment")}
         </Heading>
         <VStack mt={mobile ? 6 : 2} justifyContent={"center"}>
           <Text color={"white"}>{dates.hours}</Text>

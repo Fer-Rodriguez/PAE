@@ -166,6 +166,13 @@ export interface INotification {
   created_at: string;
   updated_at: string;
 }
+
+export interface IPoll {
+  order: number;
+  question: string;
+  type: string;
+}
+
 export interface IUserData {
   id: string;
   status: EStatus;
@@ -182,6 +189,7 @@ export interface IUserData {
   profilePic: string;
   createDate?: string;
   notifications: Array<INotification>;
+  polls: Array<IPoll>;
 }
 export interface ICareerData {
   id: string;
@@ -224,6 +232,14 @@ export interface ISurveyData {
         scaleEnding?: string;
       }[]
     | undefined;
+  appointmentId: string;
+  triggeringNotificationId: string;
+}
+
+export interface IAppointmentAcceptanceData {
+  loaded: boolean;
+  answered: boolean;
+  controller: React.Dispatch<React.SetStateAction<boolean>>;
   appointmentId: string;
   triggeringNotificationId: string;
 }

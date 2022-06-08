@@ -7,6 +7,7 @@ import {
   Grid,
   GridItem,
   Center,
+  Button,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import makeData from "../../components/Bell/makeData";
@@ -16,7 +17,7 @@ import { Menu } from "../../components/Menu";
 import { Bell } from "../../components/Bell";
 
 //Interfaces
-import { IUserComponents } from "../../interfaces";
+import { IDataProfileCard, IUserComponents } from "../../interfaces";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
 
@@ -24,6 +25,13 @@ import { ButtonGeneric } from "../../components/Button";
 import cross from "../../assets/Cross.png";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/Logo";
+import shallow from "zustand/shallow";
+import { useStore } from "../../state/store";
+import { ENotificationStatus } from "../../interfaces/enums";
+import { updateNotification } from "../../api/notifications/update";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
 
 function GetData() {
   const columns = useMemo(
@@ -54,6 +62,33 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
     navigate("/");
   };
 
+  const userData: IDataProfileCard = useStore(
+    (state) => ({
+      id: state.id,
+      name: state.name,
+      email: state.email,
+      type: state.type,
+      semester: state.semester,
+      career: state.career,
+
+      profilePic: state.profilePic,
+    }),
+    shallow
+  );
+
+  const userNotifications = useStore((state) => state.notifications);
+
+  function actualizarNotis() {
+    console.log("PRUEBITA");
+    const temp = [...userNotifications].filter(
+      (n) => n.title == "Solicitud de Asesoría" && n.status == "not seen"
+    );
+    console.log(temp);
+    temp.forEach((x) => {
+      updateNotification(x.id, "seen" as ENotificationStatus);
+    });
+  }
+
   return (
     <Grid
       id="wow"
@@ -74,19 +109,19 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
         <Logo maxWidth="50vw" />
       </GridItem>
       <GridItem rowStart={1} rowSpan={3} colStart={15}>
-        <Flex
-          w={"100%"}
-          h={"100%"}
-          alignItems="center"
-          justifyContent={"space-around"}
-        >
+        <Flex w={"100%"} h={"100%"} alignItems="center">
           <Image
             src={cross}
             boxSize={8}
             onClick={() => logout()}
             style={{ cursor: "pointer" }}
           />
-          {GetData()}
+          <Button
+            onClick={() => actualizarNotis()}
+            backgroundColor={DarkMode().bgTotal}
+          >
+            {GetData()}
+          </Button>
         </Flex>
       </GridItem>
       <GridItem rowStart={5} colSpan={2} colStart={1}>

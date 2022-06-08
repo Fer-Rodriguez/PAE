@@ -39,13 +39,16 @@ export const FormsLogin = (props: IFormsLogin) => {
   const setAllCareers = useStore((state) => state.setAllCareers);
   const setAllDDCareers = useStore((state) => state.setAllDDCareers);
   const [visibleAlert, setVisibleAlert] = useState(false);
-  const [saveData, setSaveData] = useState(true);
+  const [isLogining, setIsLogining] = useState(false);
+  // const [saveData, setSaveData] = useState(true);
+  const saveData = true;
   useEffect(() => {
     GetAllCareers(setAllCareers);
     GetAllDDCareers(setAllDDCareers);
     const userId = localStorage.getItem("user_id");
     if (userId) {
       GetUserInfo(userId).then((userData) => {
+        const isRoot = userData.user.type === EUserType.root;
         const correctUser: IUserData =
           userData.user.career.length === 1
             ? {
@@ -72,6 +75,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                 config: { language: ELanguage.spanish, theme: ETheme.white },
                 profilePic: "No tengo",
                 notifications: [],
+                polls: [],
               }
             : {
                 id: userData.user.id,
@@ -100,6 +104,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                 config: { language: ELanguage.spanish, theme: ETheme.white },
                 profilePic: "No tengo",
                 notifications: [],
+                polls: [],
               };
         setUser(correctUser);
         navigate("/dashboard");
@@ -122,11 +127,13 @@ export const FormsLogin = (props: IFormsLogin) => {
   };
   const tryLogin = async (data: any) => {
     try {
+      setIsLogining(true);
       const idUserData = await GetUser(capitalize(data.mail), data.password);
       console.log("MI DATA: ", idUserData);
 
       if (idUserData.status == "OK") {
         const userData = await GetUserInfo(idUserData.userId);
+        const isRoot = userData.user.type === EUserType.root;
         const correctUser: IUserData =
           userData.user.career.length === 1
             ? {
@@ -153,6 +160,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                 config: { language: ELanguage.spanish, theme: ETheme.white },
                 profilePic: "No tengo",
                 notifications: [],
+                polls: [],
               }
             : {
                 id: userData.user.id,
@@ -181,13 +189,19 @@ export const FormsLogin = (props: IFormsLogin) => {
                 config: { language: ELanguage.spanish, theme: ETheme.white },
                 profilePic: "No tengo",
                 notifications: [],
+                polls: [],
               };
+        if (saveData) {
+          localStorage.setItem("user_id", userData.user.id);
+        }
         setUser(correctUser);
+        setIsLogining(false);
         navigate("/dashboard");
       } else {
         setVisibleAlert(true);
       }
     } catch (e) {
+      setIsLogining(false);
       setVisibleAlert(true);
     }
   };
@@ -238,7 +252,7 @@ export const FormsLogin = (props: IFormsLogin) => {
               <PasswordInput control={control} secondValidation={true} />
 
               <Flex>
-                <Checkbox
+                {/* <Checkbox
                   isInvalid={false}
                   size="sm"
                   defaultChecked
@@ -246,7 +260,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                   onChange={() => setSaveData(!saveData)}
                 >
                   Recuérdame
-                </Checkbox>
+                </Checkbox> */}
                 <Spacer />
                 <Link
                   fontSize="sm"
@@ -262,6 +276,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                   bgColor="purpleLight"
                   sizePX="40%"
                   text="Ingresar"
+                  isLoading={isLogining}
                   onClick={handleSubmit(tryLogin)}
                 ></ButtonGeneric>
               </Center>
