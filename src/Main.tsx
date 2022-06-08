@@ -169,8 +169,8 @@ export const Main = () => {
               index
               element={
                 <MainLayout
-                  desktop={<AdminPage />}
-                  mobile={<AdminPage mobile={true} />}
+                  desktop={<Dashboard />}
+                  mobile={<Dashboard mobile={true} />}
                 />
               }
             />
