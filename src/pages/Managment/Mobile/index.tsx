@@ -50,12 +50,6 @@ export const ManagmentMobile = ({
             placeholder="Buscar..."
           />
         </InputGroup>
-        <IconButton
-          onClick={onFilterClick}
-          variant="ghost"
-          icon={<Icon as={Filter}></Icon>}
-          aria-label="Filtros"
-        />
       </Flex>
       <Flex hidden={hideFilters} justifyContent="space-between">
         Filtros

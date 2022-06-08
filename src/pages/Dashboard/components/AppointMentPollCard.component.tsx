@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Heading,
@@ -31,7 +31,6 @@ export const AppointmentsPollCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
-  console.log("TIPO:", type);
   const [showPollCard, setShowPollCard] = useState(false);
   const navigate = useNavigate();
   const [t, i18n] = useTranslation("global");
@@ -56,8 +55,9 @@ export const AppointmentsPollCard = ({
         onClick={() => {
           if (type === EUserType.admin) {
             //
+            setShowPollCard(!showPollCard); // TODO: Cambiar esto si hay tiempo. El problema es que hay que refactorizar PollCard.
           } else {
-            navigate("encuestas");
+            navigate("crear_asesoria");
           }
         }}
       >

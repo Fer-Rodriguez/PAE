@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 
 interface IFormsLogin {
   mobile?: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const FormsLogin = (props: IFormsLogin) => {
@@ -41,38 +42,8 @@ export const FormsLogin = (props: IFormsLogin) => {
   const saveData = true;
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
-    if (userId) {
-      GetUserInfo(userId).then((userData) => {
-        const isRoot = userData.user.type === EUserType.root;
-        const correctUser: IUserData = {
-          id: userData.user.id,
-          status:
-            userData.user.status === EStatus.active
-              ? EStatus.active
-              : userData.user.status === EStatus.deleted
-              ? EStatus.deleted
-              : EStatus.inactive,
-          name: userData.user.name,
-          email: userData.user.email,
-          type:
-            userData.user.type === EUserType.advisor
-              ? EUserType.advisor
-              : userData.user.type === EUserType.student
-              ? EUserType.student
-              : userData.user.type === EUserType.admin
-              ? EUserType.admin
-              : EUserType.root,
-          semester: isRoot ? null : userData.user.userSemesters[0].semester,
-          career: isRoot ? null : userData.user.career[0].id,
-          careerName: isRoot ? null : userData.user.career[0].acronym,
-          config: { language: ELanguage.spanish, theme: ETheme.white },
-          profilePic: "No tengo",
-          notifications: [],
-          polls: [],
-        };
-        setUser(correctUser);
-        navigate("/dashboard");
-      });
+    if (userId && userId !== "") {
+      navigate("/dashboard");
     }
   }, []);
 
@@ -129,6 +100,7 @@ export const FormsLogin = (props: IFormsLogin) => {
         }
         setUser(correctUser);
         setIsLogining(false);
+        props.setLoggedIn(true);
         navigate("/dashboard");
       } else {
         setVisibleAlert(true);

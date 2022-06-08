@@ -18,8 +18,6 @@ interface ICreateUserData {
 }
 
 export const CreateUser = async (newValues: ICreateUserData) => {
-  console.log("ESTO QUIERO MANDAR: ", newValues);
-
   const config = {
     method: "post",
     url: "http://localhost:6070/register/create",

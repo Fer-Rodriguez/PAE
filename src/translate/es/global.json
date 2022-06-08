@@ -1,8 +1,7 @@
 {
   "dashboard": {
     "more": "...ver más",
-    "appointment": "¡3 asesorías completadas!",
-    "appointment2": "Agendar Asesoría",
+    "appointment": "Agendar Asesoría",
     "recent": "Asesorías recientes",
     "mainCardAppointment": "No hay asesorías próximas",
     "nextAppointment": "Tu próxima asesoría",
