@@ -108,9 +108,11 @@ export const GetAllAdmins = async (
           profilePic: "",
           createDate: administrator.created_at,
           notifications: [],
+          polls: [],
         };
         arrayAdministratorsUserData.push(administratorUserData);
       });
+      console.log(arrayAdministratorsUserData);
       setAllUsers(arrayAdministratorsUserData);
       return arrayAdministratorsUserData;
     })

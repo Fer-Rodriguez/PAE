@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
@@ -26,7 +26,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
     GetAllAdmins(setAllUsers);
     getAllSubjects(setAllSubjects);
   }, []);
-  const subjects = useStore((state) => state.allSubjects);
+  const subjects = useRef(useStore.getState().allSubjects);
   const [subjectsColumnData, setSubjectsColumn] = useState<
     Array<IColumnDetails>
   >([{ id: "" }]);
@@ -95,7 +95,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
 
   const getSubjectData = async () => {
     const subjectsColumn: Array<IColumnDetails> = [];
-    await subjects
+    await subjects.current
       .filter((element: any) => element.page === 132)[0]
       .subjects.forEach((subject) => {
         const columnData: IColumnDetails = {
@@ -107,6 +107,13 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
 
     setSubjectsColumn(subjectsColumn);
   };
+
+  useEffect(() => {
+    useStore.subscribe((state) => {
+      subjects.current = state.allSubjects;
+      getSubjectData();
+    });
+  }, []);
 
   useEffect(() => {
     getSubjectData();

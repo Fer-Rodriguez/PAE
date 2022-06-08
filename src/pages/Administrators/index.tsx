@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
@@ -26,7 +26,7 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
     GetAllAdmins(setAllUsers);
     getAllSubjects(setAllSubjects);
   }, []);
-  const administrators = useStore((state) => state.allUsers);
+  const administrators = useRef(useStore.getState().allUsers);
   const [administratorsColumnData, setAdministratorsColumn] = useState<
     Array<IColumnDetails>
   >([{ id: "" }]);
@@ -80,7 +80,7 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
   //TODO: Añadir la llamada al endpoint para obtener todos los usuarios asesores.
   const getAdminData = async () => {
     const administratorsColumn: Array<IColumnDetails> = [];
-    await administrators.forEach((administrator) => {
+    await administrators.current.forEach((administrator) => {
       const columnData: IColumnDetails = {
         id: administrator.id,
         date: new Date(administrator.createDate!).toLocaleString(),
@@ -99,6 +99,13 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
 
     setAdministratorsColumn(administratorsColumn);
   };
+
+  useEffect(() => {
+    useStore.subscribe((state) => {
+      administrators.current = state.allUsers;
+      getAdminData();
+    });
+  }, []);
 
   useEffect(() => {
     getAdminData();
