@@ -179,6 +179,19 @@ export interface IUserData {
   notifications: Array<INotification>;
 }
 
+export interface ISubjectData {
+  id: string;
+  subjectAcronym: string;
+  name: string;
+  careerAcronym: string;
+  semester: string;
+}
+
+export interface ISubjects {
+  page: number;
+  subjects: Array<ISubjectData>;
+}
+
 export interface INewUserSchedule {
   start: Date;
   finish: Date;

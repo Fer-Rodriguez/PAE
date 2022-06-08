@@ -34,6 +34,8 @@ import shallow from "zustand/shallow";
 import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
 import { GetUserInfo } from "./api/users/get";
 import { IUserData } from "./interfaces";
+import { AdminPage } from "./pages/Administrators";
+import { SubjectPage } from "./pages/Subjects";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -167,8 +169,8 @@ export const Main = () => {
               index
               element={
                 <MainLayout
-                  desktop={<Dashboard />}
-                  mobile={<Dashboard mobile={true} />}
+                  desktop={<AdminPage />}
+                  mobile={<AdminPage mobile={true} />}
                 />
               }
             />
