@@ -22,7 +22,7 @@ import "./App.css";
 
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
 import socket from "./socket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToastHook } from "./hooks";
 import { useStore } from "./state/store";
 import {
@@ -66,6 +66,8 @@ export const Main = () => {
     }),
     shallow
   );
+
+  const userType = useRef(useStore.getState().type);
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
@@ -141,6 +143,13 @@ export const Main = () => {
       .off("newNotification")
       .on("newNotification", generateVisualNotification);
   }, []);
+
+  useEffect(() => {
+    useStore.subscribe((state) => {
+      userType.current = state.type;
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -180,10 +189,17 @@ export const Main = () => {
             <Route
               index
               element={
-                <MainLayout
-                  desktop={<Dashboard />}
-                  mobile={<Dashboard mobile={true} />}
-                />
+                userType.current === EUserType.root ? (
+                  <MainLayout
+                    desktop={<AdminPage />}
+                    mobile={<AdminPage mobile={true} />}
+                  />
+                ) : (
+                  <MainLayout
+                    desktop={<Dashboard />}
+                    mobile={<Dashboard mobile={true} />}
+                  />
+                )
               }
             />
             <Route
