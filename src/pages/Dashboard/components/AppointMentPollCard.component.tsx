@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heading, Flex, Image, Button } from "@chakra-ui/react";
 
@@ -11,6 +12,7 @@ import theme from "../../../theme";
 import notebook from "../Icons/notebook.png";
 import hamds from "../Icons/hands.png";
 import "../style.css";
+import { PollCard } from "../../Poll";
 
 export const AppointmentsPollCard = ({
   type,
@@ -19,30 +21,31 @@ export const AppointmentsPollCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  console.log("TIPO:", type);
+  const [showPollCard, setShowPollCard] = useState(false);
   const navigate = useNavigate();
 
   const BottomContent = () => (
     <Flex flexDirection={"column"} m={"2"} gap={3}>
       <Heading as="h4" size="md" textAlign={"center"}>
-        {type === EUserType.admin
-          ? "¡Encuestas!"
-          : type === EUserType.advisor
-          ? "¡3 asesorías completadas!"
-          : "Agendar Asesoría"}
+        {type === EUserType.admin ? "¡Encuestas!" : "Agendar Asesoría"}
       </Heading>
-      {type !== EUserType.advisor && (
-        <Button
-          borderRadius={theme.radii.general}
-          backgroundColor={theme.colors.purple}
-          color="white"
-          size="sm"
-          onClick={() => {
-            navigate(type === EUserType.admin ? "encuestas" : "crear_asesoria");
-          }}
-        >
-          {type === EUserType.admin ? "Editar" : "Agendar"}
-        </Button>
-      )}
+      <Button
+        borderRadius={theme.radii.general}
+        backgroundColor={theme.colors.purple}
+        color="white"
+        size="sm"
+        onClick={() => {
+          if (type === EUserType.admin) {
+            //
+          } else {
+            navigate("encuestas");
+          }
+        }}
+      >
+        {type === EUserType.admin ? "Editar" : "Agendar"}
+      </Button>
+      {showPollCard ? <PollCard mobile={mobile}></PollCard> : <></>}
     </Flex>
   );
 

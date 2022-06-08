@@ -34,10 +34,13 @@ export const getAllAppointments = async (
   return response;
 };
 
-export const getPossibleDates = async (idSubject: string) => {
+export const getPossibleDates = async (
+  idSubject: string,
+  idPetitioner: string
+) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/possibleDates?idSubject=${idSubject}`,
+    url: `http://localhost:6060/appointment/possibleDates?idSubject=${idSubject}&idPetitioner=${idPetitioner}`,
   };
 
   return axios(config)

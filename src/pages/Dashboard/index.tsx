@@ -14,6 +14,7 @@ import { AppointmentDetails } from "../AppointmentDetails";
 
 //APIS
 import {
+  getAllAppointments,
   getBasicAppointmentInfo,
   getRecentAppointment,
 } from "../../api/appointments/get";
@@ -213,6 +214,9 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   };
 
   const setRecentAppointment = useStore((state) => state.setRecentAppointment);
+  // Esto se me hace horrible, pero a como está implementado no hay otra forma de mostrar
+  // la info completa en el dashboard.
+  const setAllAppointments = useStore((state) => state.setAllAppointments);
   const setAllUsers = useStore((state) => state.setAllUsers);
   const setAllNotifications = useStore((state) => state.setNotifications);
 
@@ -224,6 +228,22 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
     GetAllAdvisors(setAllUsers);
     getAllNotifications(userData.id, setAllNotifications);
+    const obtainData = async () => {
+      const response = await getAllAppointments(
+        userData.id,
+        userData.type,
+        true
+      );
+      setAllAppointments(response);
+    };
+    obtainData().then(
+      () => {
+        //setCalledAPI(true);
+      },
+      () => {
+        //setCalledAPI(true);
+      }
+    );
   }, []);
 
   useEffect(() => {

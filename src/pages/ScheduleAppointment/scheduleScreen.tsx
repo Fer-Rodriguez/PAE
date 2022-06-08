@@ -23,6 +23,7 @@ import { addDays, isSameDayByName } from "../../services/Functions";
 import { getPossibleDates } from "../../api/appointments/get";
 import PopOver, { ETypeSize } from "../../components/popOver";
 import { ICitasDaySchedules } from "../../interfaces";
+import { useStore } from "../../state/store";
 
 export const ScheduleScreen = ({
   mobile,
@@ -41,6 +42,7 @@ export const ScheduleScreen = ({
   onFullDateSelected?: (newValue: string) => void;
   idSubject: string;
 }) => {
+  const idUser = useStore((store) => store.id);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [selectedDayString, setSelectedDayString] = useState("");
@@ -48,7 +50,7 @@ export const ScheduleScreen = ({
   const [possibleDates, setPossibleDates] = useState<ICitasDaySchedules[]>([]);
   const [dateHashes, setDateHashes] = useState<Set<string>>(new Set());
   const obtainPossibleDates = async () => {
-    const posibleDatesApi = await getPossibleDates(idSubject);
+    const posibleDatesApi = await getPossibleDates(idSubject, idUser);
     if (Array.isArray(posibleDatesApi)) {
       setPossibleDates(posibleDatesApi);
       if (posibleDatesApi.length == 0) {
