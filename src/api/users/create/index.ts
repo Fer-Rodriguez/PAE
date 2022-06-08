@@ -14,22 +14,34 @@ interface ICreateUserData {
   type: EUserType;
   careerDD?: string;
   semesterDD?: number;
-  schedules?: Array<INewUserSchedule>;
 }
 
 export const CreateUser = async (newValues: ICreateUserData) => {
   const config = {
     method: "post",
     url: "http://localhost:6070/register/create",
-    data: {
-      name: newValues.name,
-      email: newValues.email,
-      password: newValues.password,
-      career: newValues.career,
-      semester: newValues.semester,
-      status: newValues.status,
-      type: newValues.type,
-    },
+    data:
+      newValues.semesterDD !== undefined
+        ? {
+            name: newValues.name,
+            email: newValues.email,
+            password: newValues.password,
+            career: newValues.career,
+            semester: newValues.semester,
+            status: newValues.status,
+            type: newValues.type,
+            careerDD: newValues.careerDD,
+            semesterDD: newValues.semesterDD,
+          }
+        : {
+            name: newValues.name,
+            email: newValues.email,
+            password: newValues.password,
+            career: newValues.career,
+            semester: newValues.semester,
+            status: newValues.status,
+            type: newValues.type,
+          },
   };
 
   const responseData = await axios(config)

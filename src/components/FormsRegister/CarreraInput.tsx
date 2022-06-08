@@ -8,28 +8,35 @@ import {
   Select,
   FormControl,
 } from "@chakra-ui/react";
+import { ICareerData, IObjectData } from "../../interfaces";
 
 interface ICarreraInput {
   control: Control<any>;
   defaultValue?: string;
   setCarrera?: React.Dispatch<React.SetStateAction<string>>;
+  setCarreraName?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
+  options: Array<ICareerData>;
 }
 
 export const CarreraInput = ({
   control,
   defaultValue = "",
   setCarrera,
+  setCarreraName,
+  options,
   secondValidation = false,
 }: ICarreraInput) => {
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (setCarrera) {
       setCarrera(e.target.value);
     }
+    if (setCarreraName) {
+      setCarreraName(
+        e.target.options.item(e.target.options.selectedIndex)?.label as string
+      );
+    }
   };
-
   return (
     <Controller
       name="carrera"
@@ -44,7 +51,6 @@ export const CarreraInput = ({
             id="carrera"
             placeholder="Selecciona tu carrera"
             onChange={(e) => {
-              console.log("Seleccionando carrera: ", e.target.value);
               onChange(e.target.value);
 
               if (secondValidation) {
@@ -54,8 +60,9 @@ export const CarreraInput = ({
             value={value}
             isInvalid={Boolean(error)}
           >
-            {/**TODO: Hacer esto dinámico desde la api de carreras */}
-            <option value={"f31755a0-26b1-414d-9b62-fd4be6346323"}>ITC</option>
+            {options.map((option) => (
+              <option value={option.careerId}>{option.careerAcronym}</option>
+            ))}
           </Select>
 
           {!error ? (

@@ -28,7 +28,7 @@ import "./App.css";
 
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
 import socket from "./socket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToastHook } from "./hooks";
 import { useStore } from "./state/store";
 import {
@@ -40,6 +40,8 @@ import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
 import { GetUserInfo } from "./api/users/get";
 import { IUserData } from "./interfaces";
 import { FormsRecovery } from "./pages/RecoverPassword";
+import { AdminPage } from "./pages/Administrators";
+import { SubjectPage } from "./pages/Subjects";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -77,6 +79,8 @@ export const Main = ({
     }),
     shallow
   );
+
+  const userType = useRef(useStore.getState().type);
 
   useEffect(() => {
     const updateAppointments = async () => {
@@ -119,6 +123,13 @@ export const Main = ({
       .off("newNotification")
       .on("newNotification", generateVisualNotification);
   }, []);
+
+  useEffect(() => {
+    useStore.subscribe((state) => {
+      userType.current = state.type;
+    });
+  }, []);
+
   return (
     <>
       {loaded ? (
@@ -148,17 +159,35 @@ export const Main = ({
             />
 
             {!loggedIn ? (
-              <Route path="*" element={<Navigate replace to="/" />}></Route>
+              <>
+                <Route
+                  path="/recoverPassword"
+                  element={
+                    <Login
+                      desktop={<FormsRecovery />}
+                      mobile={<FormsRecovery mobile={true} />}
+                    />
+                  }
+                />
+                <Route path="*" element={<Navigate replace to="/" />}></Route>
+              </>
             ) : (
               <>
                 <Route path="/dashboard">
                   <Route
                     index
                     element={
-                      <MainLayout
-                        desktop={<Dashboard />}
-                        mobile={<Dashboard mobile={true} />}
-                      />
+                      userType.current === EUserType.root ? (
+                        <MainLayout
+                          desktop={<AdminPage />}
+                          mobile={<AdminPage mobile={true} />}
+                        />
+                      ) : (
+                        <MainLayout
+                          desktop={<Dashboard />}
+                          mobile={<Dashboard mobile={true} />}
+                        />
+                      )
                     }
                   />
                   <Route

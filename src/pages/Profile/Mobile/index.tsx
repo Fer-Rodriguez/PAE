@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Center,
   Box,
@@ -10,7 +10,7 @@ import {
   useDisclosure,
   Flex,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";
 
 //Components
 import {
@@ -21,10 +21,13 @@ import {
 } from "../Buttons.component";
 import { PasswordProfileModal } from "../Modal.component";
 import { ModifySchedulesContent } from "../ModifySchedule.component";
-import { IconPopOverForm } from "../../../components/IconPopOver";
+import {
+  IconPopOverForm,
+  IconPopOverDropdown,
+} from "../../../components/IconPopOver";
 
 //Interfaces
-import { IProfileCard } from "../../../interfaces/index";
+import { IObjectData, IProfileCard } from "../../../interfaces/index";
 import { EUserType } from "../../../interfaces/enums";
 
 //Data
@@ -33,16 +36,72 @@ import { titleProfileCard } from "../../../data";
 //Assets
 import theme from "../../../theme/index";
 import profile_image from "../Assets/profile_image.png";
-
+import { Link } from "react-router-dom";
+import { updateUser } from "../../../api/users/update";
+import { useStore } from "../../../state/store";
+import { GetAllAdvisors } from "../../../api/users/get";
 export const ProfileCardMobile = ({
   data,
-  type,
+  baseProps,
   setPeriod,
   period,
-  modAdmin,
+  type,
+  modAdmin = false,
 }: IProfileCard) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [modSchedules, setModSchedules] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [email, setEmail] = useState(data.email);
+  const [career, setCareer] = useState(data.career);
+  const [careerName, setCareerName] = useState(data.careerName);
+  const [semester, setSemester] = useState(data.semester);
+  const careers = useStore((state) => state.allCareers);
+  const setAllUsers = useStore((state) => state.setAllUsers);
+
+  useEffect(() => {
+    setEmail(data.email);
+    setCareer(data.career);
+    setCareerName(data.careerName);
+    setSemester(data.semester);
+  }, [data]);
+
+  const setDropdownOptions = (options: Array<IObjectData>) => {
+    careers.map((option: any) => {
+      const curCareer = {
+        title: option.acronym,
+        value: option.id,
+        valueII: option.length,
+      };
+      options.push(curCareer);
+    });
+  };
+  const dropDownOptions: Array<IObjectData> = [];
+  setDropdownOptions(dropDownOptions);
+
+  const setMyDataLocal = (value: string | number | boolean, key: string) => {
+    if (key === "Email") {
+      setEmail(value as string);
+    } else if (key === "Career") setCareer(value as string);
+    else if (key === "careerName") setCareerName(value as string);
+    else setSemester(value as number);
+  };
+
+  const setMyDataChangesDB = async () => {
+    const dataToUpdate = {
+      email,
+      //career, TODO: Reemplazar career de un input a un dropdwon con las carreras que sí están disponibles.
+      //semester, TODO: El endpoint solo acepta las propiedades de la tabla de usuarios (No de sus subtablas)
+      updated_at: new Date(),
+    };
+    const id_career = career;
+    const careerData = {
+      id_career,
+      semester,
+      updated_at: new Date(),
+    };
+
+    await updateUser(dataToUpdate, careerData, data.id);
+    await GetAllAdvisors(setAllUsers);
+  };
   return (
     <>
       <PasswordProfileModal onClose={onClose} isOpen={isOpen} size={"xs"} />
@@ -68,6 +127,11 @@ export const ProfileCardMobile = ({
             p="5"
             rounded={theme.radii.general}
           >
+            {modAdmin && (
+              <Link to={"../asesores"}>
+                <ArrowBackIcon boxSize={"8"} ml={6} mt={6} />
+              </Link>
+            )}
             <Center
               flexDir={"column"}
               justifyContent="space-around"
@@ -84,7 +148,11 @@ export const ProfileCardMobile = ({
               </Circle>
               <Heading>{data.name}</Heading>
               <Text fontSize="xl" mb={"2.5"}>
-                {type === EUserType.student ? "Asesorado/a" : "Asesor/a"}
+                {data.type === EUserType.advisor
+                  ? "Asesor/a"
+                  : data.type === EUserType.student
+                  ? "Asesorado"
+                  : "Admin"}
               </Text>
               <Divider size={"sm"} borderColor={theme.colors.purple} />
               {titleProfileCard.map((title) => (
@@ -96,18 +164,34 @@ export const ProfileCardMobile = ({
                   >
                     {title}
                   </Text>
-                  {type === EUserType.admin ? (
-                    <IconPopOverForm
-                      text={data[title.toLowerCase()]}
+                  {type !== EUserType.admin ? (
+                    <Text size="sm" my={4}>
+                      {title === "Career"
+                        ? data["careerName"]
+                        : data[title.toLowerCase()]}
+                    </Text>
+                  ) : title === "Career" ? (
+                    <IconPopOverDropdown
+                      text={career}
+                      acronym={careerName ? careerName : career}
                       icon={<EditIcon />}
-                      myKey={title.toLowerCase()}
-                      mobile
-                      setData={() => console.log("Guardando la info en local")}
+                      myKey={title}
+                      options={dropDownOptions}
+                      setData={setMyDataLocal}
                     />
                   ) : (
-                    <Text size="sm" my={1.5}>
-                      {data[title.toLowerCase()]}
-                    </Text>
+                    <IconPopOverForm
+                      text={
+                        title === "Email"
+                          ? email
+                          : title === "Career"
+                          ? career
+                          : semester.toString()
+                      }
+                      icon={<EditIcon />}
+                      myKey={title}
+                      setData={setMyDataLocal}
+                    />
                   )}
                 </>
               ))}
@@ -123,10 +207,7 @@ export const ProfileCardMobile = ({
                 <ButtonChangePassword onOpen={onOpen} />
                 {type === EUserType.admin && (
                   <Center flexDirection={"column"} gap={6}>
-                    <ButtonSaveChanges
-                      setMyData={() => console.log("saving data")}
-                      mobile
-                    />
+                    <ButtonSaveChanges setMyData={setMyDataChangesDB} mobile />
                     <ButtonEraseAdvisor mobile id={data.id} />
                   </Center>
                 )}

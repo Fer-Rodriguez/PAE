@@ -38,6 +38,7 @@ export const AppointmentListCard = ({
   const navigate = useNavigate();
 
   const allAppointments = useStore((state) => state.allAppointments);
+  console.log(JSON.stringify(allAppointments));
 
   const AppointmentContent = ({
     appointment,
@@ -81,7 +82,9 @@ export const AppointmentListCard = ({
         </Heading>
       )}
 
-      {allAppointments && allAppointments.length !== 0 ? (
+      {allAppointments &&
+      Array.isArray(allAppointments) &&
+      allAppointments.length !== 0 ? (
         allAppointments.slice(0, 5).map((appointment) =>
           mobile ? (
             <Center flexDirection={"column"} gap={1} w={"100%"}>
