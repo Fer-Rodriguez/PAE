@@ -32,7 +32,7 @@ import {
 
 //Interfaces
 import { EUserType } from "../../../interfaces/enums";
-import { IProfileCard } from "../../../interfaces/index";
+import { IObjectData, IProfileCard } from "../../../interfaces/index";
 
 //Data
 import { titleProfileCard } from "../../../data";
@@ -66,15 +66,27 @@ export const ProfileDesktop = ({
   const [career, setCareer] = useState(data.career);
   const [careerName, setCareerName] = useState(data.careerName);
   const [semester, setSemester] = useState(data.semester);
-
+  const careers = useStore((state) => state.allCareers);
   const setAllUsers = useStore((state) => state.setAllUsers);
-
   useEffect(() => {
     setEmail(data.email);
     setCareer(data.career);
     setCareerName(data.careerName);
     setSemester(data.semester);
   }, [data]);
+
+  const setDropdownOptions = (options: Array<IObjectData>) => {
+    careers.map((option: any) => {
+      const curCareer = {
+        title: option.acronym,
+        value: option.id,
+        valueII: option.length,
+      };
+      options.push(curCareer);
+    });
+  };
+  const dropDownOptions: Array<IObjectData> = [];
+  setDropdownOptions(dropDownOptions);
 
   const setMyDataLocal = (value: string | number | boolean, key: string) => {
     if (key === "Email") {
@@ -84,7 +96,7 @@ export const ProfileDesktop = ({
     else setSemester(value as number);
   };
 
-  const setMyDataChangesDB = () => {
+  const setMyDataChangesDB = async () => {
     const dataToUpdate = {
       email,
       //career, TODO: Reemplazar career de un input a un dropdwon con las carreras que sí están disponibles.
@@ -97,8 +109,9 @@ export const ProfileDesktop = ({
       semester,
       updated_at: new Date(),
     };
-    updateUser(dataToUpdate, careerData, data.id);
-    GetAllAdvisors(setAllUsers);
+
+    await updateUser(dataToUpdate, careerData, data.id);
+    await GetAllAdvisors(setAllUsers);
   };
 
   return (
@@ -179,6 +192,7 @@ export const ProfileDesktop = ({
                         acronym={careerName ? careerName : career}
                         icon={<EditIcon />}
                         myKey={title}
+                        options={dropDownOptions}
                         setData={setMyDataLocal}
                       />
                     ) : (
