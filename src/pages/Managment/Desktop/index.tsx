@@ -43,12 +43,6 @@ export const ManagmentDesktop = ({
             placeholder="Buscar..."
           />
         </InputGroup>
-        <IconButton
-          onClick={onFilterClick}
-          variant="ghost"
-          icon={<Icon as={Filter}></Icon>}
-          aria-label="Filtros"
-        />
       </Flex>
     </Flex>
     <Flex

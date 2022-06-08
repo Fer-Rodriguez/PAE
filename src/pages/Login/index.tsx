@@ -31,6 +31,7 @@ import { useEffect, useState } from "react";
 
 interface IFormsLogin {
   mobile?: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const FormsLogin = (props: IFormsLogin) => {
@@ -121,6 +122,7 @@ export const FormsLogin = (props: IFormsLogin) => {
         }
         setUser(correctUser);
         setIsLogining(false);
+        props.setLoggedIn(true);
         navigate("/dashboard");
       } else {
         setVisibleAlert(true);

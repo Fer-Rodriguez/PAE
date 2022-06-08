@@ -31,9 +31,17 @@ interface IForms2 {
   info: any;
   setFormStep: React.Dispatch<number>;
   setNewId: React.Dispatch<string>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
+export const Forms2 = ({
+  info,
+  setInfo,
+  setFormStep,
+  setNewId,
+  setLoggedIn,
+}: IForms2) => {
+  const [isLogining, setIsLogining] = useState(false);
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
@@ -62,6 +70,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
   const createUser = async () => {
     console.log(info.semesterDoubleCarrera);
     if (info.semesterDoubleCarrera !== undefined) {
+      setIsLogining(true);
       await CreateUser({
         name: info.name,
         email: capitalize(info.mail),
@@ -85,12 +94,10 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
       });
     }
     const idUserData = await GetUser(capitalize(info.mail), info.password);
-    console.log("User data: ", idUserData);
     setNewId(idUserData.userId);
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
-
       const correctUser: IUserData =
         userData.user.career.length === 1
           ? {
@@ -150,9 +157,19 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
             };
 
       setUser(correctUser);
+      localStorage.setItem("user_id", userData.user.id);
+      if (info.typeUserDrop === EUserType.student) {
+        setIsLogining(false);
+        setLoggedIn(true);
+        navigate("/dashboard");
+      } else {
+        setFormStep(2);
+      }
+    } else {
+      alert(
+        "No pudimos registrarte en este momento. Por favor, inténtalo más tarde"
+      );
     }
-    if (info.typeUserDrop === EUserType.student) navigate("/dashboard");
-    else setFormStep(2);
   };
 
   const login = () => {
@@ -285,6 +302,7 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
                   : "Introducir mis horarios"
               }
               onClick={() => createUser()}
+              isLoading={isLogining}
             ></ButtonGeneric>
           </Center>
         </Confirmation>

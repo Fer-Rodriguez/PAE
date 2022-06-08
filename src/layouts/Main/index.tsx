@@ -9,13 +9,28 @@ interface IMainLayout {
   desktop?: React.ReactNode;
   tablet?: React.ReactNode;
   mobile?: React.ReactNode;
+  setLoggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const MainLayout = (props: IMainLayout) => {
   return (
     <>
-      <Desktop children={<DesktopComponents userComponent={props.desktop} />} />
-      <Mobile children={<MobileComponents userComponent={props.mobile} />} />
+      <Desktop
+        children={
+          <DesktopComponents
+            setLoggedIn={props.setLoggedIn}
+            userComponent={props.desktop}
+          />
+        }
+      />
+      <Mobile
+        children={
+          <MobileComponents
+            setLoggedIn={props.setLoggedIn}
+            userComponent={props.mobile}
+          />
+        }
+      />
     </>
   );
 };

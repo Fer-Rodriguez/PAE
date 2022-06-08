@@ -14,11 +14,11 @@ export const GetAllCareers = async (
       const arrayCareersData: Array<ICareerData> = [];
       careers.map((career: any) => {
         const careerData = {
-          id: career.id,
-          name: career.name,
-          acronym: career.acronym,
-          length: career.length,
-          doubleDegree: career.doubleDegree ? career.doubleDegree : false,
+          careerId: career.id,
+          careerName: career.name,
+          careerAcronym: career.acronym,
+          careerLength: career.length,
+          careerDoubleDegree: career.doubleDegree ? career.doubleDegree : false,
         };
         arrayCareersData.push(careerData);
       });
@@ -43,10 +43,10 @@ export const GetAllDDCareers = async (
       const arrayCareersData: Array<ICareerData> = [];
       careers.map((career: any) => {
         const careerData = {
-          id: career.id,
-          name: career.name,
-          acronym: career.acronym,
-          length: career.length,
+          careerId: career.id,
+          careerName: career.name,
+          careerAcronym: career.acronym,
+          careerLength: career.length,
           doubleDegree: career.doubleDegree ? career.doubleDegree : false,
         };
         arrayCareersData.push(careerData);

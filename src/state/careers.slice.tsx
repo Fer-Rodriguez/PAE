@@ -14,24 +14,24 @@ export interface TCareerSlice extends ICareerData, IAllCareers {
 export const careerSlice: StoreSlice<TCareerSlice> = (set) => ({
   allCareers: [],
   ddCareers: [],
-  id: "a",
-  name: "a",
-  acronym: "xd",
-  length: 8,
+  careerId: "a",
+  careerName: "a",
+  careerAcronym: "xd",
+  careerLength: 8,
   setAllCareers: (newAllCareers) => {
     set({ allCareers: newAllCareers });
   },
   setAllDDCareers: (newAllDDCareers) => {
-    set({ ddCareers: newAllDDCareers});
+    set({ ddCareers: newAllDDCareers });
   },
   setCareer: (newCareerData) => {
     set({
-      id: newCareerData.id,
-      name: newCareerData.name,
-      acronym: newCareerData.acronym,
-      length: newCareerData.length,
-      doubleDegree: newCareerData.doubleDegree
-        ? newCareerData.doubleDegree
+      careerId: newCareerData.careerId,
+      careerName: newCareerData.careerName,
+      careerAcronym: newCareerData.careerAcronym,
+      careerLength: newCareerData.careerLength,
+      careerDoubleDegree: newCareerData.careerDoubleDegree
+        ? newCareerData.careerDoubleDegree
         : false,
     });
   },

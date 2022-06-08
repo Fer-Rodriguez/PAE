@@ -9,6 +9,7 @@ const enum EUserType {
   student = "student",
   admin = "admin",
   root = "root",
+  default = "",
 }
 
 const enum ELanguage {

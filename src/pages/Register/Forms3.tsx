@@ -3,7 +3,13 @@ import { Box, Text } from "@chakra-ui/react";
 import { MyCalendar } from "../../components/Calendar";
 import { EMyCalendarView } from "../../interfaces/enums";
 
-export const Forms3 = ({ id }: { id: string }) => {
+export const Forms3 = ({
+  id,
+  setLoggedIn,
+}: {
+  id: string;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   useEffect(() => {
     console.log("Id que recibí: ", id);
   }, []);
@@ -16,6 +22,7 @@ export const Forms3 = ({ id }: { id: string }) => {
         mobile={false}
         idUser={id}
         register
+        setLoggedIn={setLoggedIn}
       />
     </Box>
   );

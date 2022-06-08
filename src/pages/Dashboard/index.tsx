@@ -250,30 +250,32 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const setAllNotifications = useStore((state) => state.setNotifications);
 
   useEffect(() => {
-    socket.connect();
-    socket.emit("initial", { myId: userData.id }, (response: any) => {
-      console.log(response.status);
-    });
-    getRecentAppointment(userData.id, userData.type, setRecentAppointment);
-    GetAllAdvisors(setAllUsers);
-    getAllNotifications(userData.id, setAllNotifications);
-    const obtainData = async () => {
-      const response = await getAllAppointments(
-        userData.id,
-        userData.type,
-        true
+    if (userData.id && userData.id != "") {
+      socket.connect();
+      socket.emit("initial", { myId: userData.id }, (response: any) => {
+        console.log(response.status);
+      });
+      getRecentAppointment(userData.id, userData.type, setRecentAppointment);
+      GetAllAdvisors(setAllUsers);
+      getAllNotifications(userData.id, setAllNotifications);
+      const obtainData = async () => {
+        const response = await getAllAppointments(
+          userData.id,
+          userData.type,
+          true
+        );
+        setAllAppointments(response);
+      };
+      obtainData().then(
+        () => {
+          //setCalledAPI(true);
+        },
+        () => {
+          //setCalledAPI(true);
+        }
       );
-      setAllAppointments(response);
-    };
-    obtainData().then(
-      () => {
-        //setCalledAPI(true);
-      },
-      () => {
-        //setCalledAPI(true);
-      }
-    );
-  }, []);
+    }
+  }, [userData.id]);
 
   useEffect(() => {
     const tmpSurvArr: { idApp: string; idNot: string }[] = [];

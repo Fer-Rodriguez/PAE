@@ -28,7 +28,6 @@ export const CarreraInput = ({
   secondValidation = false,
 }: ICarreraInput) => {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target);
     if (setCarrera) {
       setCarrera(e.target.value);
     }
@@ -52,7 +51,6 @@ export const CarreraInput = ({
             id="carrera"
             placeholder="Selecciona tu carrera"
             onChange={(e) => {
-              console.log("Seleccionando carrera: ", e.target.value);
               onChange(e.target.value);
 
               if (secondValidation) {
@@ -63,7 +61,7 @@ export const CarreraInput = ({
             isInvalid={Boolean(error)}
           >
             {options.map((option) => (
-              <option value={option.id}>{option.acronym}</option>
+              <option value={option.careerId}>{option.careerAcronym}</option>
             ))}
           </Select>
 
