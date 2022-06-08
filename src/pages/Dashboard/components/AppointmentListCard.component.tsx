@@ -81,30 +81,38 @@ export const AppointmentListCard = ({
         </Heading>
       )}
 
-      {allAppointments.slice(0, 5).map((appointment) =>
-        mobile ? (
-          <Center flexDirection={"column"} gap={1} w={"100%"}>
-            {
-              <AppointmentContent
-                appointment={{
-                  date: new Date(appointment.appointment.date).toLocaleString(),
-                  subject: appointment.subject.name,
-                }}
-              />
-            }
-          </Center>
-        ) : (
-          <Flex flexDirection={"column"} gap={1} w={"100%"}>
-            {
-              <AppointmentContent
-                appointment={{
-                  date: new Date(appointment.appointment.date).toLocaleString(),
-                  subject: appointment.subject.name,
-                }}
-              />
-            }
-          </Flex>
+      {allAppointments ? (
+        allAppointments.slice(0, 5).map((appointment) =>
+          mobile ? (
+            <Center flexDirection={"column"} gap={1} w={"100%"}>
+              {
+                <AppointmentContent
+                  appointment={{
+                    date: new Date(
+                      appointment.appointment.date
+                    ).toLocaleString(),
+                    subject: appointment.subject.name,
+                  }}
+                />
+              }
+            </Center>
+          ) : (
+            <Flex flexDirection={"column"} gap={1} w={"100%"}>
+              {
+                <AppointmentContent
+                  appointment={{
+                    date: new Date(
+                      appointment.appointment.date
+                    ).toLocaleString(),
+                    subject: appointment.subject.name,
+                  }}
+                />
+              }
+            </Flex>
+          )
         )
+      ) : (
+        <></>
       )}
     </>
   );

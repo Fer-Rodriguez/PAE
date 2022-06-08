@@ -20,7 +20,6 @@ import { FormsRegister } from "./pages/Register";
 //CSS
 import "./App.css";
 
-import { PollCard } from "./pages/Poll";
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
 import socket from "./socket";
 import { useEffect, useState } from "react";
@@ -95,6 +94,7 @@ export const Main = () => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         setUser(correctUser);
       });
@@ -218,15 +218,6 @@ export const Main = () => {
                 <MainLayout
                   desktop={<AdvisorsPage />}
                   mobile={<AdvisorsPage mobile />}
-                />
-              }
-            />
-            <Route
-              path="encuestas"
-              element={
-                <MainLayout
-                  desktop={<PollCard />}
-                  mobile={<PollCard mobile />}
                 />
               }
             />

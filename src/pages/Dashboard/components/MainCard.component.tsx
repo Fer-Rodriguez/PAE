@@ -88,7 +88,7 @@ export const MainCard = ({
       return dateObject;
     };
     setDates(convertDate());
-  }, [recentAppointment]);
+  }, [recentAppointment, allAppointments]);
 
   const findSelectedAppointment = () => {
     allAppointments.map((appointmentData) => {

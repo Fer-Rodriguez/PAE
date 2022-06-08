@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Heading,
@@ -20,6 +21,7 @@ import theme from "../../../theme";
 import notebook from "../Icons/notebook.png";
 import hamds from "../Icons/hands.png";
 import "../style.css";
+import { PollCard } from "../../Poll";
 import { useTranslation } from "react-i18next";
 
 export const AppointmentsPollCard = ({
@@ -29,6 +31,8 @@ export const AppointmentsPollCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  console.log("TIPO:", type);
+  const [showPollCard, setShowPollCard] = useState(false);
   const navigate = useNavigate();
   const [t, i18n] = useTranslation("global");
 
@@ -42,23 +46,24 @@ export const AppointmentsPollCard = ({
       >
         {type === EUserType.admin
           ? t("dashboard.poll")
-          : type === EUserType.advisor
-          ? t("dashboard.appointment")
-          : t("dashboard.appointment2")}
+          : t("dashboard.appointment")}
       </Heading>
-      {type !== EUserType.advisor && (
-        <Button
-          borderRadius={theme.radii.general}
-          backgroundColor={theme.colors.purple}
-          color="white"
-          size="sm"
-          onClick={() => {
-            navigate(type === EUserType.admin ? "encuestas" : "crear_asesoria");
-          }}
-        >
-          {type === EUserType.admin ? "Editar" : "Agendar"}
-        </Button>
-      )}
+      <Button
+        borderRadius={theme.radii.general}
+        backgroundColor={theme.colors.purple}
+        color="white"
+        size="sm"
+        onClick={() => {
+          if (type === EUserType.admin) {
+            //
+          } else {
+            navigate("encuestas");
+          }
+        }}
+      >
+        {type === EUserType.admin ? "Editar" : "Agendar"}
+      </Button>
+      {showPollCard ? <PollCard mobile={mobile}></PollCard> : <></>}
     </Flex>
   );
 

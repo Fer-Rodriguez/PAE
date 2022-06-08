@@ -30,9 +30,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
 
   //Store
   const userType = useStore((state) => state.type);
-  const userId = useStore((state) => state.id);
   const allAppointments = useStore((state) => state.allAppointments);
-  const setAllAppointments = useStore((state) => state.setAllAppointments);
   const setSelectedData = useStore((state) => state.setSelectedAppointment);
 
   useEffect(() => {
@@ -48,21 +46,6 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
     );
     setTableData(dataTable);
   }, [allAppointments]);
-
-  useEffect(() => {
-    const obtainData = async () => {
-      const response = await getAllAppointments(userId, userType, true);
-      setAllAppointments(response);
-    };
-    obtainData().then(
-      () => {
-        setCalledAPI(true);
-      },
-      () => {
-        setCalledAPI(true);
-      }
-    );
-  }, [userId, userType, savedChange]);
 
   const myOnClick = (index: number, edit: boolean) => {
     setEditAppointment(edit);

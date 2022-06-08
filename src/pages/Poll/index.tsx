@@ -19,8 +19,6 @@ import { DesktopPoll } from "./Compoents/Desktop";
 export const PollCard = ({ mobile }: { mobile?: boolean }) => {
   const [ruta, setRuta] = useState(0);
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
-
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
 
   return (
