@@ -34,6 +34,8 @@ import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
 import { GetUserInfo } from "./api/users/get";
 import { IUserData } from "./interfaces";
 import { FormsRecovery } from "./pages/RecoverPassword";
+import { AdminPage } from "./pages/Administrators";
+import { SubjectPage } from "./pages/Subjects";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",

@@ -77,3 +77,47 @@ export const GetAllAdvisors = async (
 
   return data;
 };
+
+export const GetAllAdmins = async (
+  setAllUsers: (newAllUsers: Array<IUserData>) => void
+) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6070/register/getAll?type=admin`,
+  };
+
+  const data = await axios(config)
+    .then(function (response) {
+      const administrators = response.data.users;
+
+      const arrayAdministratorsUserData: Array<IUserData> = [];
+
+      administrators.map((administrator: any) => {
+        const administratorUserData: IUserData = {
+          id: administrator.id,
+          status: administrator.status,
+          name: administrator.name,
+          email: administrator.email,
+          type: administrator.type,
+          semester: administrator.userSemesters[0].semester,
+          career: administrator.career[0] ? administrator.career[0].id : "",
+          careerName: administrator.career[0]
+            ? administrator.career[0].acronym
+            : "",
+          config: administrator.configuration,
+          profilePic: "",
+          createDate: administrator.created_at,
+          notifications: [],
+          polls: [],
+        };
+        arrayAdministratorsUserData.push(administratorUserData);
+      });
+      console.log(arrayAdministratorsUserData);
+      setAllUsers(arrayAdministratorsUserData);
+      return arrayAdministratorsUserData;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  return data;
+};

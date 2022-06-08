@@ -191,6 +191,20 @@ export interface IUserData {
   notifications: Array<INotification>;
   polls: Array<IPoll>;
 }
+
+export interface ISubjectData {
+  id: string;
+  subjectAcronym: string;
+  name: string;
+  careerAcronym: string;
+  semester: string;
+}
+
+export interface ISubjects {
+  page: number;
+  subjects: Array<ISubjectData>;
+}
+
 export interface ICareerData {
   id: string;
   name: string;
