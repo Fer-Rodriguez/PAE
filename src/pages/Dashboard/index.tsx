@@ -73,12 +73,7 @@ const Desktop = ({
   surveyData: ISurveyData;
   appointmentAcceptanceData: IAppointmentAcceptanceData;
 }) => (
-  <Grid
-    templateColumns="repeat(14, 1fr)"
-    templateRows="repeat(8, 1fr)"
-    gap={7}
-    height={"100vh"}
-  >
+  <Grid templateColumns="repeat(14, 1fr)" gap={7}>
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
       <Flex gap={1} mb={6}>
         <Text fontWeight={"bold"}>{Hola()} </Text>
@@ -286,7 +281,6 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     if (userNotifications.length !== 0) {
       userNotifications.forEach((x, i) => {
         if (x.title == "survey" && x.status == "not seen") {
-
           tmpSurvArr.push({ idApp: x.description, idNot: x.id });
         } else if (
           x.title == "selectedForAppointment" &&
@@ -385,9 +379,9 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
             type={userData.type}
             name={userData.name}
             surveyData={surveyData}
+            appointmentAcceptanceData={AppointmentAcceptanceData}
           />
         </UserContext.Provider>
-
       )}
     </>
   );

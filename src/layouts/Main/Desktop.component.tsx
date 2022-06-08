@@ -109,12 +109,7 @@ export const DesktopComponents = ({ userComponent }: IUserComponents) => {
         <Logo maxWidth="50vw" />
       </GridItem>
       <GridItem rowStart={1} rowSpan={3} colStart={15}>
-        <Flex
-          w={"100%"}
-          h={"100%"}
-          alignItems="center"
-          justifyContent={"space-around"}
-        >
+        <Flex w={"100%"} h={"100%"} alignItems="center">
           <Image
             src={cross}
             boxSize={8}

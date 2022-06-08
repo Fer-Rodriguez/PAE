@@ -94,6 +94,7 @@ export const Main = () => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         setUser(correctUser);
       });
