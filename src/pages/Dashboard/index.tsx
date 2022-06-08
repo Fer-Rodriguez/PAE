@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Grid, GridItem, Text, Flex, Box } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Text,
+  Flex,
+  Box,
+  useDisclosure,
+  Button,
+} from "@chakra-ui/react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -21,9 +30,11 @@ import {
 import { getSurveyQuestions } from "../../api/surveys/get";
 import { GetAllAdvisors } from "../../api/users/get";
 import { getAllNotifications } from "../../api/notifications/get";
+import { updateNotification } from "../../api/notifications/update";
 
 //Interfaces
-import { EUserType } from "../../interfaces/enums";
+import { ENotificationStatus, EUserType } from "../../interfaces/enums";
+
 import { IDataProfileCard, IAppointmentAcceptanceData } from "../../interfaces";
 import { ISurveyData } from "../../interfaces";
 
@@ -38,6 +49,18 @@ import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import { AppointmentAcceptance } from "../../components/AppointmentAcceptance";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
+
+import { UserContext } from "../../context";
+import { useTranslation } from "react-i18next";
+
+function Hola() {
+  const [t, i18n] = useTranslation("global");
+
+  return t("dashboard.hello");
+}
 
 const Desktop = ({
   type,
@@ -58,7 +81,7 @@ const Desktop = ({
   >
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
       <Flex gap={1} mb={6}>
-        <Text fontWeight={"bold"}>Hola, </Text>
+        <Text fontWeight={"bold"}>{Hola()} </Text>
         <Text> {name}</Text>
       </Flex>
 
@@ -147,6 +170,7 @@ const Mobile = ({
 };
 
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
+  const [value, setValue] = useState<string>("light");
   const userData: IDataProfileCard = useStore(
     (state) => ({
       id: state.id,
@@ -192,6 +216,16 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     appointmentId: surveyAppointmentId,
     triggeringNotificationId: surveyNotificationId,
   };
+
+  function actualizarNotis() {
+    const temp = [...userNotifications].filter(
+      (n) => n.title == "Solicitud de Asesoría" && n.status == "seen"
+    );
+    console.log(temp);
+    temp.forEach((x) => {
+      updateNotification(x.id, "not seen" as ENotificationStatus);
+    });
+  }
 
   // Data needed to show an appointment acceptance pop up
   const [pendingAppointmentConfirm, setPendingAppointmentConfirm] = useState<
@@ -252,6 +286,7 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     if (userNotifications.length !== 0) {
       userNotifications.forEach((x, i) => {
         if (x.title == "survey" && x.status == "not seen") {
+
           tmpSurvArr.push({ idApp: x.description, idNot: x.id });
         } else if (
           x.title == "selectedForAppointment" &&
@@ -345,12 +380,14 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
           appointmentAcceptanceData={AppointmentAcceptanceData}
         />
       ) : (
-        <Desktop
-          type={userData.type}
-          name={userData.name}
-          surveyData={surveyData}
-          appointmentAcceptanceData={AppointmentAcceptanceData}
-        />
+        <UserContext.Provider value={{ value, setValue }}>
+          <Desktop
+            type={userData.type}
+            name={userData.name}
+            surveyData={surveyData}
+          />
+        </UserContext.Provider>
+
       )}
     </>
   );

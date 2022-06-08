@@ -6,17 +6,11 @@ export const updateNotification = async (
   idNotification: string,
   status: ENotificationStatus
 ) => {
-  const config = {
-    method: "patch",
-    url: `http://localhost:6090/notification`,
-    data: {
+  try {
+    await axios.patch(`http://localhost:6090/notification`, {
       idNotification,
       status,
-    },
-  };
-
-  try {
-    await axios(config);
+    });
   } catch (error) {
     console.error(error);
   }

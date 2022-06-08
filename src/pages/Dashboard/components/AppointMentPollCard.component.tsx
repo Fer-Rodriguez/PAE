@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heading, Flex, Image, Button } from "@chakra-ui/react";
+import {
+  Heading,
+  Flex,
+  Image,
+  Button,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 import { DividedCard } from "../../../components/DividedCard";
 
 //Interfaces
 import { EUserType } from "../../../interfaces/enums";
+
+//Dark Mode
+import { DarkMode } from "../../../colors";
 
 //Assets
 import theme from "../../../theme";
@@ -13,6 +22,7 @@ import notebook from "../Icons/notebook.png";
 import hamds from "../Icons/hands.png";
 import "../style.css";
 import { PollCard } from "../../Poll";
+import { useTranslation } from "react-i18next";
 
 export const AppointmentsPollCard = ({
   type,
@@ -24,11 +34,19 @@ export const AppointmentsPollCard = ({
   console.log("TIPO:", type);
   const [showPollCard, setShowPollCard] = useState(false);
   const navigate = useNavigate();
+  const [t, i18n] = useTranslation("global");
 
   const BottomContent = () => (
     <Flex flexDirection={"column"} m={"2"} gap={3}>
-      <Heading as="h4" size="md" textAlign={"center"}>
-        {type === EUserType.admin ? "¡Encuestas!" : "Agendar Asesoría"}
+      <Heading
+        as="h4"
+        size="md"
+        textAlign={"center"}
+        textColor={DarkMode().text}
+      >
+        {type === EUserType.admin
+          ? t("dashboard.poll")
+          : t("dashboard.appointment")}
       </Heading>
       <Button
         borderRadius={theme.radii.general}
@@ -52,11 +70,11 @@ export const AppointmentsPollCard = ({
   return (
     <DividedCard
       colorFirst={
-        type === EUserType.admin ? theme.colors.pink : theme.colors.blue
+        type === EUserType.admin ? DarkMode().bgColor2 : DarkMode().bgColor2
       }
       percentageFirst="60%"
       percentageSecond="40%"
-      colorSecond="white"
+      colorSecond={DarkMode().bgColor3}
       overlap={false}
       vertical
       contentSecond={<BottomContent />}
