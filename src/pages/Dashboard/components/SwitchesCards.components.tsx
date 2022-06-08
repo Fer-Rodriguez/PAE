@@ -1,48 +1,62 @@
-import { Heading, Text, Flex, Image, Center } from "@chakra-ui/react";
+import { Flex, useColorMode } from "@chakra-ui/react";
 
-import { DividedCard } from "../../../components/DividedCard";
+import { Switch } from "../../../components/Switch";
 
 //Assets
 import theme from "../../../theme";
 import world from "../Icons/world.png";
 import hand from "../Icons/hand.png";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 import "../style.css";
+import useDarkMode from "../../../context";
+import { useState } from "react";
+
+import { useTranslation } from "react-i18next";
 
 export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
-  const TextContent = ({ language = false }: { language?: boolean }) => (
-    <Center flexDirection={"column"}>
-      <Text fontSize={"sm"} fontWeight="bold">
-        Haz Click
-      </Text>
-      <Heading size={"lg"}>{language ? "ES" : "Luz"}</Heading>
-      <Text fontSize={"x-small"}>
-        {language ? "Para cambiar el idioma" : "Para cambiar el tema"}
-      </Text>
-    </Center>
-  );
+  const { toggleColorMode, colorMode } = useColorMode();
+
+  const { value, setValue } = useDarkMode();
+
+  const [isToggled, setIsToggled] = useState(false);
+
+  const [isToggled2, setIsToggled2] = useState(false);
+
+  const [t, i18n] = useTranslation("global");
+
+  const [init, setInit] = useState("es");
+
+  const ChangeColor = () => {
+    toggleColorMode();
+    setValue(colorMode === "light" ? "dark" : "light");
+  };
+
+  const ChangeLng = () => {
+    if (init == "es") {
+      i18n.changeLanguage("en");
+      setInit("en");
+    } else {
+      i18n.changeLanguage("es");
+      setInit("es");
+    }
+  };
 
   return (
-    <Flex direction={"column"} h="90%" gap={5}>
-      <DividedCard
-        colorFirst={theme.colors.purple}
-        percentageFirst="50%"
-        percentageSecond="50%"
-        colorSecond="white"
-        overlap={true}
-        vertical={false}
-        contentSecond={<TextContent language />}
-        contentFirst={<Image src={world} boxSize={mobile ? "20vw" : "6vw"} />}
+    <Flex direction={"column"} h="100%" gap={5}>
+      <Switch
+        rounded={true}
+        isToggled={isToggled}
+        onToggled={() => setIsToggled(!isToggled)}
+        click={() => ChangeColor()}
       />
-      <DividedCard
-        colorFirst={theme.colors.purple}
-        percentageFirst="50%"
-        percentageSecond="50%"
-        colorSecond="white"
-        overlap={true}
-        vertical={false}
-        contentSecond={<TextContent />}
-        contentFirst={<Image src={hand} boxSize={mobile ? "20vw" : "5vw"} />}
+      <Switch
+        rounded={true}
+        isToggled={isToggled2}
+        onToggled={() => setIsToggled2(!isToggled2)}
+        click={() => ChangeLng()}
       />
     </Flex>
   );

@@ -4,8 +4,7 @@ import { Select } from "@chakra-ui/react";
 //Interfaces, types & enyms.
 import { IObjectData, IConfigurationsDropdown } from "../../interfaces";
 import { ETypeDropdown } from "../../interfaces/enums";
-
-import theme from "../../theme/index";
+import "./style.css";
 
 // Local Interfaces
 interface IDropDown {
@@ -16,7 +15,8 @@ interface IDropDown {
   fontColor?: string;
   borderRadius?: string;
   isInvalid?: boolean;
-  value?: string;
+  value?: any;
+  defaultValue?: any;
 }
 
 /**
@@ -59,10 +59,12 @@ export const DropDown = ({
   borderRadius,
   isInvalid,
   value,
+  defaultValue = undefined,
 }: IDropDown) => {
   //TODO: Change color with theme value.
   return (
     <Select
+      defaultValue={defaultValue}
       value={value}
       isInvalid={isInvalid}
       backgroundColor={color}

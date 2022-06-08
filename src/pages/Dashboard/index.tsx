@@ -6,7 +6,9 @@ import {
   Flex,
   Box,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -20,14 +22,20 @@ import { Survey } from "../../components/Survey";
 import { AppointmentDetails } from "../AppointmentDetails";
 
 //APIS
-import { getRecentAppointment } from "../../api/appointments/get";
+import {
+  getAllAppointments,
+  getBasicAppointmentInfo,
+  getRecentAppointment,
+} from "../../api/appointments/get";
 import { getSurveyQuestions } from "../../api/surveys/get";
 import { GetAllAdvisors } from "../../api/users/get";
 import { getAllNotifications } from "../../api/notifications/get";
+import { updateNotification } from "../../api/notifications/update";
 
 //Interfaces
-import { EUserType } from "../../interfaces/enums";
-import { IDataProfileCard } from "../../interfaces";
+import { ENotificationStatus, EUserType } from "../../interfaces/enums";
+
+import { IDataProfileCard, IAppointmentAcceptanceData } from "../../interfaces";
 import { ISurveyData } from "../../interfaces";
 
 //Store
@@ -40,25 +48,35 @@ import socket from "../../socket";
 import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
+import { AppointmentAcceptance } from "../../components/AppointmentAcceptance";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
+
+import { UserContext } from "../../context";
+import { useTranslation } from "react-i18next";
+
+function Hola() {
+  const [t, i18n] = useTranslation("global");
+
+  return t("dashboard.hello");
+}
 
 const Desktop = ({
   type,
   name,
   surveyData,
+  appointmentAcceptanceData,
 }: {
   type: EUserType;
   name: string;
   surveyData: ISurveyData;
+  appointmentAcceptanceData: IAppointmentAcceptanceData;
 }) => (
-  <Grid
-    templateColumns="repeat(14, 1fr)"
-    templateRows="repeat(8, 1fr)"
-    gap={7}
-    height={"100vh"}
-  >
+  <Grid templateColumns="repeat(14, 1fr)" gap={7}>
     <GridItem w="100%" colSpan={8} rowSpan={1} colStart={2}>
       <Flex gap={1} mb={6}>
-        <Text fontWeight={"bold"}>Hola, </Text>
+        <Text fontWeight={"bold"}>{Hola()} </Text>
         <Text> {name}</Text>
       </Flex>
 
@@ -80,9 +98,14 @@ const Desktop = ({
     <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
       <AppointmentListCard type={type} />
     </GridItem>
-    {/* Aquí puede haber dos approaches para múltiples encuestas: un state que tenga las preguntas y
-    se actualice y solo dejamos la misma instancia de survey o vamos creando instancias de survey*/}
     {surveyData.loaded ? <Survey {...surveyData}></Survey> : <></>}
+    {appointmentAcceptanceData.loaded && !surveyData.loaded ? (
+      <AppointmentAcceptance
+        {...appointmentAcceptanceData}
+      ></AppointmentAcceptance>
+    ) : (
+      <></>
+    )}
   </Grid>
 );
 
@@ -90,16 +113,25 @@ const Mobile = ({
   type,
   name,
   surveyData,
+  appointmentAcceptanceData,
 }: {
   type: EUserType;
   name: string;
   surveyData: ISurveyData;
+  appointmentAcceptanceData: IAppointmentAcceptanceData;
 }) => {
   const FirstPage = () => (
     <Flex direction={"column"} gap={6}>
       <MainCard type={type} mobile />
       <AppointmentListCard type={type} mobile />
       {surveyData.loaded ? <Survey {...surveyData}></Survey> : <></>}
+      {appointmentAcceptanceData.loaded && !surveyData.loaded ? (
+        <AppointmentAcceptance
+          {...appointmentAcceptanceData}
+        ></AppointmentAcceptance>
+      ) : (
+        <></>
+      )}
     </Flex>
   );
 
@@ -133,6 +165,7 @@ const Mobile = ({
 };
 
 export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
+  const [value, setValue] = useState<string>("light");
   const userData: IDataProfileCard = useStore(
     (state) => ({
       id: state.id,
@@ -152,6 +185,11 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const setDetailsActivation = useStore((state) => state.setDetailsActivation);
   const userNotifications = useStore((state) => state.notifications);
 
+  // Data needed to show a survey (if there is one pending)
+  const [pendingSurveys, setPendingSurveys] = useState<
+    { idApp: string; idNot: string }[]
+  >([]);
+
   const [surveyNotificationId, setSurveyNotificationId] = useState("");
   const [surveyAppointmentId, setSurveyAppointmentId] = useState("");
   const [surveyLoaded, setSurveyLoaded] = useState(false);
@@ -165,10 +203,6 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     }[]
   >();
 
-  const setRecentAppointment = useStore((state) => state.setRecentAppointment);
-  const setAllUsers = useStore((state) => state.setAllUsers);
-  const setAllNotifications = useStore((state) => state.setNotifications);
-
   const surveyData = {
     loaded: surveyLoaded,
     answered: surveyAnswered,
@@ -178,6 +212,43 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     triggeringNotificationId: surveyNotificationId,
   };
 
+  function actualizarNotis() {
+    const temp = [...userNotifications].filter(
+      (n) => n.title == "Solicitud de Asesoría" && n.status == "seen"
+    );
+    console.log(temp);
+    temp.forEach((x) => {
+      updateNotification(x.id, "not seen" as ENotificationStatus);
+    });
+  }
+
+  // Data needed to show an appointment acceptance pop up
+  const [pendingAppointmentConfirm, setPendingAppointmentConfirm] = useState<
+    { idApp: string; idNot: string }[]
+  >([]);
+
+  const [appointmentAccLoaded, setAppointmentAccLoaded] = useState(false);
+  const [appointmentAccAnswered, setAppointmentAccAnswered] = useState(false);
+  const [appointmentAccNotificationId, setAppointmentAccNotificationId] =
+    useState("");
+  const [appointmentAccAppointmentId, setAppointmentAccAppointmentId] =
+    useState("");
+
+  const AppointmentAcceptanceData = {
+    loaded: appointmentAccLoaded,
+    answered: appointmentAccAnswered,
+    controller: setAppointmentAccAnswered,
+    appointmentId: appointmentAccAppointmentId,
+    triggeringNotificationId: appointmentAccNotificationId,
+  };
+
+  const setRecentAppointment = useStore((state) => state.setRecentAppointment);
+  // Esto se me hace horrible, pero a como está implementado no hay otra forma de mostrar
+  // la info completa en el dashboard.
+  const setAllAppointments = useStore((state) => state.setAllAppointments);
+  const setAllUsers = useStore((state) => state.setAllUsers);
+  const setAllNotifications = useStore((state) => state.setNotifications);
+
   useEffect(() => {
     socket.connect();
     socket.emit("initial", { myId: userData.id }, (response: any) => {
@@ -186,16 +257,51 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
     getRecentAppointment(userData.id, userData.type, setRecentAppointment);
     GetAllAdvisors(setAllUsers);
     getAllNotifications(userData.id, setAllNotifications);
+    const obtainData = async () => {
+      const response = await getAllAppointments(
+        userData.id,
+        userData.type,
+        true
+      );
+      setAllAppointments(response);
+    };
+    obtainData().then(
+      () => {
+        //setCalledAPI(true);
+      },
+      () => {
+        //setCalledAPI(true);
+      }
+    );
   }, []);
 
   useEffect(() => {
+    const tmpSurvArr: { idApp: string; idNot: string }[] = [];
+    const tmpConfArr: { idApp: string; idNot: string }[] = [];
     if (userNotifications.length !== 0) {
-      userNotifications.forEach((x) => {
+      userNotifications.forEach((x, i) => {
         if (x.title == "survey" && x.status == "not seen") {
-          setSurveyAppointmentId(x.description);
-          setSurveyNotificationId(x.id);
+          tmpSurvArr.push({ idApp: x.description, idNot: x.id });
+        } else if (
+          x.title == "selectedForAppointment" &&
+          x.status == "not seen"
+        ) {
+          tmpConfArr.push({ idApp: x.description, idNot: x.id });
         }
       });
+      if (tmpSurvArr.length !== 0) {
+        setSurveyAppointmentId(tmpSurvArr[0].idApp);
+        setSurveyNotificationId(tmpSurvArr[0].idNot);
+        tmpSurvArr.shift();
+        setPendingSurveys(tmpSurvArr);
+      }
+
+      if (tmpConfArr.length !== 0) {
+        setAppointmentAccAppointmentId(tmpConfArr[0].idApp);
+        setAppointmentAccNotificationId(tmpConfArr[0].idNot);
+        tmpConfArr.shift();
+        setPendingAppointmentConfirm(tmpConfArr);
+      }
     }
   }, [userNotifications]);
 
@@ -207,11 +313,51 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
           setSurveyLoaded(true);
         },
         () => {
-          console.log("NO HUBO RESPUESTA AL TENER LAS PREGUNTAS");
+          //console.log("NO HUBO RESPUESTA AL TENER LAS PREGUNTAS");
         }
       );
     }
   }, [surveyAppointmentId, userData.type]);
+  useEffect(() => {
+    if (appointmentAccNotificationId != "") {
+      getBasicAppointmentInfo(appointmentAccNotificationId).then(
+        () => {
+          setAppointmentAccAnswered(false);
+          setAppointmentAccLoaded(true);
+        },
+        () => {
+          //console.log("NO HUBO RESPUESTA AL TENER LAS PREGUNTAS");
+        }
+      );
+    }
+  }, [appointmentAccNotificationId, userData.type]);
+
+  useEffect(() => {
+    //checar si faltan encuestas por responder
+    if (surveyAnswered) {
+      if (pendingSurveys.length !== 0) {
+        setSurveyAppointmentId(pendingSurveys[0].idApp);
+        setSurveyNotificationId(pendingSurveys[0].idNot);
+        pendingSurveys.shift();
+        setPendingSurveys(pendingSurveys);
+      } else {
+        setSurveyLoaded(false);
+      }
+    }
+  }, [surveyAnswered]);
+
+  useEffect(() => {
+    if (appointmentAccAnswered) {
+      if (pendingAppointmentConfirm.length !== 0) {
+        setAppointmentAccAppointmentId(pendingAppointmentConfirm[0].idApp);
+        setAppointmentAccNotificationId(pendingAppointmentConfirm[0].idNot);
+        pendingAppointmentConfirm.shift();
+        setPendingSurveys(pendingAppointmentConfirm);
+      } else {
+        setAppointmentAccLoaded(true);
+      }
+    }
+  }, [appointmentAccAnswered]);
 
   return (
     <>
@@ -225,13 +371,17 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
           type={userData.type}
           name={userData.name}
           surveyData={surveyData}
+          appointmentAcceptanceData={AppointmentAcceptanceData}
         />
       ) : (
-        <Desktop
-          type={userData.type}
-          name={userData.name}
-          surveyData={surveyData}
-        />
+        <UserContext.Provider value={{ value, setValue }}>
+          <Desktop
+            type={userData.type}
+            name={userData.name}
+            surveyData={surveyData}
+            appointmentAcceptanceData={AppointmentAcceptanceData}
+          />
+        </UserContext.Provider>
       )}
     </>
   );

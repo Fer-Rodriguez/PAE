@@ -19,6 +19,9 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 export const CreateAppointmentLayout = () => {
   const [formStep, setFormStep] = useState(0);
   const [date, setDate] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState<number>(
+    useStore((state) => state.semester)
+  );
   const [idSubject, setIdSubject] = useState("");
   const [subjectName, setSubjectName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
@@ -26,6 +29,7 @@ export const CreateAppointmentLayout = () => {
 
   const setters = {
     setFormStep,
+    setSelectedSemester,
     setIdSubject,
     setSubjectName,
     setProblemDescription,
@@ -35,6 +39,7 @@ export const CreateAppointmentLayout = () => {
 
   const info = {
     idSubject,
+    selectedSemester,
     subjectName,
     problemDescription,
     formStep,
@@ -53,7 +58,6 @@ export const CreateAppointmentLayout = () => {
         image: "",
       });
 
-      console.log("On ta la date: ", date);
       if (imageFile) {
         const storageRef = ref(
           storage,
@@ -80,13 +84,10 @@ export const CreateAppointmentLayout = () => {
       const res = await axios(config);
       if (res.status === 200) {
         successfulRequest = true;
-        console.log(res);
-      } else {
-        console.log(res);
       }
       return successfulRequest;
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   };
 

@@ -18,7 +18,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import update from "immutability-helper";
-import type { FC } from "react";
+import { FC, useEffect } from "react";
 import { useCallback, useState } from "react";
 
 import theme from "../../../theme/index";
@@ -29,6 +29,13 @@ import scale from "../../../assets/scale-icon.png";
 import yesno from "../../../assets/yesno-icon.png";
 import deletee from "../../../assets/delete-icon.png";
 import { Card } from "../Card";
+
+//Store
+import { useStore } from "../../../state/store";
+import shallow from "zustand/shallow";
+import { IDataProfileCard, IPoll } from "../../../interfaces";
+import socket from "../../../socket";
+import { getAllQuestions } from "../../../api/poll/get";
 
 const style = {
   width: "100%",
@@ -47,6 +54,50 @@ export interface ContainerState {
 
 export const StudentPollM: FC = () => {
   {
+    const userData: IDataProfileCard = useStore(
+      (state) => ({
+        id: state.id,
+        name: state.name,
+        email: state.email,
+        type: state.type,
+        semester: state.semester,
+        career: state.career,
+
+        profilePic: state.profilePic,
+      }),
+      shallow
+    );
+
+    const userQuestions = useStore((state) => state.polls);
+
+    const setAllQuestions = useStore((state) => state.setPolls);
+
+    const actualizarNotis = () => {
+      const temp = [...userQuestions];
+      console.log(temp);
+    };
+
+    useEffect(() => {
+      socket.connect();
+      socket.emit("initial", { myId: userData.id }, (response: any) => {
+        console.log(response.status);
+      });
+      getAllQuestions(
+        "student",
+        "8c555025-ab4d-42fd-a14e-fb553ab0d008",
+        setAllQuestions
+      );
+      console.log("HOLAAAAAAAAAAAA", userQuestions);
+    }, []);
+
+    useEffect(() => {
+      if (userQuestions.length !== 0) {
+        userQuestions.forEach((x) => {
+          addCard(x.order, x.question, x.type);
+        });
+      }
+    }, []);
+
     //ESTADO DEL MODAL
     const { isOpen, onOpen, onClose } = useDisclosure();
     //ESTADO DE LA CARTA
@@ -114,14 +165,20 @@ export const StudentPollM: FC = () => {
       onClose();
     };
 
-    const addCard = () => {
+    const addCard = (id: number, text: string, typeQuestion: string) => {
       setCards((prevCards: Item[]) => [
         ...prevCards,
         {
-          id: cards.length + 1,
-          text: "Sample",
-          typeQuestion: "Text",
-          imageQuestion: text,
+          id,
+          text,
+          typeQuestion,
+          imageQuestion: typeQuestion.includes("Text")
+            ? text
+            : typeQuestion == "Radial"
+            ? radial
+            : typeQuestion == "Scale"
+            ? scale
+            : yesno,
         },
       ]);
     };
@@ -216,7 +273,6 @@ export const StudentPollM: FC = () => {
             rounded={30}
             backgroundColor="purple"
             fontSize={10}
-            onClick={() => addCard()}
             marginTop={3}
           >
             AÑADIR PREGUNTA

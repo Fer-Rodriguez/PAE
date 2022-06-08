@@ -36,6 +36,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [visibleAlert, setVisibleAlert] = useState(false);
+  const [isLogining, setIsLogining] = useState(false);
   // const [saveData, setSaveData] = useState(true);
   const saveData = true;
   useEffect(() => {
@@ -67,6 +68,7 @@ export const FormsLogin = (props: IFormsLogin) => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         setUser(correctUser);
         navigate("/dashboard");
@@ -89,6 +91,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   };
   const tryLogin = async (data: any) => {
     try {
+      setIsLogining(true);
       const idUserData = await GetUser(capitalize(data.mail), data.password);
       console.log("MI DATA: ", idUserData);
       const userData = await GetUserInfo(idUserData.userId);
@@ -119,16 +122,19 @@ export const FormsLogin = (props: IFormsLogin) => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         if (saveData) {
           localStorage.setItem("user_id", userData.user.id);
         }
         setUser(correctUser);
+        setIsLogining(false);
         navigate("/dashboard");
       } else {
         setVisibleAlert(true);
       }
     } catch (e) {
+      setIsLogining(false);
       setVisibleAlert(true);
     }
   };
@@ -203,6 +209,7 @@ export const FormsLogin = (props: IFormsLogin) => {
                   bgColor="purpleLight"
                   sizePX="40%"
                   text="Ingresar"
+                  isLoading={isLogining}
                   onClick={handleSubmit(tryLogin)}
                 ></ButtonGeneric>
               </Center>

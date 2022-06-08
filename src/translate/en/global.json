@@ -1,0 +1,13 @@
+{
+  "dashboard": {
+    "more": "...see more",
+    "appointment": "3 appointments completed!",
+    "appointment2": "Schedule Appointment",
+    "recent": "Recent appointments",
+    "mainCardAppointment": "There are no upcoming appointments",
+    "nextAppointment": "Your next appointment",
+    "hello": "Hello,",
+    "poll": "Polls!",
+    "request": "You have a new request"
+  }
+}

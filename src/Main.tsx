@@ -20,7 +20,6 @@ import { FormsRegister } from "./pages/Register";
 //CSS
 import "./App.css";
 
-import { PollCard } from "./pages/Poll";
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
 import socket from "./socket";
 import { useEffect, useState } from "react";
@@ -34,8 +33,7 @@ import shallow from "zustand/shallow";
 import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
 import { GetUserInfo } from "./api/users/get";
 import { IUserData } from "./interfaces";
-import { AdminPage } from "./pages/Administrators";
-import { SubjectPage } from "./pages/Subjects";
+import { FormsRecovery } from "./pages/RecoverPassword";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -96,6 +94,7 @@ export const Main = () => {
           config: { language: ELanguage.spanish, theme: ETheme.white },
           profilePic: "No tengo",
           notifications: [],
+          polls: [],
         };
         setUser(correctUser);
       });
@@ -162,7 +161,18 @@ export const Main = () => {
           }
         />
         {id === "" ? (
-          <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          <>
+            <Route
+              path="/recoverPassword"
+              element={
+                <Login
+                  desktop={<FormsRecovery />}
+                  mobile={<FormsRecovery mobile={true} />}
+                />
+              }
+            />
+            <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          </>
         ) : (
           <Route path="/dashboard">
             <Route
@@ -208,15 +218,6 @@ export const Main = () => {
                 <MainLayout
                   desktop={<AdvisorsPage />}
                   mobile={<AdvisorsPage mobile />}
-                />
-              }
-            />
-            <Route
-              path="encuestas"
-              element={
-                <MainLayout
-                  desktop={<PollCard />}
-                  mobile={<PollCard mobile />}
                 />
               }
             />

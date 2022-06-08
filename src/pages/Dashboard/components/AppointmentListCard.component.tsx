@@ -6,20 +6,25 @@ import {
   Divider,
   Center,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DividedCard } from "../../../components/DividedCard";
-import { IDetailsAppointmentData } from "../../../interfaces";
 
 //Interfaces
-import { EStatusAppointment, EUserType } from "../../../interfaces/enums";
+import { EUserType } from "../../../interfaces/enums";
 import { useStore } from "../../../state/store";
 
 //Assets
 import theme from "../../../theme";
 import "../style.css";
+
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
+import { useTranslation } from "react-i18next";
 
 export const AppointmentListCard = ({
   type,
@@ -28,6 +33,8 @@ export const AppointmentListCard = ({
   type: EUserType;
   mobile?: boolean;
 }) => {
+  const [t, i18n] = useTranslation("global");
+
   const navigate = useNavigate();
 
   const allAppointments = useStore((state) => state.allAppointments);
@@ -35,20 +42,8 @@ export const AppointmentListCard = ({
   const AppointmentContent = ({
     appointment,
   }: {
-    appointment: {
-      subject: string;
-      date: string;
-      myAppointment: IDetailsAppointmentData;
-    };
+    appointment: { subject: string; date: string };
   }) => {
-    const setDetailsActivation = useStore(
-      (state) => state.setDetailsActivation
-    );
-    const setEditActivation = useStore((state) => state.setEditActivation);
-    const setSelectedAppointment = useStore(
-      (state) => state.setSelectedAppointment
-    );
-
     return (
       <>
         <Flex flexDirection={"column"}>
@@ -66,17 +61,6 @@ export const AppointmentListCard = ({
           color="white"
           size="xs"
           w={"40%"}
-          onClick={() => {
-            setSelectedAppointment(appointment.myAppointment);
-            if (
-              appointment.myAppointment.appointment.status ===
-              EStatusAppointment.PENDING
-            ) {
-              setEditActivation(true);
-            } else setEditActivation(false);
-
-            setDetailsActivation(true);
-          }}
         >
           Detalles
         </Button>
@@ -89,40 +73,46 @@ export const AppointmentListCard = ({
     <>
       {mobile ? (
         <Heading size={"xl"} mt={2} color="white">
-          {"Asesorías recientes"}
+          {t("dashboard.recent")}
         </Heading>
       ) : (
         <Heading size={EUserType.admin ? "md" : "lg"} mt={2} color="white">
-          {"Asesorías recientes"}
+          {t("dashboard.recent")}
         </Heading>
       )}
 
-      {allAppointments.slice(0, 5).map((appointment) =>
-        mobile ? (
-          <Center flexDirection={"column"} gap={1} w={"100%"}>
-            {
-              <AppointmentContent
-                appointment={{
-                  date: new Date(appointment.appointment.date).toLocaleString(),
-                  subject: appointment.subject.name,
-                  myAppointment: appointment,
-                }}
-              />
-            }
-          </Center>
-        ) : (
-          <Flex flexDirection={"column"} gap={1} w={"100%"}>
-            {
-              <AppointmentContent
-                appointment={{
-                  date: new Date(appointment.appointment.date).toLocaleString(),
-                  subject: appointment.subject.name,
-                  myAppointment: appointment,
-                }}
-              />
-            }
-          </Flex>
+      {allAppointments ? (
+        allAppointments.slice(0, 5).map((appointment) =>
+          mobile ? (
+            <Center flexDirection={"column"} gap={1} w={"100%"}>
+              {
+                <AppointmentContent
+                  appointment={{
+                    date: new Date(
+                      appointment.appointment.date
+                    ).toLocaleString(),
+                    subject: appointment.subject.name,
+                  }}
+                />
+              }
+            </Center>
+          ) : (
+            <Flex flexDirection={"column"} gap={1} w={"100%"}>
+              {
+                <AppointmentContent
+                  appointment={{
+                    date: new Date(
+                      appointment.appointment.date
+                    ).toLocaleString(),
+                    subject: appointment.subject.name,
+                  }}
+                />
+              }
+            </Flex>
+          )
         )
+      ) : (
+        <></>
       )}
     </>
   );
@@ -154,9 +144,9 @@ export const AppointmentListCard = ({
     <Box mt={mobile ? 6 : 0} mb={mobile ? 12 : 0}>
       <DividedCard
         colorFirst={
-          type === EUserType.admin ? theme.colors.blue : theme.colors.pink
+          type === EUserType.admin ? DarkMode().bgColor2 : DarkMode().bgColor
         }
-        colorSecond="white"
+        colorSecond={DarkMode().bgColor3}
         percentageFirst="80%"
         percentageSecond="20%"
         overlap
@@ -172,7 +162,7 @@ export const AppointmentListCard = ({
               navigate("asesorias");
             }}
           >
-            Ver más...
+            {t("dashboard.more")}
           </Button>
         }
       />

@@ -3,8 +3,8 @@ import RadioArray from "../radioArray";
 
 export const ScaleQuestion = ({
   question,
-  scaleBegining,
-  scaleEnding,
+  scaleBegining = "Completamente de acuerdo",
+  scaleEnding = "Completamente en desacuerdo",
   extraRadioProps,
 }: {
   question: string;

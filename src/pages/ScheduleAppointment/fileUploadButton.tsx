@@ -1,24 +1,43 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { IconButton, Text } from "@chakra-ui/react";
 import "./style.css";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export const FileUploadButton = ({
   onChange,
   currentFile,
 }: {
-  onChange: React.Dispatch<File> | undefined;
+  onChange: React.Dispatch<File | undefined>;
   currentFile: File | undefined;
 }) => {
-  const drop = useRef<HTMLLabelElement>(null);
+  const [fileError, setFileError] = useState("");
+  const drop = useRef<HTMLDivElement>(null);
+
+  const truncateFileName = (fileName: string, maxLength = 50) =>
+    fileName.length > maxLength
+      ? `${fileName.substring(0, maxLength)}…`
+      : fileName;
+
+  const extension = (fileName: string) =>
+    fileName.substring(fileName.lastIndexOf(".") + 1);
 
   const onUpload = (files: FileList | null) => {
     if (files) {
       if (files[0].type.substring(0, files[0].type.indexOf("/")) === "image") {
-        onChange?.(files[0]);
+        if (files[0].size / 1000 / 1000 < 2) {
+          onChange(files[0]);
+          setFileError("");
+        } else {
+          onChange(undefined);
+          setFileError("El tamaño de la imágen no puede ser mayor a 2MB");
+        }
       } else {
-        alert("Tipo de archivo inválido. Solo se pueden subir imágenes");
+        onChange(undefined);
+        setFileError("Tipo de archivo inválido. Solo se pueden subir imágenes");
       }
     } else {
-      alert(
+      onChange(undefined);
+      setFileError(
         "Hubo un error al procesar tu archivo. Por favor inténtalo de nuevo"
       );
     }
@@ -53,9 +72,8 @@ export const FileUploadButton = ({
   }, []);
 
   return (
-    <div>
+    <div ref={drop}>
       <label
-        ref={drop}
         className="FileUpload"
         style={{
           textAlign: "center",
@@ -81,11 +99,43 @@ export const FileUploadButton = ({
           }}
         />
       </label>
-      <p style={{ display: "inline", marginLeft: "2rem" }}>
-        {currentFile
-          ? `Se cargó el archivo ${currentFile?.name} correctamente`
-          : ""}
-      </p>
+
+      {fileError != "" ? (
+        <Text
+          className="chakra-form__error-message css-170ki1a"
+          display="inline"
+          ml="0.5em"
+        >
+          {fileError}
+        </Text>
+      ) : (
+        <Text ml="0.5em" color="grey" as="i">
+          {currentFile
+            ? `Se cargó el archivo ${
+                truncateFileName(
+                  currentFile.name.substring(
+                    currentFile.name.lastIndexOf(".") + 1,
+                    0
+                  ),
+                  12
+                ) + extension(currentFile.name)
+              } correctamente`
+            : "Selecciona una imágen o arrástrala aquí"}
+        </Text>
+      )}
+      {currentFile ? (
+        <IconButton
+          ml="0.5em"
+          onClick={() => {
+            onChange(undefined);
+          }}
+          colorScheme="purpleScheme"
+          icon={<DeleteIcon />}
+          aria-label={"Eliminar archivo"}
+        ></IconButton>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
