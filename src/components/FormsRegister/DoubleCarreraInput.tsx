@@ -2,25 +2,32 @@ import React, { ChangeEvent } from "react";
 import { Controller, Control } from "react-hook-form";
 
 import { FormLabel, FormHelperText, Select } from "@chakra-ui/react";
-
+import { ICareerData } from "../../interfaces";
 interface IDoubleCarreraInput {
   control: Control<any>;
   defaultValue?: string;
   setDoubleCarrera?: React.Dispatch<React.SetStateAction<string>>;
+  setDoubleCarreraName?: React.Dispatch<React.SetStateAction<string>>;
   secondValidation?: boolean;
+  options: Array<ICareerData>;
 }
 
 export const DoubleCarreraInput = ({
   control,
+  options,
   defaultValue = "",
   setDoubleCarrera,
+  setDoubleCarreraName,
   secondValidation = false,
 }: IDoubleCarreraInput) => {
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (setDoubleCarrera) {
       setDoubleCarrera(e.target.value);
+    }
+    if (setDoubleCarreraName) {
+      setDoubleCarreraName(
+        e.target.options.item(e.target.options.selectedIndex)?.label as string
+      );
     }
   };
 
@@ -28,27 +35,28 @@ export const DoubleCarreraInput = ({
     <Controller
       name="doubleCarrera"
       control={control || null}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
         <div>
           <FormLabel htmlFor="doubleCarrera">
             Carrera de doble titulación
           </FormLabel>
           <Select
-            isInvalid={false}
             id="doubleCarrera"
+            placeholder="Selecciona tu carrera"
             onChange={(e) => {
-              onChange(e);
+              console.log("Seleccionando carrera: ", e.target.value);
+              onChange(e.target.value);
+
               if (secondValidation) {
                 handleChange(e);
               }
             }}
             value={value}
+            isInvalid={Boolean(error)}
           >
-            <option value={"NA"}>No aplica</option>
-            <option value={"ITC"}>ITC</option>
-            <option value={"IRS"}>IRS</option>
-            <option value={"IBT"}>IBT</option>
-            <option value={"IMT"}>IMT</option>
+            {options.map((option) => (
+              <option value={option.id}>{option.acronym}</option>
+            ))}
           </Select>
           <FormHelperText>
             Selecciona tu carrera de doble titulación

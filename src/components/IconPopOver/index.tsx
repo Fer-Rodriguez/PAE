@@ -15,6 +15,7 @@ import {
 import React, { ReactElement, useEffect, useState } from "react";
 import { ETypeDropdown } from "../../interfaces/enums";
 import { DropDown } from "../../components/Dropdown";
+import { IObjectData } from "../../interfaces";
 interface IIconPopOverForm {
   setData: (value: string | number | boolean, key: string) => void;
   icon: ReactElement<any, string>;
@@ -28,6 +29,7 @@ interface IIconPopOverDropdown {
   text: string;
   acronym: string;
   myKey: string;
+  options: Array<IObjectData>;
   mobile?: boolean;
 }
 
@@ -94,6 +96,7 @@ export const IconPopOverDropdown = ({
   icon,
   text,
   acronym,
+  options,
   myKey,
 }: IIconPopOverDropdown) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -135,10 +138,7 @@ export const IconPopOverDropdown = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <DropDown
-            options={[
-              { title: "ITC", value: "f31755a0-26b1-414d-9b62-fd4be6346323" },
-              { title: "IBT", value: "19c4229c-4845-4c83-b268-78797906c9c2" },
-            ]}
+            options={options}
             configuration={{
               onChange: (e) => {
                 setValue(e.target.value);
