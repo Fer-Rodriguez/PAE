@@ -24,7 +24,7 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
         imgSrc: menuAsesores,
       },
       {
-        linkTo: "../perfil",
+        linkTo: "../subjects",
         imgSrc: menuPerfil,
       },
     ];

@@ -11,21 +11,8 @@ interface IColumnDetails {
 }
 
 import { Managment } from "../Managment";
-import socket from "../../socket";
-import { getAllSubjects } from "../../api/subjects/get";
 
 export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
-  const setAllUsers = useStore((state) => state.setAllUsers);
-  const setAllSubjects = useStore((state) => state.setAllSubjects);
-
-  useEffect(() => {
-    socket.connect();
-    // socket.emit("initial", { myId: userData.id }, (response: any) => {
-    //   console.log(response.status);
-    // });
-    GetAllAdmins(setAllUsers);
-    getAllSubjects(setAllSubjects);
-  }, []);
   const subjects = useRef(useStore.getState().allSubjects);
   const [subjectsColumnData, setSubjectsColumn] = useState<
     Array<IColumnDetails>

@@ -146,6 +146,7 @@ export const Main = () => {
 
   useEffect(() => {
     useStore.subscribe((state) => {
+      console.log(state.type);
       userType.current = state.type;
     });
   }, []);
@@ -200,6 +201,17 @@ export const Main = () => {
                     mobile={<Dashboard mobile={true} />}
                   />
                 )
+              }
+            />
+            <Route
+              path="subjects"
+              element={
+                <>
+                  <MainLayout
+                    desktop={<SubjectPage />}
+                    mobile={<SubjectPage mobile={true} />}
+                  />
+                </>
               }
             />
             <Route
