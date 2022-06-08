@@ -35,11 +35,13 @@ export const ScheduleScreen = ({
   mobile?: boolean;
   subjectName?: string;
   onPreviousScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
-  onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onNextScreenButtonClick: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void>;
   onFullDateSelected?: (newValue: string) => void;
   idSubject: string;
 }) => {
-  const [isCreatingAppointment, setIsCreatingAppointment] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [selectedDayString, setSelectedDayString] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
@@ -49,6 +51,11 @@ export const ScheduleScreen = ({
     const posibleDatesApi = await getPossibleDates(idSubject);
     if (Array.isArray(posibleDatesApi)) {
       setPossibleDates(posibleDatesApi);
+      if (posibleDatesApi.length == 0) {
+        alert(
+          `No hay aseosres que puedan darte una asesoría de ${subjectName} en este momento. Inténtalo más tarde.`
+        );
+      }
     } else {
       alert(
         "No pudimos recuperar las fechas disponibles. Inténtalo más tarde."
@@ -120,6 +127,8 @@ export const ScheduleScreen = ({
         <br></br>
         <VStack w="100%" spacing="25px" alignItems="center">
           <Calendar
+            prev2Label={null}
+            next2Label={null}
             onChange={setSelectedDay}
             value={selectedDay}
             showFixedNumberOfWeeks
@@ -160,7 +169,6 @@ export const ScheduleScreen = ({
             customClose={onClose}
             customCancelRef={cancelRef}
           >
-            {/*TODO: Show subject, day and hour in popup*/}
             <Center>
               <Text>Materia: {subjectName}</Text>
               <Spacer />
@@ -176,11 +184,17 @@ export const ScheduleScreen = ({
                 onClick={onPreviousScreenButtonClick}
               />
               <ButtonGeneric
+                isLoading={isSubmitting}
                 text="Confirmar"
                 sizePX=""
                 bgColor={theme.colors.pink}
                 fontColor="white"
-                onClick={() => onOpen()}
+                onClick={(e) => {
+                  setIsSubmitting(true);
+                  onNextScreenButtonClick(e).then((e) => {
+                    setIsSubmitting(false);
+                  });
+                }}
               />
             </Center>
           </PopOver>
@@ -211,8 +225,10 @@ export const ScheduleScreen = ({
         />
         <br></br>
         <br></br>
-        <Flex justifyContent="center" h="100%" gap="25%">
+        <Flex justifyContent="center" alignItems={"center"} h="100%" gap="25%">
           <Calendar
+            prev2Label={null}
+            next2Label={null}
             onChange={setSelectedDay}
             value={selectedDay}
             showFixedNumberOfWeeks
@@ -229,7 +245,6 @@ export const ScheduleScreen = ({
               const finalDate = selectedDay;
               finalDate.setHours(dateSelected.getHours());
               setSelectedDay(finalDate);
-
               setSelectedHour(e.currentTarget.value);
             }}
             scheduleSelected={selectedHour}
@@ -289,11 +304,17 @@ export const ScheduleScreen = ({
               </Text>
               <Spacer />
               <ButtonGeneric
+                isLoading={isSubmitting}
                 text="Confirmar"
                 sizePX=""
                 bgColor={theme.colors.pink}
                 fontColor="white"
-                onClick={onNextScreenButtonClick}
+                onClick={(e) => {
+                  setIsSubmitting(true);
+                  onNextScreenButtonClick(e).then((e) => {
+                    setIsSubmitting(false);
+                  });
+                }}
               />
             </VStack>
           </PopOver>

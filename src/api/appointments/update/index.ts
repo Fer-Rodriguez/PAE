@@ -16,6 +16,12 @@ interface IBaseChanges {
   photo_url?: string;
 }
 
+enum ECandidateStatus {
+  PENDING = "PENDING",
+  AVILABLE = "AVILABLE",
+  REJECTED = "REJECTED",
+}
+
 export const updateAppointment = (
   id: string,
   idStudent: string,
@@ -45,4 +51,26 @@ export const updateAppointment = (
     .catch(function (error) {
       console.log(error);
     });
+};
+
+export const updateAppointmentCandidate = async (
+  idAppointment: string,
+  idAdvisor: string,
+  newState: ECandidateStatus
+) => {
+  const config = {
+    method: "patch",
+    url: "http://localhost:6060/appointment/updateCandidates",
+    data: {
+      idAppointment,
+      idAdvisor,
+      newState,
+    },
+  };
+
+  try {
+    await axios(config);
+  } catch (error) {
+    console.error(error);
+  }
 };

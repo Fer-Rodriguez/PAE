@@ -18,9 +18,38 @@ import { TextQuestion } from "./textQuestion";
 import { ISurveyData } from "../../interfaces";
 import { ENotificationStatus } from "../../interfaces/enums";
 import { updateNotification } from "../../api/notifications/update";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getBasicAppointmentInfo } from "../../api/appointments/get";
+
+interface IAppointmentBasicInfo {
+  date: string;
+  subject: { [key: string]: any };
+  problem_description: string;
+  photo_url: string;
+}
 
 export const Survey = (surveyData: ISurveyData) => {
+  const [info, setInfo] = useState<IAppointmentBasicInfo>({
+    date: "",
+    subject: {},
+    problem_description: "",
+    photo_url: "",
+  });
+  const fetchAppointmentInfo = async () => {
+    const response = await getBasicAppointmentInfo(surveyData.appointmentId);
+
+    if (response.status === 200) {
+      setInfo(response.data);
+    } else {
+      alert(
+        "No pudimos cargar los datos de la encuesta. Por favor, vuelve más tarde"
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchAppointmentInfo();
+  }, []);
   const sendAnswers = (data: any) => {
     setIsSubmitting(true);
     CreatePollReport(data, surveyData.appointmentId, idType)
@@ -29,6 +58,7 @@ export const Survey = (surveyData: ISurveyData) => {
           surveyData.triggeringNotificationId,
           ENotificationStatus.seen
         ).then(() => {
+          reset();
           setIsSubmitting(false);
           surveyData.controller(true);
         });
@@ -43,6 +73,7 @@ export const Survey = (surveyData: ISurveyData) => {
     control,
     register,
     handleSubmit,
+    reset,
   } = useForm({ mode: "onChange" });
   const idType = useStore((state) => state.type);
 
@@ -55,7 +86,12 @@ export const Survey = (surveyData: ISurveyData) => {
       customOpen={!surveyData.answered}
     >
       <Heading textAlign="center" as="h2" fontSize="2xl" marginBlockEnd="20px">
-        ¿Qué tal te fue en tu última asesoría?
+        {`¿Qué tal te fue en tu asesoría de ${
+          info.subject["name"]
+        } el ${new Date(info.date).toLocaleString("es-MX", {
+          timeZone: "America/Mexico_City",
+          dateStyle: "long",
+        })}?`}
       </Heading>
       <FormControl>
         <form onSubmit={handleSubmit(sendAnswers)}>
@@ -64,10 +100,18 @@ export const Survey = (surveyData: ISurveyData) => {
               switch (entry.type) {
                 case "text": {
                   return (
-                    <TextQuestion
-                      extraPropsTextInput={register(entry.question)}
-                      question={entry.question}
-                    ></TextQuestion>
+                    <Controller
+                      control={control}
+                      name={entry.question}
+                      render={() => (
+                        <>
+                          <TextQuestion
+                            extraPropsTextInput={register(entry.question)}
+                            question={entry.question}
+                          ></TextQuestion>
+                        </>
+                      )}
+                    ></Controller>
                   );
                 }
                 case "scale": {
@@ -100,10 +144,18 @@ export const Survey = (surveyData: ISurveyData) => {
                 }
                 case "yesOrNo": {
                   return (
-                    <CheckboxQuestion
-                      question={entry.question}
-                      extraPropsCheckbox={register(entry.question)}
-                    ></CheckboxQuestion>
+                    <Controller
+                      control={control}
+                      name={entry.question}
+                      render={() => (
+                        <>
+                          <CheckboxQuestion
+                            question={entry.question}
+                            extraPropsCheckbox={register(entry.question)}
+                          ></CheckboxQuestion>
+                        </>
+                      )}
+                    ></Controller>
                   );
                 }
               }

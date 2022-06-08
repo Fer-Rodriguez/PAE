@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { ETypeDropdown } from "../../interfaces/enums";
 import {
@@ -9,6 +9,7 @@ import {
   FormControl,
   FormErrorMessage,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 
 import { ButtonGeneric } from "../../components/ButtonGeneric";
@@ -19,6 +20,8 @@ import imageBasicInfo from "../../assets/appoint_basicInfo.png";
 import theme from "../../theme/index";
 import { Controller, useForm } from "react-hook-form";
 import { FileUploadButton } from "./fileUploadButton";
+import { getSubjects } from "../../api/subjects/get";
+import { useStore } from "../../state/store";
 
 export const BasicInfoScreen = ({
   mobile,
@@ -30,28 +33,66 @@ export const BasicInfoScreen = ({
   valueForDropDown,
   valueForTextField,
   valueForFileInput,
+  selectedSemester,
+  setSelectedSemester,
 }: {
   mobile?: boolean;
   onNextScreenButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
   onDropDownChange?: React.Dispatch<string>;
   onSubjectChange?: React.Dispatch<string>;
   onTextFieldChange?: (newValue: string) => void;
-  onFileUploaded?: React.Dispatch<File>;
+  onFileUploaded: React.Dispatch<File | undefined>;
   valueForDropDown?: string;
   valueForTextField?: string;
-  valueForFileInput?: File;
+  valueForFileInput?: File | undefined;
+  selectedSemester: number;
+  setSelectedSemester: React.Dispatch<number>;
 }) => {
-  //TODO: Remplazar esto con una llamada GET a la base de datos
-  const myOptions = [
-    {
-      title: "Modelación matemática fundamental",
-      value: "f7d6a2f4-4ac2-4323-8039-d082c270b1a4",
-    },
-    {
-      title: "Programación Orientada a Objetos",
-      value: "352c0bf1-2782-4bf8-9fbf-6b75d852ee7e",
-    },
+  //  TODO: me parece que hay carreras con más de ocho semestres pero tengo que revisar
+  const semesters = [
+    { title: "Optativas", value: -1 },
+    { title: "Primer semestre", value: 1 },
+    { title: "Segundo semestre", value: 2 },
+    { title: "Tercer semestre", value: 3 },
+    { title: "Cuarto semestre", value: 4 },
+    { title: "Quinto semestre", value: 5 },
+    { title: "Sexto semestre", value: 6 },
+    { title: "Séptimo semestre", value: 7 },
+    { title: "Octavo semestre", value: 8 },
   ];
+
+  const userCareer = useStore((state) => state.career);
+  const [subjects, setSubjects] = useState<
+    {
+      title: string;
+      value: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    //
+  }, [subjects]);
+
+  useEffect(() => {
+    if (selectedSemester != 0) {
+      getSubjects(userCareer, selectedSemester)
+        .then((res) => {
+          const newSubejcts = [];
+          for (const subject of res) {
+            newSubejcts.push({
+              title: subject.name,
+              value: subject.id,
+            });
+          }
+          setSubjects(newSubejcts);
+        })
+        .catch((error) => {
+          error;
+        });
+    } else {
+      setSubjects([]);
+    }
+  }, [selectedSemester]);
 
   const {
     control,
@@ -68,7 +109,7 @@ export const BasicInfoScreen = ({
       <br></br>
       <FormControl isRequired isInvalid={!isValid}>
         <VStack spacing="50px" alignItems={mobile ? "center" : "start"}>
-          <Box w="40%">
+          <Flex w="50%" gap={"1rem"}>
             <Controller
               name="idSubject"
               control={control}
@@ -80,12 +121,40 @@ export const BasicInfoScreen = ({
                 fieldState: { error },
               }) => (
                 <>
+                  {" "}
                   <DropDown
-                    isInvalid={Boolean(error)}
-                    options={myOptions}
+                    value={selectedSemester}
+                    options={semesters}
                     configuration={{
                       onChange: (e: ChangeEvent<HTMLSelectElement>) => {
-                        //TODO: Darle focus al text in
+                        const tmp_value = e.target.value;
+                        e.target.value = "";
+                        onChange(e);
+                        e.target.value = tmp_value;
+                        const currentSemester = e.target.options.item(
+                          e.target.options.selectedIndex
+                        )?.value;
+                        value = "";
+                        if (currentSemester && currentSemester !== "") {
+                          setSelectedSemester(parseInt(currentSemester));
+                        } else {
+                          setSelectedSemester(0);
+                        }
+                      },
+                      placeholder: "Semestre",
+                      type: ETypeDropdown.normal,
+                    }}
+                    isInvalid={false}
+                    color={theme.colors.pink}
+                    fontColor="white"
+                    borderRadius={theme.radii.button}
+                    baseProps={{ width: "48%" }}
+                  ></DropDown>
+                  <DropDown
+                    isInvalid={Boolean(error)}
+                    options={subjects}
+                    configuration={{
+                      onChange: (e: ChangeEvent<HTMLSelectElement>) => {
                         onChange(e);
                         const currentSubject = e.target.options.item(
                           e.target.options.selectedIndex
@@ -95,7 +164,7 @@ export const BasicInfoScreen = ({
                         }
                         onDropDownChange?.(e.target.value);
                       },
-                      placeholder: "Seleccionar materia",
+                      placeholder: "Selecciona una materia",
                       type: ETypeDropdown.normal,
                     }}
                     value={value}
@@ -112,7 +181,7 @@ export const BasicInfoScreen = ({
               )}
               defaultValue={valueForDropDown}
             ></Controller>
-          </Box>
+          </Flex>
           <Controller
             name="problemDescription"
             control={control}
@@ -137,6 +206,7 @@ export const BasicInfoScreen = ({
                     onChange(e);
                     onTextFieldChange?.(e.target.value);
                   }}
+                  extraInputProps={{ backgroundColor: "white" }}
                 />
                 {error ? (
                   <FormErrorMessage>{error?.message}</FormErrorMessage>

@@ -224,3 +224,11 @@ export interface ISurveyData {
   appointmentId: string;
   triggeringNotificationId: string;
 }
+
+export interface IAppointmentAcceptanceData {
+  loaded: boolean;
+  answered: boolean;
+  controller: React.Dispatch<React.SetStateAction<boolean>>;
+  appointmentId: string;
+  triggeringNotificationId: string;
+}

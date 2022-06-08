@@ -1,6 +1,6 @@
 //Libraries
 import { ChakraProvider, Box } from "@chakra-ui/react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 //Layout
 import { Login } from "./layouts/Login";
@@ -31,7 +31,10 @@ import {
   getRecentAppointment,
 } from "./api/appointments/get";
 import shallow from "zustand/shallow";
-import { EUserType } from "./interfaces/enums";
+import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
+import { GetUserInfo } from "./api/users/get";
+import { IUserData } from "./interfaces";
+import { FormsRecovery } from "./pages/RecoverPassword";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -51,6 +54,7 @@ export const Main = () => {
   const [currentNotification, setCurrentNotification] = useState({});
 
   const [state, newToast] = useToastHook();
+  const setUser = useStore((state) => state.setUser);
 
   const { id, type, setRecentAppointment, setAllAppointments } = useStore(
     (state) => ({
@@ -63,6 +67,38 @@ export const Main = () => {
   );
 
   useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (userId) {
+      GetUserInfo(userId).then((userData) => {
+        const isRoot = userData.user.type === EUserType.root;
+        const correctUser: IUserData = {
+          id: userData.user.id,
+          status:
+            userData.user.status === EStatus.active
+              ? EStatus.active
+              : userData.user.status === EStatus.deleted
+              ? EStatus.deleted
+              : EStatus.inactive,
+          name: userData.user.name,
+          email: userData.user.email,
+          type:
+            userData.user.type === EUserType.advisor
+              ? EUserType.advisor
+              : userData.user.type === EUserType.student
+              ? EUserType.student
+              : userData.user.type === EUserType.admin
+              ? EUserType.admin
+              : EUserType.root,
+          semester: isRoot ? null : userData.user.userSemesters[0].semester,
+          career: isRoot ? null : userData.user.career[0].id,
+          careerName: isRoot ? null : userData.user.career[0].acronym,
+          config: { language: ELanguage.spanish, theme: ETheme.white },
+          profilePic: "No tengo",
+          notifications: [],
+        };
+        setUser(correctUser);
+      });
+    }
     const updateAppointments = async () => {
       await getRecentAppointment(id, type, setRecentAppointment);
       const response = await getAllAppointments(id, type, true);
@@ -124,57 +160,78 @@ export const Main = () => {
             />
           }
         />
-        <Route path="/dashboard">
-          <Route
-            index
-            element={
-              <MainLayout
-                desktop={<Dashboard />}
-                mobile={<Dashboard mobile={true} />}
-              />
-            }
-          />
-          <Route
-            path="asesorias"
-            element={
-              <>
-                <MainLayout
-                  desktop={<AppointmentsPage mobile={false} />}
-                  mobile={
-                    <Box m={6}>
-                      <AppointmentsPage mobile />
-                    </Box>
-                  }
+        {id === "" ? (
+          <>
+            <Route
+              path="/recoverPassword"
+              element={
+                <Login
+                  desktop={<FormsRecovery />}
+                  mobile={<FormsRecovery mobile={true} />}
                 />
-              </>
-            }
-          />
-          <Route
-            path="perfil/:id"
-            element={
-              <MainLayout
-                desktop={<ProfilePage />}
-                mobile={<ProfilePage mobile />}
-              />
-            }
-          />
-          <Route path="crear_asesoria" element={<CreateAppointmentLayout />} />
-          <Route
-            path="asesores"
-            element={
-              <MainLayout
-                desktop={<AdvisorsPage />}
-                mobile={<AdvisorsPage mobile />}
-              />
-            }
-          />
-          <Route
-            path="encuestas"
-            element={
-              <MainLayout desktop={<PollCard />} mobile={<PollCard mobile />} />
-            }
-          />
-        </Route>
+              }
+            />
+            <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          </>
+        ) : (
+          <Route path="/dashboard">
+            <Route
+              index
+              element={
+                <MainLayout
+                  desktop={<Dashboard />}
+                  mobile={<Dashboard mobile={true} />}
+                />
+              }
+            />
+            <Route
+              path="asesorias"
+              element={
+                <>
+                  <MainLayout
+                    desktop={<AppointmentsPage mobile={false} />}
+                    mobile={
+                      <Box m={6}>
+                        <AppointmentsPage mobile />
+                      </Box>
+                    }
+                  />
+                </>
+              }
+            />
+            <Route
+              path="perfil/:id"
+              element={
+                <MainLayout
+                  desktop={<ProfilePage />}
+                  mobile={<ProfilePage mobile />}
+                />
+              }
+            />
+            <Route
+              path="crear_asesoria"
+              element={<CreateAppointmentLayout />}
+            />
+            <Route
+              path="asesores"
+              element={
+                <MainLayout
+                  desktop={<AdvisorsPage />}
+                  mobile={<AdvisorsPage mobile />}
+                />
+              }
+            />
+            <Route
+              path="encuestas"
+              element={
+                <MainLayout
+                  desktop={<PollCard />}
+                  mobile={<PollCard mobile />}
+                />
+              }
+            />
+          </Route>
+        )}
       </Routes>
     </BrowserRouter>
   );
