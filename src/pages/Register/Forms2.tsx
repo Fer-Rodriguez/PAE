@@ -41,6 +41,7 @@ export const Forms2 = ({
   setNewId,
   setLoggedIn,
 }: IForms2) => {
+  const [isLogining, setIsLogining] = useState(false);
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
@@ -69,6 +70,7 @@ export const Forms2 = ({
   const createUser = async () => {
     console.log(info.semesterDoubleCarrera);
     if (info.semesterDoubleCarrera !== undefined) {
+      setIsLogining(true);
       await CreateUser({
         name: info.name,
         email: capitalize(info.mail),
@@ -96,7 +98,6 @@ export const Forms2 = ({
     const userData = await GetUserInfo(idUserData.userId);
 
     if (idUserData.status == "OK") {
-
       const correctUser: IUserData =
         userData.user.career.length === 1
           ? {
@@ -158,11 +159,16 @@ export const Forms2 = ({
       setUser(correctUser);
       localStorage.setItem("user_id", userData.user.id);
       if (info.typeUserDrop === EUserType.student) {
+        setIsLogining(false);
         setLoggedIn(true);
         navigate("/dashboard");
       } else {
         setFormStep(2);
       }
+    } else {
+      alert(
+        "No pudimos registrarte en este momento. Por favor, inténtalo más tarde"
+      );
     }
   };
 
@@ -296,6 +302,7 @@ export const Forms2 = ({
                   : "Introducir mis horarios"
               }
               onClick={() => createUser()}
+              isLoading={isLogining}
             ></ButtonGeneric>
           </Center>
         </Confirmation>

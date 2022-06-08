@@ -250,7 +250,6 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
   const setAllNotifications = useStore((state) => state.setNotifications);
 
   useEffect(() => {
-    console.log("valor id regresado por store", userData.id);
     if (userData.id && userData.id != "") {
       socket.connect();
       socket.emit("initial", { myId: userData.id }, (response: any) => {

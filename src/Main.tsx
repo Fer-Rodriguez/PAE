@@ -1,5 +1,12 @@
 //Libraries
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  Box,
+  Spinner,
+  Center,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
 import {
   BrowserRouter,
   Routes,
@@ -177,13 +184,25 @@ export const Main = ({
                   <Route
                     index
                     element={
-                      userType.current === EUserType.root ? (
+                      type === EUserType.root ? (
                         <MainLayout
+                          setLoggedIn={setLoggedIn}
                           desktop={<AdminPage />}
                           mobile={<AdminPage mobile={true} />}
                         />
+                      ) : type === EUserType.default ? (
+                        <Flex
+                          height={"100vh"}
+                          alignItems="center"
+                          justifyContent="center"
+                          gap="1em"
+                        >
+                          <Heading>Cargando... </Heading>
+                          <Spinner size="xl" color="purple" />
+                        </Flex>
                       ) : (
                         <MainLayout
+                          setLoggedIn={setLoggedIn}
                           desktop={<Dashboard />}
                           mobile={<Dashboard mobile={true} />}
                         />
@@ -195,6 +214,7 @@ export const Main = ({
                     element={
                       <>
                         <MainLayout
+                          setLoggedIn={setLoggedIn}
                           desktop={<AppointmentsPage mobile={false} />}
                           mobile={
                             <Box m={6}>
@@ -209,6 +229,7 @@ export const Main = ({
                     path="perfil/:id"
                     element={
                       <MainLayout
+                        setLoggedIn={setLoggedIn}
                         desktop={<ProfilePage />}
                         mobile={<ProfilePage mobile />}
                       />
@@ -224,6 +245,7 @@ export const Main = ({
                     element={
                       type === EUserType.admin ? (
                         <MainLayout
+                          setLoggedIn={setLoggedIn}
                           desktop={<AdvisorsPage />}
                           mobile={<AdvisorsPage mobile />}
                         />

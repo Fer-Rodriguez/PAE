@@ -54,10 +54,17 @@ function GetData() {
   return <Bell columns={columns} data={data} headColor="black" />;
 }
 
-export const DesktopComponents = ({ userComponent }: IUserComponents) => {
+export const DesktopComponents = ({
+  userComponent,
+  setLoggedIn,
+}: {
+  userComponent: React.ReactNode;
+  setLoggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
 
   const logout = () => {
+    setLoggedIn?.(false);
     localStorage.removeItem("user_id");
     navigate("/");
   };

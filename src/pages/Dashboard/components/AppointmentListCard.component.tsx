@@ -38,7 +38,6 @@ export const AppointmentListCard = ({
   const navigate = useNavigate();
 
   const allAppointments = useStore((state) => state.allAppointments);
-  console.log(JSON.stringify(allAppointments));
 
   const AppointmentContent = ({
     appointment,
