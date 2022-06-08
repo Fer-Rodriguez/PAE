@@ -66,6 +66,14 @@ const theme = extendTheme({
       800: "#8963DA",
       900: "#8963DA",
     },
+
+    // ---------------------------------- DARK MODE ----------------------------------------
+
+    blackLight: "#34333F",
+    blueDark: "#3C70BA",
+    pinkDark: "#C0147E",
+    purpleMoreDark: "#8551C9",
+    purplereallyDark: "#7209B7",
   },
   //Border radii for components
   radii: {
