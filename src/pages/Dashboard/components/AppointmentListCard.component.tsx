@@ -81,7 +81,9 @@ export const AppointmentListCard = ({
         </Heading>
       )}
 
-      {allAppointments ? (
+      {allAppointments &&
+      Array.isArray(allAppointments) &&
+      allAppointments.length !== 0 ? (
         allAppointments.slice(0, 5).map((appointment) =>
           mobile ? (
             <Center flexDirection={"column"} gap={1} w={"100%"}>

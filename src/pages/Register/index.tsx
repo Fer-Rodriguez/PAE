@@ -8,6 +8,7 @@ import { Forms3 } from "./Forms3";
 
 interface IRegister {
   mobile?: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const FormsRegister = (props: IRegister) => {
@@ -46,10 +47,11 @@ export const FormsRegister = (props: IRegister) => {
           setInfo={setInfo}
           setFormStep={setFormStep}
           setNewId={setnewId}
+          setLoggedIn={props.setLoggedIn}
         />
       );
     } else if (step == 2) {
-      return <Forms3 id={newId} />;
+      return <Forms3 id={newId} setLoggedIn={props.setLoggedIn} />;
     }
   };
   return (

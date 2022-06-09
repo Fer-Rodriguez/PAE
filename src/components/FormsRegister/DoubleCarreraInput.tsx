@@ -55,7 +55,7 @@ export const DoubleCarreraInput = ({
             isInvalid={Boolean(error)}
           >
             {options.map((option) => (
-              <option value={option.id}>{option.acronym}</option>
+              <option value={option.careerId}>{option.careerAcronym}</option>
             ))}
           </Select>
           <FormHelperText>

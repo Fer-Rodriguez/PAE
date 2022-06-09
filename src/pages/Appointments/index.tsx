@@ -125,13 +125,6 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const data = useMemo(() => [...tableData], [tableData]);
 
   if (tableData.length === 0) {
-    if (!calledAPI) {
-      return (
-        <Flex h="50vh" justifyContent="center" alignItems="center">
-          <Spinner color="purple" size="xl" />
-        </Flex>
-      );
-    }
     return noDataView;
   } else {
     return (

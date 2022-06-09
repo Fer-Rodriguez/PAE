@@ -206,11 +206,11 @@ export interface ISubjects {
 }
 
 export interface ICareerData {
-  id: string;
-  name: string;
-  acronym: string;
-  length: number;
-  doubleDegree?: boolean;
+  careerId?: string;
+  careerName?: string;
+  careerAcronym?: string;
+  careerLength?: number;
+  careerDoubleDegree?: boolean;
 }
 export interface INewUserSchedule {
   start: Date;
