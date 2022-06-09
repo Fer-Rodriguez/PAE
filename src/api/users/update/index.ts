@@ -17,3 +17,19 @@ export const updateUser = async (data: any, careerData: any, id: string) => {
     console.error(error);
   }
 };
+
+export const verifyEmail = async (token: string) => {
+  const config = {
+    method: "patch",
+    url: "http://localhost:6070/login/verify",
+    data: {
+      token,
+    },
+  };
+
+  try {
+    return await axios(config);
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -12,7 +12,7 @@ export const GetUser = async (email: string, password: string) => {
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      return error;
     });
 
   return data;

@@ -41,6 +41,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   const setAllDDCareers = useStore((state) => state.setAllDDCareers);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [isLogining, setIsLogining] = useState(false);
+  const [error, setError] = useState(0);
   // const [saveData, setSaveData] = useState(true);
   const saveData = true;
 
@@ -112,11 +113,9 @@ export const FormsLogin = (props: IFormsLogin) => {
     try {
       setIsLogining(true);
       const idUserData = await GetUser(capitalize(data.mail), data.password);
-      console.log("MI DATA: ", idUserData);
 
       if (idUserData.status == "OK") {
         const correctUser = await loadUserInfo(idUserData.userId);
-        console.log(".");
         if (saveData) {
           localStorage.setItem("user_id", correctUser.id);
         }
@@ -125,12 +124,15 @@ export const FormsLogin = (props: IFormsLogin) => {
         props.setLoggedIn(true);
         navigate("/dashboard");
       } else {
+        setError(idUserData.reason);
         setVisibleAlert(true);
       }
     } catch (e) {
+      setError(2);
       setIsLogining(false);
       setVisibleAlert(true);
     }
+    setIsLogining(false);
   };
 
   const register = () => {
@@ -167,7 +169,13 @@ export const FormsLogin = (props: IFormsLogin) => {
           <div style={{ marginBottom: "10px", width: "100%" }}>
             <MyAlert
               status={EStatusAlert.error}
-              title={"Usuario y/o contraseña incorrectos"}
+              title={
+                error != 2
+                  ? error === 1
+                    ? "Usuario y/o contraseña incorrectos"
+                    : "Cuenta no verificada. Por favor, busca el correo de confirmación en tu bandeja de entrada"
+                  : "Lo sentimos, no se puede iniciar al sistema en este momento. Inténtalo de nuevo más tarde."
+              }
               description={""}
               active={visibleAlert}
               setActive={setVisibleAlert}

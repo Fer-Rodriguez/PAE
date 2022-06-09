@@ -101,11 +101,7 @@ export const FileUploadButton = ({
       </label>
 
       {fileError != "" ? (
-        <Text
-          className="chakra-form__error-message css-170ki1a"
-          display="inline"
-          ml="0.5em"
-        >
+        <Text color={"#ed3441"} display="inline" ml="0.5em">
           {fileError}
         </Text>
       ) : (
