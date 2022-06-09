@@ -3,6 +3,9 @@ import { IconButton, Text } from "@chakra-ui/react";
 import "./style.css";
 import { DeleteIcon } from "@chakra-ui/icons";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const FileUploadButton = ({
   onChange,
   currentFile,
@@ -77,7 +80,7 @@ export const FileUploadButton = ({
         className="FileUpload"
         style={{
           textAlign: "center",
-          backgroundColor: "#4CC9F0",
+          backgroundColor: DarkMode().blue,
           fontSize: "1rem",
           fontWeight: "600",
           height: "2.5rem",

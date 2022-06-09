@@ -10,7 +10,7 @@ import { ScheduleAppointment } from "../../pages/ScheduleAppointment";
 
 //Components
 import { DesktopComponents } from "../Main/Desktop.component";
-import { MobileComponents } from "../Login/Mobile.component";
+import { MobileComponents } from "../Main/Mobile.component";
 //Utils
 import { Desktop, Mobile } from "../../services/Breakpoints";
 import storage from "../../firebaseConfig";

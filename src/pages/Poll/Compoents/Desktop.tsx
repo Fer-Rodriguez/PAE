@@ -42,6 +42,9 @@ import "swiper/css/navigation";
 // Import Swiper styles
 import "swiper/css";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 interface IDesktopPoll {
   Asesor?: any;
   Asesorado?: any;
@@ -69,7 +72,7 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
         <ModalCloseButton
           rounded={30}
           backgroundColor="#F44336"
-          color="white"
+          color={DarkMode().bgTotalv2}
           margin={4}
         />
 
@@ -88,8 +91,8 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
                       Asesor
                     </Text>
                   }
-                  colorFirst={theme.colors.pink}
-                  colorSecond={theme.colors.white}
+                  colorFirst={DarkMode().pink}
+                  colorSecond={DarkMode().bgTotalv2}
                   percentageFirst="80"
                   percentageSecond="20"
                   vertical={true}
@@ -106,8 +109,8 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
                       Asesorados
                     </Text>
                   }
-                  colorFirst={theme.colors.blue}
-                  colorSecond={theme.colors.white}
+                  colorFirst={DarkMode().blue}
+                  colorSecond={DarkMode().bgTotalv2}
                   percentageFirst="80"
                   percentageSecond="20"
                   vertical={true}

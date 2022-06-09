@@ -23,6 +23,9 @@ import { FileUploadButton } from "./fileUploadButton";
 import { getSubjects } from "../../api/subjects/get";
 import { useStore } from "../../state/store";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const BasicInfoScreen = ({
   mobile,
   onNextScreenButtonClick,
@@ -146,7 +149,7 @@ export const BasicInfoScreen = ({
                     }}
                     isInvalid={false}
                     color={theme.colors.pink}
-                    fontColor="white"
+                    fontColor={DarkMode().textWtB}
                     borderRadius={theme.radii.button}
                     baseProps={{ width: "48%" }}
                   ></DropDown>
@@ -169,7 +172,7 @@ export const BasicInfoScreen = ({
                     }}
                     value={value}
                     color={theme.colors.pink}
-                    fontColor="white"
+                    fontColor={DarkMode().textWtB}
                     borderRadius={theme.radii.button}
                   />
                   {error ? (
@@ -206,7 +209,7 @@ export const BasicInfoScreen = ({
                     onChange(e);
                     onTextFieldChange?.(e.target.value);
                   }}
-                  extraInputProps={{ backgroundColor: "white" }}
+                  extraInputProps={{ backgroundColor: DarkMode().textWtB }}
                 />
                 {error ? (
                   <FormErrorMessage>{error?.message}</FormErrorMessage>
@@ -223,7 +226,7 @@ export const BasicInfoScreen = ({
         </VStack>
         <Center w="100%">
           <ButtonGeneric
-            bgColor="pink"
+            bgColor={DarkMode().pink}
             sizePX=""
             text="Siguiente"
             isDisabled={!isValid}

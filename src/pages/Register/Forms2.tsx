@@ -26,6 +26,9 @@ import { IUserData } from "../../interfaces";
 import { useStore } from "../../state/store";
 import { GetAllCareers } from "../../api/careers/get";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IForms2 {
   setInfo: React.Dispatch<any>;
   info: any;
@@ -228,14 +231,14 @@ export const Forms2 = ({
           <Flex>
             <Spacer></Spacer>
             <ButtonGeneric
-              bgColor="purpleLight"
+              bgColor={DarkMode().purple2}
               sizePX="40%"
               text="Atrás"
               onClick={() => setFormStep(0)}
             ></ButtonGeneric>
             <Spacer></Spacer>
             <ButtonGeneric
-              bgColor="purpleLight"
+              bgColor={DarkMode().purple2}
               sizePX="40%"
               text="Siguiente"
               isDisabled={!isValid}
@@ -294,7 +297,7 @@ export const Forms2 = ({
 
           <Center>
             <ButtonGeneric
-              bgColor="blue"
+              bgColor={DarkMode().blue}
               sizePX="50%"
               text={
                 info.typeUserDrop === EUserType.student

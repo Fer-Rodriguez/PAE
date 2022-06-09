@@ -1,6 +1,9 @@
 import React from "react";
 import PopOver, { ETypeSize } from "../../components/popOver";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IConfirmation {
   info: any;
   children?: any;
@@ -18,7 +21,7 @@ export const Confirmation = ({
       title={{
         text: "Resumen",
         alignment: "center",
-        titleColor: "purpleLight",
+        titleColor: DarkMode().purple2,
       }}
       closeButton={true}
       customClose={customClose}

@@ -12,6 +12,9 @@ import {
 
 import { IManagingTableInternal } from "../../interfaces";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 /**
  * ManagingTable: Tabla utilizada en múltiples pantallas de administración de datos del sistema.
  */
@@ -19,12 +22,12 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
   return (
     <TableContainer w="100%" boxShadow="general" borderRadius="general">
       <Table variant="simple" {...internalProps.getTableProps()}>
-        <Thead background={internalProps.headColor}>
+        <Thead background={DarkMode().blue}>
           <Tr>
             {internalProps.flatHeaders.map((header) => (
               <Th
                 textAlign="center"
-                color="white"
+                color={DarkMode().textBtW}
                 {...header.getHeaderProps(header.getSortByToggleProps())}
               >
                 {header.render("Header")}
@@ -35,7 +38,10 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
             ))}
           </Tr>
         </Thead>
-        <Tbody background="white" {...internalProps.getTableBodyProps()}>
+        <Tbody
+          background={DarkMode().bgTotalv2}
+          {...internalProps.getTableBodyProps()}
+        >
           {internalProps.rows.map((row) => {
             internalProps.prepareRow(row);
             return (

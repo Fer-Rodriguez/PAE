@@ -43,11 +43,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               MarginHeader={-1}
               MarginButton={15}
               PaddingCloseButtton={5}
-              Content={
-                <DndProvider backend={HTML5Backend}>
-                  <AdvisorM />
-                </DndProvider>
-              }
+              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
             ></PollComponent>
           ) : (
             <PollComponent
@@ -59,11 +55,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               MarginHeader={-1}
               MarginButton={15}
               PaddingCloseButtton={5}
-              Content={
-                <DndProvider backend={HTML5Backend}>
-                  <StudentM />
-                </DndProvider>
-              }
+              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
             ></PollComponent>
           )}
         </>
@@ -86,11 +78,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
-              Content={
-                <DndProvider backend={HTML5Backend}>
-                  <Advisor />
-                </DndProvider>
-              }
+              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
             ></PollComponent>
           ) : (
             <PollComponent
@@ -101,11 +89,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
-              Content={
-                <DndProvider backend={HTML5Backend}>
-                  <Student />
-                </DndProvider>
-              }
+              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
             ></PollComponent>
           )}
         </>

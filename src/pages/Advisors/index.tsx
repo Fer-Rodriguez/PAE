@@ -1,3 +1,4 @@
+import { Box, Flex } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -10,6 +11,9 @@ interface IColumnDetails {
 }
 
 import { Managment } from "../Managment";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
 
 export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
   const advisors = useStore((state) => state.allUsers);
@@ -50,8 +54,8 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
                 <Link to={`../perfil/${id}`}>
                   <ButtonGeneric
                     text={"Editar"}
-                    color={"pink"}
-                    fontColor="white"
+                    color={DarkMode().pink}
+                    fontColor={DarkMode().bgTotalv2}
                   />
                 </Link>
               )}
@@ -93,13 +97,15 @@ export const AdvisorsPage = ({ mobile = false }: { mobile?: boolean }) => {
       {advisorsColumnData === [] ? (
         <h1>Cargando</h1>
       ) : (
-        <Managment
-          columns={columns}
-          data={advisorsColumnData}
-          headColor={"blue"}
-          mobile={mobile}
-          header={"Asesores"}
-        />
+        <Box marginBottom={20} p={5}>
+          <Managment
+            columns={columns}
+            data={advisorsColumnData}
+            headColor={DarkMode().blue}
+            mobile={mobile}
+            header={"Asesores"}
+          />
+        </Box>
       )}
     </>
   );

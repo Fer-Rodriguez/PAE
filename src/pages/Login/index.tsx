@@ -29,6 +29,9 @@ import {
 import { MyAlert } from "../../components/MyAlert";
 import { useEffect, useState } from "react";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IFormsLogin {
   mobile?: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -156,7 +159,7 @@ export const FormsLogin = (props: IFormsLogin) => {
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
           ></Logo>
           <Text
-            color={"purpleLight"}
+            color={DarkMode().purple2}
             fontWeight={"semibold"}
             {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}
@@ -200,7 +203,7 @@ export const FormsLogin = (props: IFormsLogin) => {
               </Flex>
               <Center>
                 <ButtonGeneric
-                  bgColor="purpleLight"
+                  bgColor={DarkMode().purple2}
                   sizePX="40%"
                   text="Ingresar"
                   isLoading={isLogining}

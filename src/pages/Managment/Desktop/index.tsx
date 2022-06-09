@@ -12,6 +12,9 @@ import { Filter } from "../../../assets/Filter";
 import { ManagingTable } from "../../../components/ManagingTable";
 import { IManagingTableInternal } from "../../../interfaces";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 export const ManagmentDesktop = ({
   onFilterClick,
   hideFilters,
@@ -36,7 +39,7 @@ export const ManagmentDesktop = ({
           />
           <Input
             onChange={handleFilterInputChange}
-            background="white"
+            background={DarkMode().bgTotalv2}
             borderRadius="general"
             boxShadow="general"
             type="search"

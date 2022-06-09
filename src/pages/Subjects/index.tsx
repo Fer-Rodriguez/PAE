@@ -14,6 +14,9 @@ import { Managment } from "../Managment";
 import socket from "../../socket";
 import { getAllSubjects } from "../../api/subjects/get";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
   const setAllUsers = useStore((state) => state.setAllUsers);
   const setAllSubjects = useStore((state) => state.setAllSubjects);
@@ -60,8 +63,8 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
                 <Link to={`../perfil/${id}`}>
                   <ButtonGeneric
                     text={"Editar"}
-                    color={"pink"}
-                    fontColor="white"
+                    color={DarkMode().pink}
+                    fontColor={DarkMode().textWtB}
                   />
                 </Link>
               )}
@@ -80,8 +83,8 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
                 <Link to={`../perfil/${id}`}>
                   <ButtonGeneric
                     text={"Eliminar"}
-                    color={"pink"}
-                    fontColor="white"
+                    color={DarkMode().pink}
+                    fontColor={DarkMode().textWtB}
                   />
                 </Link>
               )}
@@ -127,7 +130,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
         <Managment
           columns={columns}
           data={subjectsColumnData}
-          headColor={"blue"}
+          headColor={DarkMode().blue}
           mobile={mobile}
           header={"Materias"}
         />

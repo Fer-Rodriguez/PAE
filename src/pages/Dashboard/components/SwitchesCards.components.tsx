@@ -44,6 +44,22 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
     }
   };
 
+  function classHandler() {
+    if (colorMode == "dark") {
+      return "Black";
+    } else {
+      return "White";
+    }
+  }
+
+  function classHandler2() {
+    if (colorMode == "light") {
+      return "slider";
+    } else {
+      return "slider2";
+    }
+  }
+
   return (
     <Flex direction={"column"} h="100%" gap={5}>
       <Switch
@@ -51,12 +67,16 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
         isToggled={isToggled}
         onToggled={() => setIsToggled(!isToggled)}
         click={() => ChangeColor()}
+        class={classHandler()}
+        class2={classHandler2()}
       />
       <Switch
         rounded={true}
         isToggled={isToggled2}
         onToggled={() => setIsToggled2(!isToggled2)}
         click={() => ChangeLng()}
+        class={classHandler()}
+        class2={classHandler2()}
       />
     </Flex>
   );

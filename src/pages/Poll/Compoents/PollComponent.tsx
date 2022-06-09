@@ -16,6 +16,9 @@ import {
 //React
 import { useState } from "react";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 interface IPollComponent {
   Title?: string;
   HeightModal?: number;
@@ -54,7 +57,7 @@ export const PollComponent = ({
           marginBottom={-10}
           fontSize={35}
           fontWeight="bold"
-          backgroundColor="white"
+          backgroundColor={DarkMode().bgTotalv2}
           onClick={ReturnButton}
         >
           {" "}
@@ -72,7 +75,7 @@ export const PollComponent = ({
           margin={4}
           rounded={30}
           backgroundColor="#F44336"
-          color="white"
+          color={DarkMode().bgTotalv2}
           p={PaddingCloseButtton}
         />
         <ModalBody>
@@ -89,7 +92,7 @@ export const PollComponent = ({
 
         <ModalFooter>
           <Button
-            backgroundColor="white"
+            backgroundColor={DarkMode().bgTotalv2}
             marginRight={MarginButton}
             marginBottom={5}
             onClick={onClose}

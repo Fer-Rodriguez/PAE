@@ -23,6 +23,9 @@ import theme from "../../theme";
 
 import { ButtonGeneric } from "../../components/Button";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IPasswordProfileModal {
   onClose: () => void;
   isOpen: boolean;
@@ -47,7 +50,7 @@ export const PasswordProfileModal = ({
       <ModalContent>
         <ModalHeader mt={30}>
           <Center>
-            <Heading color={theme.colors.purple}>Cambiar Contraseña</Heading>
+            <Heading color={DarkMode().purple}>Cambiar Contraseña</Heading>
           </Center>
         </ModalHeader>
         <ModalCloseButton />
@@ -98,7 +101,7 @@ export const PasswordProfileModal = ({
               });
             }}
             text="Guardar"
-            color={theme.colors.purple}
+            color={DarkMode().purple}
           />
         </ModalFooter>
       </ModalContent>

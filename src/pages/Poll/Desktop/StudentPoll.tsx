@@ -37,8 +37,12 @@ import { IDataProfileCard, IPoll } from "../../../interfaces";
 import socket from "../../../socket";
 import { getAllQuestions } from "../../../api/poll/get";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 const style = {
   width: "100%",
+  backgroundColor: DarkMode().bgTotalv2,
 };
 
 export interface Item {
@@ -230,7 +234,7 @@ export const StudentPoll: FC = () => {
               <GridItem rowStart={1} colStart={11} colEnd={11}>
                 <Button
                   rounded={30}
-                  backgroundColor="pink"
+                  backgroundColor={DarkMode().pink}
                   onClick={() => deleteQuestion(card.id)}
                 >
                   <Image src={deletee} />
@@ -239,7 +243,7 @@ export const StudentPoll: FC = () => {
               <GridItem rowSpan={1} colStart={12} colEnd={12}>
                 <Button
                   rounded={30}
-                  backgroundColor="white"
+                  backgroundColor={DarkMode().textWtB}
                   onClick={() =>
                     openModal(card.id, card.text, card.typeQuestion)
                   }
@@ -273,7 +277,7 @@ export const StudentPoll: FC = () => {
         <Box position="absolute" bottom={105}>
           <Button
             rounded={30}
-            backgroundColor="purple"
+            backgroundColor={DarkMode().purple}
             fontSize={15}
             marginLeft={55}
             marginTop={3}
@@ -288,7 +292,7 @@ export const StudentPoll: FC = () => {
             <ModalCloseButton
               rounded={30}
               backgroundColor="#F44336"
-              color="white"
+              color={DarkMode().textWtB}
             />
             <ModalBody>
               <Input
@@ -313,7 +317,7 @@ export const StudentPoll: FC = () => {
             <ModalFooter>
               <Button
                 rounded={30}
-                backgroundColor="blue"
+                backgroundColor={DarkMode().blue}
                 mr={3}
                 onClick={() => editText(commentActive.id, value, valueSelect)}
               >

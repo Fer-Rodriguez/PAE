@@ -125,6 +125,7 @@ export const ProfileCardMobile = ({
             w={"75%"}
             maxW={"80%"}
             p="5"
+            marginBottom={100}
             rounded={theme.radii.general}
           >
             {modAdmin && (

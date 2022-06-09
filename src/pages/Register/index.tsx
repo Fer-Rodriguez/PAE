@@ -6,6 +6,9 @@ import { Forms1 } from "./Forms1";
 import { Forms2 } from "./Forms2";
 import { Forms3 } from "./Forms3";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IRegister {
   mobile?: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,7 +72,7 @@ export const FormsRegister = (props: IRegister) => {
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "35%" })}
           ></Logo>
           <Text
-            color={"purpleLight"}
+            color={DarkMode().purple2}
             fontWeight={"semibold"}
             {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}

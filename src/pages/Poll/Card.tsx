@@ -6,10 +6,13 @@ import { JsxElement } from "typescript";
 
 import { ItemTypes } from "./ItemTypes";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 const style = {
   padding: "0.5rem 1rem",
   marginBottom: ".5rem",
-  backgroundColor: "white",
+  backgroundColor: DarkMode().bgTotalv2,
   cursor: "move",
 };
 
