@@ -176,14 +176,24 @@ export const Main = ({
                   }
                 />
                 <Route
-                  path="verififyEmail/:tkn"
+                  path="/verififyEmail/:tkn"
                   element={
                     <Login
                       desktop={<ConfirmEmail />}
                       mobile={<ConfirmEmail mobile={true} />}
                     ></Login>
                   }
-                />
+                >
+                  <Route
+                    path="cancel"
+                    element={
+                      <Login
+                        desktop={<ConfirmEmail cancel />}
+                        mobile={<ConfirmEmail cancel mobile={true} />}
+                      ></Login>
+                    }
+                  />
+                </Route>
                 <Route path="*" element={<Navigate replace to="/" />}></Route>
               </>
             ) : (

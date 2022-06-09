@@ -18,12 +18,13 @@ export const updateUser = async (data: any, careerData: any, id: string) => {
   }
 };
 
-export const verifyEmail = async (token: string) => {
+export const verifyEmail = async (token: string, cancel: boolean) => {
   const config = {
     method: "patch",
     url: "http://localhost:6070/login/verify",
     data: {
       token,
+      cancel,
     },
   };
 

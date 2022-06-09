@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { verifyEmail } from "../../api/users/update/";
 
 interface IConfirmLogin {
+  cancel?: boolean;
   mobile?: boolean;
 }
 
@@ -18,7 +19,7 @@ export const ConfirmEmail = (props: IConfirmLogin) => {
 
   useEffect(() => {
     if (tkn) {
-      verifyEmail(tkn).then((res) => {
+      verifyEmail(tkn, !props.cancel ? true : false).then((res) => {
         setTriedToVerify(true);
         if (res?.status == 200) {
           setIsTokenValid(true);
@@ -55,12 +56,20 @@ export const ConfirmEmail = (props: IConfirmLogin) => {
                 paddingBottom={"20px"}
                 textAlign={"center"}
               >
-                {isTokenValid ? "¡Se confirmó tu correo!" : "Liga inválida"}
+                {isTokenValid
+                  ? !props.cancel
+                    ? "Se canceló el registro correctamente"
+                    : "¡Se confirmó tu correo!"
+                  : "Liga inválida"}
               </Text>
               <Text textAlign={"center"} marginBottom={"10%"}>
                 {isTokenValid
-                  ? "Ya puedes utilizar la plataforma de PAE"
-                  : "Parece que esta liga para confirmar tu correo no es válida."}
+                  ? !props.cancel
+                    ? "Hemos eliminado tu información de nuestros registros."
+                    : "Ya puedes utilizar la plataforma de PAE."
+                  : `Parece que esta liga para ${
+                      !props.cancel ? "cancelar" : "confirmar"
+                    } tu correo no es válida.`}
               </Text>
               <ButtonGeneric
                 {...(props.mobile ? { sizePX: "80%" } : { sizePX: "50%" })}
