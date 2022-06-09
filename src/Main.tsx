@@ -211,6 +211,18 @@ export const Main = ({
                     }
                   />
                   <Route
+                    path="subjects"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<SubjectPage />}
+                          mobile={<SubjectPage mobile={true} />}
+                        />
+                      </>
+                    }
+                  />
+                  <Route
                     path="asesorias"
                     element={
                       <>
