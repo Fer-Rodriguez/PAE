@@ -31,13 +31,17 @@ import "swiper/css/navigation";
 // Import Swiper styles
 import "swiper/css";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 interface IMobilePoll {
   Asesor?: any;
   Asesorado?: any;
+  active?: boolean;
 }
 
-export const MobilePoll = ({ Asesor, Asesorado }: IMobilePoll) => {
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+export const MobilePoll = ({ Asesor, Asesorado, active }: IMobilePoll) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
   return (
@@ -67,7 +71,7 @@ export const MobilePoll = ({ Asesor, Asesorado }: IMobilePoll) => {
             margin={4}
             rounded={30}
             backgroundColor="#F44336"
-            color="white"
+            color={DarkMode().bgTotalv2}
             p={5}
           />
           <ModalBody>
@@ -95,8 +99,8 @@ export const MobilePoll = ({ Asesor, Asesorado }: IMobilePoll) => {
                             Asesor
                           </Text>
                         }
-                        colorFirst={theme.colors.pink}
-                        colorSecond={theme.colors.white}
+                        colorFirst={DarkMode().pink}
+                        colorSecond={DarkMode().bgTotalv2}
                         percentageFirst="80"
                         percentageSecond="20"
                         vertical={true}
@@ -122,8 +126,8 @@ export const MobilePoll = ({ Asesor, Asesorado }: IMobilePoll) => {
                             Asesorados
                           </Text>
                         }
-                        colorFirst={theme.colors.blue}
-                        colorSecond={theme.colors.white}
+                        colorFirst={DarkMode().blue}
+                        colorSecond={DarkMode().bgTotalv2}
                         percentageFirst="80"
                         percentageSecond="20"
                         vertical={true}

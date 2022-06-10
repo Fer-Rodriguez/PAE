@@ -7,6 +7,9 @@ import { IConfigurationsDropdown, IObjectData } from "../../interfaces";
 import { EStatusAppointment, ETypeDropdown } from "../../interfaces/enums";
 import { TextInput } from "../../components/TextInput";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const EditAppointmentContent = ({
   setStatus,
   setLocation,
@@ -34,7 +37,7 @@ export const EditAppointmentContent = ({
   return (
     <Flex gap="20%" w="100%" flexDir={"column"} p={8} alignItems="center">
       <Flex flexDir={"column"} w="100%" alignItems="center">
-        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color={DarkMode().purple}>
           Estatus
         </Text>
         <DropDown
@@ -44,7 +47,7 @@ export const EditAppointmentContent = ({
         />
       </Flex>
       <Flex flexDir={"column"} w="100%" alignItems="center">
-        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color={DarkMode().purple}>
           Ubicación
         </Text>
         <TextInput

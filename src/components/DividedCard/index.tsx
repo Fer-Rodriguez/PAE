@@ -28,6 +28,7 @@ interface IDividedCard {
   percentageSecond: string;
   vertical: boolean;
   overlap: boolean;
+  margin?: string;
   basePropsFirst?: { [key: string]: any };
   basePropsSecond?: { [key: string]: any };
   basePropsContainer?: { [key: string]: any };
@@ -58,6 +59,7 @@ export const DividedCard = (props: IDividedCard) => {
       h="100%"
       bg={props.overlap ? props.colorSecond : ""}
       {...props.basePropsContainer}
+      marginBottom={props.margin}
     >
       <Center
         zIndex={props.overlap ? 2 : 1}

@@ -37,6 +37,9 @@ import { IDataProfileCard, IPoll } from "../../../interfaces";
 import socket from "../../../socket";
 import { getAllQuestions } from "../../../api/poll/get";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 const style = {
   width: "100%",
 };

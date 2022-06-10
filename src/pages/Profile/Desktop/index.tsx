@@ -46,6 +46,9 @@ import { updateUser } from "../../../api/users/update";
 import { useStore } from "../../../state/store";
 import { GetAllAdvisors } from "../../../api/users/get";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 /**
  *  ProfileCard: Component made to acomodate and organize the information present in the 3 types of profile cards available.
  * @data : User Data that wull be presented in the profile card.
@@ -184,7 +187,7 @@ export const ProfileDesktop = ({
       ) : (
         <Flex
           {...baseProps}
-          backgroundColor="#F3F5FF"
+          backgroundColor={DarkMode().bgTotal}
           className="drop-shadow-xl"
           flexDirection={"column"}
         >

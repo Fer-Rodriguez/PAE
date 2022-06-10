@@ -6,6 +6,7 @@ import {
   Image,
   Button,
   useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
 
 import { DividedCard } from "../../../components/DividedCard";
@@ -41,7 +42,7 @@ export const AppointmentsPollCard = ({
         as="h4"
         size="md"
         textAlign={"center"}
-        textColor={DarkMode().text}
+        textColor={DarkMode().textBtW}
       >
         {type === EUserType.admin
           ? t("dashboard.poll")
@@ -63,34 +64,41 @@ export const AppointmentsPollCard = ({
       >
         {type === EUserType.admin ? "Editar" : "Agendar"}
       </Button>
-      {showPollCard ? <PollCard mobile={mobile}></PollCard> : <></>}
+      {showPollCard ? (
+        <PollCard mobile={mobile} active={showPollCard} />
+      ) : (
+        <></>
+      )}
     </Flex>
   );
 
   return (
-    <DividedCard
-      colorFirst={
-        type === EUserType.admin ? DarkMode().bgColor2 : DarkMode().bgColor2
-      }
-      percentageFirst="60%"
-      percentageSecond="40%"
-      colorSecond={DarkMode().bgColor3}
-      overlap={false}
-      vertical
-      contentSecond={<BottomContent />}
-      contentFirst={
-        mobile ? (
-          <Image
-            src={type === EUserType.admin ? hamds : notebook}
-            boxSize={mobile ? "25vw" : "30vw"}
-          />
-        ) : (
-          <Image
-            src={type === EUserType.admin ? hamds : notebook}
-            boxSize={type === EUserType.admin ? "15vw" : "8vw"}
-          />
-        )
-      }
-    />
+    <Box>
+      <DividedCard
+        colorFirst={
+          type === EUserType.admin ? DarkMode().blue : DarkMode().pink
+        }
+        percentageFirst="60%"
+        percentageSecond="40%"
+        margin="20"
+        colorSecond={DarkMode().bgTotalv2}
+        overlap={false}
+        vertical
+        contentSecond={<BottomContent />}
+        contentFirst={
+          mobile ? (
+            <Image
+              src={type === EUserType.admin ? hamds : notebook}
+              boxSize={mobile ? "25vw" : "30vw"}
+            />
+          ) : (
+            <Image
+              src={type === EUserType.admin ? hamds : notebook}
+              boxSize={type === EUserType.admin ? "15vw" : "8vw"}
+            />
+          )
+        }
+      />
+    </Box>
   );
 };

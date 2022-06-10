@@ -6,10 +6,13 @@ interface ISwitch {
   isToggled: any;
   onToggled: any;
   click?: React.MouseEventHandler<HTMLInputElement>;
+  class?: string;
+  class2?: string;
+  class3?: string;
 }
 
 export const Switch = (props: ISwitch) => {
-  const sliderCX = cx("slider", {
+  const sliderCX = cx(props.class2, {
     rounded: props.rounded,
   });
 
@@ -20,6 +23,7 @@ export const Switch = (props: ISwitch) => {
         checked={props.isToggled}
         onChange={props.onToggled}
         onClick={props.click}
+        className={props.class}
       />
       <span className={sliderCX} />
     </label>

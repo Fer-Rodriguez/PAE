@@ -146,9 +146,9 @@ export const AppointmentListCard = ({
     <Box mt={mobile ? 6 : 0} mb={mobile ? 12 : 0}>
       <DividedCard
         colorFirst={
-          type === EUserType.admin ? DarkMode().bgColor2 : DarkMode().bgColor
+          type === EUserType.admin ? DarkMode().blue : DarkMode().pink
         }
-        colorSecond={DarkMode().bgColor3}
+        colorSecond={DarkMode().bgTotalv2}
         percentageFirst="80%"
         percentageSecond="20%"
         overlap

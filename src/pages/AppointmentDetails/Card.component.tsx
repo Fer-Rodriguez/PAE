@@ -22,6 +22,9 @@ import { DropDown } from "../../components/Dropdown";
 import { IConfigurationsDropdown } from "../../interfaces";
 import { ETypeDropdown } from "../../interfaces/enums";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface ICardComponent {
   type?: number;
   editAppointment: boolean;
@@ -155,7 +158,7 @@ const InfoContent = ({
   return (
     <Flex flexDirection={"column"}>
       <Box gap={10} textAlign="center">
-        <Text fontSize="2xl" textColor={"white"}>
+        <Text fontSize="2xl" textColor={DarkMode().textWtB}>
           {type === 0
             ? "Asesor/a"
             : type === 1
@@ -164,12 +167,12 @@ const InfoContent = ({
         </Text>
         {editAppointment && type === 0 ? (
           <DropDown
-            color="white"
+            color={DarkMode().textWtB}
             options={advisors}
             configuration={configurationDropdown}
           />
         ) : (
-          <Heading textColor={"white"}>
+          <Heading textColor={DarkMode().textWtB}>
             {type === 0
               ? detailsData.advisor
                 ? detailsData.advisor.name
@@ -182,14 +185,14 @@ const InfoContent = ({
       </Box>
       {type !== 1 && selectedAdvisor !== "" ? (
         <Flex flexDir={"column"} padding={4} gap={2}>
-          <Text textColor={"white"}>
+          <Text textColor={DarkMode().textWtB}>
             {advisorInfo.get(selectedAdvisor)?.career_name}
           </Text>
-          <Text textColor={"white"}>
+          <Text textColor={DarkMode().textWtB}>
             Semestre{" "}
             <strong>{advisorInfo.get(selectedAdvisor)?.semester}</strong>
           </Text>
-          <Text textColor={"white"}>
+          <Text textColor={DarkMode().textWtB}>
             <strong>{advisorInfo.get(selectedAdvisor)?.completed_hours}</strong>{" "}
             horas completadas.
           </Text>
@@ -199,10 +202,10 @@ const InfoContent = ({
       )}
       {isAdvisorPending ? (
         <Box>
-          <Text color="black" as="b">
+          <Text color={DarkMode().textBtW} as="b">
             Atención:{" "}
           </Text>
-          <Text color="white" as="em">
+          <Text color={DarkMode().textWtB} as="em">
             Este asesor no ha confirmado que puede dar la asesoría. Esto implica
             que podría no asistir.
           </Text>
@@ -224,7 +227,13 @@ export const CardContent = ({
     templateColumns="repeat(20, 1fr)"
     templateRows="repeat(6, 1fr)"
     h={"50%"}
-    backgroundColor={type === 0 ? "pink" : type === 1 ? "blue" : "purple"}
+    backgroundColor={
+      type === 0
+        ? DarkMode().pink
+        : type === 1
+        ? DarkMode().blue
+        : DarkMode().purple
+    }
     p={8}
   >
     {type === 1 ? (

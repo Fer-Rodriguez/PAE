@@ -15,6 +15,9 @@ import { Managment } from "../Managment";
 import socket from "../../socket";
 import { Box, Center } from "@chakra-ui/react";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
   const setAllUsers = useStore((state) => state.setAllUsers);
 
@@ -60,8 +63,12 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={``}>
-                  <Button text={"Eliminar"} color={"pink"} fontColor="white" />
+                <Link to={`../perfil/${id}`}>
+                  <ButtonGeneric
+                    text={"Eliminar"}
+                    color={DarkMode().pink}
+                    fontColor="white"
+                  />
                 </Link>
               )}
             </>
@@ -114,7 +121,7 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
         <Managment
           columns={columns}
           data={administratorsColumnData}
-          headColor={"blue"}
+          headColor={DarkMode().blue}
           mobile={mobile}
           header={"Administradores"}
         />

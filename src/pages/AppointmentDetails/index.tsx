@@ -26,6 +26,9 @@ import { EStatusAppointment } from "../../interfaces/enums";
 //Assets
 import theme from "../../theme";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const AppointmentDetails = ({
   editAppointment = false,
   isOpen,
@@ -122,37 +125,37 @@ export const AppointmentDetails = ({
 
         <ModalContent borderRadius={theme.radii.general} shadow={0}>
           <Button
-            backgroundColor={"pink"}
+            backgroundColor={DarkMode().pink}
             w={"10%"}
             position="absolute"
             bottom={"1%"}
             rounded={theme.radii.button}
             right={editAppointment ? "46.5%" : "48%"}
-            color="white"
+            color={DarkMode().bgTotalv2}
             onClick={() => onClose()}
           >
             Cerrar
           </Button>
           {!editAppointment ? (
             <Button
-              backgroundColor={"blue"}
+              backgroundColor={DarkMode().blue}
               w={"15%"}
               position="absolute"
               top={"47%"}
               right={"45%"}
-              color="white"
+              color={DarkMode().bgTotalv2}
             >
               {detailsData.appointment.status}
             </Button>
           ) : (
             <Button
-              backgroundColor={"blue"}
+              backgroundColor={DarkMode().blue}
               w={"15%"}
               position="absolute"
               bottom={"8%"}
               rounded={theme.radii.button}
               right={"44%"}
-              color="white"
+              color={DarkMode().bgTotalv2}
               onClick={() => onMySave()}
             >
               Guardar

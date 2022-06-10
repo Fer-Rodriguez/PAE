@@ -92,7 +92,7 @@ const Desktop = ({
     >
       <AppointmentsPollCard type={type} />
     </GridItem>
-    <GridItem w="100%" rowStart={2} colSpan={4} rowSpan={3}>
+    <GridItem w="100%" rowStart={2} colStart={6} colEnd={9} rowSpan={3} ml="10">
       <SwitchesCards />
     </GridItem>
     <GridItem w="100%" colStart={10} colSpan={4} rowSpan={4} mt={12}>
