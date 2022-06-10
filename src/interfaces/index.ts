@@ -106,8 +106,13 @@ export interface IDataProfileCard {
   type: EUserType;
   email: string;
   career: string;
+  career_user_relation?: string;
   careerName?: string;
   semester: number;
+  careerDD?: string;
+  careerDD_user_relation?: string;
+  careerNameDD?: string;
+  semesterDD?: number;
   profilePic: string;
 }
 
@@ -181,9 +186,11 @@ export interface IUserData {
   type: EUserType;
   semester: number;
   career: string;
+  career_user_relation?: string;
   careerName?: string;
-  semesterDD?: string;
+  semesterDD?: number;
   careerDD?: string;
+  careerDD_user_relation?: string;
   careerNameDD?: string;
   config: TConfigObject;
   profilePic: string;

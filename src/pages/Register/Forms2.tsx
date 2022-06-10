@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { CarreraInput } from "../../components/FormsRegister/CarreraInput";
@@ -24,7 +24,7 @@ import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 import { GetUser, GetUserInfo } from "../../api/users/get";
 import { IUserData } from "../../interfaces";
 import { useStore } from "../../state/store";
-import { GetAllCareers } from "../../api/careers/get";
+import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
 
 interface IForms2 {
   setInfo: React.Dispatch<any>;
@@ -52,6 +52,7 @@ export const Forms2 = ({
   const [semesterDoubleCarrera, setSemesterDoubleCarrera] = useState("");
   const [typeUser, setTypeUser] = useState<EUserType | null>(null);
   const [seeModal, setSeeModal] = useState(false);
+
   const careers = useStore((state) => state.allCareers);
   const ddCareers = useStore((state) => state.ddCareers);
 
