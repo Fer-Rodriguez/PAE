@@ -152,10 +152,10 @@ export const CareerPage = ({ mobile = false }: { mobile?: boolean }) => {
           header={"Carreras"}
         />
       )}
-      <SubjectCareerPage
+      {/* <SubjectCareerPage
         idCareer={"c635f5bd-f41d-44d9-8925-d617cf0e4ea7"}
         mobile={true}
-      />
+      /> */}
       <Flex
         style={{
           marginTop: "20px",
