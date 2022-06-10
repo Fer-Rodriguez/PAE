@@ -81,7 +81,7 @@ export const CareerPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={`materias-carrera`}>
+                <Link to={``}>
                   <ButtonGeneric
                     bgColor="pink"
                     sizePX="70%"

@@ -63,8 +63,8 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={`../perfil/${id}`}>
-                  <ButtonGeneric
+                <Link to={``}>
+                  <Button
                     text={"Eliminar"}
                     color={DarkMode().pink}
                     fontColor="white"
