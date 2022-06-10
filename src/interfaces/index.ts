@@ -204,6 +204,18 @@ export interface ISubjects {
   page: number;
   subjects: Array<ISubjectData>;
 }
+export interface ICareersData {
+  careerId: string;
+  careerName: string;
+  careerAcronym: string;
+  careerDoubleDegree: string;
+  careerLength: string;
+}
+
+export interface ICareers {
+  page: number;
+  careers: Array<ICareersData>;
+}
 
 export interface ICareerData {
   careerId?: string;

@@ -16,27 +16,6 @@ export const FormsRegister = (props: IRegister) => {
   const [info, setInfo] = useState<any>({});
   const [newId, setnewId] = useState("");
 
-  const getProgress = () => {
-    return (
-      <Progress
-        steps={[
-          {
-            label: "",
-            content: (
-              <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />
-            ),
-          },
-          {
-            label: "",
-            content: (
-              <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />
-            ),
-          },
-        ]}
-      ></Progress>
-    );
-  };
-
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;

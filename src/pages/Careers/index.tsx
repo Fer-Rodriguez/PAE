@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useMemo, useState, useEffect, useRef } from "react";
-import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
@@ -12,69 +11,57 @@ interface IColumnDetails {
   [key: string]: string;
 }
 
-import { Managment } from "../Managment";
 import socket from "../../socket";
-import { getAllSubjects } from "../../api/subjects/get";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { GetAllPaginatedCareers } from "../../api/careers/get";
 
-export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
-  const setAllSubjects = useStore((state) => state.setAllSubjects);
+import { Managment } from "../Managment";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { SubjectCareerPage } from "./details";
+
+export const CareerPage = ({ mobile = false }: { mobile?: boolean }) => {
+  const setAllPaginatedCareers = useStore(
+    (state) => state.setAllPaginatedCareers
+  );
 
   useEffect(() => {
     socket.connect();
     // socket.emit("initial", { myId: userData.id }, (response: any) => {
     //   console.log(response.status);
     // });
-    getAllSubjects(setAllSubjects);
+    GetAllPaginatedCareers(setAllPaginatedCareers);
   }, []);
-  const subjects = useRef(useStore.getState().allSubjects);
+  const careers = useRef(useStore.getState().paginatedCareers);
   const [page, setPage] = useState(1);
   const [visibilityBack, setVisibilityBack] = useState(true);
   const [visibilityNext, setVisibilityNext] = useState(false);
-  const lastPage = subjects.current.length;
-  const [subjectsColumnData, setSubjectsColumn] = useState<
-    Array<IColumnDetails>
-  >([{ id: "" }]);
+  const lastPage = careers.current.length;
+  const [careersColumnData, setCareersColumn] = useState<Array<IColumnDetails>>(
+    [{ id: "" }]
+  );
 
   const columns = useMemo(
     () => [
       {
         Header: "Código",
-        accessor: "subjectacronym",
-      },
-      {
-        Header: "Nombre",
-        accessor: "name",
-      },
-      {
-        Header: "Carrera",
         accessor: "careerAcronym",
       },
       {
-        Header: "Semestre",
-        accessor: "semester",
+        Header: "Nombre",
+        accessor: "careerName",
       },
       {
-        Header: "",
-        accessor: "edit",
-        Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
-          return (
-            <>
-              {id !== undefined && (
-                <Link to={``}>
-                  <Button text={"Editar"} color={"pink"} fontColor="white" />
-                </Link>
-              )}
-            </>
-          );
-        },
+        Header: "Doble titulación",
+        accessor: "careerDoubleDegree",
+      },
+      {
+        Header: "Semestres",
+        accessor: "careerLength",
       },
       {
         Header: "",
         accessor: "delete",
         Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
+          const id = careersColumnData[cell.row.index].careerId;
           return (
             <>
               {id !== undefined && (
@@ -86,8 +73,29 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
           );
         },
       },
+      {
+        Header: "",
+        accessor: "details",
+        Cell: (cell: Cell<any, any>) => {
+          const id = careersColumnData[cell.row.index].careerId;
+          return (
+            <>
+              {id !== undefined && (
+                <Link to={`materias-carrera`}>
+                  <ButtonGeneric
+                    bgColor="pink"
+                    sizePX="70%"
+                    text="Detalles"
+                    onClick={() => console.log()}
+                  ></ButtonGeneric>
+                </Link>
+              )}
+            </>
+          );
+        },
+      },
     ],
-    [subjectsColumnData]
+    [careersColumnData]
   );
   const handleChange = (n: number) => {
     const newPage = page + n;
@@ -104,46 +112,50 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
     }
   };
 
-  const getSubjectData = async () => {
+  const getCareerData = async () => {
     console.log(page);
-    const subjectsColumn: Array<IColumnDetails> = [];
-    await subjects.current
+    const careersColumn: Array<IColumnDetails> = [];
+    await careers.current
       .filter((element: any) => element.page === page)[0]
-      .subjects.forEach((subject) => {
+      .careers.forEach((career) => {
         const columnData: IColumnDetails = {
-          ...subject,
+          ...career,
         };
 
-        subjectsColumn.push(columnData);
+        careersColumn.push(columnData);
       });
 
-    setSubjectsColumn(subjectsColumn);
+    setCareersColumn(careersColumn);
   };
 
   useEffect(() => {
     useStore.subscribe((state) => {
-      subjects.current = state.allSubjects;
-      getSubjectData();
+      careers.current = state.paginatedCareers;
+      getCareerData();
     });
   }, []);
 
   useEffect(() => {
-    getSubjectData();
+    getCareerData();
   }, [page]);
 
   return (
     <>
-      {subjectsColumnData === [] ? (
+      {careersColumnData === [] ? (
         <h1>Cargando</h1>
       ) : (
         <Managment
           columns={columns}
-          data={subjectsColumnData}
+          data={careersColumnData}
           headColor={"blue"}
           mobile={mobile}
-          header={"Materias"}
+          header={"Carreras"}
         />
       )}
+      <SubjectCareerPage
+        idCareer={"c635f5bd-f41d-44d9-8925-d617cf0e4ea7"}
+        mobile={true}
+      />
       <Flex
         style={{
           marginTop: "20px",
