@@ -11,10 +11,17 @@ import { IUserComponents } from "../../interfaces";
 import { Logo } from "../../assets/Logo";
 import cross from "../../assets/Cross.png";
 
-export const MobileComponents = ({ userComponent }: IUserComponents) => {
+export const MobileComponents = ({
+  userComponent,
+  setLoggedIn,
+}: {
+  userComponent: React.ReactNode;
+  setLoggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
 
   const logout = () => {
+    setLoggedIn?.(false);
     localStorage.removeItem("user_id");
     navigate("/");
   };

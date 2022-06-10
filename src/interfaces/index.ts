@@ -211,13 +211,25 @@ export interface ISubjects {
   page: number;
   subjects: Array<ISubjectData>;
 }
+export interface ICareersData {
+  careerId: string;
+  careerName: string;
+  careerAcronym: string;
+  careerDoubleDegree: string;
+  careerLength: string;
+}
+
+export interface ICareers {
+  page: number;
+  careers: Array<ICareersData>;
+}
 
 export interface ICareerData {
-  id: string;
-  name: string;
-  acronym: string;
-  length: number;
-  doubleDegree?: boolean;
+  careerId?: string;
+  careerName?: string;
+  careerAcronym?: string;
+  careerLength?: number;
+  careerDoubleDegree?: boolean;
 }
 export interface INewUserSchedule {
   start: Date;

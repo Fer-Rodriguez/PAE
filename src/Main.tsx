@@ -1,6 +1,19 @@
 //Libraries
-import { ChakraProvider, Box } from "@chakra-ui/react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  ChakraProvider,
+  Box,
+  Spinner,
+  Center,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 
 //Layout
 import { Login } from "./layouts/Login";
@@ -22,7 +35,7 @@ import "./App.css";
 
 import { CreateAppointmentLayout } from "./layouts/createAppointment";
 import socket from "./socket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToastHook } from "./hooks";
 import { useStore } from "./state/store";
 import {
@@ -36,6 +49,8 @@ import { IUserData } from "./interfaces";
 import { FormsRecovery } from "./pages/RecoverPassword";
 import { AdminPage } from "./pages/Administrators";
 import { SubjectPage } from "./pages/Subjects";
+import { CareerPage } from "./pages/Careers";
+import { SubjectCareerPage } from "./pages/Careers/details";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -51,11 +66,18 @@ interface INotificationData {
   type: ENotificationType;
 }
 
-export const Main = () => {
+export const Main = ({
+  loggedIn,
+  setLoggedIn,
+  loaded,
+}: {
+  loggedIn: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  loaded: boolean;
+}) => {
   const [currentNotification, setCurrentNotification] = useState({});
 
   const [state, newToast] = useToastHook();
-  const setUser = useStore((state) => state.setUser);
 
   const { id, type, setRecentAppointment, setAllAppointments } = useStore(
     (state) => ({
@@ -67,40 +89,9 @@ export const Main = () => {
     shallow
   );
 
+  const userType = useRef(useStore.getState().type);
+
   useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-    if (userId) {
-      GetUserInfo(userId).then((userData) => {
-        const isRoot = userData.user.type === EUserType.root;
-        const correctUser: IUserData = {
-          id: userData.user.id,
-          status:
-            userData.user.status === EStatus.active
-              ? EStatus.active
-              : userData.user.status === EStatus.deleted
-              ? EStatus.deleted
-              : EStatus.inactive,
-          name: userData.user.name,
-          email: userData.user.email,
-          type:
-            userData.user.type === EUserType.advisor
-              ? EUserType.advisor
-              : userData.user.type === EUserType.student
-              ? EUserType.student
-              : userData.user.type === EUserType.admin
-              ? EUserType.admin
-              : EUserType.root,
-          semester: isRoot ? null : userData.user.userSemesters[0].semester,
-          career: isRoot ? null : userData.user.career[0].id,
-          careerName: isRoot ? null : userData.user.career[0].acronym,
-          config: { language: ELanguage.spanish, theme: ETheme.white },
-          profilePic: "No tengo",
-          notifications: [],
-          polls: [],
-        };
-        setUser(correctUser);
-      });
-    }
     const updateAppointments = async () => {
       await getRecentAppointment(id, type, setRecentAppointment);
       const response = await getAllAppointments(id, type, true);
@@ -141,91 +132,167 @@ export const Main = () => {
       .off("newNotification")
       .on("newNotification", generateVisualNotification);
   }, []);
+
+  useEffect(() => {
+    useStore.subscribe((state) => {
+      console.log(state.type);
+      userType.current = state.type;
+    });
+  }, []);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Login
-              desktop={<FormsLogin />}
-              mobile={<FormsLogin mobile={true} />}
-            />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <Login
-              desktop={<FormsRegister />}
-              mobile={<FormsRegister mobile={true} />}
-            />
-          }
-        />
-        {id === "" ? (
-          <>
+    <>
+      {loaded ? (
+        <BrowserRouter>
+          <Routes>
             <Route
-              path="/recoverPassword"
+              path="/"
               element={
                 <Login
-                  desktop={<FormsRecovery />}
-                  mobile={<FormsRecovery mobile={true} />}
-                />
-              }
-            />
-            <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
-          </>
-        ) : (
-          <Route path="/dashboard">
-            <Route
-              index
-              element={
-                <MainLayout
-                  desktop={<Dashboard />}
-                  mobile={<Dashboard mobile={true} />}
+                  desktop={<FormsLogin setLoggedIn={setLoggedIn} />}
+                  mobile={
+                    <FormsLogin setLoggedIn={setLoggedIn} mobile={true} />
+                  }
                 />
               }
             />
             <Route
-              path="asesorias"
+              path="/register"
               element={
-                <>
-                  <MainLayout
-                    desktop={<AppointmentsPage mobile={false} />}
-                    mobile={
-                      <Box m={6}>
-                        <AppointmentsPage mobile />
-                      </Box>
+                <Login
+                  desktop={<FormsRegister setLoggedIn={setLoggedIn} />}
+                  mobile={
+                    <FormsRegister setLoggedIn={setLoggedIn} mobile={true} />
+                  }
+                />
+              }
+            />
+
+            {!loggedIn ? (
+              <>
+                <Route
+                  path="/recoverPassword"
+                  element={
+                    <Login
+                      desktop={<FormsRecovery />}
+                      mobile={<FormsRecovery mobile={true} />}
+                    />
+                  }
+                />
+                <Route path="*" element={<Navigate replace to="/" />}></Route>
+              </>
+            ) : (
+              <>
+                <Route path="/dashboard">
+                  <Route
+                    index
+                    element={
+                      type === EUserType.root ? (
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<AdminPage />}
+                          mobile={<AdminPage mobile={true} />}
+                        />
+                      ) : type === EUserType.default ? (
+                        <Flex
+                          height={"100vh"}
+                          alignItems="center"
+                          justifyContent="center"
+                          gap="1em"
+                        >
+                          <Heading>Cargando... </Heading>
+                          <Spinner size="xl" color="purple" />
+                        </Flex>
+                      ) : (
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<Dashboard />}
+                          mobile={<Dashboard mobile={true} />}
+                        />
+                      )
                     }
                   />
-                </>
-              }
-            />
-            <Route
-              path="perfil/:id"
-              element={
-                <MainLayout
-                  desktop={<ProfilePage />}
-                  mobile={<ProfilePage mobile />}
+                  <Route
+                    path="materias"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<SubjectPage />}
+                          mobile={<SubjectPage mobile={true} />}
+                        />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="carreras"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<CareerPage />}
+                          mobile={<CareerPage mobile={true} />}
+                        />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="asesorias"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<AppointmentsPage mobile={false} />}
+                          mobile={
+                            <Box m={6}>
+                              <AppointmentsPage mobile />
+                            </Box>
+                          }
+                        />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="perfil/:id"
+                    element={
+                      <MainLayout
+                        setLoggedIn={setLoggedIn}
+                        desktop={<ProfilePage />}
+                        mobile={<ProfilePage mobile />}
+                      />
+                    }
+                  />
+                  <Route
+                    path="crear_asesoria"
+                    element={<CreateAppointmentLayout />}
+                  />
+
+                  <Route
+                    path="asesores"
+                    element={
+                      type === EUserType.admin ? (
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<AdvisorsPage />}
+                          mobile={<AdvisorsPage mobile />}
+                        />
+                      ) : (
+                        <Navigate replace to="/dashboard" />
+                      )
+                    }
+                  />
+                </Route>
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard" replace />}
                 />
-              }
-            />
-            <Route
-              path="crear_asesoria"
-              element={<CreateAppointmentLayout />}
-            />
-            <Route
-              path="asesores"
-              element={
-                <MainLayout
-                  desktop={<AdvisorsPage />}
-                  mobile={<AdvisorsPage mobile />}
-                />
-              }
-            />
-          </Route>
-        )}
-      </Routes>
-    </BrowserRouter>
+              </>
+            )}
+          </Routes>
+        </BrowserRouter>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };

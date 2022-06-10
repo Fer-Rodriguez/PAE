@@ -28,7 +28,6 @@ export const getAllAppointments = async (
   let response: any;
   await axios(config).then((res) => {
     response = res.data;
-    console.log("respuesta: ", response);
   });
 
   return response;

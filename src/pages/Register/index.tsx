@@ -10,13 +10,13 @@ import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
 
 interface IRegister {
   mobile?: boolean;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const FormsRegister = (props: IRegister) => {
   const [formStep, setFormStep] = useState(0);
   const [info, setInfo] = useState<any>({});
   const [newId, setnewId] = useState("");
-
   const setAllCareers = useStore((state) => state.setAllCareers);
   const setAllDDCareers = useStore((state) => state.setAllDDCareers);
 
@@ -45,7 +45,6 @@ export const FormsRegister = (props: IRegister) => {
       ></Progress>
     );
   };
-
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return <Forms1 info={info} setInfo={setInfo} setFormStep={setFormStep} />;
@@ -56,10 +55,11 @@ export const FormsRegister = (props: IRegister) => {
           setInfo={setInfo}
           setFormStep={setFormStep}
           setNewId={setnewId}
+          setLoggedIn={props.setLoggedIn}
         />
       );
     } else if (step == 2) {
-      return <Forms3 id={newId} />;
+      return <Forms3 id={newId} setLoggedIn={props.setLoggedIn} />;
     }
   };
   return (

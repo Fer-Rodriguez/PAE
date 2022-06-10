@@ -73,7 +73,7 @@ export const Bell = ({ columns, headColor }: IBell) => {
     useTable({ columns: columns as any, data: notificationDataColum });
 
   return (
-    <Menu>
+    <Menu computePositionOnMount>
       <MenuButton
         as={IconButton}
         bg={DarkMode().bgTotal}

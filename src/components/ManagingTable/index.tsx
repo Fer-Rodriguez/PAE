@@ -29,7 +29,7 @@ export const ManagingTable = (internalProps: IManagingTableInternal) => {
               >
                 {header.render("Header")}
                 <span>
-                  {header.isSorted ? (header.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                  {header.isSorted ? (header.isSortedDesc ? " ⬇" : " ⬆") : ""}
                 </span>
               </Th>
             ))}

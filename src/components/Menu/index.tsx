@@ -24,8 +24,12 @@ function getMenuOptions(userType: string): Array<IMenuOptions> {
         imgSrc: menuAsesores,
       },
       {
-        linkTo: "../perfil",
-        imgSrc: menuPerfil,
+        linkTo: "../materias",
+        imgSrc: menuCitas,
+      },
+      {
+        linkTo: "../carreras",
+        imgSrc: menuMaterias,
       },
     ];
   } else if (userType === "admin") {
