@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { EventHandler, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -23,27 +23,71 @@ import theme from "../../theme";
 
 import { ButtonGeneric } from "../../components/Button";
 
-//Dark Mode
+
 import { DarkMode } from "../../colors";
+import { updateUser } from "../../api/users/update";
 
 interface IPasswordProfileModal {
   onClose: () => void;
+  idUser: string;
   isOpen: boolean;
   size?: string;
 }
 
 export const PasswordProfileModal = ({
   onClose,
+  idUser,
   isOpen,
   size = "md",
 }: IPasswordProfileModal) => {
+  const [newPwd, setPwd] = useState("");
+  const [confirNewPwd, setConfirmNewPwd] = useState("");
   const [show, setShow] = useState(false);
   const [showSecond, setShowSecond] = useState(false);
   const handleClickOne = () => setShow(!show);
   const handleClickTwo = () => setShowSecond(!showSecond);
 
-  const toast = useToast();
+  const errorHandling = (desc: string) => {
+    setPwd("");
+    setConfirmNewPwd("");
+    toast({
+      title: "No se pudo actualizar",
+      description: desc,
+      position: "top",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+  const updatePassword = async () => {
+    if (newPwd.length > 8) {
+      if (newPwd === confirNewPwd) {
+        onClose();
+        const dataToUpdate = {
+          password: newPwd,
+        };
+        await updateUser(dataToUpdate, idUser);
+        toast({
+          title: "¡Listo!",
+          description: "La contraseña se ha guardado con éxito.",
+          position: "top",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        errorHandling("Las contraseñas dadas no coinciden");
+      }
+    } else {
+      errorHandling("La contraseña debe contener mínimo 8 caracteres");
+    }
+  };
 
+  const toast = useToast();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPwd(e.target.value);
+  const handleChangeConf = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setConfirmNewPwd(e.target.value);
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered size={size}>
       <ModalOverlay />
@@ -62,6 +106,8 @@ export const PasswordProfileModal = ({
             />
             <Input
               type={show ? "text" : "password"}
+              value={newPwd}
+              onChange={handleChange}
               placeholder="Nueva Contraseña"
             />
             <InputRightElement width="4.5rem">
@@ -77,7 +123,9 @@ export const PasswordProfileModal = ({
             />
             <Input
               type={showSecond ? "text" : "password"}
-              placeholder="Nueva Contraseña"
+              value={confirNewPwd}
+              onChange={handleChangeConf}
+              placeholder="Confirmar Contraseña"
             />
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={handleClickTwo}>
@@ -90,15 +138,7 @@ export const PasswordProfileModal = ({
           <ButtonGeneric
             fontColor="white"
             onClick={() => {
-              onClose();
-              toast({
-                title: "¡Listo!",
-                description: "La contraseña se ha guardado con éxito.",
-                position: "top",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-              });
+              updatePassword();
             }}
             text="Guardar"
             color={DarkMode().purple}
