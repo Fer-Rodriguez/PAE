@@ -50,21 +50,48 @@ export const GetAllAdvisors = async (
       const arrayAdvisorsUserData: Array<IUserData> = [];
 
       advisors.map((advisor: any) => {
-        const advisorUserData: IUserData = {
-          id: advisor.id,
-          status: advisor.status,
-          name: advisor.name,
-          email: advisor.email,
-          type: advisor.type,
-          semester: advisor.userSemesters[0].semester,
-          career: advisor.career[0] ? advisor.career[0].id : "",
-          careerName: advisor.career[0] ? advisor.career[0].acronym : "",
-          config: advisor.configuration,
-          profilePic: "",
-          createDate: advisor.created_at,
-          notifications: [],
-          polls: [],
-        };
+        const advisorUserData: IUserData =
+          advisor.career[1] !== undefined
+            ? {
+                id: advisor.id,
+                status: advisor.status,
+                name: advisor.name,
+                email: advisor.email,
+                type: advisor.type,
+                semester: advisor.userSemesters[0].semester,
+                career: advisor.career[0] ? advisor.career[0].id : "",
+                career_user_relation: advisor.userSemesters[0].id,
+                careerName: advisor.career[0] ? advisor.career[0].acronym : "",
+                semesterDD: advisor.career[1]
+                  ? advisor.userSemesters[1].semester
+                  : "",
+                careerDD: advisor.career[1] ? advisor.career[1].id : "",
+                careerDD_user_relation: advisor.userSemesters[1].id,
+                careerNameDD: advisor.career[1]
+                  ? advisor.career[1].acronym
+                  : "",
+                config: advisor.configuration,
+                profilePic: "",
+                createDate: advisor.created_at,
+                notifications: [],
+                polls: [],
+              }
+            : {
+                id: advisor.id,
+                status: advisor.status,
+                name: advisor.name,
+                email: advisor.email,
+                type: advisor.type,
+                semester: advisor.userSemesters[0].semester,
+                career: advisor.career[0] ? advisor.career[0].id : "",
+                career_user_relation: advisor.userSemesters[0].id,
+                careerName: advisor.career[0] ? advisor.career[0].acronym : "",
+                config: advisor.configuration,
+                profilePic: "",
+                createDate: advisor.created_at,
+                notifications: [],
+                polls: [],
+              };
 
         arrayAdvisorsUserData.push(advisorUserData);
       });
@@ -101,6 +128,7 @@ export const GetAllAdmins = async (
           type: administrator.type,
           semester: administrator.userSemesters[0].semester,
           career: administrator.career[0] ? administrator.career[0].id : "",
+          career_user_relation: administrator.userSemesters[0].id,
           careerName: administrator.career[0]
             ? administrator.career[0].acronym
             : "",

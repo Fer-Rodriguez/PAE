@@ -17,20 +17,30 @@ import { ETypeDropdown } from "../../interfaces/enums";
 import { DropDown } from "../../components/Dropdown";
 import { IObjectData } from "../../interfaces";
 interface IIconPopOverForm {
-  setData: (value: string | number | boolean, key: string) => void;
+  setData: (
+    value: string | number | boolean,
+    key: string,
+    dd?: boolean
+  ) => void;
   icon: ReactElement<any, string>;
   text: string;
   myKey: string;
   mobile?: boolean;
+  dd?: boolean;
 }
 interface IIconPopOverDropdown {
-  setData: (value: string | number | boolean, key: string) => void;
+  setData: (
+    value: string | number | boolean,
+    key: string,
+    dd?: boolean
+  ) => void;
   icon: ReactElement<any, string>;
   text: string;
   acronym: string;
   myKey: string;
   options: Array<IObjectData>;
   mobile?: boolean;
+  dd?: boolean;
 }
 
 export const IconPopOverForm = ({
@@ -39,6 +49,7 @@ export const IconPopOverForm = ({
   icon,
   text,
   myKey,
+  dd,
 }: IIconPopOverForm) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [value, setValue] = useState(text);
@@ -50,7 +61,7 @@ export const IconPopOverForm = ({
 
   const accept = () => {
     onClose();
-    setData(value, myKey);
+    setData(value, myKey, dd);
   };
 
   return (
@@ -98,6 +109,7 @@ export const IconPopOverDropdown = ({
   acronym,
   options,
   myKey,
+  dd,
 }: IIconPopOverDropdown) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [value, setValue] = useState(text);
@@ -114,8 +126,8 @@ export const IconPopOverDropdown = ({
 
   const accept = () => {
     onClose();
-    setData(value, myKey);
-    setData(label, "careerName");
+    setData(value, myKey, dd);
+    setData(label, "careerName", dd);
   };
 
   return (

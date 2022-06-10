@@ -134,7 +134,7 @@ export const ButtonEraseAdvisor = ({
         title: "¡Listo!",
         description: "El administrador ha sido eliminado.",
         position: "top",
-        status: "error",
+        status: "warning",
         duration: 9000,
         isClosable: true,
       });
