@@ -64,7 +64,11 @@ export const AppointmentsPollCard = ({
       >
         {type === EUserType.admin ? "Editar" : "Agendar"}
       </Button>
-      {showPollCard ? <PollCard mobile={mobile}></PollCard> : <></>}
+      {showPollCard ? (
+        <PollCard mobile={mobile} active={showPollCard} />
+      ) : (
+        <></>
+      )}
     </Flex>
   );
 

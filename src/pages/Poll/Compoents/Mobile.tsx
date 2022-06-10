@@ -37,10 +37,11 @@ import { DarkMode } from "../../../colors";
 interface IMobilePoll {
   Asesor?: any;
   Asesorado?: any;
+  active?: boolean;
 }
 
-export const MobilePoll = ({ Asesor, Asesorado }: IMobilePoll) => {
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+export const MobilePoll = ({ Asesor, Asesorado, active }: IMobilePoll) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
   return (

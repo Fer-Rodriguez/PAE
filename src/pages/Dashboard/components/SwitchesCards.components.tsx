@@ -12,7 +12,7 @@ import { DarkMode } from "../../../colors";
 
 import "../style.css";
 import useDarkMode from "../../../context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -29,12 +29,14 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
 
   const [init, setInit] = useState("es");
 
-  const ChangeColor = () => {
-    toggleColorMode();
-    setValue(colorMode === "light" ? "dark" : "light");
-  };
+  useEffect(() => {
+    localStorage.getItem("chakra-ui-color-mode") === "dark" &&
+      setIsToggled(true);
+    localStorage.getItem("Lng") === "es" && setIsToggled2(true);
+  });
 
-  const ChangeLng = () => {
+  function ChangeLng() {
+    localStorage.setItem("Lng", init);
     if (init == "es") {
       i18n.changeLanguage("en");
       setInit("en");
@@ -42,7 +44,7 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
       i18n.changeLanguage("es");
       setInit("es");
     }
-  };
+  }
 
   function classHandler() {
     if (colorMode == "dark") {
@@ -66,7 +68,7 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
         rounded={true}
         isToggled={isToggled}
         onToggled={() => setIsToggled(!isToggled)}
-        click={() => ChangeColor()}
+        click={() => toggleColorMode()}
         class={classHandler()}
         class2={classHandler2()}
       />

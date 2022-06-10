@@ -11,6 +11,7 @@ import {
   ModalCloseButton,
   ModalFooter,
   useDisclosure,
+  propNames,
 } from "@chakra-ui/react";
 
 //React
@@ -29,6 +30,7 @@ interface IPollComponent {
   MarginButton?: number;
   PaddingCloseButtton?: number;
   Content?: JSX.Element;
+  active?: boolean;
 }
 
 export const PollComponent = ({
@@ -41,10 +43,11 @@ export const PollComponent = ({
   Title,
   HeightModal,
   Content,
+  active,
 }: IPollComponent) => {
   const [ruta, setRuta] = useState(0);
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={SizeModal} isCentered={true}>

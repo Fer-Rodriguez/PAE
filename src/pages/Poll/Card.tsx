@@ -12,7 +12,7 @@ import { DarkMode } from "../../colors";
 const style = {
   padding: "0.5rem 1rem",
   marginBottom: ".5rem",
-  backgroundColor: DarkMode().bgTotalv2,
+  backgroundColor: "white",
   cursor: "move",
 };
 
@@ -104,6 +104,7 @@ export const Card: FC<CardProps> = ({ id, text, index, content, moveCard }) => {
   });
 
   const opacity = isDragging ? 0 : 1;
+  style.backgroundColor = DarkMode().bgTotalv2;
   drag(drop(ref));
   return (
     <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>

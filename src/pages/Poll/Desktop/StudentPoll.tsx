@@ -42,7 +42,6 @@ import { DarkMode } from "../../../colors";
 
 const style = {
   width: "100%",
-  backgroundColor: DarkMode().bgTotalv2,
 };
 
 export interface Item {

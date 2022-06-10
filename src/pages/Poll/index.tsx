@@ -16,7 +16,13 @@ import { MobilePoll } from "./Compoents/Mobile";
 import { PollComponent } from "./Compoents/PollComponent";
 import { DesktopPoll } from "./Compoents/Desktop";
 
-export const PollCard = ({ mobile }: { mobile?: boolean }) => {
+export const PollCard = ({
+  mobile,
+  active = false,
+}: {
+  mobile?: boolean;
+  active?: boolean;
+}) => {
   const [ruta, setRuta] = useState(0);
 
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
@@ -43,7 +49,11 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               MarginHeader={-1}
               MarginButton={15}
               PaddingCloseButtton={5}
-              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
+              Content={
+                <DndProvider backend={HTML5Backend}>
+                  <AdvisorM />
+                </DndProvider>
+              }
             ></PollComponent>
           ) : (
             <PollComponent
@@ -55,7 +65,11 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               MarginHeader={-1}
               MarginButton={15}
               PaddingCloseButtton={5}
-              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
+              Content={
+                <DndProvider backend={HTML5Backend}>
+                  <StudentM />
+                </DndProvider>
+              }
             ></PollComponent>
           )}
         </>
@@ -78,7 +92,12 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
-              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
+              active={active}
+              Content={
+                <DndProvider backend={HTML5Backend}>
+                  <Advisor />
+                </DndProvider>
+              }
             ></PollComponent>
           ) : (
             <PollComponent
@@ -89,7 +108,12 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
-              Content={<DndProvider backend={HTML5Backend}></DndProvider>}
+              active={active}
+              Content={
+                <DndProvider backend={HTML5Backend}>
+                  <Student />
+                </DndProvider>
+              }
             ></PollComponent>
           )}
         </>
