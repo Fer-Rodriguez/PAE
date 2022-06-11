@@ -49,7 +49,7 @@ import { useNavigate } from "react-router-dom";
 interface IMyCalendar {
   view?: EMyCalendarView;
   register?: boolean;
-  setLoggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
+  setFormStep?: React.Dispatch<number>;
   idUser: string;
   mobile: boolean;
 }
@@ -57,7 +57,7 @@ interface IMyCalendar {
 export const MyCalendar = ({
   view = EMyCalendarView.week,
   idUser,
-  setLoggedIn,
+  setFormStep,
   register = false,
   mobile,
 }: IMyCalendar) => {
@@ -143,8 +143,7 @@ export const MyCalendar = ({
         isClosable: true,
       });
       if (register) {
-        setLoggedIn?.(true);
-        navigate("/dashboard");
+        setFormStep?.(3);
       }
     } catch (error) {
       console.error(error);

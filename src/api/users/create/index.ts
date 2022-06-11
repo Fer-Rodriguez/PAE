@@ -44,13 +44,5 @@ export const CreateUser = async (newValues: ICreateUserData) => {
           },
   };
 
-  const responseData = await axios(config)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-  return responseData;
+  return await axios(config);
 };

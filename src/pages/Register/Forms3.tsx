@@ -5,10 +5,10 @@ import { EMyCalendarView } from "../../interfaces/enums";
 
 export const Forms3 = ({
   id,
-  setLoggedIn,
+  setFormStep,
 }: {
   id: string;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setFormStep: React.Dispatch<number>;
 }) => {
   useEffect(() => {
     console.log("Id que recibí: ", id);
@@ -22,7 +22,7 @@ export const Forms3 = ({
         mobile={false}
         idUser={id}
         register
-        setLoggedIn={setLoggedIn}
+        setFormStep={setFormStep}
       />
     </Box>
   );

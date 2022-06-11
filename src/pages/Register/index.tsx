@@ -5,6 +5,7 @@ import { Progress } from "../../components/Progress";
 import { Forms1 } from "./Forms1";
 import { Forms2 } from "./Forms2";
 import { Forms3 } from "./Forms3";
+import { VerifyEmailScreen } from "./VerifyEmailScreen";
 import { useStore } from "../../state/store";
 import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
 
@@ -13,7 +14,6 @@ import { DarkMode } from "../../colors";
 
 interface IRegister {
   mobile?: boolean;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const FormsRegister = (props: IRegister) => {
@@ -58,11 +58,12 @@ export const FormsRegister = (props: IRegister) => {
           setInfo={setInfo}
           setFormStep={setFormStep}
           setNewId={setnewId}
-          setLoggedIn={props.setLoggedIn}
         />
       );
     } else if (step == 2) {
-      return <Forms3 id={newId} setLoggedIn={props.setLoggedIn} />;
+      return <Forms3 id={newId} setFormStep={setFormStep} />;
+    } else if (step == 3) {
+      return <VerifyEmailScreen mobile={props.mobile}></VerifyEmailScreen>;
     }
   };
   return (
