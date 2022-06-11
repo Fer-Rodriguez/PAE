@@ -72,7 +72,7 @@ export const Forms2 = ({
   };
 
   const createUser = async () => {
-    console.log(info.semesterDoubleCarrera);
+    //console.log(info.semesterDoubleCarrera);
     if (info.semesterDoubleCarrera !== undefined) {
       setIsLogining(true);
       await CreateUser({
