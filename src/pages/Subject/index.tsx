@@ -7,7 +7,7 @@ import { useDisclosure, Box } from "@chakra-ui/react";
 import { useStore } from "../../state/store";
 
 //Components
-import { ButtonGeneric } from "../../components/Button";
+import { ButtonGeneric as Button } from "../../components/Button";
 import { AppointmentDetails } from "../AppointmentDetails";
 
 //Interfaces
@@ -73,7 +73,7 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
     if (userType !== EUserType.admin) {
       if (status !== EStatusAppointment.PENDING) {
         return (
-          <ButtonGeneric
+          <Button
             text={"Detalles"}
             fontColor={DarkMode().textWtB}
             color={DarkMode().blue}
@@ -86,7 +86,7 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
     } else {
       if (status === EStatusAppointment.PENDING) {
         return (
-          <ButtonGeneric
+          <Button
             text={"Editar"}
             fontColor={DarkMode().textWtB}
             color={DarkMode().blue}
@@ -97,7 +97,7 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
         );
       } else {
         return (
-          <ButtonGeneric
+          <Button
             text={"Eliminar"}
             fontColor={DarkMode().textWtB}
             color={DarkMode().pink}
