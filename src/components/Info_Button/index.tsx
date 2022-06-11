@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Box, IconButton, useDisclosure, Image } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import PopOver, { ETypeSize } from "../popOver";
 import imgInfo from "../../assets/info_icon.png";
 /*

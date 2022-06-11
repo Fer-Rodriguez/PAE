@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Circle,
   Image,
   Flex,
   Heading,
@@ -11,7 +10,6 @@ import {
   GridItem,
   useDisclosure,
   HStack,
-  Center,
 } from "@chakra-ui/react";
 
 import { ArrowBackIcon, EditIcon } from "@chakra-ui/icons";

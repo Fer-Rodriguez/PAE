@@ -1,7 +1,7 @@
 //Libraries
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import { useDisclosure, Box } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";

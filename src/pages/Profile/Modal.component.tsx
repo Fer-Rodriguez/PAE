@@ -19,8 +19,6 @@ import {
 
 import { LockIcon } from "@chakra-ui/icons";
 
-import theme from "../../theme";
-
 import { ButtonGeneric } from "../../components/Button";
 
 //Dark Mode

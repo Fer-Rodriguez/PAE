@@ -1,7 +1,4 @@
 import { useGlobalFilter, useSortBy, useTable } from "react-table";
-
-import { Heading } from "@chakra-ui/react";
-
 import { IManagmentPage, IManagingTableInternal } from "../../interfaces";
 import { useState } from "react";
 import { ManagmentMobile } from "./Mobile";

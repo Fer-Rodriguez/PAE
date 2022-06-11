@@ -1,19 +1,6 @@
 //Libraries
-import {
-  ChakraProvider,
-  Box,
-  Spinner,
-  Center,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Box, Spinner, Flex, Heading } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 //Layout
 import { Login } from "./layouts/Login";
@@ -43,12 +30,9 @@ import {
   getRecentAppointment,
 } from "./api/appointments/get";
 import shallow from "zustand/shallow";
-import { ELanguage, EStatus, ETheme, EUserType } from "./interfaces/enums";
-import { GetUserInfo } from "./api/users/get";
-import { IUserData } from "./interfaces";
+import { EUserType } from "./interfaces/enums";
 import { FormsRecovery } from "./pages/RecoverPassword";
 import { AdminPage } from "./pages/Administrators";
-import { SubjectPage } from "./pages/Subjects";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",

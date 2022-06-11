@@ -1,4 +1,3 @@
-import React from "react";
 import PopOver, { ETypeSize } from "../../components/popOver";
 
 //Dark Mode

@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";

@@ -1,11 +1,9 @@
 //Libraries
 import { ChangeEvent } from "react";
-import { Center, Heading, Box, Button, useToast } from "@chakra-ui/react";
+import { Center, Heading, Box, Button } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
 
 //Components
-import { ButtonGeneric } from "../../components/Button";
-import { DropDown } from "../../components/Dropdown";
 import { MyCalendar } from "../../components/Calendar";
 
 //Interfaces, Types & Enums

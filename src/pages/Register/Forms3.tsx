@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { MyCalendar } from "../../components/Calendar";
 import { EMyCalendarView } from "../../interfaces/enums";

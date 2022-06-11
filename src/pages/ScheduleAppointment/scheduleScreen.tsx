@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { EMyCalendarView } from "../../interfaces/enums";
 import {
   Box,
   Center,
   Spacer,
   VStack,
-  HStack,
   useDisclosure,
   Text,
   Flex,
@@ -18,8 +16,7 @@ import { Info_Button } from "../../components/Info_Button";
 import { ScheduleList } from "../../components/ScheduleList";
 
 //Assets
-import theme from "../../theme/index";
-import { addDays, isSameDayByName } from "../../services/Functions";
+import { isSameDayByName } from "../../services/Functions";
 import { getPossibleDates } from "../../api/appointments/get";
 import PopOver, { ETypeSize } from "../../components/popOver";
 import { ICitasDaySchedules } from "../../interfaces";

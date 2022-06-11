@@ -6,11 +6,6 @@ export const getAllQuestions = async (
   idUser: string,
   setPolls: (newPolls: Array<IPoll>) => void
 ) => {
-  const config = {
-    method: "get",
-    url: `localhost:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`,
-  };
-
   await axios
     .get(`http://localhost:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`)
     .then(function (response) {

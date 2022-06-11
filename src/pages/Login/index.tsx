@@ -6,7 +6,6 @@ import {
   Flex,
   Text,
   Stack,
-  Checkbox,
   Spacer,
   Link,
   FormControl,
