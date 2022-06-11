@@ -37,7 +37,7 @@ export const DoubleCarreraInput = ({
       control={control || null}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <div>
-          <FormLabel htmlFor="doubleCarrera">
+          <FormLabel aria-required="false" htmlFor="doubleCarrera">
             Carrera de doble titulación
           </FormLabel>
           <Select
@@ -59,7 +59,7 @@ export const DoubleCarreraInput = ({
             ))}
           </Select>
           <FormHelperText>
-            Selecciona tu carrera de doble titulación
+            Selecciona tu carrera de doble titulación (si aplica)
           </FormHelperText>
         </div>
       )}

@@ -65,7 +65,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={`../perfil/${id}`}>
+                <Link to={``}>
                   <Button
                     text={"Editar"}
                     color={DarkMode().pink}
@@ -85,7 +85,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={`../perfil/${id}`}>
+                <Link to={``}>
                   <Button
                     text={"Eliminar"}
                     color={DarkMode().pink}

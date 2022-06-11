@@ -49,8 +49,10 @@ import { IUserData } from "./interfaces";
 import { FormsRecovery } from "./pages/RecoverPassword";
 import { AdminPage } from "./pages/Administrators";
 import { SubjectPage } from "./pages/Subjects";
+import { ConfirmEmail } from "./pages/ConfirmEmail";
 import { CareerPage } from "./pages/Careers";
 import { SubjectCareerPage } from "./pages/Careers/details";
+
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -160,10 +162,8 @@ export const Main = ({
               path="/register"
               element={
                 <Login
-                  desktop={<FormsRegister setLoggedIn={setLoggedIn} />}
-                  mobile={
-                    <FormsRegister setLoggedIn={setLoggedIn} mobile={true} />
-                  }
+                  desktop={<FormsRegister />}
+                  mobile={<FormsRegister mobile={true} />}
                 />
               }
             />
@@ -179,6 +179,25 @@ export const Main = ({
                     />
                   }
                 />
+                <Route
+                  path="/verififyEmail/:tkn"
+                  element={
+                    <Login
+                      desktop={<ConfirmEmail />}
+                      mobile={<ConfirmEmail mobile={true} />}
+                    ></Login>
+                  }
+                >
+                  <Route
+                    path="cancel"
+                    element={
+                      <Login
+                        desktop={<ConfirmEmail cancel />}
+                        mobile={<ConfirmEmail cancel mobile={true} />}
+                      ></Login>
+                    }
+                  />
+                </Route>
                 <Route path="*" element={<Navigate replace to="/" />}></Route>
               </>
             ) : (
