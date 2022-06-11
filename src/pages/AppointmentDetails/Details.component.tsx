@@ -17,6 +17,9 @@ import { useState } from "react";
 //Store
 import { useStore } from "../../state/store";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const DetailsContent = ({
   editAppointment,
 }: {
@@ -36,7 +39,7 @@ export const DetailsContent = ({
         <ModalCloseButton
           _hover={{ backgroundColor: "red", opacity: "0.9" }}
           borderRadius={"200px"}
-          color={"white"}
+          color={DarkMode().bgTotal}
           backgroundColor={"red"}
         />
         <ModalBody>
@@ -71,7 +74,7 @@ export const DetailsContent = ({
         </Text>
         <Flex flexDirection={"row"} gap="6">
           <Button
-            backgroundColor={"blue"}
+            backgroundColor={DarkMode().blue}
             color="white"
             size={"sm"}
             onClick={() => {
@@ -82,8 +85,8 @@ export const DetailsContent = ({
             Descripción
           </Button>
           <Button
-            backgroundColor={"pink"}
-            color="white"
+            backgroundColor={DarkMode().pink}
+            color={DarkMode().bgTotalv2}
             size={"sm"}
             onClick={() => {
               setInfoType("image");
@@ -95,13 +98,17 @@ export const DetailsContent = ({
         </Flex>
       </Flex>
       <Flex flexDir={"column"} w="100%" alignItems="center" mb="5%">
-        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color={DarkMode().purple}>
           Materia
         </Text>
         <Text fontSize={"lg"}>{detailsData.subject.name}</Text>
         {!editAppointment && (
           <>
-            <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+            <Text
+              fontSize={"3xl"}
+              fontWeight={"bold"}
+              color={DarkMode().purple}
+            >
               Ubicación
             </Text>
             <Text fontSize={"lg"}>
@@ -113,7 +120,7 @@ export const DetailsContent = ({
         )}
       </Flex>
       <Flex flexDir={"column"} w="100%" alignItems="center" mb="5%">
-        <Text fontSize={"3xl"} fontWeight={"bold"} color="purple">
+        <Text fontSize={"3xl"} fontWeight={"bold"} color={DarkMode().purple}>
           Fecha
         </Text>
         <Text fontSize={"lg"}>

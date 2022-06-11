@@ -50,6 +50,9 @@ import { FormsRecovery } from "./pages/RecoverPassword";
 import { AdminPage } from "./pages/Administrators";
 import { SubjectPage } from "./pages/Subjects";
 import { ConfirmEmail } from "./pages/ConfirmEmail";
+import { CareerPage } from "./pages/Careers";
+import { SubjectCareerPage } from "./pages/Careers/details";
+
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -134,6 +137,7 @@ export const Main = ({
 
   useEffect(() => {
     useStore.subscribe((state) => {
+      console.log(state.type);
       userType.current = state.type;
     });
   }, []);
@@ -225,6 +229,30 @@ export const Main = ({
                           mobile={<Dashboard mobile={true} />}
                         />
                       )
+                    }
+                  />
+                  <Route
+                    path="materias"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<SubjectPage />}
+                          mobile={<SubjectPage mobile={true} />}
+                        />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="carreras"
+                    element={
+                      <>
+                        <MainLayout
+                          setLoggedIn={setLoggedIn}
+                          desktop={<CareerPage />}
+                          mobile={<CareerPage mobile={true} />}
+                        />
+                      </>
                     }
                   />
                   <Route

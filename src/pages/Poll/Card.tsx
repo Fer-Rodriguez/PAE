@@ -6,6 +6,9 @@ import { JsxElement } from "typescript";
 
 import { ItemTypes } from "./ItemTypes";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 const style = {
   padding: "0.5rem 1rem",
   marginBottom: ".5rem",
@@ -101,6 +104,7 @@ export const Card: FC<CardProps> = ({ id, text, index, content, moveCard }) => {
   });
 
   const opacity = isDragging ? 0 : 1;
+  style.backgroundColor = DarkMode().bgTotalv2;
   drag(drop(ref));
   return (
     <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>

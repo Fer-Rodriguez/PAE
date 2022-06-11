@@ -11,10 +11,14 @@ import {
   ModalCloseButton,
   ModalFooter,
   useDisclosure,
+  propNames,
 } from "@chakra-ui/react";
 
 //React
 import { useState } from "react";
+
+//Dark Mode
+import { DarkMode } from "../../../colors";
 
 interface IPollComponent {
   Title?: string;
@@ -26,6 +30,7 @@ interface IPollComponent {
   MarginButton?: number;
   PaddingCloseButtton?: number;
   Content?: JSX.Element;
+  active?: boolean;
 }
 
 export const PollComponent = ({
@@ -38,10 +43,11 @@ export const PollComponent = ({
   Title,
   HeightModal,
   Content,
+  active,
 }: IPollComponent) => {
   const [ruta, setRuta] = useState(0);
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={SizeModal} isCentered={true}>
@@ -54,7 +60,7 @@ export const PollComponent = ({
           marginBottom={-10}
           fontSize={35}
           fontWeight="bold"
-          backgroundColor="white"
+          backgroundColor={DarkMode().bgTotalv2}
           onClick={ReturnButton}
         >
           {" "}
@@ -72,7 +78,7 @@ export const PollComponent = ({
           margin={4}
           rounded={30}
           backgroundColor="#F44336"
-          color="white"
+          color={DarkMode().bgTotalv2}
           p={PaddingCloseButtton}
         />
         <ModalBody>
@@ -89,7 +95,7 @@ export const PollComponent = ({
 
         <ModalFooter>
           <Button
-            backgroundColor="white"
+            backgroundColor={DarkMode().bgTotalv2}
             marginRight={MarginButton}
             marginBottom={5}
             onClick={onClose}

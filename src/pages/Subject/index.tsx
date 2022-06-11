@@ -17,6 +17,9 @@ import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
 import { IDetailsAppointmentData } from "../../interfaces";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
   const [savedChange, setSavedChange] = useState(false);
   //Data states
@@ -72,8 +75,8 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Detalles"}
-            fontColor="white"
-            color={"blue"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().blue}
             onClick={() => {
               myOnClick(index, false);
             }}
@@ -85,8 +88,8 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Editar"}
-            fontColor="white"
-            color={"blue"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().blue}
             onClick={() => {
               myOnClick(index, true);
             }}
@@ -96,8 +99,8 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Eliminar"}
-            fontColor="white"
-            color={"pink"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().pink}
             onClick={() => {
               myOnClick(index, false);
             }}
@@ -136,7 +139,7 @@ export const SubjectPage = ({ mobile }: { mobile: boolean }) => {
         <Managment
           columns={myColumns}
           data={data}
-          headColor={"blue"}
+          headColor={DarkMode().blue}
           mobile={mobile}
           header={"Materias"}
         />

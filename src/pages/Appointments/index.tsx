@@ -1,7 +1,14 @@
 //Libraries
 import React, { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import { useDisclosure, Heading, Spinner, Flex } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Heading,
+  Spinner,
+  Flex,
+  Center,
+  Box,
+} from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -15,6 +22,9 @@ import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 import { Managment } from "../Managment";
 import { getAllAppointments } from "../../api/appointments/get";
+
+//Dark Mode
+import { DarkMode } from "../../colors";
 
 export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   const [savedChange, setSavedChange] = useState(false);
@@ -54,13 +64,16 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
   };
 
   const noDataView = (
-    <>
-      <Flex h="50vh" justifyContent="center" alignItems="center">
-        <Heading textAlign="center">
-          No hay datos de asesorías disponibles
-        </Heading>
-      </Flex>
-    </>
+    <Flex
+      h="50vh"
+      justifyContent="center"
+      alignItems="center"
+      marginBottom={60}
+    >
+      <Heading textAlign="center">
+        No hay datos de asesorías disponibles
+      </Heading>
+    </Flex>
   );
 
   //Functions who determines which button is presented
@@ -73,8 +86,8 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Detalles"}
-            fontColor="white"
-            color={"blue"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().blue}
             onClick={() => {
               myOnClick(index, false);
             }}
@@ -86,8 +99,8 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Editar"}
-            fontColor="white"
-            color={"pink"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().pink}
             onClick={() => {
               myOnClick(index, true);
             }}
@@ -97,8 +110,8 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
         return (
           <ButtonGeneric
             text={"Detalles"}
-            fontColor="white"
-            color={"blue"}
+            fontColor={DarkMode().textWtB}
+            color={DarkMode().blue}
             onClick={() => {
               myOnClick(index, false);
             }}
@@ -138,7 +151,7 @@ export const AppointmentsPage = ({ mobile }: { mobile: boolean }) => {
         <Managment
           columns={myColumns}
           data={data}
-          headColor={"pink"}
+          headColor={DarkMode().pink}
           mobile={mobile}
           header={"Asesorías"}
         />

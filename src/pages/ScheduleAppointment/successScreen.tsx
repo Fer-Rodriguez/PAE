@@ -5,6 +5,9 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 
 import imgAgendaCitaConf from "../../assets/agenda_cita_ok.png";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
   const navigate = useNavigate();
   const goBackToDashboard = () => {
@@ -24,7 +27,7 @@ export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
           </Heading>
         </Box>
         <ButtonGeneric
-          bgColor="pink"
+          bgColor={DarkMode().pink}
           text={"Regresar"}
           sizePX={"50%"}
           onClick={goBackToDashboard}
@@ -46,7 +49,7 @@ export const SuccessScreen = ({ mobile }: { mobile?: boolean }) => {
             </Heading>
           </Box>
           <ButtonGeneric
-            bgColor="pink"
+            bgColor={DarkMode().pink}
             text={"Regresar"}
             sizePX={"25%"}
             onClick={goBackToDashboard}

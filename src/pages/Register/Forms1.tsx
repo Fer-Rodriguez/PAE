@@ -9,6 +9,9 @@ import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { ConfirmPasswordInput } from "../../components/FormsRegister/ConfirmPasswordInput";
 import { useNavigate } from "react-router-dom";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IForms1 {
   setInfo: React.Dispatch<any>;
   info: any;
@@ -66,7 +69,7 @@ export const Forms1 = ({ info, setInfo, setFormStep }: IForms1) => {
         />
         <Center>
           <ButtonGeneric
-            bgColor="purpleLight"
+            bgColor={DarkMode().purple2}
             sizePX="40%"
             text="Siguiente"
             isDisabled={!isValid}

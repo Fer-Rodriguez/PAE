@@ -17,7 +17,7 @@ import { PasswordInput } from "../../components/FormsLogin/PasswordInput";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { useNavigate } from "react-router-dom";
 import { GetUser, GetUserInfo } from "../../api/users/get";
-import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
+
 import { IUserData } from "../../interfaces";
 import {
   ELanguage,
@@ -29,6 +29,9 @@ import {
 import { MyAlert } from "../../components/MyAlert";
 import { useEffect, useState } from "react";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IFormsLogin {
   mobile?: boolean;
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,8 +40,6 @@ interface IFormsLogin {
 export const FormsLogin = (props: IFormsLogin) => {
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
-  const setAllCareers = useStore((state) => state.setAllCareers);
-  const setAllDDCareers = useStore((state) => state.setAllDDCareers);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [isLogining, setIsLogining] = useState(false);
   const [error, setError] = useState(0);
@@ -85,8 +86,6 @@ export const FormsLogin = (props: IFormsLogin) => {
     return correctUser;
   };
   useEffect(() => {
-    GetAllCareers(setAllCareers);
-    GetAllDDCareers(setAllDDCareers);
     const userId = localStorage.getItem("user_id");
     if (userId && userId != "") {
       loadUserInfo(userId).then((correctUser) => {
@@ -158,7 +157,7 @@ export const FormsLogin = (props: IFormsLogin) => {
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
           ></Logo>
           <Text
-            color={"purpleLight"}
+            color={DarkMode().purple2}
             fontWeight={"semibold"}
             {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}
@@ -208,7 +207,7 @@ export const FormsLogin = (props: IFormsLogin) => {
               </Flex>
               <Center>
                 <ButtonGeneric
-                  bgColor="purpleLight"
+                  bgColor={DarkMode().purple2}
                   sizePX="40%"
                   text="Ingresar"
                   isLoading={isLogining}

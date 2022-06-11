@@ -23,6 +23,9 @@ import { useStore } from "../../state/store";
 //Assets
 import theme from "../../theme";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 enum ETypeAlertButton {
   save,
   delete,
@@ -91,7 +94,7 @@ export const ButtonChangePassword = ({ onOpen }: { onOpen: () => void }) => (
   <Center mb={6}>
     <ButtonGeneric
       onClick={() => onOpen()}
-      color={theme.colors.purple}
+      color={DarkMode().purple}
       text="Cambiar contraseña"
       fontColor="white"
     />
@@ -134,7 +137,7 @@ export const ButtonEraseAdvisor = ({
         title: "¡Listo!",
         description: "El administrador ha sido eliminado.",
         position: "top",
-        status: "error",
+        status: "warning",
         duration: 9000,
         isClosable: true,
       });
@@ -155,7 +158,7 @@ export const ButtonEraseAdvisor = ({
   return (
     <>
       <ButtonGeneric
-        color={theme.colors.pink}
+        color={DarkMode().pink}
         text="Eliminar Asesor"
         fontColor="white"
         onClick={() => onOpen()}
@@ -201,7 +204,7 @@ export const ButtonSaveChanges = ({
   return (
     <>
       <ButtonGeneric
-        color={theme.colors.blue}
+        color={DarkMode().blue}
         text="Guardar Cambios"
         fontColor="white"
         onClick={() => onOpen()}

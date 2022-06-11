@@ -19,6 +19,9 @@ import { EStatusAlert } from "../../interfaces/enums";
 import { MyAlert } from "../../components/MyAlert";
 import { useState } from "react";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 interface IFormsLogin {
   mobile?: boolean;
 }
@@ -65,7 +68,7 @@ export const FormsRecovery = (props: IFormsLogin) => {
             {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
           ></Logo>
           <Text
-            color={"purpleLight"}
+            color={DarkMode().purple2}
             fontWeight={"semibold"}
             {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
             paddingTop={"20px"}
@@ -106,7 +109,7 @@ export const FormsRecovery = (props: IFormsLogin) => {
                       {...(props.mobile
                         ? { sizePX: "80%" }
                         : { sizePX: "50%" })}
-                      bgColor="purpleLight"
+                      bgColor={DarkMode().purple2}
                       text="Recuperar cuenta"
                       onClick={handleSubmit(sendRecoveryMail)}
                     ></ButtonGeneric>

@@ -3,14 +3,12 @@ import {
   Grid,
   GridItem,
   Image,
-  Button,
   Text,
   Box,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -19,40 +17,41 @@ import {
 
 //Componets
 import { DividedCard } from "../../../components/DividedCard";
-import Student from "../Desktop/student";
-import Advisor from "../Desktop/advisor";
-import StudentM from "../Mobile/studentM";
-import AdvisorM from "../Mobile/advisorM";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-//React
-import { useState } from "react";
 
 //Assets Enum Types
 import asesor from "../../../assets/asesor-icon.svg";
 import asesorado from "../../../assets/asesorado-icon.svg";
-import theme from "../../../theme/index";
 
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
 import "swiper/css/navigation";
 
 // Import Swiper styles
 import "swiper/css";
 
+//Dark Mode
+import { DarkMode } from "../../../colors";
+
 interface IDesktopPoll {
   Asesor?: any;
   Asesorado?: any;
+  active?: boolean;
 }
 
-export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+export const DesktopPoll = ({ Asesor, Asesorado, active }: IDesktopPoll) => {
+  const {
+    isOpen: pruebita,
+    onOpen: pruebita_abierta,
+    onClose: pruebita_cerrada,
+  } = useDisclosure({ defaultIsOpen: true });
 
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered={true}>
+    <Modal
+      isOpen={pruebita}
+      onClose={pruebita_cerrada}
+      size="4xl"
+      isCentered={true}
+    >
       <ModalOverlay />
       <ModalContent h="600px" rounded={30}>
         <ModalHeader
@@ -69,7 +68,7 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
         <ModalCloseButton
           rounded={30}
           backgroundColor="#F44336"
-          color="white"
+          color={DarkMode().bgTotalv2}
           margin={4}
         />
 
@@ -88,8 +87,8 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
                       Asesor
                     </Text>
                   }
-                  colorFirst={theme.colors.pink}
-                  colorSecond={theme.colors.white}
+                  colorFirst={DarkMode().pink}
+                  colorSecond={DarkMode().bgTotalv2}
                   percentageFirst="80"
                   percentageSecond="20"
                   vertical={true}
@@ -106,8 +105,8 @@ export const DesktopPoll = ({ Asesor, Asesorado }: IDesktopPoll) => {
                       Asesorados
                     </Text>
                   }
-                  colorFirst={theme.colors.blue}
-                  colorSecond={theme.colors.white}
+                  colorFirst={DarkMode().blue}
+                  colorSecond={DarkMode().bgTotalv2}
                   percentageFirst="80"
                   percentageSecond="20"
                   vertical={true}

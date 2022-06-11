@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICareerData } from "../../../interfaces";
+import { ICareerData, ICareers, ICareersData } from "../../../interfaces";
 
 export const GetAllCareers = async (
   setAllCareers: (newAllCareers: Array<ICareerData>) => void
@@ -23,6 +23,50 @@ export const GetAllCareers = async (
         arrayCareersData.push(careerData);
       });
       setAllCareers(arrayCareersData);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  return data;
+};
+
+export const GetAllPaginatedCareers = async (
+  setAllPaginatedCareers: (newAllPaginatedCareers: Array<ICareers>) => void
+) => {
+  const config = {
+    method: "get",
+    url: `http://localhost:6110/career/all-careers`,
+  };
+  const data = await axios(config)
+    .then(function (response) {
+      const careers = response.data;
+      const numberPages: number = careers.length / 6;
+      const careersPage: Array<ICareersData> = [];
+      let x = 0;
+      const arrayCareersData: Array<ICareers> = [];
+
+      careers.map((element: any) => {
+        const careerData = {
+          careerId: element.id,
+          careerName: element.name,
+          careerAcronym: element.acronym,
+          careerDoubleDegree: element.doubleDegree.toString(),
+          careerLength: element.length.toString(),
+        };
+        careersPage.push(careerData);
+      });
+
+      for (let page = 0; page < numberPages; page++) {
+        arrayCareersData.push({
+          page: page + 1,
+          careers: careersPage.slice(x, x + 6),
+        });
+        x = x + 6;
+      }
+      console.log("carreras");
+      console.log(arrayCareersData);
+      setAllPaginatedCareers(arrayCareersData);
+      return arrayCareersData;
     })
     .catch(function (error) {
       console.log(error);

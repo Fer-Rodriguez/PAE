@@ -31,7 +31,7 @@ import { IObjectData, IProfileCard } from "../../../interfaces/index";
 import { EUserType } from "../../../interfaces/enums";
 
 //Data
-import { titleProfileCard } from "../../../data";
+import { titleProfileCard, titleProfileCardDD } from "../../../data";
 
 //Assets
 import theme from "../../../theme/index";
@@ -54,7 +54,11 @@ export const ProfileCardMobile = ({
   const [career, setCareer] = useState(data.career);
   const [careerName, setCareerName] = useState(data.careerName);
   const [semester, setSemester] = useState(data.semester);
+  const [careerDD, setCareerDD] = useState(data.careerDD);
+  const [careerNameDD, setCareerNameDD] = useState(data.careerNameDD);
+  const [semesterDD, setSemesterDD] = useState(data.semesterDD);
   const careers = useStore((state) => state.allCareers);
+  const careersDD = useStore((state) => state.ddCareers);
   const setAllUsers = useStore((state) => state.setAllUsers);
 
   useEffect(() => {
@@ -62,49 +66,98 @@ export const ProfileCardMobile = ({
     setCareer(data.career);
     setCareerName(data.careerName);
     setSemester(data.semester);
+    setCareerDD(data.careerDD);
+    setCareerNameDD(data.careerNameDD);
+    setSemesterDD(data.semesterDD);
   }, [data]);
 
-  const setDropdownOptions = (options: Array<IObjectData>) => {
-    careers.map((option: any) => {
-      const curCareer = {
-        title: option.acronym,
-        value: option.id,
-        valueII: option.length,
-      };
-      options.push(curCareer);
-    });
+  const setDropdownOptions = (options: Array<IObjectData>, dd: boolean) => {
+    dd === false
+      ? careers.map((option: any) => {
+          const curCareer = {
+            title: option.acronym,
+            value: option.id,
+            valueII: option.length,
+          };
+          options.push(curCareer);
+        })
+      : careersDD.map((option: any) => {
+          const curCareer = {
+            title: option.acronym,
+            value: option.id,
+            valueII: option.length,
+          };
+          options.push(curCareer);
+        });
   };
   const dropDownOptions: Array<IObjectData> = [];
-  setDropdownOptions(dropDownOptions);
+  const dropDownOptionsDD: Array<IObjectData> = [];
+  setDropdownOptions(dropDownOptions, false);
+  setDropdownOptions(dropDownOptionsDD, true);
 
-  const setMyDataLocal = (value: string | number | boolean, key: string) => {
-    if (key === "Email") {
-      setEmail(value as string);
-    } else if (key === "Career") setCareer(value as string);
-    else if (key === "careerName") setCareerName(value as string);
-    else setSemester(value as number);
+  const setMyDataLocal = (
+    value: string | number | boolean,
+    key: string,
+    dd?: boolean
+  ) => {
+    if (dd === false) {
+      if (key === "Email") {
+        setEmail(value as string);
+      } else if (key === "Career") setCareer(value as string);
+      else if (key === "careerName") setCareerName(value as string);
+      else setSemester(value as number);
+    } else {
+      if (key === "Career") setCareerDD(value as string);
+      else if (key === "careerName") setCareerNameDD(value as string);
+      else setSemesterDD(value as number);
+    }
   };
 
   const setMyDataChangesDB = async () => {
     const dataToUpdate = {
       email,
-      //career, TODO: Reemplazar career de un input a un dropdwon con las carreras que sí están disponibles.
-      //semester, TODO: El endpoint solo acepta las propiedades de la tabla de usuarios (No de sus subtablas)
       updated_at: new Date(),
     };
-    const id_career = career;
+    let id_career = career;
     const careerData = {
       id_career,
       semester,
       updated_at: new Date(),
     };
-
-    await updateUser(dataToUpdate, careerData, data.id);
+    await updateUser(
+      dataToUpdate,
+      data.id,
+      careerData,
+      data.career_user_relation ? data.career_user_relation : ""
+    );
+    if (careerDD !== undefined) {
+      console.log(id_career);
+      id_career = careerDD;
+      console.log(id_career);
+      const semester = semesterDD;
+      const careerDDData = {
+        id_career,
+        semester,
+        updated_at: new Date(),
+      };
+      console.log(careerDDData);
+      await updateUser(
+        dataToUpdate,
+        data.id,
+        careerDDData,
+        data.careerDD_user_relation ? data.careerDD_user_relation : ""
+      );
+    }
     await GetAllAdvisors(setAllUsers);
   };
   return (
     <>
-      <PasswordProfileModal onClose={onClose} isOpen={isOpen} size={"xs"} />
+      <PasswordProfileModal
+        onClose={onClose}
+        idUser={data.id}
+        isOpen={isOpen}
+        size={"xs"}
+      />
 
       {modSchedules ? (
         setPeriod !== undefined &&
@@ -125,6 +178,7 @@ export const ProfileCardMobile = ({
             w={"75%"}
             maxW={"80%"}
             p="5"
+            marginBottom={100}
             rounded={theme.radii.general}
           >
             {modAdmin && (
@@ -195,16 +249,59 @@ export const ProfileCardMobile = ({
                   )}
                 </>
               ))}
+              {data.careerDD !== undefined ? (
+                titleProfileCardDD.map((title) => (
+                  <>
+                    <Text size="sm" my={4} color={theme.colors.purple}>
+                      {title + " Double Degree"}
+                    </Text>
+                    {type !== EUserType.admin ? (
+                      <Text size="sm" my={4}>
+                        {title === "Career"
+                          ? data["careerDD"]
+                          : data["semesterDD"]}
+                      </Text>
+                    ) : title === "Career" ? (
+                      <IconPopOverDropdown
+                        text={careerDD ? careerDD : career}
+                        acronym={careerNameDD ? careerNameDD : "ITC"}
+                        icon={<EditIcon />}
+                        myKey={title}
+                        dd={true}
+                        options={dropDownOptionsDD}
+                        setData={setMyDataLocal}
+                      />
+                    ) : title !== "Email" ? (
+                      <IconPopOverForm
+                        text={title === "Career" ? career : semester.toString()}
+                        icon={<EditIcon />}
+                        myKey={title}
+                        dd={false}
+                        setData={setMyDataLocal}
+                      />
+                    ) : (
+                      <Text size="sm" my={4}>
+                        {data[title.toLowerCase()]}
+                      </Text>
+                    )}
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
             </Center>
             {
               <Flex flexDirection={"column"} gap={6}>
-                {type != EUserType.student && (
-                  <>
-                    <ButtonChangeSchedules setModeSchedules={setModSchedules} />
-                  </>
+                {data.type !== EUserType.student && (
+                  <Flex flexDirection={"column"} m={2} gap={2}>
+                    <ButtonChangePassword onOpen={onOpen} />
+                    {data.type === EUserType.advisor && (
+                      <ButtonChangeSchedules
+                        setModeSchedules={setModSchedules}
+                      />
+                    )}
+                  </Flex>
                 )}
-
-                <ButtonChangePassword onOpen={onOpen} />
                 {type === EUserType.admin && (
                   <Center flexDirection={"column"} gap={6}>
                     <ButtonSaveChanges setMyData={setMyDataChangesDB} mobile />

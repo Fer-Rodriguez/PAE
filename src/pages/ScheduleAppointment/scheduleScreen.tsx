@@ -25,6 +25,9 @@ import PopOver, { ETypeSize } from "../../components/popOver";
 import { ICitasDaySchedules } from "../../interfaces";
 import { useStore } from "../../state/store";
 
+//Dark Mode
+import { DarkMode } from "../../colors";
+
 export const ScheduleScreen = ({
   mobile,
   subjectName,
@@ -159,8 +162,8 @@ export const ScheduleScreen = ({
           <ButtonGeneric
             text="Agendar"
             sizePX=""
-            bgColor={theme.colors.pink}
-            fontColor="white"
+            bgColor={DarkMode().pink}
+            fontColor={DarkMode().textWtB}
             onClick={() => console.log(subjectName)}
           />
           <PopOver
@@ -181,16 +184,16 @@ export const ScheduleScreen = ({
               <ButtonGeneric
                 text="Volver"
                 sizePX=""
-                bgColor={theme.colors.pink}
-                fontColor="white"
+                bgColor={DarkMode().pink}
+                fontColor={DarkMode().textWtB}
                 onClick={onPreviousScreenButtonClick}
               />
               <ButtonGeneric
                 isLoading={isSubmitting}
                 text="Confirmar"
                 sizePX=""
-                bgColor={theme.colors.pink}
-                fontColor="white"
+                bgColor={DarkMode().pink}
+                fontColor={DarkMode().textWtB}
                 onClick={(e) => {
                   setIsSubmitting(true);
                   onNextScreenButtonClick(e).then((e) => {
@@ -260,16 +263,16 @@ export const ScheduleScreen = ({
           <ButtonGeneric
             text="Volver"
             sizePX=""
-            bgColor={theme.colors.pink}
-            fontColor="white"
+            bgColor={DarkMode().pink}
+            fontColor={DarkMode().textWtB}
             onClick={onPreviousScreenButtonClick}
           />
           <ButtonGeneric
             text="Agendar"
             isDisabled={selectedHour === ""}
             sizePX=""
-            bgColor={theme.colors.pink}
-            fontColor="white"
+            bgColor={DarkMode().pink}
+            fontColor={DarkMode().textWtB}
             onClick={() => onOpen()}
           />
         </Flex>
@@ -309,8 +312,8 @@ export const ScheduleScreen = ({
                 isLoading={isSubmitting}
                 text="Confirmar"
                 sizePX=""
-                bgColor={theme.colors.pink}
-                fontColor="white"
+                bgColor={DarkMode().pink}
+                fontColor={DarkMode().textWtB}
                 onClick={(e) => {
                   setIsSubmitting(true);
                   onNextScreenButtonClick(e).then((e) => {

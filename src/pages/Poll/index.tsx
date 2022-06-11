@@ -16,7 +16,13 @@ import { MobilePoll } from "./Compoents/Mobile";
 import { PollComponent } from "./Compoents/PollComponent";
 import { DesktopPoll } from "./Compoents/Desktop";
 
-export const PollCard = ({ mobile }: { mobile?: boolean }) => {
+export const PollCard = ({
+  mobile,
+  active = false,
+}: {
+  mobile?: boolean;
+  active?: boolean;
+}) => {
   const [ruta, setRuta] = useState(0);
 
   const size = useBreakpointValue({ base: "sm", md: "2xl" });
@@ -86,6 +92,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
+              active={active}
               Content={
                 <DndProvider backend={HTML5Backend}>
                   <Advisor />
@@ -101,6 +108,7 @@ export const PollCard = ({ mobile }: { mobile?: boolean }) => {
               FontSize={35}
               MarginHeader={-5}
               MarginButton={55}
+              active={active}
               Content={
                 <DndProvider backend={HTML5Backend}>
                   <Student />
