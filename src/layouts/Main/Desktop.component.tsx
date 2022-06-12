@@ -16,7 +16,7 @@ import { Menu } from "../../components/Menu";
 import { Bell } from "../../components/Bell";
 
 //Interfaces
-import { IDataProfileCard } from "../../interfaces";
+//import { IDataProfileCard } from "../../interfaces";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
 
@@ -24,7 +24,6 @@ import { ButtonGeneric } from "../../components/Button";
 import cross from "../../assets/Cross.png";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/Logo";
-import shallow from "zustand/shallow";
 import { useStore } from "../../state/store";
 import { ENotificationStatus } from "../../interfaces/enums";
 import { updateNotification } from "../../api/notifications/update";
@@ -68,24 +67,10 @@ export const DesktopComponents = ({
     navigate("/");
   };
 
-  const userData: IDataProfileCard = useStore(
-    (state) => ({
-      id: state.id,
-      name: state.name,
-      email: state.email,
-      type: state.type,
-      semester: state.semester,
-      career: state.career,
-
-      profilePic: state.profilePic,
-    }),
-    shallow
-  );
-
   const userNotifications = useStore((state) => state.notifications);
 
   function actualizarNotis() {
-    console.log("PRUEBITA");
+    //console.log("PRUEBITA");
     const temp = [...userNotifications].filter(
       (n) => n.title == "Solicitud de Asesoría" && n.status == "not seen"
     );

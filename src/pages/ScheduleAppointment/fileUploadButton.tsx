@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { IconButton, Text } from "@chakra-ui/react";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
+
 import "./style.css";
+import imageIcon from "../../assets/imagen.png";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 //Dark Mode
@@ -9,9 +11,11 @@ import { DarkMode } from "../../colors";
 export const FileUploadButton = ({
   onChange,
   currentFile,
+  mobile,
 }: {
   onChange: React.Dispatch<File | undefined>;
   currentFile: File | undefined;
+  mobile: boolean;
 }) => {
   const [fileError, setFileError] = useState("");
   const drop = useRef<HTMLDivElement>(null);
@@ -74,7 +78,70 @@ export const FileUploadButton = ({
     };
   }, []);
 
-  return (
+  return mobile ? (
+    <Flex w="85%">
+      <label
+        className="FileUpload"
+        style={{
+          width: "max-content",
+          backgroundColor: DarkMode().blue,
+          height: "2.5rem",
+          paddingInlineStart: "1rem",
+          paddingInlineEnd: "1rem",
+          borderRadius: "40px",
+          display: "inline-flex",
+          alignContent: "center",
+          justifyItems: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          flexGrow: 0,
+        }}
+      >
+        <img style={{ height: "100%" }} src={imageIcon}></img>
+        <input
+          style={{ display: "none" }}
+          type="file"
+          accept=".jpg,.png,.jpeg,.gif"
+          onChange={(e) => {
+            onUpload(e.target.files);
+          }}
+        />
+      </label>
+
+      {fileError != "" ? (
+        <Text flexGrow={1} flexBasis={0} color={"#ed3441"} ml="0.5em">
+          {fileError}
+        </Text>
+      ) : (
+        <Text flexGrow={1} flexBasis={0} ml="0.5em" color="grey" as="i">
+          {currentFile
+            ? `Se cargó el archivo ${
+                truncateFileName(
+                  currentFile.name.substring(
+                    currentFile.name.lastIndexOf(".") + 1,
+                    0
+                  ),
+                  12
+                ) + extension(currentFile.name)
+              } correctamente`
+            : ""}
+        </Text>
+      )}
+      {currentFile ? (
+        <IconButton
+          ml="0.5em"
+          onClick={() => {
+            onChange(undefined);
+          }}
+          colorScheme="purpleScheme"
+          icon={<DeleteIcon />}
+          aria-label={"Eliminar archivo"}
+        ></IconButton>
+      ) : (
+        <></>
+      )}
+    </Flex>
+  ) : (
     <div ref={drop}>
       <label
         className="FileUpload"

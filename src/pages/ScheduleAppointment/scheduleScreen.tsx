@@ -122,7 +122,13 @@ export const ScheduleScreen = ({
   if (mobile) {
     return (
       <>
-        <Text color="grey" as="i">
+        <Text
+          w="100%"
+          display={"inline-block"}
+          textAlign={"center"}
+          color="grey"
+          as="i"
+        >
           Escoge el horario que más se te acomode
         </Text>
         <br></br>
@@ -156,51 +162,70 @@ export const ScheduleScreen = ({
             schedules={possibleDates}
             width="60%"
           ></ScheduleList>
-          <ButtonGeneric
-            text="Agendar"
-            sizePX=""
-            bgColor={DarkMode().pink}
-            fontColor={DarkMode().textWtB}
-            onClick={() => console.log(subjectName)}
-          />
-          <PopOver
-            size={ETypeSize.s}
-            title={{ text: "Resumen de la solicitud", alignment: "center" }}
-            closeButton={true}
-            customOpen={isOpen}
-            customClose={onClose}
-            customCancelRef={cancelRef}
-          >
-            <Center>
-              <Text>Materia: {subjectName}</Text>
-              <Spacer />
-              <Text>Día: {selectedDay}</Text>
-              <Spacer />
-              <Text>Hora: {selectedHour}</Text>
-              <Spacer />
-              <ButtonGeneric
-                text="Volver"
-                sizePX=""
-                bgColor={DarkMode().pink}
-                fontColor={DarkMode().textWtB}
-                onClick={onPreviousScreenButtonClick}
-              />
-              <ButtonGeneric
-                isLoading={isSubmitting}
-                text="Confirmar"
-                sizePX=""
-                bgColor={DarkMode().pink}
-                fontColor={DarkMode().textWtB}
-                onClick={(e) => {
-                  setIsSubmitting(true);
-                  onNextScreenButtonClick(e).then((e) => {
-                    setIsSubmitting(false);
-                  });
-                }}
-              />
-            </Center>
-          </PopOver>
-          <Spacer />
+          <Flex direction={"row"} justifyContent="center" gap={"5vw"} w="100%">
+            <ButtonGeneric
+              text="Volver"
+              sizePX=""
+              bgColor={DarkMode().pink}
+              fontColor={DarkMode().textWtB}
+              onClick={onPreviousScreenButtonClick}
+            />
+            <ButtonGeneric
+              text="Agendar"
+              isDisabled={selectedHour === ""}
+              sizePX=""
+              bgColor={DarkMode().pink}
+              fontColor={DarkMode().textWtB}
+              onClick={() => onOpen()}
+            />
+          </Flex>
+          <Center w="100%">
+            <PopOver
+              size={ETypeSize.s}
+              title={{ text: "Resumen de la solicitud", alignment: "center" }}
+              closeButton={true}
+              customOpen={isOpen}
+              customClose={onClose}
+              customCancelRef={cancelRef}
+            >
+              <VStack alignContent="center">
+                <Text textAlign="center">Materia: {subjectName}</Text>
+                <Spacer />
+                <Text>
+                  Día:{" "}
+                  {selectedDay.toLocaleString("es-MX", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </Text>
+                <Spacer />
+                <Text>
+                  Hora:{" "}
+                  {new Date(selectedHour).toLocaleTimeString("es-MX", {
+                    timeZone: "America/Mexico_City",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+                <Spacer />
+                <ButtonGeneric
+                  isLoading={isSubmitting}
+                  text="Confirmar"
+                  sizePX=""
+                  bgColor={DarkMode().pink}
+                  fontColor={DarkMode().textWtB}
+                  onClick={(e) => {
+                    setIsSubmitting(true);
+                    onNextScreenButtonClick(e).then((e) => {
+                      setIsSubmitting(false);
+                    });
+                  }}
+                />
+              </VStack>
+            </PopOver>
+          </Center>
         </VStack>
       </>
     );
@@ -282,9 +307,8 @@ export const ScheduleScreen = ({
             customClose={onClose}
             customCancelRef={cancelRef}
           >
-            {/*TODO: Show subject, day and hour in popup*/}
             <VStack alignContent="center">
-              <Text>Materia: {subjectName}</Text>
+              <Text textAlign="center">Materia: {subjectName}</Text>
               <Spacer />
               <Text>
                 Día:{" "}

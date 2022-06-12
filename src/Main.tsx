@@ -39,7 +39,6 @@ import { ConfirmEmail } from "./pages/ConfirmEmail";
 import { CareerPage } from "./pages/Careers";
 import { SubjectCareerPage } from "./pages/Careers/details";
 
-
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
   "APPOINTMENT_REJECTED" = "APPOINTMENT_REJECTED",
@@ -83,7 +82,7 @@ export const Main = ({
     const updateAppointments = async () => {
       await getRecentAppointment(id, type, setRecentAppointment);
       const response = await getAllAppointments(id, type, true);
-      console.log("Todos los appointments: ", response);
+      //console.log("Todos los appointments: ", response);
       setAllAppointments(response);
       //TODO: Solo funciona con este comentario...
       console.log("Actualizando");
@@ -123,7 +122,7 @@ export const Main = ({
 
   useEffect(() => {
     useStore.subscribe((state) => {
-      console.log(state.type);
+      //console.log(state.type);
       userType.current = state.type;
     });
   }, []);

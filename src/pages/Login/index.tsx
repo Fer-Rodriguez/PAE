@@ -122,7 +122,7 @@ export const FormsLogin = (props: IFormsLogin) => {
         props.setLoggedIn(true);
         navigate("/dashboard");
       } else {
-        setError(idUserData.reason);
+        setError(idUserData.response.data.reason);
         setVisibleAlert(true);
       }
     } catch (e) {
@@ -168,11 +168,11 @@ export const FormsLogin = (props: IFormsLogin) => {
             <MyAlert
               status={EStatusAlert.error}
               title={
-                error != 2
-                  ? error === 1
-                    ? "Usuario y/o contraseña incorrectos"
-                    : "Cuenta no verificada. Por favor, busca el correo de confirmación en tu bandeja de entrada"
-                  : "Lo sentimos, no se puede iniciar al sistema en este momento. Inténtalo de nuevo más tarde."
+                error === undefined || error === 2
+                  ? "Lo sentimos, no se puede ingresar al sistema en este momento. Inténtalo de nuevo más tarde."
+                  : error === 0
+                  ? "Usuario y/o contraseña incorrectos"
+                  : "Cuenta no verificada. Por favor, busca el correo de confirmación en tu bandeja de entrada"
               }
               description={""}
               active={visibleAlert}
