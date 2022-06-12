@@ -1,5 +1,5 @@
 //Chakra
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 //Components
 import { Menu } from "../../components/Menu";
@@ -9,6 +9,13 @@ import { Logo } from "../../assets/Logo";
 import cross from "../../assets/Cross.png";
 import { Bell } from "../../components/Bell";
 import { DarkMode } from "../../colors";
+import { useStore } from "../../state/store";
+import { ButtonGeneric } from "../../components/Button";
+import makeData from "../../components/Bell/makeData";
+import { useMemo } from "react";
+import { updateNotification } from "../../api/notifications/update";
+import { ENotificationStatus } from "../../interfaces/enums";
+import { Cell } from "react-table";
 
 export const MobileComponents = ({
   userComponent,
@@ -17,7 +24,41 @@ export const MobileComponents = ({
   userComponent: React.ReactNode;
   setLoggedIn?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const userNotifications = useStore((state) => state.notifications);
+
   const navigate = useNavigate();
+
+  function GetData() {
+    const columns = useMemo(
+      () => [
+        { Header: "Notificacion", accessor: "notification" },
+        { Header: "Descripcion", accessor: "dataNotification" },
+        {
+          Header: "",
+          accessor: "button",
+          Cell: (cell: Cell<any, any>) => (
+            <ButtonGeneric text="Detalles" color="red" />
+          ),
+        },
+      ],
+      []
+    );
+
+    const data = useMemo(() => makeData(5), []);
+
+    return <Bell columns={columns} data={data} headColor="black" />;
+  }
+
+  function actualizarNotis() {
+    //console.log("PRUEBITA");
+    const temp = [...userNotifications].filter(
+      (n) => n.title == "Solicitud de Asesoría" && n.status == "not seen"
+    );
+    console.log(temp);
+    temp.forEach((x) => {
+      updateNotification(x.id, "seen" as ENotificationStatus);
+    });
+  }
 
   const logout = () => {
     setLoggedIn?.(false);
@@ -48,7 +89,12 @@ export const MobileComponents = ({
             onClick={() => logout()}
             style={{ cursor: "pointer" }}
           />
-          <Bell columns={[]} data={[]} headColor={""} />
+          <Button
+            onClick={() => actualizarNotis()}
+            backgroundColor={DarkMode().bgTotal}
+          >
+            {GetData()}
+          </Button>
         </Flex>
       </Flex>
       {/** Here is going to be render the corresponding child component */}
