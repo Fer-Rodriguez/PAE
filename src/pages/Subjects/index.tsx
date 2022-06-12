@@ -57,46 +57,46 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
         Header: "Semestre",
         accessor: "semester",
       },
-      {
-        Header: "",
-        accessor: "edit",
-        Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
-          return (
-            <>
-              {id !== undefined && (
-                <Link to={``}>
-                  <Button
-                    text={"Editar"}
-                    color={DarkMode().pink}
-                    fontColor={DarkMode().textWtB}
-                  />
-                </Link>
-              )}
-            </>
-          );
-        },
-      },
-      {
-        Header: "",
-        accessor: "delete",
-        Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
-          return (
-            <>
-              {id !== undefined && (
-                <Link to={``}>
-                  <Button
-                    text={"Eliminar"}
-                    color={DarkMode().pink}
-                    fontColor={DarkMode().textWtB}
-                  />
-                </Link>
-              )}
-            </>
-          );
-        },
-      },
+      // {
+      //   Header: "",
+      //   accessor: "edit",
+      //   Cell: (cell: Cell<any, any>) => {
+      //     const id = subjectsColumnData[cell.row.index].id;
+      //     return (
+      //       <>
+      //         {id !== undefined && (
+      //           <Link to={``}>
+      //             <Button
+      //               text={"Editar"}
+      //               color={DarkMode().pink}
+      //               fontColor={DarkMode().textWtB}
+      //             />
+      //           </Link>
+      //         )}
+      //       </>
+      //     );
+      //   },
+      // },
+      // {
+      //   Header: "",
+      //   accessor: "delete",
+      //   Cell: (cell: Cell<any, any>) => {
+      //     const id = subjectsColumnData[cell.row.index].id;
+      //     return (
+      //       <>
+      //         {id !== undefined && (
+      //           <Link to={``}>
+      //             <Button
+      //               text={"Eliminar"}
+      //               color={DarkMode().pink}
+      //               fontColor={DarkMode().textWtB}
+      //             />
+      //           </Link>
+      //         )}
+      //       </>
+      //     );
+      //   },
+      // },
     ],
     [subjectsColumnData]
   );
@@ -162,12 +162,12 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
       >
         <Spacer />
         <Spacer />
-        <ButtonGeneric
+        {/* <ButtonGeneric
           bgColor="purple"
           sizePX="20%"
           text="Crear una materia"
           onClick={() => console.log()}
-        ></ButtonGeneric>
+        ></ButtonGeneric> */}
         <Spacer />
 
         <Flex
