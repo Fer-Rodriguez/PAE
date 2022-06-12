@@ -7,6 +7,7 @@ import { IMenuOptions } from "../../interfaces";
 import menuDash from "../../assets/House.png";
 import menuCitas from "../../assets/Calendar.png";
 import menuPerfil from "../../assets/menu_user.png";
+import menuMaterias from "../../assets/menuOpt_materias.png";
 import menuAsesores from "../../assets/menuOpt_asesores.png";
 import { useStore } from "../../state/store";
 
