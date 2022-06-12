@@ -1,14 +1,7 @@
 //Libraries
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Cell } from "react-table";
-import {
-  useDisclosure,
-  Heading,
-  Spinner,
-  Flex,
-  Center,
-  Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Heading, Flex } from "@chakra-ui/react";
 
 //Zustand
 import { useStore } from "../../state/store";
@@ -21,7 +14,6 @@ import { AppointmentDetails } from "../AppointmentDetails";
 import { EStatusAppointment, EUserType } from "../../interfaces/enums";
 
 import { Managment } from "../Managment";
-import { getAllAppointments } from "../../api/appointments/get";
 
 //Dark Mode
 import { DarkMode } from "../../colors";

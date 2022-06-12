@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Grid,
-  GridItem,
-  Text,
-  Flex,
-  Box,
-  useDisclosure,
-  Button,
-} from "@chakra-ui/react";
-
+import { Grid, GridItem, Text, Flex, Box } from "@chakra-ui/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import shallow from "zustand/shallow";
@@ -49,9 +40,6 @@ import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import { AppointmentAcceptance } from "../../components/AppointmentAcceptance";
-
-//Dark Mode
-import { DarkMode } from "../../colors";
 
 import { UserContext } from "../../context";
 import { useTranslation } from "react-i18next";

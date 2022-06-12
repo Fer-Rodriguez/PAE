@@ -1,11 +1,8 @@
 //Chakra
-import { Box, Flex, Image, Spacer } from "@chakra-ui/react";
-import { BellIcon, CloseIcon } from "@chakra-ui/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Box, Flex, Image } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 //Components
 import { Menu } from "../../components/Menu";
-//Interfaces
-import { IUserComponents } from "../../interfaces";
 
 //Assets
 import { Logo } from "../../assets/Logo";
@@ -54,7 +51,6 @@ export const MobileComponents = ({
           <Bell columns={[]} data={[]} headColor={""} />
         </Flex>
       </Flex>
-
       {/** Here is going to be render the corresponding child component */}
       <Box mb="50px" mt="60px">
         {userComponent}

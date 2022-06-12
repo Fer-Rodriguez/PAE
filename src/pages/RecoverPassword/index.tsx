@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useStore } from "../../state/store";
 import {
   Center,
   Container,
@@ -13,10 +12,6 @@ import { Logo } from "../../assets/Logo";
 import { MailInput } from "../../components/FormsRecovery/MailInput";
 import { ButtonGeneric } from "../../components/ButtonGeneric";
 import { useNavigate } from "react-router-dom";
-import { GetUser } from "../../api/users/get";
-import { IUserData } from "../../interfaces";
-import { EStatusAlert } from "../../interfaces/enums";
-import { MyAlert } from "../../components/MyAlert";
 import { useState } from "react";
 
 //Dark Mode

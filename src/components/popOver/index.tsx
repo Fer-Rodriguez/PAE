@@ -10,7 +10,6 @@ import {
   useDisclosure,
   Text,
   Heading,
-  Button,
 } from "@chakra-ui/react";
 
 /**
@@ -52,7 +51,6 @@ const PopOver: React.FunctionComponent<IPopOver> = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   useEffect(() => onOpen(), [onOpen]);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const boton1Ref = useRef<HTMLDivElement>(null);
 
   const calculateWidth: (size: ETypeSize) => number = (size: ETypeSize) => {
     let sizeInt = 1500;

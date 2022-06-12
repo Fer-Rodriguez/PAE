@@ -70,21 +70,25 @@ export const ScheduleAppointment = ({
   const getScreenFromStep = (step: number) => {
     if (step == 0) {
       return (
-        <BasicInfoScreen
-          mobile={mobile}
-          onNextScreenButtonClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            setFormStep(1);
-          }}
-          onDropDownChange={setIdSubject}
-          onSubjectChange={setSubjectName}
-          onTextFieldChange={setProblemDescription}
-          onFileUploaded={setImageFile}
-          valueForFileInput={imageFile}
-          valueForDropDown={idSubject}
-          valueForTextField={problemDescription}
-          selectedSemester={selectedSemester}
-          setSelectedSemester={setSelectedSemester}
-        ></BasicInfoScreen>
+        <Box>
+          <BasicInfoScreen
+            mobile={mobile}
+            onNextScreenButtonClick={(
+              e: React.MouseEvent<HTMLButtonElement>
+            ) => {
+              setFormStep(1);
+            }}
+            onDropDownChange={setIdSubject}
+            onSubjectChange={setSubjectName}
+            onTextFieldChange={setProblemDescription}
+            onFileUploaded={setImageFile}
+            valueForFileInput={imageFile}
+            valueForDropDown={idSubject}
+            valueForTextField={problemDescription}
+            selectedSemester={selectedSemester}
+            setSelectedSemester={setSelectedSemester}
+          ></BasicInfoScreen>
+        </Box>
       );
     } else if (step == 1) {
       return (

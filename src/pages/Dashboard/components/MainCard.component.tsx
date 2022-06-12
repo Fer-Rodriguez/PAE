@@ -18,13 +18,11 @@ import { EStatusAppointment, EUserType } from "../../../interfaces/enums";
 import { useStore } from "../../../state/store";
 
 //Assets
-import FlagMan from "../Icons/FlagMan";
 import theme from "../../../theme";
 import rocket from "../Icons/cohete.png";
 import bandera from "../Icons/bandera.png";
 
 import "../style.css";
-import { IAppointmentDataMod } from "../../../interfaces";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 

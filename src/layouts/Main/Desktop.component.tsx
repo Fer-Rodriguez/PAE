@@ -2,7 +2,6 @@
 import {
   Box,
   Flex,
-  Spacer,
   Image,
   Grid,
   GridItem,
@@ -17,7 +16,7 @@ import { Menu } from "../../components/Menu";
 import { Bell } from "../../components/Bell";
 
 //Interfaces
-import { IDataProfileCard, IUserComponents } from "../../interfaces";
+import { IDataProfileCard } from "../../interfaces";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";
 

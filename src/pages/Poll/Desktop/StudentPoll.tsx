@@ -33,7 +33,7 @@ import { Card } from "../Card";
 //Store
 import { useStore } from "../../../state/store";
 import shallow from "zustand/shallow";
-import { IDataProfileCard, IPoll } from "../../../interfaces";
+import { IDataProfileCard } from "../../../interfaces";
 import socket from "../../../socket";
 import { getAllQuestions } from "../../../api/poll/get";
 

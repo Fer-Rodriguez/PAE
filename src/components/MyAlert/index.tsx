@@ -5,7 +5,6 @@ import {
   AlertDescription,
   CloseButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { EStatusAlert } from "../../interfaces/enums";
 

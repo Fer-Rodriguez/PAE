@@ -1,9 +1,7 @@
 //Components
-
 import { MobileComponents } from "./Mobile.component";
 import { DesktopComponents } from "./Desktop.component";
 import { Desktop, Mobile } from "../../services/Breakpoints";
-import { Box } from "@chakra-ui/react";
 
 interface IMainLayout {
   desktop?: React.ReactNode;

@@ -1,6 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
-import axios from "axios";
-import React, { useMemo, useState, useEffect } from "react";
+import { Box } from "@chakra-ui/react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
 import { ButtonGeneric } from "../../components/Button";

@@ -6,9 +6,8 @@ import {
   FormErrorMessage,
   FormHelperText,
   Select,
-  FormControl,
 } from "@chakra-ui/react";
-import { ICareerData, IObjectData } from "../../interfaces";
+import { ICareerData } from "../../interfaces";
 
 interface ICarreraInput {
   control: Control<any>;

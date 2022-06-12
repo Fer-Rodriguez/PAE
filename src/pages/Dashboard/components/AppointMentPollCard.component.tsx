@@ -1,13 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Heading,
-  Flex,
-  Image,
-  Button,
-  useColorModeValue,
-  Box,
-} from "@chakra-ui/react";
+import { Heading, Flex, Image, Button, Box } from "@chakra-ui/react";
 
 import { DividedCard } from "../../../components/DividedCard";
 
