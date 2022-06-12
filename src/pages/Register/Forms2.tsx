@@ -71,85 +71,85 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
 
   const handleCreateResponse = async (res: any, success: boolean) => {
     if (success) {
-      const idUserData = await GetUser(capitalize(info.mail), info.password)
-        .then((res) => {
-          //console.log("then", res.response.status);
+      if (info.typeUserDrop == "advisor") {
+        const idUserData = await GetUser(capitalize(info.mail), info.password)
+          .then((res) => {
+            //console.log("then", res.response.status);
+            return res;
+          })
+          .catch((err) => {
+            alert("Lo sentimos, ocurrió un error inesperado. 704");
+          });
+        setNewId(idUserData.userId);
+        const userData = await GetUserInfo(idUserData.userId).then((res) => {
           return res;
-        })
-        .catch((err) => {
-          alert("Lo sentimos, ocurrió un error inesperado. 704");
         });
-      setNewId(idUserData.userId);
-      const userData = await GetUserInfo(idUserData.userId).then((res) => {
-        return res;
-      });
 
-      if (idUserData.status == "OK") {
-        setIsSubmiting(false);
-        const correctUser: IUserData =
-          userData.user.career.length === 1
-            ? {
-                id: userData.user.id,
-                status:
-                  userData.user.status === EStatus.active
-                    ? EStatus.active
-                    : userData.user.status === EStatus.deleted
-                    ? EStatus.deleted
-                    : EStatus.inactive,
-                name: userData.user.name,
-                email: userData.user.email,
-                type:
-                  userData.user.type === EUserType.advisor
-                    ? EUserType.advisor
-                    : userData.user.type === EUserType.student
-                    ? EUserType.student
-                    : userData.user.type === EUserType.admin
-                    ? EUserType.admin
-                    : EUserType.root,
-                semester: userData.user.userSemesters[0].semester,
-                career: userData.user.career[0].id,
-                careerName: userData.user.career[0].acronym,
-                config: { language: ELanguage.spanish, theme: ETheme.white },
-                profilePic: "No tengo",
-                notifications: [],
-                polls: [],
-              }
-            : {
-                id: userData.user.id,
-                status:
-                  userData.user.status === EStatus.active
-                    ? EStatus.active
-                    : userData.user.status === EStatus.deleted
-                    ? EStatus.deleted
-                    : EStatus.inactive,
-                name: userData.user.name,
-                email: userData.user.email,
-                type:
-                  userData.user.type === EUserType.advisor
-                    ? EUserType.advisor
-                    : userData.user.type === EUserType.student
-                    ? EUserType.student
-                    : userData.user.type === EUserType.admin
-                    ? EUserType.admin
-                    : EUserType.root,
-                semester: userData.user.userSemesters[0].semester,
-                career: userData.user.career[0].id,
-                careerName: userData.user.career[0].acronym,
-                semesterDD: userData.user.userSemesters[1].semester,
-                careerDD: userData.user.career[1].id,
-                careerNameDD: userData.user.career[1].acronym,
-                config: { language: ELanguage.spanish, theme: ETheme.white },
-                profilePic: "No tengo",
-                notifications: [],
-                polls: [],
-              };
-        setIsSubmiting(false);
-        setUser(correctUser);
-        if (info.typeUserDrop === EUserType.student) {
-          setFormStep(3);
-        } else {
+        if (idUserData.status == "OK") {
+          setIsSubmiting(false);
+          const correctUser: IUserData =
+            userData.user.career.length === 1
+              ? {
+                  id: userData.user.id,
+                  status:
+                    userData.user.status === EStatus.active
+                      ? EStatus.active
+                      : userData.user.status === EStatus.deleted
+                      ? EStatus.deleted
+                      : EStatus.inactive,
+                  name: userData.user.name,
+                  email: userData.user.email,
+                  type:
+                    userData.user.type === EUserType.advisor
+                      ? EUserType.advisor
+                      : userData.user.type === EUserType.student
+                      ? EUserType.student
+                      : userData.user.type === EUserType.admin
+                      ? EUserType.admin
+                      : EUserType.root,
+                  semester: userData.user.userSemesters[0].semester,
+                  career: userData.user.career[0].id,
+                  careerName: userData.user.career[0].acronym,
+                  config: { language: ELanguage.spanish, theme: ETheme.white },
+                  profilePic: "No tengo",
+                  notifications: [],
+                  polls: [],
+                }
+              : {
+                  id: userData.user.id,
+                  status:
+                    userData.user.status === EStatus.active
+                      ? EStatus.active
+                      : userData.user.status === EStatus.deleted
+                      ? EStatus.deleted
+                      : EStatus.inactive,
+                  name: userData.user.name,
+                  email: userData.user.email,
+                  type:
+                    userData.user.type === EUserType.advisor
+                      ? EUserType.advisor
+                      : userData.user.type === EUserType.student
+                      ? EUserType.student
+                      : userData.user.type === EUserType.admin
+                      ? EUserType.admin
+                      : EUserType.root,
+                  semester: userData.user.userSemesters[0].semester,
+                  career: userData.user.career[0].id,
+                  careerName: userData.user.career[0].acronym,
+                  semesterDD: userData.user.userSemesters[1].semester,
+                  careerDD: userData.user.career[1].id,
+                  careerNameDD: userData.user.career[1].acronym,
+                  config: { language: ELanguage.spanish, theme: ETheme.white },
+                  profilePic: "No tengo",
+                  notifications: [],
+                  polls: [],
+                };
+          setIsSubmiting(false);
+          setUser(correctUser);
           setFormStep(2);
         }
+      } else {
+        setFormStep(3);
       }
     } else {
       setIsSubmiting(false);

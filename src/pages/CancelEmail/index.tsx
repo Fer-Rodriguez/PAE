@@ -10,7 +10,7 @@ interface IConfirmLogin {
   mobile?: boolean;
 }
 
-export const ConfirmEmail = (props: IConfirmLogin) => {
+export const CancelEmail = (props: IConfirmLogin) => {
   const [triedToVerify, setTriedToVerify] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ export const ConfirmEmail = (props: IConfirmLogin) => {
 
   useEffect(() => {
     if (tkn) {
-      console.log("cancel", false);
-      verifyEmail(tkn, false).then((res) => {
+      console.log("cancel", true);
+      verifyEmail(tkn, true).then((res) => {
         setTriedToVerify(true);
         if (res?.status == 200) {
           setIsTokenValid(true);
@@ -56,12 +56,14 @@ export const ConfirmEmail = (props: IConfirmLogin) => {
                 paddingBottom={"20px"}
                 textAlign={"center"}
               >
-                {isTokenValid ? "¡Se confirmó tu correo!" : "Liga inválida"}
+                {isTokenValid
+                  ? "Se canceló el registro correctamente"
+                  : "Liga inválida"}
               </Text>
               <Text textAlign={"center"} marginBottom={"10%"}>
                 {isTokenValid
-                  ? "Ya puedes utilizar la plataforma de PAE."
-                  : "Parece que esta liga para tu correo no es válida."}
+                  ? "Hemos eliminado tu información de nuestros registros."
+                  : "Parece que esta liga para cancelar tu correo no es válida."}
               </Text>
               <ButtonGeneric
                 {...(props.mobile ? { sizePX: "80%" } : { sizePX: "50%" })}

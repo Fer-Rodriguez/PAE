@@ -25,27 +25,13 @@ export const VerifyEmailScreen = (props: IVerify) => {
             ? { marginBottom: "20px" }
             : { marginTop: "20px", marginBottom: "20px" })}
         >
-          <Logo
-            {...(props.mobile ? { maxWidth: "30%" } : { maxWidth: "25%" })}
-          ></Logo>
-
           <>
-            <Text
-              color={"purpleLight"}
-              fontWeight={"semibold"}
-              {...(props.mobile ? { fontSize: "3xl" } : { fontSize: "4xl" })}
-              paddingTop={"20px"}
-              paddingBottom={"20px"}
-              textAlign={"center"}
-            >
-              ¡Listo!
-            </Text>
             <Text textAlign={"center"} marginBottom={"10%"}>
               Por favor confirma tu registro en el correo que hemos enviado a la
               dirección que registraste.
             </Text>
             <ButtonGeneric
-              {...(props.mobile ? { sizePX: "80%" } : { sizePX: "50%" })}
+              {...(props.mobile ? { sizePX: "80%" } : { sizePX: "100%" })}
               bgColor="purpleLight"
               text="Ir al inicio de sesión"
               onClick={() => login()}
