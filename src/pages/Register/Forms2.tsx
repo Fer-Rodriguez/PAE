@@ -70,18 +70,21 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
 
   const handleCreateResponse = async (res: any, success: boolean) => {
     if (success) {
-      const idUserData = await GetUser(
-        capitalize(info.mail),
-        info.password
-      ).then((res) => {
-        return res;
-      });
+      const idUserData = await GetUser(capitalize(info.mail), info.password)
+        .then((res) => {
+          //console.log("then", res.response.status);
+          return res;
+        })
+        .catch((err) => {
+          alert("Lo sentimos, ocurrió un error inesperado. 704");
+        });
       setNewId(idUserData.userId);
       const userData = await GetUserInfo(idUserData.userId).then((res) => {
         return res;
       });
 
       if (idUserData.status == "OK") {
+        setIsSubmiting(false);
         const correctUser: IUserData =
           userData.user.career.length === 1
             ? {
@@ -152,6 +155,8 @@ export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
       setError(true);
       if (res.response.data.reason === 1) {
         setAlreadyRegistered(true);
+      } else {
+        alert("Lo sentimos, ocurrió un error inesperado. 704");
       }
     }
   };

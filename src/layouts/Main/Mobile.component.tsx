@@ -10,6 +10,8 @@ import { IUserComponents } from "../../interfaces";
 //Assets
 import { Logo } from "../../assets/Logo";
 import cross from "../../assets/Cross.png";
+import { Bell } from "../../components/Bell";
+import { DarkMode } from "../../colors";
 
 export const MobileComponents = ({
   userComponent,
@@ -27,34 +29,36 @@ export const MobileComponents = ({
   };
 
   return (
-    <Flex flexDirection={"column"} minH={"100vh"} mt="3vh" gap={12}>
-      <Spacer />
-      <Flex position={"absolute"}>
-        <Box position={"relative"} left="40%">
+    <Flex flexDirection={"column"}>
+      <Flex
+        backgroundColor={DarkMode().bgTotal}
+        position={"fixed"}
+        pl="5%"
+        pr="2%"
+        top="0%"
+        pt="10px"
+        w="100%"
+        zIndex={100}
+        justifyContent="space-between"
+      >
+        <Box>
           <Logo maxWidth="20vw" />
         </Box>
-        <Flex
-          position={"absolute"}
-          left="75vw"
-          alignItems="center"
-          pr="6"
-          gap={"6"}
-        >
+        <Flex flexGrow={0} alignItems="center">
           <Image
             src={cross}
             boxSize={8}
             onClick={() => logout()}
             style={{ cursor: "pointer" }}
           />
-
-          <BellIcon boxSize={8} />
+          <Bell columns={[]} data={[]} headColor={""} />
         </Flex>
       </Flex>
 
       {/** Here is going to be render the corresponding child component */}
-      {userComponent}
-      {/* TODO: Add responsive menu instead of Spacer**/}
-
+      <Box mb="50px" mt="60px">
+        {userComponent}
+      </Box>
       <Menu userType="user" mobile={true} />
     </Flex>
   );

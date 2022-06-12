@@ -42,7 +42,7 @@ export const DoubleCarreraInput = ({
           </FormLabel>
           <Select
             id="doubleCarrera"
-            placeholder="Selecciona tu carrera"
+            placeholder="No aplica"
             onChange={(e) => {
               console.log("Seleccionando carrera: ", e.target.value);
               onChange(e.target.value);

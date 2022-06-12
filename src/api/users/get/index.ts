@@ -145,7 +145,8 @@ export const GetAllAdmins = async (
       return arrayAdministratorsUserData;
     })
     .catch(function (error) {
-      console.log(error);
+      //return console.log(error);
     });
+
   return data;
 };

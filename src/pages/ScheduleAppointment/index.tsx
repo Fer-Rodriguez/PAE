@@ -108,7 +108,9 @@ export const ScheduleAppointment = ({
 
   return (
     <Box>
-      <Heading>Agenda una asesoría</Heading>
+      <Heading textAlign={mobile ? "center" : "start"}>
+        Agenda una asesoría
+      </Heading>
       {getScreenFromStep(formStep)}
     </Box>
   );

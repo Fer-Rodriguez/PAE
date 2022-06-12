@@ -8,9 +8,9 @@ interface IResponsive {
 
 //Queries that allows the programmer to determine the device that is currently being used by the final user.
 const useMobileMediaQuery = () =>
-  useMediaQuery({ query: "(max-width: 1279px)" });
+  useMediaQuery({ query: "(max-width: 810px)" });
 
-const useDesktopQuery = () => useMediaQuery({ query: "(min-width: 1280px)" });
+const useDesktopQuery = () => useMediaQuery({ query: "(min-width: 811px)" });
 
 //Components that handles the logic to show or not the content given as a prop
 export const Mobile = ({ children }: IResponsive) => {
