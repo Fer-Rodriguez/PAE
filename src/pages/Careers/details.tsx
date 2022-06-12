@@ -1,4 +1,5 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import axios from "axios";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
@@ -12,29 +13,44 @@ interface IColumnDetails {
 }
 
 import { Managment } from "../Managment";
-import socket from "../../socket";
-import { getAllSubjects } from "../../api/subjects/get";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { getSubjectCareer } from "../../api/subjects/get";
 
-//Dark Mode
-import { DarkMode } from "../../colors";
+interface ISubjectCareer {
+  idCareer: string;
+  mobile?: boolean;
+}
 
-export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
-  const setAllSubjects = useStore((state) => state.setAllSubjects);
-
-  useEffect(() => {
-    socket.connect();
-    // socket.emit("initial", { myId: userData.id }, (response: any) => {
-    //   console.log(response.status);
-    // });
-    getAllSubjects(setAllSubjects);
-  }, []);
-  const subjects = useRef(useStore.getState().allSubjects);
+export const SubjectCareerPage = ({
+  idCareer,
+  mobile = false,
+}: ISubjectCareer) => {
   const [page, setPage] = useState(1);
   const [visibilityBack, setVisibilityBack] = useState(true);
   const [visibilityNext, setVisibilityNext] = useState(false);
-  const lastPage = subjects.current.length;
-  const [subjectsColumnData, setSubjectsColumn] = useState<
+  const [lastPage, setLastPage] = useState(0);
+  const [careersSubjects, setCareersSubjects] = useState([
+    {
+      id: "",
+      acronym: "",
+      name: "",
+      semester: 0,
+    },
+  ]);
+
+  const fetchSubjectCareerInfo = async () => {
+    const response = await getSubjectCareer(idCareer, page, 6);
+    if (response.status === 200) {
+      setLastPage(response[0].lastPage);
+      setCareersSubjects(response[0].subjects);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjectCareerInfo();
+  }, []);
+
+  const [subjectsCareerColumnData, setSubjectsCareerColumn] = useState<
     Array<IColumnDetails>
   >([{ id: "" }]);
 
@@ -60,16 +76,12 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
         Header: "",
         accessor: "edit",
         Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
+          const id = subjectsCareerColumnData[cell.row.index].careerId;
           return (
             <>
               {id !== undefined && (
                 <Link to={``}>
-                  <Button
-                    text={"Editar"}
-                    color={DarkMode().pink}
-                    fontColor={DarkMode().textWtB}
-                  />
+                  <Button text={"Editar"} color={"pink"} fontColor="white" />
                 </Link>
               )}
             </>
@@ -80,16 +92,12 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
         Header: "",
         accessor: "delete",
         Cell: (cell: Cell<any, any>) => {
-          const id = subjectsColumnData[cell.row.index].id;
+          const id = subjectsCareerColumnData[cell.row.index].careerId;
           return (
             <>
               {id !== undefined && (
                 <Link to={``}>
-                  <Button
-                    text={"Eliminar"}
-                    color={DarkMode().pink}
-                    fontColor={DarkMode().textWtB}
-                  />
+                  <Button text={"Eliminar"} color={"pink"} fontColor="white" />
                 </Link>
               )}
             </>
@@ -97,7 +105,7 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
         },
       },
     ],
-    [subjectsColumnData]
+    [subjectsCareerColumnData]
   );
   const handleChange = (n: number) => {
     const newPage = page + n;
@@ -116,26 +124,17 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
 
   const getSubjectData = async () => {
     console.log(page);
-    const subjectsColumn: Array<IColumnDetails> = [];
-    await subjects.current
-      .filter((element: any) => element.page === page)[0]
-      .subjects.forEach((subject) => {
-        const columnData: IColumnDetails = {
-          ...subject,
-        };
+    const subjectsCareerColumn: Array<IColumnDetails> = [];
+    await careersSubjects.forEach((subject: any) => {
+      const columnData: IColumnDetails = {
+        ...subject,
+      };
 
-        subjectsColumn.push(columnData);
-      });
-
-    setSubjectsColumn(subjectsColumn);
-  };
-
-  useEffect(() => {
-    useStore.subscribe((state) => {
-      subjects.current = state.allSubjects;
-      getSubjectData();
+      subjectsCareerColumn.push(columnData);
     });
-  }, []);
+
+    setSubjectsCareerColumn(subjectsCareerColumn);
+  };
 
   useEffect(() => {
     getSubjectData();
@@ -143,15 +142,15 @@ export const SubjectPage = ({ mobile = false }: { mobile?: boolean }) => {
 
   return (
     <>
-      {subjectsColumnData === [] ? (
+      {subjectsCareerColumnData === [] ? (
         <h1>Cargando</h1>
       ) : (
         <Managment
           columns={columns}
-          data={subjectsColumnData}
-          headColor={DarkMode().blue}
+          data={subjectsCareerColumnData}
+          headColor={"blue"}
           mobile={mobile}
-          header={"Materias"}
+          header={"Auxilio"}
         />
       )}
       <Flex

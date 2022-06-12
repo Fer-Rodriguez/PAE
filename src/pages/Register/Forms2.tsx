@@ -2,12 +2,13 @@ import {
   Center,
   Flex,
   FormControl,
+  Icon,
   Link,
   Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { CarreraInput } from "../../components/FormsRegister/CarreraInput";
@@ -25,6 +26,9 @@ import { GetUser, GetUserInfo } from "../../api/users/get";
 import { IUserData } from "../../interfaces";
 import { useStore } from "../../state/store";
 
+import { WarningIcon } from "@chakra-ui/icons";
+import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
+
 //Dark Mode
 import { DarkMode } from "../../colors";
 
@@ -33,17 +37,12 @@ interface IForms2 {
   info: any;
   setFormStep: React.Dispatch<number>;
   setNewId: React.Dispatch<string>;
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Forms2 = ({
-  info,
-  setInfo,
-  setFormStep,
-  setNewId,
-  setLoggedIn,
-}: IForms2) => {
-  const [isLogining, setIsLogining] = useState(false);
+export const Forms2 = ({ info, setInfo, setFormStep, setNewId }: IForms2) => {
+  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const [carrera, setCarrera] = useState("");
@@ -54,6 +53,7 @@ export const Forms2 = ({
   const [semesterDoubleCarrera, setSemesterDoubleCarrera] = useState("");
   const [typeUser, setTypeUser] = useState<EUserType | null>(null);
   const [seeModal, setSeeModal] = useState(false);
+
   const careers = useStore((state) => state.allCareers);
   const ddCareers = useStore((state) => state.ddCareers);
 
@@ -69,10 +69,97 @@ export const Forms2 = ({
     setSeeModal(false);
   };
 
+  const handleCreateResponse = async (res: any, success: boolean) => {
+    if (success) {
+      const idUserData = await GetUser(
+        capitalize(info.mail),
+        info.password
+      ).then((res) => {
+        return res;
+      });
+      setNewId(idUserData.userId);
+      const userData = await GetUserInfo(idUserData.userId).then((res) => {
+        return res;
+      });
+
+      if (idUserData.status == "OK") {
+        const correctUser: IUserData =
+          userData.user.career.length === 1
+            ? {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+                polls: [],
+              }
+            : {
+                id: userData.user.id,
+                status:
+                  userData.user.status === EStatus.active
+                    ? EStatus.active
+                    : userData.user.status === EStatus.deleted
+                    ? EStatus.deleted
+                    : EStatus.inactive,
+                name: userData.user.name,
+                email: userData.user.email,
+                type:
+                  userData.user.type === EUserType.advisor
+                    ? EUserType.advisor
+                    : userData.user.type === EUserType.student
+                    ? EUserType.student
+                    : userData.user.type === EUserType.admin
+                    ? EUserType.admin
+                    : EUserType.root,
+                semester: userData.user.userSemesters[0].semester,
+                career: userData.user.career[0].id,
+                careerName: userData.user.career[0].acronym,
+                semesterDD: userData.user.userSemesters[1].semester,
+                careerDD: userData.user.career[1].id,
+                careerNameDD: userData.user.career[1].acronym,
+                config: { language: ELanguage.spanish, theme: ETheme.white },
+                profilePic: "No tengo",
+                notifications: [],
+                polls: [],
+              };
+        setIsSubmiting(false);
+        setUser(correctUser);
+        if (info.typeUserDrop === EUserType.student) {
+          setFormStep(3);
+        } else {
+          setFormStep(2);
+        }
+      }
+    } else {
+      setIsSubmiting(false);
+      setError(true);
+      if (res.response.data.reason === 1) {
+        setAlreadyRegistered(true);
+      }
+    }
+  };
+
   const createUser = async () => {
-    console.log(info.semesterDoubleCarrera);
+    setIsSubmiting(true);
     if (info.semesterDoubleCarrera !== undefined) {
-      setIsLogining(true);
       await CreateUser({
         name: info.name,
         email: capitalize(info.mail),
@@ -83,7 +170,17 @@ export const Forms2 = ({
         type: info.typeUserDrop,
         careerDD: info.doubleCarrera,
         semesterDD: info.semesterDoubleCarrera,
-      });
+      }).then(
+        (res) => {
+          handleCreateResponse(res, true);
+        },
+        // Si regresa un código distinto a 200
+        (res) => {
+          {
+            handleCreateResponse(res, false);
+          }
+        }
+      );
     } else {
       await CreateUser({
         name: info.name,
@@ -93,83 +190,15 @@ export const Forms2 = ({
         semester: info.semestreCarrera,
         status: EStatus.active,
         type: info.typeUserDrop,
-      });
-    }
-    const idUserData = await GetUser(capitalize(info.mail), info.password);
-    setNewId(idUserData.userId);
-    const userData = await GetUserInfo(idUserData.userId);
-
-    if (idUserData.status == "OK") {
-      const correctUser: IUserData =
-        userData.user.career.length === 1
-          ? {
-              id: userData.user.id,
-              status:
-                userData.user.status === EStatus.active
-                  ? EStatus.active
-                  : userData.user.status === EStatus.deleted
-                  ? EStatus.deleted
-                  : EStatus.inactive,
-              name: userData.user.name,
-              email: userData.user.email,
-              type:
-                userData.user.type === EUserType.advisor
-                  ? EUserType.advisor
-                  : userData.user.type === EUserType.student
-                  ? EUserType.student
-                  : userData.user.type === EUserType.admin
-                  ? EUserType.admin
-                  : EUserType.root,
-              semester: userData.user.userSemesters[0].semester,
-              career: userData.user.career[0].id,
-              careerName: userData.user.career[0].acronym,
-              config: { language: ELanguage.spanish, theme: ETheme.white },
-              profilePic: "No tengo",
-              notifications: [],
-              polls: [],
-            }
-          : {
-              id: userData.user.id,
-              status:
-                userData.user.status === EStatus.active
-                  ? EStatus.active
-                  : userData.user.status === EStatus.deleted
-                  ? EStatus.deleted
-                  : EStatus.inactive,
-              name: userData.user.name,
-              email: userData.user.email,
-              type:
-                userData.user.type === EUserType.advisor
-                  ? EUserType.advisor
-                  : userData.user.type === EUserType.student
-                  ? EUserType.student
-                  : userData.user.type === EUserType.admin
-                  ? EUserType.admin
-                  : EUserType.root,
-              semester: userData.user.userSemesters[0].semester,
-              career: userData.user.career[0].id,
-              careerName: userData.user.career[0].acronym,
-              semesterDD: userData.user.userSemesters[1].semester,
-              careerDD: userData.user.career[1].id,
-              careerNameDD: userData.user.career[1].acronym,
-              config: { language: ELanguage.spanish, theme: ETheme.white },
-              profilePic: "No tengo",
-              notifications: [],
-              polls: [],
-            };
-
-      setUser(correctUser);
-      localStorage.setItem("user_id", userData.user.id);
-      if (info.typeUserDrop === EUserType.student) {
-        setIsLogining(false);
-        setLoggedIn(true);
-        navigate("/dashboard");
-      } else {
-        setFormStep(2);
-      }
-    } else {
-      alert(
-        "No pudimos registrarte en este momento. Por favor, inténtalo más tarde"
+      }).then(
+        (res) => {
+          handleCreateResponse(res, true);
+        },
+        (res) => {
+          {
+            handleCreateResponse(res, false);
+          }
+        }
       );
     }
   };
@@ -293,7 +322,19 @@ export const Forms2 = ({
               <br />
             </Text>
           )}
-
+          {error ? (
+            <Flex w="100%" gap="0.5em">
+              <WarningIcon color="#ed3441" />
+              <Text color="#ed3441">
+                {alreadyRegistered
+                  ? "No se completó el registro. Este correo ya está registrado"
+                  : "No podemos completar tu registro en este momento. Inténtalo más tarde"}
+              </Text>
+            </Flex>
+          ) : (
+            <></>
+          )}
+          <br></br>
           <Center>
             <ButtonGeneric
               bgColor={DarkMode().blue}
@@ -304,7 +345,7 @@ export const Forms2 = ({
                   : "Introducir mis horarios"
               }
               onClick={() => createUser()}
-              isLoading={isLogining}
+              isLoading={isSubmiting}
             ></ButtonGeneric>
           </Center>
         </Confirmation>

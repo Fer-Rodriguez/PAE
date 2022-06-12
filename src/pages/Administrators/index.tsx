@@ -2,7 +2,8 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { GetAllAdmins } from "../../api/users/get";
 import { Link } from "react-router-dom";
 import { Cell } from "react-table";
-import { ButtonGeneric } from "../../components/Button";
+import { ButtonGeneric } from "../../components/ButtonGeneric";
+import { ButtonGeneric as Button } from "../../components/Button";
 import { useStore } from "../../state/store";
 
 interface IColumnDetails {
@@ -11,14 +12,13 @@ interface IColumnDetails {
 
 import { Managment } from "../Managment";
 import socket from "../../socket";
-import { getAllSubjects } from "../../api/subjects/get";
+import { Box, Center } from "@chakra-ui/react";
 
 //Dark Mode
 import { DarkMode } from "../../colors";
 
 export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
   const setAllUsers = useStore((state) => state.setAllUsers);
-  const setAllSubjects = useStore((state) => state.setAllSubjects);
 
   useEffect(() => {
     socket.connect();
@@ -26,7 +26,6 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
     //   console.log(response.status);
     // });
     GetAllAdmins(setAllUsers);
-    getAllSubjects(setAllSubjects);
   }, []);
   const administrators = useRef(useStore.getState().allUsers);
   const [administratorsColumnData, setAdministratorsColumn] = useState<
@@ -63,8 +62,8 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
           return (
             <>
               {id !== undefined && (
-                <Link to={`../perfil/${id}`}>
-                  <ButtonGeneric
+                <Link to={``}>
+                  <Button
                     text={"Eliminar"}
                     color={DarkMode().pink}
                     fontColor="white"
@@ -126,6 +125,14 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
           header={"Administradores"}
         />
       )}
+      <Center marginTop={"20px"}>
+        <ButtonGeneric
+          bgColor="purple"
+          sizePX="25%"
+          text="Crear un administrador"
+          onClick={() => console.log()}
+        ></ButtonGeneric>
+      </Center>
     </>
   );
 };
