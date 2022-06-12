@@ -57,43 +57,43 @@ export const CareerPage = ({ mobile = false }: { mobile?: boolean }) => {
         Header: "Semestres",
         accessor: "careerLength",
       },
-      {
-        Header: "",
-        accessor: "delete",
-        Cell: (cell: Cell<any, any>) => {
-          const id = careersColumnData[cell.row.index].careerId;
-          return (
-            <>
-              {id !== undefined && (
-                <Link to={``}>
-                  <Button text={"Eliminar"} color={"pink"} fontColor="white" />
-                </Link>
-              )}
-            </>
-          );
-        },
-      },
-      {
-        Header: "",
-        accessor: "details",
-        Cell: (cell: Cell<any, any>) => {
-          const id = careersColumnData[cell.row.index].careerId;
-          return (
-            <>
-              {id !== undefined && (
-                <Link to={``}>
-                  <ButtonGeneric
-                    bgColor="pink"
-                    sizePX="70%"
-                    text="Detalles"
-                    onClick={() => console.log()}
-                  ></ButtonGeneric>
-                </Link>
-              )}
-            </>
-          );
-        },
-      },
+      // {
+      //   Header: "",
+      //   accessor: "delete",
+      //   Cell: (cell: Cell<any, any>) => {
+      //     const id = careersColumnData[cell.row.index].careerId;
+      //     return (
+      //       <>
+      //         {id !== undefined && (
+      //           <Link to={``}>
+      //             <Button text={"Eliminar"} color={"pink"} fontColor="white" />
+      //           </Link>
+      //         )}
+      //       </>
+      //     );
+      //   },
+      // },
+      // {
+      //   Header: "",
+      //   accessor: "details",
+      //   Cell: (cell: Cell<any, any>) => {
+      //     const id = careersColumnData[cell.row.index].careerId;
+      //     return (
+      //       <>
+      //         {id !== undefined && (
+      //           <Link to={``}>
+      //             <ButtonGeneric
+      //               bgColor="pink"
+      //               sizePX="70%"
+      //               text="Detalles"
+      //               onClick={() => console.log()}
+      //             ></ButtonGeneric>
+      //           </Link>
+      //         )}
+      //       </>
+      //     );
+      //   },
+      // },
     ],
     [careersColumnData]
   );
