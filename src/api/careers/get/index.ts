@@ -79,7 +79,7 @@ export const GetAllDDCareers = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6110/career//career-double-degree`,
+    url: `http://localhost:6110/career/career-double-degree`,
   };
   const data = await axios(config)
     .then(function (response) {
