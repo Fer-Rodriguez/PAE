@@ -1,4 +1,4 @@
-import { ISubjectData, ISubjects } from "./../../../interfaces/index";
+import { ISubjects } from "./../../../interfaces/index";
 import axios from "axios";
 
 export const getSubjectCareer = async (

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { config } from "process";
 import { EUserType } from "../../../interfaces/enums";
 
 export const getRecentAppointment = async (

@@ -1,7 +1,4 @@
 import axios from "axios";
-import qs from "qs";
-
-import { INewUserSchedule } from "../../../interfaces";
 import { EStatus, EUserType } from "../../../interfaces/enums";
 
 interface ICreateUserData {

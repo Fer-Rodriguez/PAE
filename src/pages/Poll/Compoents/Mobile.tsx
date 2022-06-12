@@ -19,9 +19,8 @@ import {
 import { DividedCard } from "../../../components/DividedCard";
 
 //Assets Enum Types
-import asesor from "../../../assets/asesor-icon.svg";
-import asesorado from "../../../assets/asesorado-icon.svg";
-import theme from "../../../theme/index";
+import asesor from "../../../assets/asesor-icon.png";
+import asesorado from "../../../assets/asesorado-icon.png";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";

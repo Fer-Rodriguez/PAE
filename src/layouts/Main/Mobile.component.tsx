@@ -50,11 +50,9 @@ export const MobileComponents = ({
           <BellIcon boxSize={8} />
         </Flex>
       </Flex>
-
       {/** Here is going to be render the corresponding child component */}
       {userComponent}
       {/* TODO: Add responsive menu instead of Spacer**/}
-
       <Menu userType="user" mobile={true} />
     </Flex>
   );

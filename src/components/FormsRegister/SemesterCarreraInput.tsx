@@ -7,7 +7,6 @@ import {
   FormHelperText,
   NumberInput,
   NumberInputField,
-  FormControl,
 } from "@chakra-ui/react";
 
 interface ISemesterCarreraInput {

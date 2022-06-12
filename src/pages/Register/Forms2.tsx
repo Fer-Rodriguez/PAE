@@ -25,6 +25,7 @@ import { ELanguage, EStatus, ETheme, EUserType } from "../../interfaces/enums";
 import { GetUser, GetUserInfo } from "../../api/users/get";
 import { IUserData } from "../../interfaces";
 import { useStore } from "../../state/store";
+
 import { WarningIcon } from "@chakra-ui/icons";
 import { GetAllCareers, GetAllDDCareers } from "../../api/careers/get";
 

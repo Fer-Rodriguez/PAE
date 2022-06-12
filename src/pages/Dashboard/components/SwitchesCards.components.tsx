@@ -2,24 +2,13 @@ import { Flex, useColorMode } from "@chakra-ui/react";
 
 import { Switch } from "../../../components/Switch";
 
-//Assets
-import theme from "../../../theme";
-import world from "../Icons/world.png";
-import hand from "../Icons/hand.png";
-
-//Dark Mode
-import { DarkMode } from "../../../colors";
-
 import "../style.css";
-import useDarkMode from "../../../context";
 import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
 export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
   const { toggleColorMode, colorMode } = useColorMode();
-
-  const { value, setValue } = useDarkMode();
 
   const [isToggled, setIsToggled] = useState(false);
 

@@ -6,10 +6,7 @@ import {
   Divider,
   Center,
   Box,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DividedCard } from "../../../components/DividedCard";
 

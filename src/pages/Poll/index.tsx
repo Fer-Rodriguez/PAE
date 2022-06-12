@@ -1,5 +1,5 @@
 //Chakra
-import { useDisclosure, useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 
 //Componets
 import Student from "./Desktop/student";

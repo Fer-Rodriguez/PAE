@@ -47,7 +47,7 @@ export const PollComponent = ({
 }: IPollComponent) => {
   const [ruta, setRuta] = useState(0);
 
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: false });
+  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={SizeModal} isCentered={true}>

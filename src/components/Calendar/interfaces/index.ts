@@ -1,4 +1,4 @@
-import React, { Ref } from "react";
+import React from "react";
 import { EModalCalendarType } from "../../../interfaces/enums";
 
 export enum EBeforeType {

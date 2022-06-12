@@ -5,10 +5,7 @@ import {
   Heading,
   InputGroup,
   Input,
-  IconButton,
-  Icon,
 } from "@chakra-ui/react";
-import { Filter } from "../../../assets/Filter";
 import { ManagingTable } from "../../../components/ManagingTable";
 import { IManagingTableInternal } from "../../../interfaces";
 
