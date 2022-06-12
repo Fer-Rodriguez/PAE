@@ -128,12 +128,15 @@ export const MyCalendar = ({
     }
 
     try {
-      await axios.patch("http://localhost:6090/schedule", {
-        scheduleOne: schedulesFirst,
-        scheduleTwo: schedulesSecond,
-        scheduleThree: schedulesThird,
-        idAdvisor: idUser,
-      });
+      await axios.patch(
+        "https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/schedule",
+        {
+          scheduleOne: schedulesFirst,
+          scheduleTwo: schedulesSecond,
+          scheduleThree: schedulesThird,
+          idAdvisor: idUser,
+        }
+      );
       toast({
         title: "¡Listo!",
         description: "El Horario se ha guardado con éxito.",
@@ -152,7 +155,9 @@ export const MyCalendar = ({
 
   const getSchedules = async () => {
     axios
-      .get(`http://localhost:6090/schedule/?idUser=${idUser}`)
+      .get(
+        `https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/schedule/?idUser=${idUser}`
+      )
       .then((res) => {
         processSchedules(
           res.data,

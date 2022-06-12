@@ -8,7 +8,7 @@ export const CreatePollReport = async (
 ) => {
   const config = {
     method: "post",
-    url: "http://localhost:6090/push_poll",
+    url: "https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/push_poll",
     data: { answers, idAppointment, surveyType },
   };
 

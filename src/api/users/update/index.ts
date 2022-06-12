@@ -8,7 +8,7 @@ export const updateUser = async (
 ) => {
   const config = {
     method: "patch",
-    url: `http://localhost:6070/register/update`,
+    url: `https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/register/update`,
     data: {
       idUser: id,
       dataToUpdate: data,
@@ -27,7 +27,7 @@ export const updateUser = async (
 export const verifyEmail = async (token: string, cancel: boolean) => {
   const config = {
     method: "patch",
-    url: "http://localhost:6070/login/verify",
+    url: "https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/login/verify",
     data: {
       token,
       cancel,

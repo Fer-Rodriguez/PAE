@@ -17,7 +17,7 @@ export const getSurveyQuestions = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6090/push_poll?id_type=${userType}`,
+    url: `https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/push_poll?id_type=${userType}`,
   };
 
   await axios(config)

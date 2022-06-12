@@ -10,7 +10,7 @@ export const updateSubject = async (
 ) => {
   const config = {
     method: "patch",
-    url: `http://localhost:6080/subject/`,
+    url: `https://subjects.yellowplant-d0967952.westus.azurecontainerapps.io:6080/subject/`,
     data: {
       id,
       name,

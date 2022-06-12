@@ -75,7 +75,7 @@ export const CreateAppointmentLayout = () => {
 
       const config = {
         method: "post",
-        url: "http://localhost:6060/appointment",
+        url: "https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment",
         data,
       };
 

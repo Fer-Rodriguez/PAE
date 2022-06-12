@@ -6,7 +6,7 @@ export const GetAllCareers = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6110/career/all-careers`,
+    url: `https://careers.yellowplant-d0967952.westus.azurecontainerapps.io:6110/career/all-careers`,
   };
   const data = await axios(config)
     .then(function (response) {
@@ -35,7 +35,7 @@ export const GetAllPaginatedCareers = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6110/career/all-careers`,
+    url: `https://careers.yellowplant-d0967952.westus.azurecontainerapps.io:6110/career/all-careers`,
   };
   const data = await axios(config)
     .then(function (response) {
@@ -79,7 +79,7 @@ export const GetAllDDCareers = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6110/career//career-double-degree`,
+    url: `https://careers.yellowplant-d0967952.westus.azurecontainerapps.io:6110/career//career-double-degree`,
   };
   const data = await axios(config)
     .then(function (response) {

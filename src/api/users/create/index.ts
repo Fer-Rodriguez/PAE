@@ -19,7 +19,7 @@ interface ICreateUserData {
 export const CreateUser = async (newValues: ICreateUserData) => {
   const config = {
     method: "post",
-    url: "http://localhost:6070/register/create",
+    url: "https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/register/create",
     data:
       newValues.semesterDD !== undefined
         ? {

@@ -4,7 +4,7 @@ import { IUserData } from "../../../interfaces";
 export const GetUser = async (email: string, password: string) => {
   const config = {
     method: "get",
-    url: `http://localhost:6070/login/get?email=${email}&password=${password}`,
+    url: `https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/login/get?email=${email}&password=${password}`,
   };
 
   const data = await axios(config)
@@ -21,7 +21,7 @@ export const GetUser = async (email: string, password: string) => {
 export const GetUserInfo = async (idUser: string) => {
   const config = {
     method: "get",
-    url: `http://localhost:6070/register/get?id=${idUser}`,
+    url: `https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/register/get?id=${idUser}`,
   };
 
   const data = await axios(config)
@@ -40,7 +40,7 @@ export const GetAllAdvisors = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6070/register/getAll?type=advisor`,
+    url: `https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/register/getAll?type=advisor`,
   };
 
   const data = await axios(config)
@@ -110,7 +110,7 @@ export const GetAllAdmins = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6070/register/getAll?type=admin`,
+    url: `https://login-register.yellowplant-d0967952.westus.azurecontainerapps.io:6070/register/getAll?type=admin`,
   };
 
   const data = await axios(config)

@@ -8,11 +8,13 @@ export const getAllQuestions = async (
 ) => {
   const config = {
     method: "get",
-    url: `localhost:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`,
+    url: `https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`,
   };
 
   await axios
-    .get(`http://localhost:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`)
+    .get(
+      `https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/push_poll/?id_type=${id_type}&idUser=${idUser}`
+    )
     .then(function (response) {
       setPolls(response.data);
     })

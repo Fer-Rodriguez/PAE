@@ -37,7 +37,7 @@ export const updateAppointment = (
 
   const config = {
     method: "patch",
-    url: "http://localhost:6060/appointment",
+    url: "https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment",
     headers: {
       "Content-Type": "application/json",
     },
@@ -60,7 +60,7 @@ export const updateAppointmentCandidate = async (
 ) => {
   const config = {
     method: "patch",
-    url: "http://localhost:6060/appointment/updateCandidates",
+    url: "https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/updateCandidates",
     data: {
       idAppointment,
       idAdvisor,

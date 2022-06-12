@@ -8,7 +8,7 @@ export const getSubjectCareer = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6080/subject/?idCarrera=${idCarrera}&page=${page}&limitItems=${limitItems}`,
+    url: `https://subjects.yellowplant-d0967952.westus.azurecontainerapps.io:6080/subject/?idCarrera=${idCarrera}&page=${page}&limitItems=${limitItems}`,
   };
 
   const data = await axios(config)
@@ -25,7 +25,7 @@ export const getSubjectCareer = async (
 export const getSubjects = async (idCareer: string, semester: number) => {
   const config = {
     method: "get",
-    url: `http://localhost:6080/subject/career?idCarrera=${idCareer}&semester=${semester}`,
+    url: `https://subjects.yellowplant-d0967952.westus.azurecontainerapps.io:6080/subject/career?idCarrera=${idCareer}&semester=${semester}`,
   };
 
   const res = await axios(config);
@@ -37,7 +37,7 @@ export const getAllSubjects = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6080/subject/all`,
+    url: `https://subjects.yellowplant-d0967952.westus.azurecontainerapps.io:6080/subject/all`,
   };
 
   const data = await axios(config)

@@ -7,10 +7,13 @@ export const updateNotification = async (
   status: ENotificationStatus
 ) => {
   try {
-    await axios.patch(`http://localhost:6090/notification`, {
-      idNotification,
-      status,
-    });
+    await axios.patch(
+      `https://dashboard.yellowplant-d0967952.westus.azurecontainerapps.io:6090/notification`,
+      {
+        idNotification,
+        status,
+      }
+    );
   } catch (error) {
     console.error(error);
   }

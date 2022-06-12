@@ -9,7 +9,7 @@ export const getRecentAppointment = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/admin?id=${id}&id_type=${type}`,
+    url: `https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/admin?id=${id}&id_type=${type}`,
   };
 
   await axios(config).then((res) => setRecentAppointment(res.data));
@@ -22,7 +22,7 @@ export const getAllAppointments = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/allAppointments?id=${id}&userType=${type}&full=${full}`,
+    url: `https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/allAppointments?id=${id}&userType=${type}&full=${full}`,
   };
 
   let response: any;
@@ -39,7 +39,7 @@ export const getPossibleDates = async (
 ) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/possibleDates?idSubject=${idSubject}&idPetitioner=${idPetitioner}`,
+    url: `https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/possibleDates?idSubject=${idSubject}&idPetitioner=${idPetitioner}`,
   };
 
   return axios(config)
@@ -53,7 +53,7 @@ export const getPossibleDates = async (
 export const getAppointmentCandidates = async (idAppointment: string) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/candidates?id_appointment=${idAppointment}`,
+    url: `https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/candidates?id_appointment=${idAppointment}`,
   };
 
   return axios(config)
@@ -67,7 +67,7 @@ export const getAppointmentCandidates = async (idAppointment: string) => {
 export const getBasicAppointmentInfo = async (idAppointment: string) => {
   const config = {
     method: "get",
-    url: `http://localhost:6060/appointment/basicInfo?idAppointment=${idAppointment}`,
+    url: `https://appointments.yellowplant-d0967952.westus.azurecontainerapps.io:6060/appointment/basicInfo?idAppointment=${idAppointment}`,
   };
 
   return axios(config)
