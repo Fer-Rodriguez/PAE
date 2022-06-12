@@ -38,6 +38,7 @@ import { SubjectPage } from "./pages/Subjects";
 import { ConfirmEmail } from "./pages/ConfirmEmail";
 import { CareerPage } from "./pages/Careers";
 import { SubjectCareerPage } from "./pages/Careers/details";
+import { CancelEmail } from "./pages/CancelEmail";
 
 enum ENotificationType {
   "APPOINTMENT_ACCEPTED" = "APPOINTMENT_ACCEPTED",
@@ -164,21 +165,23 @@ export const Main = ({
                     />
                   }
                 />
-                <Route
-                  path="/verififyEmail/:tkn"
-                  element={
-                    <Login
-                      desktop={<ConfirmEmail />}
-                      mobile={<ConfirmEmail mobile={true} />}
-                    ></Login>
-                  }
-                >
+                <Route path="/verififyEmail/">
                   <Route
-                    path="cancel"
+                    path=":tkn"
                     element={
                       <Login
-                        desktop={<ConfirmEmail cancel />}
-                        mobile={<ConfirmEmail cancel mobile={true} />}
+                        desktop={<ConfirmEmail />}
+                        mobile={<ConfirmEmail mobile={true} />}
+                      ></Login>
+                    }
+                  />
+
+                  <Route
+                    path=":tkn/cancel"
+                    element={
+                      <Login
+                        desktop={<CancelEmail />}
+                        mobile={<CancelEmail mobile={true} />}
                       ></Login>
                     }
                   />

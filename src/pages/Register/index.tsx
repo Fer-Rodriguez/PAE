@@ -87,7 +87,7 @@ export const FormsRegister = (props: IRegister) => {
             paddingTop={"20px"}
             paddingBottom={"20px"}
           >
-            Regístrate
+            {formStep === 3 ? "¡Listo!" : "Regístrate"}
           </Text>
 
           {getScreenFromStep(formStep)}
