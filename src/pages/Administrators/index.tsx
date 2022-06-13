@@ -230,6 +230,7 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
         justifyContent={mobile ? "center" : ""}
         w="100%"
         mt="5%"
+        gap="1em"
       >
         <Heading>Camiar el periodo actual</Heading>
         <Flex gap="10%">
