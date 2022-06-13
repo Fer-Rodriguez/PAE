@@ -9,6 +9,7 @@ import {
   Spacer,
   Link,
   FormControl,
+  Box,
 } from "@chakra-ui/react";
 import { Logo } from "../../assets/Logo";
 import { MailInput } from "../../components/FormsLogin/MailInput";
@@ -96,6 +97,7 @@ export const FormsLogin = (props: IFormsLogin) => {
 
   const {
     control,
+    getValues,
     formState: { isValid },
     handleSubmit,
   } = useForm({ mode: "onSubmit" });
@@ -109,6 +111,7 @@ export const FormsLogin = (props: IFormsLogin) => {
   };
   const tryLogin = async (data: any) => {
     try {
+      console.log("what");
       setIsLogining(true);
       const idUserData = await GetUser(capitalize(data.mail), data.password);
 
@@ -182,7 +185,15 @@ export const FormsLogin = (props: IFormsLogin) => {
           <FormControl isRequired isInvalid={!isValid}>
             <Stack spacing={7} w={"100%"}>
               <MailInput control={control} secondValidation={true} />
-              <PasswordInput control={control} secondValidation={true} />
+              <Box
+                onKeyUp={(e) => {
+                  if (e.key === "Enter") {
+                    handleSubmit(tryLogin)();
+                  }
+                }}
+              >
+                <PasswordInput control={control} secondValidation={true} />
+              </Box>
 
               <Flex>
                 {/* <Checkbox

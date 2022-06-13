@@ -23,11 +23,11 @@ export const TextInput = ({
   if (!multiLine)
     return (
       <Input
-        // TODO: On change para multiline. NO funciona ahorita la forma en multiline
         borderRadius="25px"
-        backgroundColor="#E2E8F0"
+        backgroundColor="white"
         color="black"
         borderColor="#FFFFFF"
+        focusBorderColor="pink"
         placeholder={placeholderText}
         width={width}
         value={value}

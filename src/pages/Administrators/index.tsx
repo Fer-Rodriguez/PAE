@@ -12,7 +12,15 @@ interface IColumnDetails {
 
 import { Managment } from "../Managment";
 import socket from "../../socket";
-import { Box, Center, Flex, FormControl, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  FormControl,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 //Dark Mode
 import { DarkMode } from "../../colors";
@@ -28,8 +36,10 @@ import { GetAllCareers } from "../../api/careers/get";
 import { CreateUser } from "../../api/users/create";
 import { EStatus, EUserType } from "../../interfaces/enums";
 import { WarningIcon } from "@chakra-ui/icons";
+import { TextInput } from "../../components/TextInput";
 
 export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
+  const [savePeriod, setSavePeriod] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alreadyRegistered, setAlreadyRegistered] = useState(false);
   const [error, setError] = useState(false);
@@ -208,11 +218,47 @@ export const AdminPage = ({ mobile = false }: { mobile?: boolean }) => {
       <Center marginTop={"20px"}>
         <ButtonGeneric
           bgColor="purple"
-          sizePX="25%"
+          sizePX="fit-content"
           text="Crear un administrador"
           onClick={() => setSeeModal(true)}
         ></ButtonGeneric>
       </Center>
+      <Flex
+        flexDirection={"column"}
+        justifyItems={"center"}
+        alignItems={mobile ? "center" : ""}
+        justifyContent={mobile ? "center" : ""}
+        w="100%"
+        mt="5%"
+      >
+        <Heading>Camiar el periodo actual</Heading>
+        <Flex gap="10%">
+          <TextInput
+            onChange={(e) => {
+              setSavePeriod(false);
+            }}
+            multiLine={false}
+            placeholderText={"Ingresa un valor del 1 al 3"}
+            width={mobile ? "50%" : "25%"}
+            extraInputProps={{ defaultValue: "3" }}
+          />
+          <ButtonGeneric
+            bgColor={"purple"}
+            sizePX={"fit-content"}
+            text={"Guardar"}
+            onClick={() => {
+              setSavePeriod(true);
+            }}
+          ></ButtonGeneric>
+        </Flex>
+        {savePeriod ? (
+          <Text color="#4BB543" mt="2em">
+            Periodo Actualizado correctamente
+          </Text>
+        ) : (
+          <></>
+        )}
+      </Flex>
       {seeModal ? (
         <ModalCreateAdmin customClose={() => closePopUp()}>
           <FormControl isRequired isInvalid={!isValid} w={"100%"}>

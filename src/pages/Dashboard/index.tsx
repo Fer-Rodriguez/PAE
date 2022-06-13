@@ -244,7 +244,9 @@ export const Dashboard = ({ mobile = false }: { mobile?: boolean }) => {
         console.log(response.status);
       });
       getRecentAppointment(userData.id, userData.type, setRecentAppointment);
-      GetAllAdvisors(setAllUsers);
+      if (userData.type === EUserType.advisor) {
+        GetAllAdvisors(setAllUsers);
+      }
       getAllNotifications(userData.id, setAllNotifications);
       const obtainData = async () => {
         const response = await getAllAppointments(

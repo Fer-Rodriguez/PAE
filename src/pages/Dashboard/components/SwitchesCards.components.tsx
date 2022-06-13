@@ -54,7 +54,7 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
   return (
     <Flex direction={"column"} h="100%" gap={5}>
       <Switch
-        rounded={true}
+        rounded={false}
         isToggled={isToggled}
         onToggled={() => setIsToggled(!isToggled)}
         click={() => toggleColorMode()}
@@ -62,7 +62,7 @@ export const SwitchesCards = ({ mobile = false }: { mobile?: boolean }) => {
         class2={classHandler2()}
       />
       <Switch
-        rounded={true}
+        rounded={false}
         isToggled={isToggled2}
         onToggled={() => setIsToggled2(!isToggled2)}
         click={() => ChangeLng()}
