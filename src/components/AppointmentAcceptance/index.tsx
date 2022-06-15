@@ -75,7 +75,7 @@ export const AppointmentAcceptance = (data: IAppointmentAcceptanceData) => {
     if (response.status === 200) {
       setInfo(response.data);
     } else {
-      //console.log("fuck");
+      //console.log("");
     }
   };
 
@@ -159,7 +159,7 @@ export const AppointmentAcceptance = (data: IAppointmentAcceptanceData) => {
             ></ButtonGeneric>
             <ButtonGeneric
               onClick={() => {
-                sendAnswer(true);
+                sendAnswer(false);
               }}
               bgColor={"pink"}
               sizePX={""}
